@@ -10,8 +10,8 @@ declare interface Options {
 }
 
 export default class VitePressSidebar {
-  static autoGenerate(options: Options) {
-    VitePressSidebar.generateSidebarItem(join(process.cwd(), options.root), options);
+  static autoGenerate(options: Options): object {
+    return VitePressSidebar.generateSidebarItem(join(process.cwd(), options.root), options);
   }
 
   static generateSidebarItem(currentDir: string, options: Options): object {
@@ -38,7 +38,7 @@ export default class VitePressSidebar {
   }
 
   static getTitleFromMd(fileName: string, options: Options, isDirectory = false): string {
-    let result = fileName.charAt(0).toUpperCase() + fileName.slice(1);
+    let result: string = fileName.charAt(0).toUpperCase() + fileName.slice(1);
 
     result = result.replace(/\.md$/, '');
 
