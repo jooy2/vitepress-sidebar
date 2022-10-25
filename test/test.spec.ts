@@ -3,7 +3,7 @@ import { generateSidebar } from '../dist/index.js';
 
 describe('Vitepress Sidebar Test Case', () => {
   it('Basic configurations', (done) => {
-    assert.deepStrictEqual(
+    assert.deepEqual(
       generateSidebar({
         root: 'test/docs'
       }),
@@ -45,7 +45,7 @@ describe('Vitepress Sidebar Test Case', () => {
   });
 
   it('With advanced configurations', (done) => {
-    assert.deepStrictEqual(
+    assert.deepEqual(
       generateSidebar({
         root: 'test/docs',
         rootGroupText: 'RootGroup',
