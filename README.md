@@ -28,11 +28,11 @@ export default {
 
 ## Options
 
-### `root (string) (Required)`
+### `root (string) (Required) (Default: '/')`
 
 The path to the root directory where the document is located. Pass `/` if it is located in the project top-level path, or `/docs` if it is located in the docs folder.
 
-### `collapsible (boolean)`
+### `collapsible (boolean) (Default: true)`
 
 If the value is `true`, the category will be collapsible/unfolded.
 
@@ -40,7 +40,7 @@ If the value is `true`, the category will be collapsible/unfolded.
 
 If the value is `true`, the category is collapsed by default.
 
-### `hyphenToSpace (boolean)`
+### `hyphenToSpace (boolean) (Default: true)`
 
 If the value is `true`, the `-` symbol included in the file name is converted to a space and displayed as a title.
 

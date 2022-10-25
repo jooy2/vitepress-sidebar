@@ -14,6 +14,7 @@ module.exports = {
     'linebreak-style': 0,
     'arrow-parens': 0,
     'max-len': 0,
+    'no-param-reassign': 0,
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/ban-ts-comment': 0
   },
