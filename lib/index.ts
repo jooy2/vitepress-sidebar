@@ -32,7 +32,9 @@ export default class VitePressSidebar {
     return directoryFiles
       .map((x: string) => {
         const childItemPath = resolve(currentDir, x);
-        const childItemPathDisplay = `${displayDir}/${x}`.replace(/\/{2}/, '/');
+        const childItemPathDisplay = `${displayDir}/${x}`
+          .replace(/\/{2}/, '/')
+          .replace(/\.md$/, '');
 
         if (/\.vitepress/.test(childItemPath)) {
           return null;
@@ -51,8 +53,7 @@ export default class VitePressSidebar {
         if (childItemPath.endsWith('.md')) {
           return {
             text: VitePressSidebar.getTitleFromMd(x, options),
-            link: childItemPathDisplay,
-            items: []
+            link: childItemPathDisplay
           };
         }
         return null;
