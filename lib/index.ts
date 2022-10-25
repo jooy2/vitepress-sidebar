@@ -8,6 +8,7 @@ declare interface Options {
   collapsed?: boolean;
   hyphenToSpace?: boolean;
   underscoreToSpace?: boolean;
+  withIndex?: boolean;
 }
 
 declare interface SidebarItem {
@@ -61,6 +62,9 @@ export default class VitePressSidebar {
           .replace(/\.md$/, '');
 
         if (/\.vitepress/.test(childItemPath)) {
+          return null;
+        }
+        if (displayDir === options.root && x === 'index.md' && !options.withIndex) {
           return null;
         }
 

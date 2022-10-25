@@ -72,6 +72,13 @@ If the value is `true`, the `-` symbol included in the file name is converted to
 
 If the value is `true`, the `_` symbol included in the file name is converted to a space and displayed as a title.
 
+### `withIndex`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, also include the top-level path `index.md` file in the sidebar menu. (If the file does not exist, it is ignored.)
+
 ## Contribute
 
 You can report issues on [GitHub Issue Tracker](https://github.com/jooy2/vitepress-sidebar/issues). You can also request a pull to fix bugs and add frequently used features.
