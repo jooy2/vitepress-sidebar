@@ -1,4 +1,5 @@
 dist/
 .idea/
+test/docs/
 
 package-lock.json
