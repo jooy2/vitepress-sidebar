@@ -56,6 +56,7 @@ export default class VitePressSidebar {
       .map((x: string) => {
         const childItemPath = resolve(currentDir, x);
         const childItemPathDisplay = `${displayDir}/${x}`
+          .replace(options.root ?? '', '')
           .replace(/\/{2}/, '/')
           .replace(/\.md$/, '');
 
