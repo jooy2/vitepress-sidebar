@@ -15,7 +15,7 @@ export default class VitePressSidebar {
   }
 
   static generateSidebarItem(currentDir: string, options: Options): object {
-    if (currentDir.endsWith('.vitepress')) {
+    if (/\.vitepress/.test(currentDir)) {
       return {};
     }
 
