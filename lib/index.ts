@@ -18,7 +18,7 @@ export default class VitePressSidebar {
     const directoryFiles: string[] = readdirSync(currentDir);
 
     return directoryFiles.map((x: string) => {
-      const childItemPath = resolve(options.root, x);
+      const childItemPath = resolve(currentDir, x);
       if (statSync(childItemPath).isDirectory()) {
         return {
           text: VitePressSidebar.getTitleFromMd(x, options, true),
@@ -40,7 +40,9 @@ export default class VitePressSidebar {
   static getTitleFromMd(fileName: string, options: Options, isDirectory = false): string {
     let result: string = fileName.charAt(0).toUpperCase() + fileName.slice(1);
 
-    result = result.replace(/\.md$/, '');
+    if (!isDirectory) {
+      result = result.replace(/\.md$/, '');
+    }
 
     if (options.hyphenToSpace) {
       result = result.replace(/-/g, ' ');
