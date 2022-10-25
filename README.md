@@ -1,4 +1,4 @@
-# vitepress-sidebar
+# 🔌 VitePress Sidebar
 
 **[Vitepress](https://vitepress.vuejs.org)** plugin to automatically create sidebars.
 
@@ -7,7 +7,7 @@
 ## Installation
 
 ```shell
-$ npm i vitepress-sidebar
+$ npm i -D vitepress-sidebar
 ```
 
 ## How to use
@@ -15,12 +15,14 @@ $ npm i vitepress-sidebar
 In the themeConfig setting of `.vitepress/config.js` file, execute the autoGenerate function as shown below to automatically generate the sidebar.
 
 ```javascript
-import { autoGenerate } from 'vitepress-sidebar';
+import { generateSidebar } from 'vitepress-sidebar';
 
 export default {
   themeConfig: {
-    sidebar: autoGenerate({
-      root: '/'
+    sidebar: generateSidebar({
+      root: '/',
+      collapsible: true,
+      collapsed: false
     })
   }
 };
@@ -28,23 +30,45 @@ export default {
 
 ## Options
 
-### `root (string) (Required) (Default: '/')`
+### `root`
+
+- Type: `string`
+- Default: `'/'`
 
 The path to the root directory where the document is located. Pass `/` if it is located in the project top-level path, or `/docs` if it is located in the docs folder.
 
-### `collapsible (boolean) (Default: true)`
+### `rootGroupText`
+
+- Type: `string`
+- Default: `'Table of Contents'`
+
+The name of a group to separate top-level documents with no separate subdirectories.
+
+### `collapsible`
+
+- Type: `boolean`
+- Default: `true`
 
 If the value is `true`, the category will be collapsible/unfolded.
 
-### `collapsed (boolean)`
+### `collapsed`
+
+- Type: `boolean`
+- Default: `false`
 
 If the value is `true`, the category is collapsed by default.
 
-### `hyphenToSpace (boolean) (Default: true)`
+### `hyphenToSpace`
+
+- Type: `boolean`
+- Default: `true`
 
 If the value is `true`, the `-` symbol included in the file name is converted to a space and displayed as a title.
 
-### `underscoreToSpace (boolean)`
+### `underscoreToSpace`
+
+- Type: `boolean`
+- Default: `false`
 
 If the value is `true`, the `_` symbol included in the file name is converted to a space and displayed as a title.
 

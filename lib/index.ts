@@ -3,30 +3,53 @@ import { join, resolve } from 'path';
 
 declare interface Options {
   root?: string;
+  rootGroupText?: string;
   collapsible?: boolean;
   collapsed?: boolean;
   hyphenToSpace?: boolean;
   underscoreToSpace?: boolean;
 }
 
+declare interface SidebarItem {
+  [key: string]: any;
+}
+
 export default class VitePressSidebar {
-  static autoGenerate(options: Options): object {
+  static generateSidebar(options: Options): object {
     options.root = options?.root ?? '/';
     if (!/^\//.test(options.root)) {
       options.root = `/${options.root}`;
     }
 
+    options.rootGroupText = options?.rootGroupText ?? 'Table of Contents';
     options.collapsible = options?.collapsible ?? true;
     options.hyphenToSpace = options?.hyphenToSpace ?? true;
 
-    return VitePressSidebar.generateSidebarItem(
+    const sidebar: SidebarItem = VitePressSidebar.generateSidebarItem(
       join(process.cwd(), options.root),
       options.root,
       options
     );
+
+    if (!sidebar.items) {
+      return [
+        {
+          text: options.rootGroupText,
+          items: sidebar,
+          collapsible: options.collapsible,
+          collapsed: !!options.collapsed
+        }
+      ];
+    }
+
+    return sidebar;
   }
 
-  static generateSidebarItem(currentDir: string, displayDir: string, options: Options): object {
+  static generateSidebarItem(
+    currentDir: string,
+    displayDir: string,
+    options: Options
+  ): SidebarItem {
     const directoryFiles: string[] = readdirSync(currentDir);
 
     return directoryFiles
@@ -46,7 +69,7 @@ export default class VitePressSidebar {
             items:
               VitePressSidebar.generateSidebarItem(childItemPath, childItemPathDisplay, options) ||
               [],
-            collapsible: !!options.collapsible,
+            collapsible: options.collapsible,
             collapsed: !!options.collapsed
           };
         }
@@ -82,4 +105,4 @@ export default class VitePressSidebar {
 
 export { VitePressSidebar };
 
-export const { autoGenerate } = VitePressSidebar;
+export const { generateSidebar } = VitePressSidebar;
