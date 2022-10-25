@@ -15,14 +15,15 @@ export default class VitePressSidebar {
   }
 
   static generateSidebarItem(currentDir: string, options: Options): object {
-    if (/\.vitepress/.test(currentDir)) {
-      return {};
-    }
-
     const directoryFiles: string[] = readdirSync(currentDir);
 
     return directoryFiles.map((x: string) => {
       const childItemPath = resolve(currentDir, x);
+
+      if (/\.vitepress/.test(childItemPath)) {
+        return {};
+      }
+
       if (statSync(childItemPath).isDirectory()) {
         return {
           text: VitePressSidebar.getTitleFromMd(x, options, true),
