@@ -15,6 +15,10 @@ export default class VitePressSidebar {
   }
 
   static generateSidebarItem(currentDir: string, options: Options): object {
+    if (currentDir.endsWith('.vitepress')) {
+      return {};
+    }
+
     const directoryFiles: string[] = readdirSync(currentDir);
 
     return directoryFiles.map((x: string) => {
@@ -23,8 +27,8 @@ export default class VitePressSidebar {
         return {
           text: VitePressSidebar.getTitleFromMd(x, options, true),
           items: VitePressSidebar.generateSidebarItem(childItemPath, options),
-          collapsible: options.collapsible,
-          collapsed: options.collapsed
+          collapsible: !!options.collapsible,
+          collapsed: !!options.collapsed
         };
       }
       if (childItemPath.endsWith('.md')) {
