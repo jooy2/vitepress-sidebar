@@ -40,7 +40,7 @@ export default class VitePressSidebar {
         if (childItemPath.endsWith('.md')) {
           return {
             text: VitePressSidebar.getTitleFromMd(x, options),
-            link: `/${childItemPath.replace(options.root ?? '', '')}`
+            link: `/${childItemPath.replace(currentDir ?? '', '')}`
           };
         }
         return null;
