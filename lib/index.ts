@@ -12,6 +12,10 @@ declare interface Options {
 export default class VitePressSidebar {
   static autoGenerate(options: Options): object {
     options.root = options?.root ?? '/';
+    if (!/^\//.test(options.root)) {
+      options.root = `/${options.root}`;
+    }
+
     options.collapsible = options?.collapsible ?? true;
     options.hyphenToSpace = options?.hyphenToSpace ?? true;
 
@@ -40,7 +44,7 @@ export default class VitePressSidebar {
         if (childItemPath.endsWith('.md')) {
           return {
             text: VitePressSidebar.getTitleFromMd(x, options),
-            link: `/${childItemPath.replace(currentDir ?? '', '')}`
+            link: `${options.root}/${x}`.replace(/\/{2}/, '/')
           };
         }
         return null;
