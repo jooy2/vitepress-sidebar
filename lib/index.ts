@@ -19,15 +19,20 @@ export default class VitePressSidebar {
     options.collapsible = options?.collapsible ?? true;
     options.hyphenToSpace = options?.hyphenToSpace ?? true;
 
-    return VitePressSidebar.generateSidebarItem(join(process.cwd(), options.root), options);
+    return VitePressSidebar.generateSidebarItem(
+      join(process.cwd(), options.root),
+      options.root,
+      options
+    );
   }
 
-  static generateSidebarItem(currentDir: string, options: Options): object {
+  static generateSidebarItem(currentDir: string, displayDir: string, options: Options): object {
     const directoryFiles: string[] = readdirSync(currentDir);
 
     return directoryFiles
       .map((x: string) => {
         const childItemPath = resolve(currentDir, x);
+        const childItemPathDisplay = `${displayDir}/${x}`.replace(/\/{2}/, '/');
 
         if (/\.vitepress/.test(childItemPath)) {
           return null;
@@ -36,7 +41,9 @@ export default class VitePressSidebar {
         if (statSync(childItemPath).isDirectory()) {
           return {
             text: VitePressSidebar.getTitleFromMd(x, options, true),
-            items: VitePressSidebar.generateSidebarItem(childItemPath, options),
+            items:
+              VitePressSidebar.generateSidebarItem(childItemPath, childItemPathDisplay, options) ||
+              [],
             collapsible: !!options.collapsible,
             collapsed: !!options.collapsed
           };
@@ -44,7 +51,8 @@ export default class VitePressSidebar {
         if (childItemPath.endsWith('.md')) {
           return {
             text: VitePressSidebar.getTitleFromMd(x, options),
-            link: `${options.root}/${x}`.replace(/\/{2}/, '/')
+            link: childItemPathDisplay,
+            items: []
           };
         }
         return null;
