@@ -1,6 +1,6 @@
 {
   "name": "vitepress-sidebar",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Vitepress plugin to automatically create sidebars",
   "type": "module",
   "types": "dist/index.d.ts",
