@@ -1,0 +1,64 @@
+{
+  "name": "vitepress-sidebar",
+  "version": "0.1.0",
+  "description": "Vitepress plugin to automatically create sidebars",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run format:fix && tsc && npm run minify",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "minify": "terser dist/index.js --config-file .terserrc -o dist/index.js",
+    "prepare": "npm run build",
+    "format": "prettier .",
+    "format:fix": "prettier . --write"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "index.d.ts": [
+        "dist/index.d.ts"
+      ]
+    }
+  },
+  "author": "jooy2 <jootc.help@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jooy2/vitepress-sidebar"
+  },
+  "bugs": {
+    "url": "https://github.com/jooy2/vitepress-sidebar/issues"
+  },
+  "homepage": "https://github.com/jooy2/vitepress-sidebar",
+  "keywords": [
+    "vitepress",
+    "util",
+    "utility",
+    "sidebar",
+    "auto",
+    "generator",
+    "plugin",
+    "sidemenu",
+    "menu",
+    "autosidebar"
+  ],
+  "devDependencies": {
+    "@types/node": "^18.11.5",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
+    "eslint": "^8.26.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "prettier": "^2.7.1",
+    "terser": "^5.15.1",
+    "typescript": "^4.8.4"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "module": true,
+  "compress": true,
+  "ie8": false,
+  "safari10": false,
+  "mangle": {},
+  "output": {},
+  "parse": {},
+  "rename": {}
+}
