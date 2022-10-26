@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { generateSidebar } from '../dist/index.js';
 
-describe('Vitepress Sidebar Test Case', () => {
+describe('VitePress Sidebar Test Case', () => {
   it('Basic configurations', (done) => {
     assert.deepEqual(
       generateSidebar({
