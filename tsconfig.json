@@ -1,17 +1,17 @@
 {
-  "compilerOptions": {
-    "baseUrl": "lib",
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "lib": ["esnext"],
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "outDir": "./dist",
-    "strict": true,
-    "newLine": "lf"
-  },
-  "include": ["lib/**/*.ts", "lib/**/*.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+	"compilerOptions": {
+		"baseUrl": "lib",
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"lib": ["esnext"],
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"declaration": true,
+		"outDir": "./dist",
+		"strict": true,
+		"newLine": "lf"
+	},
+	"include": ["lib/**/*.ts", "lib/**/*.d.ts"],
+	"exclude": ["node_modules", "**/*.spec.ts"]
 }

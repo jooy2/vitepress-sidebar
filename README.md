@@ -18,13 +18,13 @@ In the themeConfig setting of `.vitepress/config.js` file, execute the autoGener
 import { generateSidebar } from 'vitepress-sidebar';
 
 export default {
-  themeConfig: {
-    sidebar: generateSidebar({
-      root: '/',
-      collapsible: true,
-      collapsed: false
-    })
-  }
+	themeConfig: {
+		sidebar: generateSidebar({
+			root: '/',
+			collapsible: true,
+			collapsed: false
+		})
+	}
 };
 ```
 
