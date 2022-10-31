@@ -7,12 +7,19 @@
 ## Installation
 
 ```shell
+# via npm
 $ npm i -D vitepress-sidebar
+
+# via yarn
+$ yarn add -D vitepress-sidebar
+
+# via pnpm
+$ pnpm i -D vitepress-sidebar
 ```
 
 ## How to use
 
-In the themeConfig setting of `.vitepress/config.js` file, execute the autoGenerate function as shown below to automatically generate the sidebar.
+In the `themeConfig` setting of `.vitepress/config.js` file, execute the autoGenerate function as shown below to automatically generate the sidebar.
 
 ```javascript
 import { generateSidebar } from 'vitepress-sidebar';
@@ -21,11 +28,50 @@ export default {
 	themeConfig: {
 		sidebar: generateSidebar({
 			root: '/',
+			hyphenToSpace: true,
 			collapsible: true,
 			collapsed: false
 		})
 	}
 };
+```
+
+### Example output:
+
+```json
+[
+	{
+		"text": "Table of Contents",
+		"items": [
+			{ "text": "A", "link": "/a" },
+			{ "text": "B_file_name", "link": "/b_file_name" },
+			{ "text": "C file name", "link": "/c-file-name" },
+			{ "text": "Empty", "items": [], "collapsible": true, "collapsed": false },
+			{
+				"text": "Folder",
+				"items": [
+					{
+						"text": "Empty",
+						"items": [],
+						"collapsible": true,
+						"collapsed": false
+					},
+					{ "text": "Folder file", "link": "/folder/folder-file" },
+					{
+						"text": "Subfolder",
+						"items": [{ "text": "Sub file", "link": "/folder/subfolder/sub-file" }],
+						"collapsible": true,
+						"collapsed": false
+					}
+				],
+				"collapsible": true,
+				"collapsed": false
+			}
+		],
+		"collapsible": true,
+		"collapsed": false
+	}
+]
 ```
 
 ## Options
