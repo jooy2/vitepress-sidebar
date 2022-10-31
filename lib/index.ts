@@ -1,4 +1,4 @@
-import fs, { readdirSync, statSync } from 'fs';
+import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 
 declare interface Options {
@@ -102,7 +102,7 @@ export default class VitePressSidebar {
 			if (options.useTitleFromFileHeading) {
 				// Use content 'h1' string instead of file name
 				try {
-					const data = fs.readFileSync(filePath, 'utf-8');
+					const data = readFileSync(filePath, 'utf-8');
 					const lines = data.split('\n');
 					for (let i = 0, len = lines.length; i < len; i += 1) {
 						const str = lines[i].toString().replace('\r', '');
