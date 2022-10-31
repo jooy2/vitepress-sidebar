@@ -44,6 +44,13 @@ The path to the root directory where the document is located. Pass `/` if it is 
 
 The name of a group to separate top-level documents with no separate subdirectories.
 
+### `useTitleFromFileHeading`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, display the title with the `h1` heading content of the `.md` file. If the `h1` heading does not exist in the file, it displays `Unknown`.
+
 ### `collapsible`
 
 - Type: `boolean`

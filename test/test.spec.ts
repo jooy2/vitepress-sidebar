@@ -98,4 +98,47 @@ describe('VitePress Sidebar Test Case', () => {
     );
     done();
   });
+
+  it('Option: useTitleFromFileHeading', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        root: 'test/docs',
+        useTitleFromFileHeading: true
+      }),
+      [
+        {
+          text: 'Table of Contents',
+          items: [
+            { text: 'A', link: '/a' },
+            { text: 'B File Name', link: '/b_file_name' },
+            { text: 'C File Name', link: '/c-file-name' },
+            { text: 'Empty', items: [], collapsible: true, collapsed: false },
+            {
+              text: 'Folder',
+              items: [
+                {
+                  text: 'Empty',
+                  items: [],
+                  collapsible: true,
+                  collapsed: false
+                },
+                { text: 'Folder File', link: '/folder/folder-file' },
+                {
+                  text: 'Subfolder',
+                  items: [{ text: 'Sub Folder - Sub File', link: '/folder/subfolder/sub-file' }],
+                  collapsible: true,
+                  collapsed: false
+                }
+              ],
+              collapsible: true,
+              collapsed: false
+            }
+          ],
+          collapsible: true,
+          collapsed: false
+        }
+      ]
+    );
+    done();
+  });
 });

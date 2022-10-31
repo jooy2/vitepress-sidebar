@@ -1,4 +1,4 @@
-import { readdirSync, statSync } from 'fs';
+import fs, { readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 
 declare interface Options {
@@ -9,6 +9,7 @@ declare interface Options {
   hyphenToSpace?: boolean;
   underscoreToSpace?: boolean;
   withIndex?: boolean;
+  useTitleFromFileHeading?: boolean;
 }
 
 declare interface SidebarItem {
@@ -70,7 +71,7 @@ export default class VitePressSidebar {
 
         if (statSync(childItemPath).isDirectory()) {
           return {
-            text: VitePressSidebar.getTitleFromMd(x, options, true),
+            text: VitePressSidebar.getTitleFromMd(x, childItemPath, options, true),
             items:
               VitePressSidebar.generateSidebarItem(childItemPath, childItemPathDisplay, options) ||
               [],
@@ -80,7 +81,7 @@ export default class VitePressSidebar {
         }
         if (childItemPath.endsWith('.md')) {
           return {
-            text: VitePressSidebar.getTitleFromMd(x, options),
+            text: VitePressSidebar.getTitleFromMd(x, childItemPath, options),
             link: childItemPathDisplay
           };
         }
@@ -89,10 +90,31 @@ export default class VitePressSidebar {
       .filter((x) => x !== null);
   }
 
-  static getTitleFromMd(fileName: string, options: Options, isDirectory = false): string {
+  static getTitleFromMd(
+    fileName: string,
+    filePath: string,
+    options: Options,
+    isDirectory = false
+  ): string {
     let result: string = fileName.charAt(0).toUpperCase() + fileName.slice(1);
 
     if (!isDirectory) {
+      if (options.useTitleFromFileHeading) {
+        //
+        try {
+          const data = fs.readFileSync(filePath, 'utf-8');
+          const lines = data.split('\n');
+          for (let i = 0, len = lines.length; i < len; i += 1) {
+            //
+            const str = lines[i].toString().replace('\r', '');
+            if (str.indexOf('# ') !== -1) {
+              return str.replace('# ', '');
+            }
+          }
+        } catch {
+          return 'Unknown';
+        }
+      }
       result = result.replace(/\.md$/, '');
     }
 
