@@ -100,12 +100,11 @@ export default class VitePressSidebar {
 
 		if (!isDirectory) {
 			if (options.useTitleFromFileHeading) {
-				//
+				// Use content 'h1' string instead of file name
 				try {
 					const data = fs.readFileSync(filePath, 'utf-8');
 					const lines = data.split('\n');
 					for (let i = 0, len = lines.length; i < len; i += 1) {
-						//
 						const str = lines[i].toString().replace('\r', '');
 						if (str.indexOf('# ') !== -1) {
 							return str.replace('# ', '');
@@ -114,16 +113,17 @@ export default class VitePressSidebar {
 				} catch {
 					return 'Unknown';
 				}
+			} else {
+				result = result.replace(/\.md$/, '');
+
+				if (options.hyphenToSpace) {
+					result = result.replace(/-/g, ' ');
+				}
+
+				if (options.underscoreToSpace) {
+					result = result.replace(/_/g, ' ');
+				}
 			}
-			result = result.replace(/\.md$/, '');
-		}
-
-		if (options.hyphenToSpace) {
-			result = result.replace(/-/g, ' ');
-		}
-
-		if (options.underscoreToSpace) {
-			result = result.replace(/_/g, ' ');
 		}
 
 		return result;
