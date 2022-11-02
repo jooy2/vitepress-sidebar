@@ -241,28 +241,23 @@ describe('VitePress Sidebar Test Case', () => {
 				{
 					text: 'Table of Contents',
 					items: [
-						{ text: 'A.MD', link: '/a' },
-						{ text: 'B_FILE_NAME.MD', link: '/b_file_name' },
-						{ text: 'C FILE NAME.MD', link: '/c-file-name' },
-						{ text: 'EMPTY', items: [], collapsible: true, collapsed: false },
+						{ text: 'A', link: '/a' },
+						{ text: 'B_file_name', link: '/b_file_name' },
+						{ text: 'C file name', link: '/c-file-name' },
+						{ text: 'Empty', items: [], collapsible: true, collapsed: false },
 						{
-							text: 'FOLDER',
+							text: 'Folder',
 							items: [
 								{
-									text: 'EMPTY',
+									text: 'Empty',
 									items: [],
 									collapsible: true,
 									collapsed: false
 								},
-								{ text: 'FOLDER FILE.MD', link: '/folder/folder-file' },
+								{ text: 'Folder file', link: '/folder/folder-file' },
 								{
-									text: 'SUBFOLDER',
-									items: [
-										{
-											text: 'SUB FILE.MD',
-											link: '/folder/subfolder/sub-file'
-										}
-									],
+									text: 'Subfolder',
+									items: [{ text: 'Sub file', link: '/folder/subfolder/sub-file' }],
 									collapsible: true,
 									collapsed: false
 								}

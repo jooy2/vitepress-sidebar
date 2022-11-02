@@ -128,8 +128,9 @@ export default class VitePressSidebar {
 		options: Options,
 		isDirectory = false
 	): string {
-		const beforeFileName = options.capitalizeFirst ? fileName.toUpperCase() : fileName;
-		let result: string = beforeFileName.charAt(0) + beforeFileName.slice(1);
+		let result: string = options.capitalizeFirst
+			? fileName.charAt(0).toUpperCase() + fileName.slice(1)
+			: fileName;
 
 		if (!isDirectory) {
 			if (options.useTitleFromFileHeading) {
@@ -141,7 +142,7 @@ export default class VitePressSidebar {
 						let str = lines[i].toString().replace('\r', '');
 						if (str.indexOf('# ') !== -1) {
 							str = str.replace('# ', '');
-							return options.capitalizeFirst ? str.toUpperCase() : str;
+							return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
 						}
 					}
 				} catch {
