@@ -31,10 +31,14 @@ export default class VitePressSidebar {
 		if (options.collapseDepth) {
 			options.collapsed = true;
 		}
+		if (options.collapsible === null || options.collapsible === undefined) {
+			options.collapsible = true;
+		}
+		if (options.hyphenToSpace === null || options.hyphenToSpace === undefined) {
+			options.hyphenToSpace = true;
+		}
 
 		options.rootGroupText = options?.rootGroupText ?? 'Table of Contents';
-		options.collapsible = options?.collapsible ?? true;
-		options.hyphenToSpace = options?.hyphenToSpace ?? true;
 		options.collapseDepth = options?.collapseDepth ?? 1;
 		options.sortByFileName = options?.sortByFileName ?? [];
 
