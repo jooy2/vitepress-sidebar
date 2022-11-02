@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.1.1 (2022-11-02)
+
+- Fix `capitalizeFirst` bug
+
 ## 1.1.0 (2022-11-02)
 
 - Add `capitalizeFirst` option
