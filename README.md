@@ -28,9 +28,14 @@ export default {
 	themeConfig: {
 		sidebar: generateSidebar({
 			root: '/',
+			// rootGroupText: 'Contents',
+			// useTitleFromFileHeading: true,
 			hyphenToSpace: true,
+			// underscoreToSpace: true,
 			collapsible: true,
 			collapsed: false
+			// collapseDepth: 2,
+			// withIndex: true
 		})
 	}
 };
