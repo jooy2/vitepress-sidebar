@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.0.9 (2022-11-02)
+
+- Add `sortByFileName` option
+
 ## 1.0.8 (2022-11-02)
 
 - Add `collapseDepth` option
