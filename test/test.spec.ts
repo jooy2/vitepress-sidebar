@@ -11,23 +11,23 @@ describe('VitePress Sidebar Test Case', () => {
 				{
 					text: 'Table of Contents',
 					items: [
-						{ text: 'A', link: '/a' },
-						{ text: 'B_file_name', link: '/b_file_name' },
-						{ text: 'C file name', link: '/c-file-name' },
-						{ text: 'Empty', items: [], collapsible: true, collapsed: false },
+						{ text: 'a', link: '/a' },
+						{ text: 'b_file_name', link: '/b_file_name' },
+						{ text: 'c file name', link: '/c-file-name' },
+						{ text: 'empty', items: [], collapsible: true, collapsed: false },
 						{
-							text: 'Folder',
+							text: 'folder',
 							items: [
 								{
-									text: 'Empty',
+									text: 'empty',
 									items: [],
 									collapsible: true,
 									collapsed: false
 								},
-								{ text: 'Folder file', link: '/folder/folder-file' },
+								{ text: 'folder file', link: '/folder/folder-file' },
 								{
-									text: 'Subfolder',
-									items: [{ text: 'Sub file', link: '/folder/subfolder/sub-file' }],
+									text: 'subfolder',
+									items: [{ text: 'sub file', link: '/folder/subfolder/sub-file' }],
 									collapsible: true,
 									collapsed: false
 								}
@@ -44,41 +44,42 @@ describe('VitePress Sidebar Test Case', () => {
 		done();
 	});
 
-	it('With advanced configurations', (done) => {
+	it('With complex configurations', (done) => {
 		assert.deepEqual(
 			generateSidebar({
 				root: 'test/docs',
 				rootGroupText: 'RootGroup',
 				collapsed: false,
 				collapsible: false,
+				underscoreToSpace: true,
 				withIndex: true
 			}),
 			[
 				{
 					text: 'RootGroup',
 					items: [
-						{ text: 'A', link: '/a' },
-						{ text: 'B_file_name', link: '/b_file_name' },
-						{ text: 'C file name', link: '/c-file-name' },
+						{ text: 'a', link: '/a' },
+						{ text: 'b file name', link: '/b_file_name' },
+						{ text: 'c file name', link: '/c-file-name' },
 						{
-							text: 'Empty',
+							text: 'empty',
 							items: [],
 							collapsible: false,
 							collapsed: false
 						},
 						{
-							text: 'Folder',
+							text: 'folder',
 							items: [
 								{
-									text: 'Empty',
+									text: 'empty',
 									items: [],
 									collapsible: false,
 									collapsed: false
 								},
-								{ text: 'Folder file', link: '/folder/folder-file' },
+								{ text: 'folder file', link: '/folder/folder-file' },
 								{
-									text: 'Subfolder',
-									items: [{ text: 'Sub file', link: '/folder/subfolder/sub-file' }],
+									text: 'subfolder',
+									items: [{ text: 'sub file', link: '/folder/subfolder/sub-file' }],
 									collapsible: false,
 									collapsed: false
 								}
@@ -86,10 +87,7 @@ describe('VitePress Sidebar Test Case', () => {
 							collapsible: false,
 							collapsed: false
 						},
-						{
-							link: '/index',
-							text: 'Index'
-						}
+						{ text: 'index', link: '/index' }
 					],
 					collapsible: false,
 					collapsed: false
@@ -112,19 +110,19 @@ describe('VitePress Sidebar Test Case', () => {
 						{ text: 'A', link: '/a' },
 						{ text: 'B File Name', link: '/b_file_name' },
 						{ text: 'C File Name', link: '/c-file-name' },
-						{ text: 'Empty', items: [], collapsible: true, collapsed: false },
+						{ text: 'empty', items: [], collapsible: true, collapsed: false },
 						{
-							text: 'Folder',
+							text: 'folder',
 							items: [
 								{
-									text: 'Empty',
+									text: 'empty',
 									items: [],
 									collapsible: true,
 									collapsed: false
 								},
 								{ text: 'Folder File', link: '/folder/folder-file' },
 								{
-									text: 'Subfolder',
+									text: 'subfolder',
 									items: [
 										{
 											text: 'Sub Folder - Sub File',
@@ -157,23 +155,23 @@ describe('VitePress Sidebar Test Case', () => {
 				{
 					text: 'Table of Contents',
 					items: [
-						{ text: 'A', link: '/a' },
-						{ text: 'B_file_name', link: '/b_file_name' },
-						{ text: 'C file name', link: '/c-file-name' },
-						{ text: 'Empty', items: [], collapsible: true, collapsed: false },
+						{ text: 'a', link: '/a' },
+						{ text: 'b_file_name', link: '/b_file_name' },
+						{ text: 'c file name', link: '/c-file-name' },
+						{ text: 'empty', items: [], collapsible: true, collapsed: false },
 						{
-							text: 'Folder',
+							text: 'folder',
 							items: [
 								{
-									text: 'Empty',
+									text: 'empty',
 									items: [],
 									collapsible: true,
 									collapsed: true
 								},
-								{ text: 'Folder file', link: '/folder/folder-file' },
+								{ text: 'folder file', link: '/folder/folder-file' },
 								{
-									text: 'Subfolder',
-									items: [{ text: 'Sub file', link: '/folder/subfolder/sub-file' }],
+									text: 'subfolder',
+									items: [{ text: 'sub file', link: '/folder/subfolder/sub-file' }],
 									collapsible: true,
 									collapsed: true
 								}
@@ -200,22 +198,22 @@ describe('VitePress Sidebar Test Case', () => {
 				{
 					text: 'Table of Contents',
 					items: [
-						{ text: 'C file name', link: '/c-file-name' },
-						{ text: 'Empty', items: [], collapsible: true, collapsed: false },
-						{ text: 'A', link: '/a' },
+						{ text: 'c file name', link: '/c-file-name' },
+						{ text: 'empty', items: [], collapsible: true, collapsed: false },
+						{ text: 'a', link: '/a' },
 						{
-							text: 'Folder',
+							text: 'folder',
 							items: [
 								{
-									text: 'Empty',
+									text: 'empty',
 									items: [],
 									collapsible: true,
 									collapsed: false
 								},
-								{ text: 'Folder file', link: '/folder/folder-file' },
+								{ text: 'folder file', link: '/folder/folder-file' },
 								{
-									text: 'Subfolder',
-									items: [{ text: 'Sub file', link: '/folder/subfolder/sub-file' }],
+									text: 'subfolder',
+									items: [{ text: 'sub file', link: '/folder/subfolder/sub-file' }],
 									collapsible: true,
 									collapsed: false
 								}
@@ -223,7 +221,55 @@ describe('VitePress Sidebar Test Case', () => {
 							collapsible: true,
 							collapsed: false
 						},
-						{ text: 'B_file_name', link: '/b_file_name' }
+						{ text: 'b_file_name', link: '/b_file_name' }
+					],
+					collapsible: true,
+					collapsed: false
+				}
+			]
+		);
+		done();
+	});
+
+	it('Option: capitalizeFirst', (done) => {
+		assert.deepEqual(
+			generateSidebar({
+				root: 'test/docs',
+				capitalizeFirst: true
+			}),
+			[
+				{
+					text: 'Table of Contents',
+					items: [
+						{ text: 'A.MD', link: '/a' },
+						{ text: 'B_FILE_NAME.MD', link: '/b_file_name' },
+						{ text: 'C FILE NAME.MD', link: '/c-file-name' },
+						{ text: 'EMPTY', items: [], collapsible: true, collapsed: false },
+						{
+							text: 'FOLDER',
+							items: [
+								{
+									text: 'EMPTY',
+									items: [],
+									collapsible: true,
+									collapsed: false
+								},
+								{ text: 'FOLDER FILE.MD', link: '/folder/folder-file' },
+								{
+									text: 'SUBFOLDER',
+									items: [
+										{
+											text: 'SUB FILE.MD',
+											link: '/folder/subfolder/sub-file'
+										}
+									],
+									collapsible: true,
+									collapsed: false
+								}
+							],
+							collapsible: true,
+							collapsed: false
+						}
 					],
 					collapsible: true,
 					collapsed: false

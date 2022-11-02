@@ -9,6 +9,7 @@ declare interface Options {
 	collapseDepth?: number;
 	hyphenToSpace?: boolean;
 	underscoreToSpace?: boolean;
+	capitalizeFirst?: boolean;
 	withIndex?: boolean;
 	useTitleFromFileHeading?: boolean;
 	sortByFileName?: string[];
@@ -127,7 +128,8 @@ export default class VitePressSidebar {
 		options: Options,
 		isDirectory = false
 	): string {
-		let result: string = fileName.charAt(0).toUpperCase() + fileName.slice(1);
+		const beforeFileName = options.capitalizeFirst ? fileName.toUpperCase() : fileName;
+		let result: string = beforeFileName.charAt(0) + beforeFileName.slice(1);
 
 		if (!isDirectory) {
 			if (options.useTitleFromFileHeading) {
@@ -136,9 +138,10 @@ export default class VitePressSidebar {
 					const data = readFileSync(filePath, 'utf-8');
 					const lines = data.split('\n');
 					for (let i = 0, len = lines.length; i < len; i += 1) {
-						const str = lines[i].toString().replace('\r', '');
+						let str = lines[i].toString().replace('\r', '');
 						if (str.indexOf('# ') !== -1) {
-							return str.replace('# ', '');
+							str = str.replace('# ', '');
+							return options.capitalizeFirst ? str.toUpperCase() : str;
 						}
 					}
 				} catch {

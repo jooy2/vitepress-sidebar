@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.1.0 (2022-11-02)
+
+- Add `capitalizeFirst` option
+- Fix null check for option
+
 ## 1.0.9 (2022-11-02)
 
 - Add `sortByFileName` option

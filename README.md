@@ -152,6 +152,13 @@ If the value is `true`, the `-` symbol included in the file name is converted to
 
 If the value is `true`, the `_` symbol included in the file name is converted to a space and displayed as a title.
 
+### `capitalizeFirst`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, the first letter of the menu name is forced to uppercase. The same applies if the title is specified with `useTitleFromFileHeading`.
+
 ### `withIndex`
 
 - Type: `boolean`
