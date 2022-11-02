@@ -35,6 +35,7 @@ export default {
 			collapsible: true,
 			collapsed: false
 			// collapseDepth: 2,
+			// sortByFileName: ['first.md', 'second', 'third.md'],
 			// withIndex: true
 		})
 	}
@@ -101,6 +102,13 @@ The name of a group to separate top-level documents with no separate subdirector
 - Default: `false`
 
 If the value is `true`, display the title with the `h1` heading content of the `.md` file. If the `h1` heading does not exist in the file, it displays `Unknown`.
+
+### `sortByFileName`
+
+- Type: `Array<string>`
+- Default: `[]`
+
+Sort by an array of file names (including extensions) in order. If there is no value in the array that matches the filename, the sort priority is sent back. This applies to both files and directories, and the same arrangement rules apply to subdirectories as well.
 
 ### `collapsible`
 

@@ -11,6 +11,7 @@ declare interface Options {
 	underscoreToSpace?: boolean;
 	withIndex?: boolean;
 	useTitleFromFileHeading?: boolean;
+	sortByFileName?: string[];
 }
 
 declare interface SidebarItem {
@@ -35,6 +36,7 @@ export default class VitePressSidebar {
 		options.collapsible = options?.collapsible ?? true;
 		options.hyphenToSpace = options?.hyphenToSpace ?? true;
 		options.collapseDepth = options?.collapseDepth ?? 1;
+		options.sortByFileName = options?.sortByFileName ?? [];
 
 		const sidebar: SidebarItem = VitePressSidebar.generateSidebarItem(
 			1,
@@ -49,7 +51,7 @@ export default class VitePressSidebar {
 					text: options.rootGroupText,
 					items: sidebar,
 					collapsible: options.collapsible,
-					collapsed: (options.collapseDepth || 1) <= 1 && !!options.collapsed
+					collapsed: options.collapseDepth! <= 1 && !!options.collapsed
 				}
 			];
 		}
@@ -63,7 +65,17 @@ export default class VitePressSidebar {
 		displayDir: string,
 		options: Options
 	): SidebarItem {
-		const directoryFiles: string[] = readdirSync(currentDir);
+		let directoryFiles: string[] = readdirSync(currentDir);
+
+		if (options.sortByFileName!.length > 0) {
+			const needSortItem = directoryFiles.filter((x) => options.sortByFileName?.indexOf(x) !== -1);
+			const remainItem = directoryFiles.filter((x) => options.sortByFileName?.indexOf(x) === -1);
+			needSortItem.sort(
+				(a, b) => options.sortByFileName!.indexOf(a) - options.sortByFileName!.indexOf(b)
+			);
+
+			directoryFiles = [...needSortItem, ...remainItem];
+		}
 
 		return directoryFiles
 			.map((x: string) => {
@@ -91,7 +103,7 @@ export default class VitePressSidebar {
 								options
 							) || [],
 						collapsible: options.collapsible,
-						collapsed: depth >= (options.collapseDepth || 1) && !!options.collapsed
+						collapsed: depth >= options.collapseDepth! && !!options.collapsed
 					};
 				}
 				if (childItemPath.endsWith('.md')) {

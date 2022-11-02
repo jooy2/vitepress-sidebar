@@ -189,4 +189,47 @@ describe('VitePress Sidebar Test Case', () => {
 		);
 		done();
 	});
+
+	it('Option: sortByFileName', (done) => {
+		assert.deepEqual(
+			generateSidebar({
+				root: 'test/docs',
+				sortByFileName: ['c-file-name.md', 'empty', 'a.md', 'folder']
+			}),
+			[
+				{
+					text: 'Table of Contents',
+					items: [
+						{ text: 'C file name', link: '/c-file-name' },
+						{ text: 'Empty', items: [], collapsible: true, collapsed: false },
+						{ text: 'A', link: '/a' },
+						{
+							text: 'Folder',
+							items: [
+								{
+									text: 'Empty',
+									items: [],
+									collapsible: true,
+									collapsed: false
+								},
+								{ text: 'Folder file', link: '/folder/folder-file' },
+								{
+									text: 'Subfolder',
+									items: [{ text: 'Sub file', link: '/folder/subfolder/sub-file' }],
+									collapsible: true,
+									collapsed: false
+								}
+							],
+							collapsible: true,
+							collapsed: false
+						},
+						{ text: 'B_file_name', link: '/b_file_name' }
+					],
+					collapsible: true,
+					collapsed: false
+				}
+			]
+		);
+		done();
+	});
 });
