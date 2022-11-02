@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.8 (2022-11-02)
+
+- Add `collapseDepth` option
+- Fix correct import fs module
+- Upgrade package dependencies
+
 ## 1.0.7 (2022-10-31)
 
 - Fix execution order and cleanup codes
