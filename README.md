@@ -116,6 +116,8 @@ If the value is `true`, the category is collapsed by default.
 - Type: `number`
 - Default: `1`
 
+> ⚠️ NOTE: This feature will be available after adding the VitePress feature in the future: https://github.com/vuejs/vitepress/issues/1360
+
 From a given directory depth, categories are collapsed. This option will automatically set true `collapsible`. The depth of the top-level folder is `1`.
 
 ### `hyphenToSpace`
