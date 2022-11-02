@@ -125,9 +125,57 @@ describe('VitePress Sidebar Test Case', () => {
 								{ text: 'Folder File', link: '/folder/folder-file' },
 								{
 									text: 'Subfolder',
-									items: [{ text: 'Sub Folder - Sub File', link: '/folder/subfolder/sub-file' }],
+									items: [
+										{
+											text: 'Sub Folder - Sub File',
+											link: '/folder/subfolder/sub-file'
+										}
+									],
 									collapsible: true,
 									collapsed: false
+								}
+							],
+							collapsible: true,
+							collapsed: false
+						}
+					],
+					collapsible: true,
+					collapsed: false
+				}
+			]
+		);
+		done();
+	});
+
+	it('Option: collapseDepth', (done) => {
+		assert.deepEqual(
+			generateSidebar({
+				root: 'test/docs',
+				collapseDepth: 2
+			}),
+			[
+				{
+					text: 'Table of Contents',
+					items: [
+						{ text: 'A', link: '/a' },
+						{ text: 'B_file_name', link: '/b_file_name' },
+						{ text: 'C file name', link: '/c-file-name' },
+						{ text: 'Empty', items: [], collapsible: true, collapsed: false },
+						{
+							text: 'Folder',
+							items: [
+								{
+									text: 'Empty',
+									items: [],
+									collapsible: true,
+									collapsed: true
+								},
+								{ text: 'Folder file', link: '/folder/folder-file' },
+								{
+									text: 'Subfolder',
+									items: [{ text: 'Sub file', link: '/folder/subfolder/sub-file' }],
+									collapsible: true,
+									collapsed: true
 								}
 							],
 							collapsible: true,

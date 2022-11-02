@@ -111,6 +111,13 @@ If the value is `true`, the category will be collapsible/unfolded.
 
 If the value is `true`, the category is collapsed by default.
 
+### `collapseDepth`
+
+- Type: `number`
+- Default: `1`
+
+From a given directory depth, categories are collapsed. This option will automatically set true `collapsible`. The depth of the top-level folder is `1`.
+
 ### `hyphenToSpace`
 
 - Type: `boolean`

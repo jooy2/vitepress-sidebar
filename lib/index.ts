@@ -6,6 +6,7 @@ declare interface Options {
 	rootGroupText?: string;
 	collapsible?: boolean;
 	collapsed?: boolean;
+	collapseDepth?: number;
 	hyphenToSpace?: boolean;
 	underscoreToSpace?: boolean;
 	withIndex?: boolean;
@@ -23,11 +24,20 @@ export default class VitePressSidebar {
 			options.root = `/${options.root}`;
 		}
 
+		if (options.collapsed || options.collapseDepth) {
+			options.collapsible = true;
+		}
+		if (options.collapseDepth) {
+			options.collapsed = true;
+		}
+
 		options.rootGroupText = options?.rootGroupText ?? 'Table of Contents';
 		options.collapsible = options?.collapsible ?? true;
 		options.hyphenToSpace = options?.hyphenToSpace ?? true;
+		options.collapseDepth = options?.collapseDepth ?? 1;
 
 		const sidebar: SidebarItem = VitePressSidebar.generateSidebarItem(
+			1,
 			join(process.cwd(), options.root),
 			options.root,
 			options
@@ -39,7 +49,7 @@ export default class VitePressSidebar {
 					text: options.rootGroupText,
 					items: sidebar,
 					collapsible: options.collapsible,
-					collapsed: !!options.collapsed
+					collapsed: (options.collapseDepth || 1) <= 1 && !!options.collapsed
 				}
 			];
 		}
@@ -48,6 +58,7 @@ export default class VitePressSidebar {
 	}
 
 	static generateSidebarItem(
+		depth: number,
 		currentDir: string,
 		displayDir: string,
 		options: Options
@@ -73,10 +84,14 @@ export default class VitePressSidebar {
 					return {
 						text: VitePressSidebar.getTitleFromMd(x, childItemPath, options, true),
 						items:
-							VitePressSidebar.generateSidebarItem(childItemPath, childItemPathDisplay, options) ||
-							[],
+							VitePressSidebar.generateSidebarItem(
+								depth + 1,
+								childItemPath,
+								childItemPathDisplay,
+								options
+							) || [],
 						collapsible: options.collapsible,
-						collapsed: !!options.collapsed
+						collapsed: depth >= (options.collapseDepth || 1) && !!options.collapsed
 					};
 				}
 				if (childItemPath.endsWith('.md')) {
