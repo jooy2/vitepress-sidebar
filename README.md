@@ -30,20 +30,20 @@ In the `themeConfig` setting of `.vitepress/config.js` file, execute the autoGen
 import { generateSidebar } from 'vitepress-sidebar';
 
 export default {
-	themeConfig: {
-		sidebar: generateSidebar({
-			root: '/',
-			// rootGroupText: 'Contents',
-			// useTitleFromFileHeading: true,
-			hyphenToSpace: true,
-			// underscoreToSpace: true,
-			collapsible: true,
-			collapsed: false
-			// collapseDepth: 2,
-			// sortByFileName: ['first.md', 'second', 'third.md'],
-			// withIndex: true
-		})
-	}
+  themeConfig: {
+    sidebar: generateSidebar({
+      root: '/',
+      // rootGroupText: 'Contents',
+      // useTitleFromFileHeading: true,
+      hyphenToSpace: true,
+      // underscoreToSpace: true,
+      collapsible: true,
+      collapsed: false
+      // collapseDepth: 2,
+      // sortByFileName: ['first.md', 'second', 'third.md'],
+      // withIndex: true
+    })
+  }
 };
 ```
 
@@ -51,37 +51,37 @@ export default {
 
 ```json
 [
-	{
-		"text": "Table of Contents",
-		"items": [
-			{ "text": "A", "link": "/a" },
-			{ "text": "B_file_name", "link": "/b_file_name" },
-			{ "text": "C file name", "link": "/c-file-name" },
-			{ "text": "Empty", "items": [], "collapsible": true, "collapsed": false },
-			{
-				"text": "Folder",
-				"items": [
-					{
-						"text": "Empty",
-						"items": [],
-						"collapsible": true,
-						"collapsed": false
-					},
-					{ "text": "Folder file", "link": "/folder/folder-file" },
-					{
-						"text": "Subfolder",
-						"items": [{ "text": "Sub file", "link": "/folder/subfolder/sub-file" }],
-						"collapsible": true,
-						"collapsed": false
-					}
-				],
-				"collapsible": true,
-				"collapsed": false
-			}
-		],
-		"collapsible": true,
-		"collapsed": false
-	}
+  {
+    "text": "Table of Contents",
+    "items": [
+      { "text": "A", "link": "/a" },
+      { "text": "B_file_name", "link": "/b_file_name" },
+      { "text": "C file name", "link": "/c-file-name" },
+      { "text": "Empty", "items": [], "collapsible": true, "collapsed": false },
+      {
+        "text": "Folder",
+        "items": [
+          {
+            "text": "Empty",
+            "items": [],
+            "collapsible": true,
+            "collapsed": false
+          },
+          { "text": "Folder file", "link": "/folder/folder-file" },
+          {
+            "text": "Subfolder",
+            "items": [{ "text": "Sub file", "link": "/folder/subfolder/sub-file" }],
+            "collapsible": true,
+            "collapsed": false
+          }
+        ],
+        "collapsible": true,
+        "collapsed": false
+      }
+    ],
+    "collapsible": true,
+    "collapsed": false
+  }
 ]
 ```
 

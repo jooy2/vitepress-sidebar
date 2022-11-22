@@ -1,72 +1,72 @@
 {
-	"name": "vitepress-sidebar",
-	"version": "1.1.1",
-	"description": "A VitePress auto sidebar plugin that automatically creates a simple configuration.",
-	"type": "module",
-	"types": "dist/index.d.ts",
-	"scripts": {
-		"build": "npm run format:fix && tsc && npm run minify",
-		"test": "npm run build && mocha test/**/*.spec.ts -r ts-node/register --loader=ts-node/esm --timeout 10000",
-		"lint": "eslint .",
-		"lint:fix": "eslint --fix .",
-		"minify": "terser dist/index.js --config-file .terserrc -o dist/index.js",
-		"prepare": "npm run build",
-		"format": "prettier .",
-		"format:fix": "prettier . --write"
-	},
-	"engines": {
-		"node": ">=14.0.0"
-	},
-	"main": "dist/index.js",
-	"exports": {
-		".": "./dist/index.js"
-	},
-	"typesVersions": {
-		"*": {
-			"index.d.ts": [
-				"dist/index.d.ts"
-			]
-		}
-	},
-	"author": "jooy2 <jootc.help@gmail.com>",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/jooy2/vitepress-sidebar"
-	},
-	"bugs": {
-		"url": "https://github.com/jooy2/vitepress-sidebar/issues"
-	},
-	"homepage": "https://github.com/jooy2/vitepress-sidebar",
-	"keywords": [
-		"vitepress",
-		"vitepress-plugin",
-		"vitepress-sidebar",
-		"vitepress-auto-sidebar",
-		"vitepress-menu",
-		"util",
-		"utility",
-		"sidebar",
-		"auto",
-		"generator",
-		"plugin",
-		"sidemenu",
-		"menu",
-		"autosidebar"
-	],
-	"devDependencies": {
-		"@types/mocha": "^10.0.0",
-		"@types/node": "^18.11.9",
-		"@typescript-eslint/eslint-plugin": "^5.42.0",
-		"@typescript-eslint/parser": "^5.42.0",
-		"eslint": "^8.26.0",
-		"eslint-config-airbnb": "^19.0.4",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-import": "^2.26.0",
-		"mocha": "^10.1.0",
-		"prettier": "^2.7.1",
-		"terser": "^5.15.1",
-		"ts-node": "^10.9.1",
-		"typescript": "^4.8.4"
-	}
+  "name": "vitepress-sidebar",
+  "version": "1.1.1",
+  "description": "A VitePress auto sidebar plugin that automatically creates a simple configuration.",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run format:fix && tsc && npm run minify",
+    "test": "npm run build && mocha test/**/*.spec.ts -r ts-node/register --loader=ts-node/esm --timeout 10000",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "minify": "terser dist/index.js --config-file .terserrc -o dist/index.js",
+    "prepare": "npm run build",
+    "format": "prettier .",
+    "format:fix": "prettier . --write"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "index.d.ts": [
+        "dist/index.d.ts"
+      ]
+    }
+  },
+  "author": "jooy2 <jootc.help@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jooy2/vitepress-sidebar"
+  },
+  "bugs": {
+    "url": "https://github.com/jooy2/vitepress-sidebar/issues"
+  },
+  "homepage": "https://github.com/jooy2/vitepress-sidebar",
+  "keywords": [
+    "vitepress",
+    "vitepress-plugin",
+    "vitepress-sidebar",
+    "vitepress-auto-sidebar",
+    "vitepress-menu",
+    "util",
+    "utility",
+    "sidebar",
+    "auto",
+    "generator",
+    "plugin",
+    "sidemenu",
+    "menu",
+    "autosidebar"
+  ],
+  "devDependencies": {
+    "@types/mocha": "^10.0.0",
+    "@types/node": "^18.11.9",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^8.26.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "mocha": "^10.1.0",
+    "prettier": "^2.7.1",
+    "terser": "^5.15.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
 }
