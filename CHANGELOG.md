@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.1.2 (2022-11-23)
+
+- Upgrade package dependencies
+- Fix README.md and codes indent
+
 ## 1.1.1 (2022-11-02)
 
 - Fix `capitalizeFirst` bug
