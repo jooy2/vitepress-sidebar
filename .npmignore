@@ -16,7 +16,7 @@ CHANGELOG.md
 tsconfig.json
 .terserrc
 .eslintignore
-.eslintrc.cjs
+.eslintrc.json
 .prettierignore
 .prettierrc
 .editorconfig
