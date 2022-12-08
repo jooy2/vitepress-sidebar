@@ -57,16 +57,9 @@ export default {
       { "text": "A", "link": "/a" },
       { "text": "B_file_name", "link": "/b_file_name" },
       { "text": "C file name", "link": "/c-file-name" },
-      { "text": "Empty", "items": [], "collapsible": true, "collapsed": false },
       {
         "text": "Folder",
         "items": [
-          {
-            "text": "Empty",
-            "items": [],
-            "collapsible": true,
-            "collapsed": false
-          },
           { "text": "Folder file", "link": "/folder/folder-file" },
           {
             "text": "Subfolder",
@@ -151,6 +144,13 @@ If the value is `true`, the `-` symbol included in the file name is converted to
 - Default: `false`
 
 If the value is `true`, the `_` symbol included in the file name is converted to a space and displayed as a title.
+
+### `includeEmptyGroup`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, also displays directories where no md file exists as a group.
 
 ### `capitalizeFirst`
 

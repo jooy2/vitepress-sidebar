@@ -12,6 +12,7 @@ declare interface Options {
   capitalizeFirst?: boolean;
   withIndex?: boolean;
   useTitleFromFileHeading?: boolean;
+  includeEmptyGroup?: boolean;
   sortByFileName?: string[];
 }
 
@@ -98,18 +99,24 @@ export default class VitePressSidebar {
         }
 
         if (statSync(childItemPath).isDirectory()) {
-          return {
-            text: VitePressSidebar.getTitleFromMd(x, childItemPath, options, true),
-            items:
-              VitePressSidebar.generateSidebarItem(
-                depth + 1,
-                childItemPath,
-                childItemPathDisplay,
-                options
-              ) || [],
-            collapsible: options.collapsible,
-            collapsed: depth >= options.collapseDepth! && !!options.collapsed
-          };
+          const directorySidebarItems =
+            VitePressSidebar.generateSidebarItem(
+              depth + 1,
+              childItemPath,
+              childItemPathDisplay,
+              options
+            ) || [];
+
+          if (options.includeEmptyGroup || directorySidebarItems.length > 0) {
+            return {
+              text: VitePressSidebar.getTitleFromMd(x, childItemPath, options, true),
+              items: directorySidebarItems,
+              collapsible: options.collapsible,
+              collapsed: depth >= options.collapseDepth! && !!options.collapsed
+            };
+          }
+
+          return null;
         }
         if (childItemPath.endsWith('.md')) {
           return {
