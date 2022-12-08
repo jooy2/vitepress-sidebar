@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.3 (2022-12-08)
+
+- Upgrade package dependencies
+- Add `includeEmptyGroup` option
+- Do not include empty group by default
+
 ## 1.1.2 (2022-11-23)
 
 - Upgrade package dependencies

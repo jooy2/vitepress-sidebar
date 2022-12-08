@@ -1,9 +1,12 @@
 {
   "name": "vitepress-sidebar",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "A VitePress auto sidebar plugin that automatically creates a simple configuration.",
   "type": "module",
   "types": "dist/index.d.ts",
+  "author": "jooy2 <jooy2.contact@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/jooy2/vitepress-sidebar",
   "scripts": {
     "build": "npm run format:fix && tsc && npm run minify",
     "test": "npm run build && mocha test/**/*.spec.ts -r ts-node/register --loader=ts-node/esm --timeout 10000",
@@ -28,8 +31,6 @@
       ]
     }
   },
-  "author": "jooy2 <jooy2.contact@gmail.com>",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/jooy2/vitepress-sidebar"
@@ -37,7 +38,6 @@
   "bugs": {
     "url": "https://github.com/jooy2/vitepress-sidebar/issues"
   },
-  "homepage": "https://github.com/jooy2/vitepress-sidebar",
   "keywords": [
     "vitepress",
     "vitepress-plugin",
