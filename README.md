@@ -41,7 +41,8 @@ export default {
       collapsed: false
       // collapseDepth: 2,
       // sortByFileName: ['first.md', 'second', 'third.md'],
-      // withIndex: true
+      // withIndex: true,
+      // includeEmptyGroup: false
     })
   }
 };
