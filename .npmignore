@@ -10,6 +10,7 @@ Thumbs.db
 lib/
 test/
 CHANGELOG.md
+CODE_OF_CONDUCT.md
 
 # For development
 .git*
