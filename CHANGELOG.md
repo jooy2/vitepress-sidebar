@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.5 (2023-01-12)
+
+- Remove CODE_OF_CONDUCT.md for npm release
+
 ## 1.1.4 (2023-01-12)
 
 - Upgrade package dependencies
