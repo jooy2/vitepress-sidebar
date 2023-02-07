@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 (2023-02-07)
+
+- **BREAKING CHANGES**: The collapsible option has been removed by VitePress `1.0.0-alpha.44` breaking changes. See: https://vitepress.vuejs.org/config/theme-configs
+  - If the `collapsed` option is not specified(`null` or `undefined`), group collapse/expand is not used and all menus are displayed at once. If `false`, the menu is created with all groups expanded. If `true`, the menu is created with all groups collapsed.
+- Upgrade package dependencies
+
 ## 1.1.5 (2023-01-12)
 
 - Remove CODE_OF_CONDUCT.md for npm release

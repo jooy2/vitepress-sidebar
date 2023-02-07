@@ -4,7 +4,6 @@ import { join, resolve } from 'path';
 declare interface Options {
   root?: string;
   rootGroupText?: string;
-  collapsible?: boolean;
   collapsed?: boolean;
   collapseDepth?: number;
   hyphenToSpace?: boolean;
@@ -26,15 +25,8 @@ export default class VitePressSidebar {
     if (!/^\//.test(options.root)) {
       options.root = `/${options.root}`;
     }
-
-    if (options.collapsed || options.collapseDepth) {
-      options.collapsible = true;
-    }
     if (options.collapseDepth) {
       options.collapsed = true;
-    }
-    if (options.collapsible === null || options.collapsible === undefined) {
-      options.collapsible = true;
     }
     if (options.hyphenToSpace === null || options.hyphenToSpace === undefined) {
       options.hyphenToSpace = true;
@@ -56,8 +48,9 @@ export default class VitePressSidebar {
         {
           text: options.rootGroupText,
           items: sidebar,
-          collapsible: options.collapsible,
-          collapsed: options.collapseDepth! <= 1 && !!options.collapsed
+          ...(options.collapsed === null || options.collapsed === undefined
+            ? {}
+            : { collapsed: options.collapseDepth! <= 1! && options.collapsed })
         }
       ];
     }
@@ -111,8 +104,9 @@ export default class VitePressSidebar {
             return {
               text: VitePressSidebar.getTitleFromMd(x, childItemPath, options, true),
               items: directorySidebarItems,
-              collapsible: options.collapsible,
-              collapsed: depth >= options.collapseDepth! && !!options.collapsed
+              ...(options.collapsed === null || options.collapsed === undefined
+                ? {}
+                : { collapsed: depth >= options.collapseDepth! && options.collapsed })
             };
           }
 

@@ -37,8 +37,7 @@ export default {
       // useTitleFromFileHeading: true,
       hyphenToSpace: true,
       // underscoreToSpace: true,
-      collapsible: true,
-      collapsed: false
+      collapsed: true
       // collapseDepth: 2,
       // sortByFileName: ['first.md', 'second', 'third.md'],
       // withIndex: true,
@@ -50,30 +49,34 @@ export default {
 
 ### Example output:
 
+```javascript
+generateSidebar({
+  root: 'test/docs',
+  collapseDepth: 2
+});
+```
+
 ```json
 [
   {
     "text": "Table of Contents",
     "items": [
-      { "text": "A", "link": "/a" },
-      { "text": "B_file_name", "link": "/b_file_name" },
-      { "text": "C file name", "link": "/c-file-name" },
+      { "text": "a", "link": "/a" },
+      { "text": "b_file_name", "link": "/b_file_name" },
+      { "text": "c file name", "link": "/c-file-name" },
       {
-        "text": "Folder",
+        "text": "folder",
         "items": [
-          { "text": "Folder file", "link": "/folder/folder-file" },
+          { "text": "folder file", "link": "/folder/folder-file" },
           {
-            "text": "Subfolder",
-            "items": [{ "text": "Sub file", "link": "/folder/subfolder/sub-file" }],
-            "collapsible": true,
-            "collapsed": false
+            "text": "subfolder",
+            "items": [{ "text": "sub file", "link": "/folder/subfolder/sub-file" }],
+            "collapsed": true
           }
         ],
-        "collapsible": true,
         "collapsed": false
       }
     ],
-    "collapsible": true,
     "collapsed": false
   }
 ]
@@ -109,26 +112,19 @@ If the value is `true`, display the title with the `h1` heading content of the `
 
 Sort by an array of file names (including extensions) in order. If there is no value in the array that matches the filename, the sort priority is sent back. This applies to both files and directories, and the same arrangement rules apply to subdirectories as well.
 
-### `collapsible`
-
-- Type: `boolean`
-- Default: `true`
-
-If the value is `true`, the category will be collapsible/unfolded.
-
 ### `collapsed`
 
 - Type: `boolean`
 - Default: `false`
 
-If the value is `true`, the category is collapsed by default.
+If the `collapsed` option is not specified(`null` or `undefined`), group collapse/expand is not used and all menus are displayed at once. If `false`, the menu is created with all groups expanded. If `true`, the menu is created with all groups collapsed.
 
 ### `collapseDepth`
 
 - Type: `number`
 - Default: `1`
 
-From a given directory depth, categories are collapsed. This option will automatically set true `collapsible`. The depth of the top-level folder is `1`.
+At the specified depth, the menu group is made collapsed. When this option is specified, group collapsing/expanding is automatically enabled. The depth of the top-level folder is `1`.
 
 ### `hyphenToSpace`
 
