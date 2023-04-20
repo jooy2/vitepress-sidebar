@@ -58,7 +58,7 @@ export default class VitePressSidebar {
     return sidebar;
   }
 
-  static generateSidebarItem(
+  private static generateSidebarItem(
     depth: number,
     currentDir: string,
     displayDir: string,
@@ -123,7 +123,7 @@ export default class VitePressSidebar {
       .filter((x) => x !== null);
   }
 
-  static getTitleFromMd(
+  private static getTitleFromMd(
     fileName: string,
     filePath: string,
     options: Options,
@@ -133,32 +133,34 @@ export default class VitePressSidebar {
       ? fileName.charAt(0).toUpperCase() + fileName.slice(1)
       : fileName;
 
-    if (!isDirectory) {
-      if (options.useTitleFromFileHeading) {
-        // Use content 'h1' string instead of file name
-        try {
-          const data = readFileSync(filePath, 'utf-8');
-          const lines = data.split('\n');
-          for (let i = 0, len = lines.length; i < len; i += 1) {
-            let str = lines[i].toString().replace('\r', '');
-            if (str.indexOf('# ') !== -1) {
-              str = str.replace('# ', '');
-              return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
-            }
+    if (isDirectory) {
+      return result;
+    }
+
+    if (options.useTitleFromFileHeading) {
+      // Use content 'h1' string instead of file name
+      try {
+        const data = readFileSync(filePath, 'utf-8');
+        const lines = data.split('\n');
+        for (let i = 0, len = lines.length; i < len; i += 1) {
+          let str = lines[i].toString().replace('\r', '');
+          if (str.indexOf('# ') !== -1) {
+            str = str.replace('# ', '');
+            return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
           }
-        } catch {
-          return 'Unknown';
         }
-      } else {
-        result = result.replace(/\.md$/, '');
+      } catch {
+        return 'Unknown';
+      }
+    } else {
+      result = result.replace(/\.md$/, '');
 
-        if (options.hyphenToSpace) {
-          result = result.replace(/-/g, ' ');
-        }
+      if (options.hyphenToSpace) {
+        result = result.replace(/-/g, ' ');
+      }
 
-        if (options.underscoreToSpace) {
-          result = result.replace(/_/g, ' ');
-        }
+      if (options.underscoreToSpace) {
+        result = result.replace(/_/g, ' ');
       }
     }
 
