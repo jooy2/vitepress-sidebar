@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 (2023-02-07)
+
+- Upgrade package dependencies
+- Cleanup codes and update documentation
+
 ## 1.2.0 (2023-02-07)
 
 - **BREAKING CHANGES**: The collapsible option has been removed by VitePress `1.0.0-alpha.44` breaking changes. See: https://vitepress.vuejs.org/config/theme-configs
