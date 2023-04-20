@@ -12,6 +12,6 @@
     "strict": true,
     "newLine": "lf"
   },
-  "include": ["lib/**/*.ts", "lib/**/*.d.ts", "test/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["lib/**/*.ts", "lib/**/*.d.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

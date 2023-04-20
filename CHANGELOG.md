@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.3.0 (2023-02-07)
+## 1.3.1 (2023-04-20)
+
+- Fix build issue
+
+## 1.3.0 (2023-04-20)
 
 - Upgrade package dependencies
 - Cleanup codes and update documentation
