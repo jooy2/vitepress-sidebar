@@ -9,6 +9,12 @@
 - ⚡️ Easy and versatile sidebar customization
 - ⚡️ Lightweight bundle file size
 
+## Demo & Real-world Uses
+
+Vitepress Sidebar is utilized in a variety of project environments, including my own web services. An example homepage can be found here: https://til.jooy2.com
+
+To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/network/dependents
+
 ## Installation
 
 ```shell
