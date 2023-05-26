@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0 (2023-05-26)
+
+- Fix TypeScript lint error
+- Upgrade package dependencies
+
 ## 1.3.1 (2023-04-20)
 
 - Fix build issue
