@@ -14,7 +14,6 @@ CODE_OF_CONDUCT.md
 
 # For development
 .git*
-tsconfig.json
 .terserrc
 .eslintignore
 .eslintrc.json
@@ -22,3 +21,5 @@ tsconfig.json
 .prettierrc
 .editorconfig
 .mocharc.json
+tsconfig.json
+tsconfig.prod.json
