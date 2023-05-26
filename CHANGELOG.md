@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1 (2023-05-26)
+
+- Add `.mocharc.json`, remove `tsconfig.prod.json` file in `.npmignore`
+
 ## 1.5.0 (2023-05-26)
 
 - Add `useTitleFromFrontmatter` option. See README.md.
