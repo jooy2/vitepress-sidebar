@@ -2,7 +2,7 @@
 
 ## 1.5.0 (2023-05-26)
 
-- Add `useTitleFromFrontmatter` option
+- Add `useTitleFromFrontmatter` option. See README.md.
 - `useTitleFromFileHeading`: Use only valid title values in titles that contain links
 
 ## 1.4.0 (2023-05-26)
