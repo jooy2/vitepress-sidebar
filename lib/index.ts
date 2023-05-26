@@ -15,12 +15,31 @@ declare interface Options {
   sortByFileName?: string[];
 }
 
-declare interface SidebarItem {
+declare interface SidebarListItem {
   [key: string]: any;
 }
 
+/*
+ * Types from: `vitepress/types/default-theme.d.ts`
+ */
+export type SidebarItem = {
+  text?: string;
+  link?: string;
+  items?: SidebarItem[];
+  collapsed?: boolean;
+};
+
+export interface SidebarMulti {
+  [path: string]: SidebarItem[];
+}
+
+export type Sidebar = SidebarItem[] | SidebarMulti;
+/*
+ * End
+ * */
+
 export default class VitePressSidebar {
-  static generateSidebar(options: Options): object {
+  static generateSidebar(options: Options): Sidebar {
     options.root = options?.root ?? '/';
     if (!/^\//.test(options.root)) {
       options.root = `/${options.root}`;
@@ -36,7 +55,7 @@ export default class VitePressSidebar {
     options.collapseDepth = options?.collapseDepth ?? 1;
     options.sortByFileName = options?.sortByFileName ?? [];
 
-    const sidebar: SidebarItem = VitePressSidebar.generateSidebarItem(
+    const sidebar: SidebarListItem = VitePressSidebar.generateSidebarItem(
       1,
       join(process.cwd(), options.root),
       options.root,
@@ -47,7 +66,7 @@ export default class VitePressSidebar {
       return [
         {
           text: options.rootGroupText,
-          items: sidebar,
+          items: sidebar as SidebarItem[],
           ...(options.collapsed === null || options.collapsed === undefined
             ? {}
             : { collapsed: options.collapseDepth! <= 1! && options.collapsed })
@@ -63,7 +82,7 @@ export default class VitePressSidebar {
     currentDir: string,
     displayDir: string,
     options: Options
-  ): SidebarItem {
+  ): SidebarListItem {
     let directoryFiles: string[] = readdirSync(currentDir);
 
     if (options.sortByFileName!.length > 0) {
