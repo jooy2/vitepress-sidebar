@@ -41,6 +41,7 @@ export default {
       // root: '/',
       // rootGroupText: 'Contents',
       // useTitleFromFileHeading: true,
+      // useTitleFromFrontmatter: true,
       // hyphenToSpace: true,
       // underscoreToSpace: true,
       // collapsed: true,
@@ -110,6 +111,23 @@ The name of a group to separate top-level documents with no separate subdirector
 - Default: `false`
 
 If the value is `true`, display the title with the `h1` heading content of the `.md` file. If the `h1` heading does not exist in the file, it displays `Unknown`.
+
+### `useTitleFromFrontmatter`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, display the title based on the value of `title` in `Frontmatter` in the file. If this value cannot be parsed, it will be taken from the `h1` tag if the `useTitleFromFileHeading` option is `true`, and from the filename if that fails.
+
+The `Frontmatter` should be located at the top of the document, and should look like this (Space is required between the `title:` value and the title.)
+
+```markdown
+---
+title: This is frontmatter title value.
+---
+```
+
+For more information, see the following articles: https://vitepress.dev/guide/frontmatter
 
 ### `sortByFileName`
 

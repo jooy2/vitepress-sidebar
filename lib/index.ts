@@ -11,6 +11,7 @@ declare interface Options {
   capitalizeFirst?: boolean;
   withIndex?: boolean;
   useTitleFromFileHeading?: boolean;
+  useTitleFromFrontmatter?: boolean;
   includeEmptyGroup?: boolean;
   sortByFileName?: string[];
 }
@@ -156,6 +157,27 @@ export default class VitePressSidebar {
       return result;
     }
 
+    if (options.useTitleFromFrontmatter) {
+      // Use content frontmatter title value instead of file name
+      try {
+        const data = readFileSync(filePath, 'utf-8');
+        const lines = data.split('\n');
+        let frontmatterStart = false;
+        for (let i = 0, len = lines.length; i < len; i += 1) {
+          let str = lines[i].toString().replace('\r', '');
+          if (str.indexOf('---') !== -1) {
+            frontmatterStart = true;
+          }
+          if (str.indexOf('title: ') !== -1 && frontmatterStart) {
+            str = str.replace('title: ', '');
+            return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+          }
+        }
+      } catch {
+        return 'Unknown';
+      }
+    }
+
     if (options.useTitleFromFileHeading) {
       // Use content 'h1' string instead of file name
       try {
@@ -164,6 +186,13 @@ export default class VitePressSidebar {
         for (let i = 0, len = lines.length; i < len; i += 1) {
           let str = lines[i].toString().replace('\r', '');
           if (str.indexOf('# ') !== -1) {
+            if (/\[(.*)]\(.*\)/.test(str)) {
+              // Remove hyperlink from h1 if exists
+              const execValue = /\[(.*)]\(.*\)/.exec(str)?.[1] || 'Unknown';
+              return options.capitalizeFirst
+                ? execValue.charAt(0).toUpperCase() + execValue.slice(1)
+                : execValue;
+            }
             str = str.replace('# ', '');
             return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
           }
