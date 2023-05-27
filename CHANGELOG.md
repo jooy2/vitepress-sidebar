@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.5 (2023-05-27)
+
+- Fix `convertSameNameSubFileToGroupIndexPage` and rename option not working together
+
 ## 1.6.0 (2023-05-27)
 
 - **BREAKING CHANGES**: The default value for `hyphenToSpace` is now `false`.
