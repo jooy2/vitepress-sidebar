@@ -123,18 +123,19 @@ export default class VitePressSidebar {
               options
             ) || [];
 
-          const convertDirectoryTitle = VitePressSidebar.getTitleFromMd(
-            x,
-            childItemPath,
-            options,
-            true
-          );
+          let newDirectoryText = VitePressSidebar.getTitleFromMd(x, childItemPath, options, true);
           let withDirectoryLink;
 
           if (options.convertSameNameSubFileToGroupIndexPage) {
             const findItem = directorySidebarItems.find((y: SidebarListItem) => y.text === x);
 
             if (findItem) {
+              newDirectoryText = VitePressSidebar.getTitleFromMd(
+                x,
+                resolve(childItemPath, `${findItem.text}.md`),
+                options,
+                false
+              );
               withDirectoryLink = findItem.link;
               directorySidebarItems = directorySidebarItems.filter(
                 (y: SidebarListItem) => y.text !== x
@@ -144,7 +145,7 @@ export default class VitePressSidebar {
 
           if (options.includeEmptyGroup || directorySidebarItems.length > 0) {
             return {
-              text: convertDirectoryTitle,
+              text: newDirectoryText,
               ...(withDirectoryLink ? { link: withDirectoryLink } : {}),
               items: directorySidebarItems,
               ...(options.collapsed === null || options.collapsed === undefined
