@@ -48,7 +48,8 @@ export default {
       // collapseDepth: 2,
       // sortByFileName: ['first.md', 'second', 'third.md'],
       // withIndex: true,
-      // includeEmptyGroup: false
+      // includeEmptyGroup: false,
+      // convertSameNameSubFileToGroupIndexPage: false
     })
   }
 };
@@ -59,7 +60,8 @@ export default {
 ```javascript
 generateSidebar({
   root: 'test/docs',
-  collapseDepth: 2
+  collapseDepth: 2,
+  hyphenToSpace: true
 });
 ```
 
@@ -153,7 +155,7 @@ At the specified depth, the menu group is made collapsed. When this option is sp
 ### `hyphenToSpace`
 
 - Type: `boolean`
-- Default: `true`
+- Default: `false`
 
 If the value is `true`, the `-` symbol included in the file name is converted to a space and displayed as a title.
 
@@ -184,6 +186,13 @@ If the value is `true`, the first letter of the menu name is forced to uppercase
 - Default: `false`
 
 If the value is `true`, also include the top-level path `index.md` file in the sidebar menu. (If the file does not exist, it is ignored.)
+
+### `convertSameNameSubFileToGroupIndexPage`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, then if a subfile with the same name as the folder exists, a link will be created in the folder to navigate to that file, and the file will not be displayed in the child item.
 
 ## Contribute
 

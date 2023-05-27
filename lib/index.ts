@@ -4,6 +4,7 @@ import { join, resolve } from 'path';
 declare interface Options {
   root?: string;
   rootGroupText?: string;
+  rootGroupLink?: string;
   collapsed?: boolean;
   collapseDepth?: number;
   hyphenToSpace?: boolean;
@@ -12,6 +13,7 @@ declare interface Options {
   withIndex?: boolean;
   useTitleFromFileHeading?: boolean;
   useTitleFromFrontmatter?: boolean;
+  convertSameNameSubFileToGroupIndexPage?: boolean;
   includeEmptyGroup?: boolean;
   sortByFileName?: string[];
 }
@@ -48,9 +50,6 @@ export default class VitePressSidebar {
     if (options.collapseDepth) {
       options.collapsed = true;
     }
-    if (options.hyphenToSpace === null || options.hyphenToSpace === undefined) {
-      options.hyphenToSpace = true;
-    }
 
     options.rootGroupText = options?.rootGroupText ?? 'Table of Contents';
     options.collapseDepth = options?.collapseDepth ?? 1;
@@ -60,6 +59,7 @@ export default class VitePressSidebar {
       1,
       join(process.cwd(), options.root),
       options.root,
+      null,
       options
     );
 
@@ -67,6 +67,7 @@ export default class VitePressSidebar {
       return [
         {
           text: options.rootGroupText,
+          ...(options.rootGroupLink ? { link: options.rootGroupLink } : {}),
           items: sidebar as SidebarItem[],
           ...(options.collapsed === null || options.collapsed === undefined
             ? {}
@@ -82,6 +83,7 @@ export default class VitePressSidebar {
     depth: number,
     currentDir: string,
     displayDir: string,
+    parentName: string | null,
     options: Options
   ): SidebarListItem {
     let directoryFiles: string[] = readdirSync(currentDir);
@@ -112,17 +114,38 @@ export default class VitePressSidebar {
         }
 
         if (statSync(childItemPath).isDirectory()) {
-          const directorySidebarItems =
+          let directorySidebarItems =
             VitePressSidebar.generateSidebarItem(
               depth + 1,
               childItemPath,
               childItemPathDisplay,
+              x,
               options
             ) || [];
 
+          const convertDirectoryTitle = VitePressSidebar.getTitleFromMd(
+            x,
+            childItemPath,
+            options,
+            true
+          );
+          let withDirectoryLink;
+
+          if (options.convertSameNameSubFileToGroupIndexPage) {
+            const findItem = directorySidebarItems.find((y: SidebarListItem) => y.text === x);
+
+            if (findItem) {
+              withDirectoryLink = findItem.link;
+              directorySidebarItems = directorySidebarItems.filter(
+                (y: SidebarListItem) => y.text !== x
+              );
+            }
+          }
+
           if (options.includeEmptyGroup || directorySidebarItems.length > 0) {
             return {
-              text: VitePressSidebar.getTitleFromMd(x, childItemPath, options, true),
+              text: convertDirectoryTitle,
+              ...(withDirectoryLink ? { link: withDirectoryLink } : {}),
               items: directorySidebarItems,
               ...(options.collapsed === null || options.collapsed === undefined
                 ? {}
@@ -133,8 +156,20 @@ export default class VitePressSidebar {
           return null;
         }
         if (childItemPath.endsWith('.md')) {
+          let childItemText;
+          const childItemTextWithoutExt = x.replace(/\.md$/, '');
+
+          if (
+            options.convertSameNameSubFileToGroupIndexPage &&
+            parentName === childItemTextWithoutExt
+          ) {
+            childItemText = childItemTextWithoutExt;
+          } else {
+            childItemText = VitePressSidebar.getTitleFromMd(x, childItemPath, options);
+          }
+
           return {
-            text: VitePressSidebar.getTitleFromMd(x, childItemPath, options),
+            text: childItemText,
             link: childItemPathDisplay
           };
         }
@@ -154,6 +189,14 @@ export default class VitePressSidebar {
       : fileName;
 
     if (isDirectory) {
+      if (options.hyphenToSpace) {
+        result = result.replace(/-/g, ' ');
+      }
+
+      if (options.underscoreToSpace) {
+        result = result.replace(/_/g, ' ');
+      }
+
       return result;
     }
 
