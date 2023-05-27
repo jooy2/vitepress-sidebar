@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.6.0 (2023-05-27)
+
+- **BREAKING CHANGES**: The default value for `hyphenToSpace` is now `false`.
+- Add `convertSameNameSubFileToGroupIndexPage` option: If this value is `true`, then if a subfile with the same name as the folder exists, a link will be created in the folder to navigate to that file, and the file will not be displayed in the child item.
+- Fixed issue with `hyphenToSpace` and `underscoreToSpace` options not being applied to directories.
+
 ## 1.5.1 (2023-05-26)
 
 - Add `.mocharc.json`, remove `tsconfig.prod.json` file in `.npmignore`
