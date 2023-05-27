@@ -40,6 +40,7 @@ export default {
     sidebar: generateSidebar({
       // root: '/',
       // rootGroupText: 'Contents',
+      // rootGroupLink: 'https://github.com',
       // useTitleFromFileHeading: true,
       // useTitleFromFrontmatter: true,
       // hyphenToSpace: true,
@@ -106,6 +107,15 @@ The path to the root directory where the document is located. Pass `/` if it is 
 - Default: `'Table of Contents'`
 
 The name of a group to separate top-level documents with no separate subdirectories.
+
+VitePress has a top-level group for every page, and that group needs a name, so you can't arbitrarily remove the top-level group name.
+
+### `rootGroupLink`
+
+- Type: `string`
+- Default: null
+
+Sets the link to go to when the top-level group is clicked. If this option is not specified, it will behave as plain text.
 
 ### `useTitleFromFileHeading`
 
