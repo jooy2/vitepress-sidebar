@@ -7,7 +7,7 @@
 - Add `excludeFiles` option
 - Add `excludeFolders` option
 - Add `includeDotFiles` option
-- Parsing markdown `h1` tags correctly
+- Parsing markdown `h1` tag and frontmatter correctly
 
 ## 1.6.5 (2023-05-27)
 

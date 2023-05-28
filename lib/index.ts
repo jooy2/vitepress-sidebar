@@ -225,10 +225,10 @@ export default class VitePressSidebar {
         let frontmatterStart = false;
         for (let i = 0, len = lines.length; i < len; i += 1) {
           let str = lines[i].toString().replace('\r', '');
-          if (str.indexOf('---') !== -1) {
+          if (/^---$/.test(str)) {
             frontmatterStart = true;
           }
-          if (str.indexOf('title: ') !== -1 && frontmatterStart) {
+          if (/^title: (.*)/.test(str) && frontmatterStart) {
             str = str.replace('title: ', '');
             return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
           }
