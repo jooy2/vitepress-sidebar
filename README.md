@@ -48,6 +48,8 @@ export default {
       // collapsed: true,
       // collapseDepth: 2,
       // sortByFileName: ['first.md', 'second', 'third.md'],
+      // excludeFiles: ['first.md', 'secret.md'],
+      // excludeFolders: ['secret-folder'],
       // withIndex: true,
       // includeEmptyGroup: false,
       // convertSameNameSubFileToGroupIndexPage: false
@@ -175,6 +177,20 @@ If the value is `true`, the `-` symbol included in the file name is converted to
 - Default: `false`
 
 If the value is `true`, the `_` symbol included in the file name is converted to a space and displayed as a title.
+
+### `excludeFiles`
+
+- Type: `Array<string>`
+- Default: `[]`
+
+Files that correspond to an array of file names (including extensions) are not shown in the list.
+
+### `excludeFolders`
+
+- Type: `Array<string>`
+- Default: `[]`
+
+Folders that correspond to an array of folder names are not shown in the list, and any sub-items within a folder are also not shown.
 
 ### `includeEmptyGroup`
 

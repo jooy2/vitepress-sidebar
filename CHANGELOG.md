@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0 (2023-05-28)
+
+- Add `excludeFiles` option
+- Add `excludeFolders` option
+
 ## 1.6.5 (2023-05-27)
 
 - Fix `convertSameNameSubFileToGroupIndexPage` and rename option not working together

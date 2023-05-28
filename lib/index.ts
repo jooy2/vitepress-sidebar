@@ -16,6 +16,8 @@ declare interface Options {
   convertSameNameSubFileToGroupIndexPage?: boolean;
   includeEmptyGroup?: boolean;
   sortByFileName?: string[];
+  excludeFiles?: string[];
+  excludeFolders?: string[];
 }
 
 declare interface SidebarListItem {
@@ -54,6 +56,8 @@ export default class VitePressSidebar {
     options.rootGroupText = options?.rootGroupText ?? 'Table of Contents';
     options.collapseDepth = options?.collapseDepth ?? 1;
     options.sortByFileName = options?.sortByFileName ?? [];
+    options.excludeFiles = options?.excludeFiles ?? [];
+    options.excludeFolders = options?.excludeFolders ?? [];
 
     const sidebar: SidebarListItem = VitePressSidebar.generateSidebarItem(
       1,
@@ -114,6 +118,10 @@ export default class VitePressSidebar {
         }
 
         if (statSync(childItemPath).isDirectory()) {
+          if (options.excludeFolders?.includes(x)) {
+            return null;
+          }
+
           let directorySidebarItems =
             VitePressSidebar.generateSidebarItem(
               depth + 1,
@@ -157,6 +165,10 @@ export default class VitePressSidebar {
           return null;
         }
         if (childItemPath.endsWith('.md')) {
+          if (options.excludeFiles?.includes(x)) {
+            return null;
+          }
+
           let childItemText;
           const childItemTextWithoutExt = x.replace(/\.md$/, '');
 
