@@ -10,7 +10,7 @@ declare interface Options {
   hyphenToSpace?: boolean;
   underscoreToSpace?: boolean;
   capitalizeFirst?: boolean;
-  withIndex?: boolean;
+  includeRootIndexFile?: boolean;
   useTitleFromFileHeading?: boolean;
   useTitleFromFrontmatter?: boolean;
   includeDotFiles?: boolean;
@@ -114,7 +114,7 @@ export default class VitePressSidebar {
         if (/\.vitepress/.test(childItemPath)) {
           return null;
         }
-        if (displayDir === options.root && x === 'index.md' && !options.withIndex) {
+        if (displayDir === options.root && x === 'index.md' && !options.includeRootIndexFile) {
           return null;
         }
         if (!options.includeDotFiles && /^\./.test(x)) {

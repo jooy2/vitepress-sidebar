@@ -2,6 +2,7 @@
 
 ## 1.7.0 (2023-05-28)
 
+- **BREAKING CHANGES**: The `withIndex` option was renamed to `includeRootIndexFile`.
 - Add `excludeFiles` option
 - Add `excludeFolders` option
 - Add `includeDotFiles` option

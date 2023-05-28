@@ -51,7 +51,7 @@ export default {
       // excludeFiles: ['first.md', 'secret.md'],
       // excludeFolders: ['secret-folder'],
       // includeDotFiles: false,
-      // withIndex: true,
+      // includeRootIndexFile: true,
       // includeEmptyGroup: false,
       // convertSameNameSubFileToGroupIndexPage: false
     })
@@ -214,7 +214,7 @@ Normally, if file and folder names contain a dot (`.`) in front of them, they ar
 
 If the value is `true`, also displays directories where no md file exists as a group.
 
-### `withIndex`
+### `includeRootIndexFile`
 
 - Type: `boolean`
 - Default: `false`

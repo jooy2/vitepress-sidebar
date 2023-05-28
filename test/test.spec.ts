@@ -46,7 +46,7 @@ describe('VitePress Sidebar Test Case', () => {
         collapsed: false,
         hyphenToSpace: true,
         underscoreToSpace: true,
-        withIndex: true
+        includeRootIndexFile: true
       }),
       [
         {
