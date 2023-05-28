@@ -15,6 +15,7 @@ declare interface Options {
   useTitleFromFrontmatter?: boolean;
   includeDotFiles?: boolean;
   convertSameNameSubFileToGroupIndexPage?: boolean;
+  folderLinkNotIncludesFileName?: boolean;
   includeEmptyFolder?: boolean;
   sortByFileName?: string[];
   excludeFiles?: string[];
@@ -148,7 +149,13 @@ export default class VitePressSidebar {
                 options,
                 false
               );
-              withDirectoryLink = findItem.link;
+
+              if (options.folderLinkNotIncludesFileName) {
+                withDirectoryLink = childItemPathDisplay;
+              } else {
+                withDirectoryLink = findItem.link;
+              }
+
               directorySidebarItems = directorySidebarItems.filter(
                 (y: SidebarListItem) => y.text !== x
               );

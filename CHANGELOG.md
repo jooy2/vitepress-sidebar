@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.5 (2023-05-28)
+
+- Add `folderLinkNotIncludesFileName` option
+
 ## 1.7.0 (2023-05-28)
 
 - **BREAKING CHANGES**: The `withIndex` option was renamed to `includeRootIndexFile`.

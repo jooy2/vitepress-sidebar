@@ -57,6 +57,7 @@ export default {
       // includeRootIndexFile: true,
       // includeEmptyFolder: false,
       // convertSameNameSubFileToGroupIndexPage: false
+      // folderLinkNotIncludesFileName: false
     })
   }
 };
@@ -230,6 +231,13 @@ If the value is `true`, also include the top-level path `index.md` file in the s
 - Default: `false`
 
 If this value is `true`, then if a subfile with the same name as the folder exists, a link will be created in the folder to navigate to that file, and the file will not be displayed in the child item.
+
+### `folderLinkNotIncludesFileName`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, When establishing a folder link, ignore the existence of child items and specify the link only as a folder path. This option is not commonly used and is utilized for rewrite rules. This option may need to be used in conjunction with other options where folder links are created.
 
 ## Contribute
 

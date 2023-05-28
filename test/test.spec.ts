@@ -291,6 +291,50 @@ describe('VitePress Sidebar Test Case', () => {
     done();
   });
 
+  it('Option: convertSameNameSubFileToGroupIndexPage (C)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        root: 'test/docs',
+        useTitleFromFileHeading: true,
+        rootGroupText: '',
+        useTitleFromFrontmatter: true,
+        convertSameNameSubFileToGroupIndexPage: true,
+        folderLinkNotIncludesFileName: true
+      }),
+      [
+        {
+          text: '',
+          items: [
+            { text: 'A Title from Frontmatter', link: '/a' },
+            { text: 'B Title from Frontmatter', link: '/b_file_name' },
+            { text: 'C Title from Frontmatter', link: '/c-file-name' },
+            {
+              text: 'folder',
+              items: [
+                { text: 'Folder File', link: '/folder/folder-file' },
+                {
+                  text: 'Folder Index',
+                  link: '/folder/folder-index',
+                  items: [{ text: 'Another', link: '/folder/folder-index/another' }]
+                },
+                {
+                  text: 'subfolder',
+                  items: [
+                    {
+                      text: 'Sub Folder - Sub File',
+                      link: '/folder/subfolder/sub-file'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
+    done();
+  });
+
   it('Option: collapsed', (done) => {
     assert.deepEqual(
       generateSidebar({
