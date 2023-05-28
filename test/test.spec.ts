@@ -38,7 +38,7 @@ describe('VitePress Sidebar Test Case', () => {
     done();
   });
 
-  it('With complex configurations', (done) => {
+  it('With complex configurations (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
         root: 'test/docs',
@@ -78,6 +78,50 @@ describe('VitePress Sidebar Test Case', () => {
             { text: 'index', link: '/index' }
           ],
           collapsed: false
+        }
+      ]
+    );
+    done();
+  });
+
+  it('With complex configurations (B)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        root: 'test/docs',
+        includeEmptyFolder: true,
+        includeDotFiles: true,
+        excludeFiles: ['c-file-name.md', 'sub-file.md'],
+        excludeFolders: ['empty', 'folder-index'],
+        hyphenToSpace: true,
+        underscoreToSpace: true,
+        capitalizeFirst: true,
+        useTitleFromFrontmatter: true,
+        useTitleFromFileHeading: true,
+        rootGroupText: 'Hello',
+        rootGroupLink: 'https://github.com'
+      }),
+      [
+        {
+          text: 'Hello',
+          link: 'https://github.com',
+          items: [
+            { text: 'A Title from Frontmatter', link: '/a' },
+            { text: 'B Title from Frontmatter', link: '/b_file_name' },
+            {
+              text: 'Folder',
+              items: [
+                {
+                  text: '.secret folder',
+                  items: [{ text: 'Hello', link: '/folder/.secret-folder/hello' }]
+                },
+                { text: 'Folder File', link: '/folder/folder-file' },
+                {
+                  text: 'Subfolder',
+                  items: [{ text: 'Secret Dot File', link: '/folder/subfolder/.secret-file' }]
+                }
+              ]
+            }
+          ]
         }
       ]
     );
