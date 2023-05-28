@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { generateSidebar } from '../dist/index.js';
+import { generateSidebar } from '../dist';
 
 describe('VitePress Sidebar Test Case', () => {
   it('Basic configurations', (done) => {
