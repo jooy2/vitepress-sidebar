@@ -245,7 +245,7 @@ export default class VitePressSidebar {
         const lines = data.split('\n');
         for (let i = 0, len = lines.length; i < len; i += 1) {
           let str = lines[i].toString().replace('\r', '');
-          if (str.indexOf('# ') !== -1) {
+          if (/^# /.test(str)) {
             if (/\[(.*)]\(.*\)/.test(str)) {
               // Remove hyperlink from h1 if exists
               const execValue = /\[(.*)]\(.*\)/.exec(str)?.[1] || 'Unknown';
@@ -253,7 +253,7 @@ export default class VitePressSidebar {
                 ? execValue.charAt(0).toUpperCase() + execValue.slice(1)
                 : execValue;
             }
-            str = str.replace('# ', '');
+            str = str.replace(/^# /, '');
             return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
           }
         }
