@@ -52,7 +52,7 @@ export default {
       // excludeFolders: ['secret-folder'],
       // includeDotFiles: false,
       // includeRootIndexFile: true,
-      // includeEmptyGroup: false,
+      // includeEmptyFolder: false,
       // convertSameNameSubFileToGroupIndexPage: false
     })
   }
@@ -207,7 +207,7 @@ Folders that correspond to an array of folder names are not shown in the list, a
 
 Normally, if file and folder names contain a dot (`.`) in front of them, they are considered hidden and not shown in the list. However, if this option is `true`, it forces all hidden files and folders to be shown in the list.
 
-### `includeEmptyGroup`
+### `includeEmptyFolder`
 
 - Type: `boolean`
 - Default: `false`

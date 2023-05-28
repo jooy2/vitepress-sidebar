@@ -3,6 +3,7 @@
 ## 1.7.0 (2023-05-28)
 
 - **BREAKING CHANGES**: The `withIndex` option was renamed to `includeRootIndexFile`.
+- **BREAKING CHANGES**: The `includeEmptyGroup` option was renamed to `includeEmptyFolder`.
 - Add `excludeFiles` option
 - Add `excludeFolders` option
 - Add `includeDotFiles` option

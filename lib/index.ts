@@ -15,7 +15,7 @@ declare interface Options {
   useTitleFromFrontmatter?: boolean;
   includeDotFiles?: boolean;
   convertSameNameSubFileToGroupIndexPage?: boolean;
-  includeEmptyGroup?: boolean;
+  includeEmptyFolder?: boolean;
   sortByFileName?: string[];
   excludeFiles?: string[];
   excludeFolders?: string[];
@@ -155,7 +155,7 @@ export default class VitePressSidebar {
             }
           }
 
-          if (options.includeEmptyGroup || directorySidebarItems.length > 0) {
+          if (options.includeEmptyFolder || directorySidebarItems.length > 0) {
             return {
               text: newDirectoryText,
               ...(withDirectoryLink ? { link: withDirectoryLink } : {}),

@@ -403,11 +403,11 @@ describe('VitePress Sidebar Test Case', () => {
     done();
   });
 
-  it('Option: includeEmptyGroup', (done) => {
+  it('Option: includeEmptyFolder', (done) => {
     assert.deepEqual(
       generateSidebar({
         root: 'test/docs',
-        includeEmptyGroup: true
+        includeEmptyFolder: true
       }),
       [
         {
