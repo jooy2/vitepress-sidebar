@@ -8,14 +8,17 @@
 - ⚡️ Zero dependency packages
 - ⚡️ Easy and versatile sidebar customization
 - ⚡️ Lightweight bundle file size
+- ⚡️ TypeScript support
 
 ## Demo & Real-world Uses
 
-Vitepress Sidebar is utilized in a variety of project environments, including my own web services. An example homepage can be found here: https://til.jooy2.com
+VitePress Sidebar is utilized in a variety of project environments, including my own web services. An example homepage can be found here: https://til.jooy2.com
 
 To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/network/dependents
 
 ## Installation
+
+We recommend using **NodeJS 16.x** or higher. The **VitePress Sidebar** is written in `ESM`, for `CommonJS` the module is available by referring to the issue comment below: https://github.com/jooy2/vitepress-sidebar/issues/49#issuecomment-1532310510
 
 ```shell
 # via npm
@@ -40,7 +43,7 @@ export default {
     sidebar: generateSidebar({
       // root: '/',
       // rootGroupText: 'Contents',
-      // rootGroupLink: 'https://github.com',
+      // rootGroupLink: 'https://github.com/jooy2',
       // useTitleFromFileHeading: true,
       // useTitleFromFrontmatter: true,
       // hyphenToSpace: true,
