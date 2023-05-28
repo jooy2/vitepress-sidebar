@@ -497,4 +497,48 @@ describe('VitePress Sidebar Test Case', () => {
     );
     done();
   });
+
+  it('Option: includeDotFiles', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        root: 'test/docs',
+        includeDotFiles: true
+      }),
+      [
+        {
+          text: 'Table of Contents',
+          items: [
+            { text: 'a', link: '/a' },
+            { text: 'b_file_name', link: '/b_file_name' },
+            { text: 'c-file-name', link: '/c-file-name' },
+            {
+              text: 'folder',
+              items: [
+                {
+                  text: '.secret-folder',
+                  items: [{ text: 'hello', link: '/folder/.secret-folder/hello' }]
+                },
+                { text: 'folder-file', link: '/folder/folder-file' },
+                {
+                  text: 'folder-index',
+                  items: [
+                    { text: 'another', link: '/folder/folder-index/another' },
+                    { text: 'folder-index', link: '/folder/folder-index/folder-index' }
+                  ]
+                },
+                {
+                  text: 'subfolder',
+                  items: [
+                    { text: '.secret-file', link: '/folder/subfolder/.secret-file' },
+                    { text: 'sub-file', link: '/folder/subfolder/sub-file' }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
+    done();
+  });
 });

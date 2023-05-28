@@ -50,6 +50,7 @@ export default {
       // sortByFileName: ['first.md', 'second', 'third.md'],
       // excludeFiles: ['first.md', 'secret.md'],
       // excludeFolders: ['secret-folder'],
+      // includeDotFiles: false,
       // withIndex: true,
       // includeEmptyGroup: false,
       // convertSameNameSubFileToGroupIndexPage: false
@@ -178,6 +179,13 @@ If the value is `true`, the `-` symbol included in the file name is converted to
 
 If the value is `true`, the `_` symbol included in the file name is converted to a space and displayed as a title.
 
+### `capitalizeFirst`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, the first letter of the menu name is forced to uppercase. The same applies if the title is specified with `useTitleFromFileHeading`.
+
 ### `excludeFiles`
 
 - Type: `Array<string>`
@@ -192,19 +200,19 @@ Files that correspond to an array of file names (including extensions) are not s
 
 Folders that correspond to an array of folder names are not shown in the list, and any sub-items within a folder are also not shown.
 
+### `includeDotFiles`
+
+- Type: `boolean`
+- Default: `false`
+
+Normally, if file and folder names contain a dot (`.`) in front of them, they are considered hidden and not shown in the list. However, if this option is `true`, it forces all hidden files and folders to be shown in the list.
+
 ### `includeEmptyGroup`
 
 - Type: `boolean`
 - Default: `false`
 
 If the value is `true`, also displays directories where no md file exists as a group.
-
-### `capitalizeFirst`
-
-- Type: `boolean`
-- Default: `false`
-
-If the value is `true`, the first letter of the menu name is forced to uppercase. The same applies if the title is specified with `useTitleFromFileHeading`.
 
 ### `withIndex`
 

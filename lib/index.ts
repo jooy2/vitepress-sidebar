@@ -13,6 +13,7 @@ declare interface Options {
   withIndex?: boolean;
   useTitleFromFileHeading?: boolean;
   useTitleFromFrontmatter?: boolean;
+  includeDotFiles?: boolean;
   convertSameNameSubFileToGroupIndexPage?: boolean;
   includeEmptyGroup?: boolean;
   sortByFileName?: string[];
@@ -114,6 +115,9 @@ export default class VitePressSidebar {
           return null;
         }
         if (displayDir === options.root && x === 'index.md' && !options.withIndex) {
+          return null;
+        }
+        if (!options.includeDotFiles && /^\./.test(x)) {
           return null;
         }
 
