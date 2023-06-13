@@ -2,7 +2,9 @@ import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
 
 declare interface Options {
-  root?: string;
+  documentRootPath?: string;
+  scanStartPath?: string;
+  resolvePath?: string;
   rootGroupText?: string;
   rootGroupLink?: string;
   collapsed?: boolean;
@@ -46,42 +48,71 @@ export type Sidebar = SidebarItem[] | SidebarMulti;
  * */
 
 export default class VitePressSidebar {
-  static generateSidebar(options: Options): Sidebar {
-    options.root = options?.root ?? '/';
-    if (!/^\//.test(options.root)) {
-      options.root = `/${options.root}`;
-    }
-    if (options.collapseDepth) {
-      options.collapsed = true;
-    }
+  static generateSidebar(options: Options | Options[]): Sidebar {
+    const optionItems: Options[] = Array.isArray(options) ? options : [options];
+    const sidebar: Sidebar = {};
 
-    options.rootGroupText = options?.rootGroupText ?? 'Table of Contents';
-    options.collapseDepth = options?.collapseDepth ?? 1;
-    options.sortByFileName = options?.sortByFileName ?? [];
-    options.excludeFiles = options?.excludeFiles ?? [];
-    options.excludeFolders = options?.excludeFolders ?? [];
+    for (let i = 0; i < optionItems.length; i += 1) {
+      const optionItem = optionItems[i];
 
-    const sidebar: SidebarListItem = VitePressSidebar.generateSidebarItem(
-      1,
-      join(process.cwd(), options.root),
-      options.root,
-      null,
-      options
-    );
+      if (Object.keys(optionItem).length > 0) {
+        optionItem.documentRootPath = optionItem?.documentRootPath ?? '/';
 
-    if (!sidebar.items) {
-      return [
-        {
-          text: options.rootGroupText,
-          ...(options.rootGroupLink ? { link: options.rootGroupLink } : {}),
-          items: sidebar as SidebarItem[],
-          ...(options.collapsed === null || options.collapsed === undefined
-            ? {}
-            : { collapsed: options.collapseDepth! <= 1! && options.collapsed })
+        if (!/^\//.test(optionItem.documentRootPath)) {
+          optionItem.documentRootPath = `/${optionItem.documentRootPath}`;
         }
-      ];
+
+        if (optionItem.scanStartPath && !/^\//.test(optionItem.scanStartPath)) {
+          optionItem.scanStartPath = `/${optionItem.scanStartPath}`;
+        }
+
+        if (optionItem.scanStartPath && /\/$/.test(optionItem.scanStartPath)) {
+          optionItem.scanStartPath = optionItem.scanStartPath.replace(/\/$/, '');
+        }
+
+        if (optionItem.collapseDepth) {
+          optionItem.collapsed = true;
+        }
+
+        optionItem.rootGroupText = optionItem?.rootGroupText ?? 'Table of Contents';
+        optionItem.collapseDepth = optionItem?.collapseDepth ?? 1;
+        optionItem.sortByFileName = optionItem?.sortByFileName ?? [];
+        optionItem.excludeFiles = optionItem?.excludeFiles ?? [];
+        optionItem.excludeFolders = optionItem?.excludeFolders ?? [];
+
+        let scanPath = optionItem.documentRootPath;
+
+        if (optionItem.scanStartPath) {
+          scanPath = `${optionItem.documentRootPath}${optionItem.scanStartPath}`;
+        }
+
+        const sidebarResult: SidebarListItem = VitePressSidebar.generateSidebarItem(
+          1,
+          join(process.cwd(), scanPath),
+          scanPath,
+          null,
+          optionItem
+        );
+
+        sidebar[optionItem.resolvePath || '/'] = sidebarResult?.items || [
+          {
+            text: optionItem.rootGroupText,
+            ...(optionItem.rootGroupLink ? { link: optionItem.rootGroupLink } : {}),
+            items: sidebarResult as SidebarItem[],
+            ...(optionItem.collapsed === null || optionItem.collapsed === undefined
+              ? {}
+              : { collapsed: optionItem.collapseDepth! <= 1! && optionItem.collapsed })
+          }
+        ];
+      }
     }
 
+    // Single sidebar
+    if (Object.keys(sidebar).length === 1) {
+      return Object.values(sidebar)[0];
+    }
+
+    // Multiple sidebars
     return sidebar;
   }
 
@@ -107,17 +138,20 @@ export default class VitePressSidebar {
     return directoryFiles
       .map((x: string) => {
         const childItemPath = resolve(currentDir, x);
-        const childItemPathDisplay = `${displayDir}/${x}`
-          .replace(options.root ?? '', '')
-          .replace(/\/{2}/, '/')
-          .replace(/\.md$/, '');
+        let childItemPathDisplay = `${displayDir}/${x}`.replace(/\/{2}/, '/').replace(/\.md$/, '');
+
+        if (options.documentRootPath && childItemPathDisplay.startsWith(options.documentRootPath)) {
+          childItemPathDisplay = childItemPathDisplay.replace(options.documentRootPath, '');
+        }
 
         if (/\.vitepress/.test(childItemPath)) {
           return null;
         }
-        if (displayDir === options.root && x === 'index.md' && !options.includeRootIndexFile) {
+
+        if (depth === 1 && x === 'index.md' && !options.includeRootIndexFile) {
           return null;
         }
+
         if (!options.includeDotFiles && /^\./.test(x)) {
           return null;
         }

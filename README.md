@@ -5,14 +5,13 @@
 **VitePress Sidebar** is a plugin for **[VitePress](https://vitepress.vuejs.org)** that automatically configures and manages the sidebar of your page with simple settings.
 
 - ⚡️ Optimized for the latest version of **VitePress**
-- ⚡️ Zero dependency packages
 - ⚡️ Easy and versatile sidebar customization
 - ⚡️ Lightweight bundle file size
 - ⚡️ TypeScript support
 
 ## Demo & Real-world Uses
 
-VitePress Sidebar is utilized in a variety of project environments, including my own web services. An example homepage can be found here: https://til.jooy2.com
+**VitePress Sidebar** is utilized in a variety of project environments, including my own web services. An example homepage can be found here: https://til.jooy2.com
 
 To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/network/dependents
 
@@ -41,7 +40,9 @@ import { generateSidebar } from 'vitepress-sidebar';
 export default {
   themeConfig: {
     sidebar: generateSidebar({
-      // root: '/',
+      // documentRootPath: '/',
+      // scanStartPath: null,
+      // resolvePath: null,
       // rootGroupText: 'Contents',
       // rootGroupLink: 'https://github.com/jooy2',
       // useTitleFromFileHeading: true,
@@ -67,7 +68,7 @@ export default {
 
 ```javascript
 generateSidebar({
-  root: 'test/docs',
+  documentRootPath: 'test/docs',
   collapseDepth: 2,
   hyphenToSpace: true
 });
@@ -99,14 +100,90 @@ generateSidebar({
 ]
 ```
 
+## Multiple Sidebars How-to
+
+To learn more about multiple sidebars, see the articles below:
+
+https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars
+
+You can specify multiple configuration objects of type `Array` in the option value of the `generateSidebar` function. Each object value can have different settings. If you use the `scanStartPath` and `resolvePath` options together, you can configure multiple sidebars.
+
+```javascript
+generateSidebar([
+  {
+    documentRootPath: 'test/docs',
+    resolvePath: '/'
+  },
+  {
+    documentRootPath: 'test/docs',
+    rootGroupText: 'Sub',
+    scanStartPath: 'folder/subfolder',
+    resolvePath: '/sub/path/'
+  }
+]);
+```
+
+Here's an example of the output from the above setup:
+
+```json5
+{
+  '/': [
+    {
+      text: 'Table of Contents',
+      items: [
+        { text: 'a', link: '/a' },
+        { text: 'b_file_name', link: '/b_file_name' },
+        { text: 'c-file-name', link: '/c-file-name' }
+        // ...
+      ]
+    }
+  ],
+  '/folder/sub/': [
+    {
+      text: 'Sub',
+      items: [{ text: 'sub-file', link: '/folder/subfolder/sub-file' }]
+    }
+  ]
+}
+```
+
+Learn more about `scanStartPath` and `resolvePath` in the `Options` section of `README.md`.
+
 ## Options
 
-### `root`
+### `documentRootPath`
 
 - Type: `string`
 - Default: `'/'`
 
-The path to the root directory where the document is located. Pass `/` if it is located in the project top-level path, or `/docs` if it is located in the docs folder.
+The top-level path where documentation files are located. The default value is `/`.
+
+This is the path where the `.vitepress` directory is located, and if the folder where the documentation is located in the project root is `/docs`, then the value of this option should be set to `docs` or `/docs`.
+
+### `scanStartPath`
+
+- Type: `string|null`
+- Default: `null`
+
+This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section in `README.md`.
+
+The path to the root directory to scan for document lists. Files in the path set in `documentRootPath` outside the path set in `scanStartPath` will not be scanned. It is recommended that you also set `documentRootPath` if you specify `scanStartPath` because the parent path set in `documentRootPath` should appear in the `link`.
+
+For example, if the root path is `/docs` and the document to be scanned is `/docs/sub-dir/scan-me`, the setting would look like this
+
+- `documentRootPath`: `/docs`,
+- `scanStartPath`: `sub-dir/scan-me` (Do not include the path to `documentRootPath`.)
+
+### `resolvePath`
+
+- Type: `string|null`
+- Default: `null`
+
+This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section in `README.md`.
+
+Enter the path to the section to display a different sidebar for each path. The path must contain `/` before and after it. Options without this value will be set to the root section (`/`).
+
+e.g. `/`, `/path/sub-path`, `/guide/`...
 
 ### `rootGroupText`
 

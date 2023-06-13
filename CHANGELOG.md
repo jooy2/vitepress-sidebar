@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.0 (2023-06-13)
+
+- **BREAKING CHANGES**: The `root` option was renamed to `documentRootPath`.
+- Support for multiple sidebars (Add `scanStartPath` and `resolvePath` option. Please read `README.md` file.)
+- Improved multiple validation checks
+
 ## 1.7.5 (2023-05-28)
 
 - Add `folderLinkNotIncludesFileName` option
