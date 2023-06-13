@@ -15,3 +15,10 @@ Thumbs.db
 
 # Log files
 *.log
+
+# VitePress files
+test/dist/*
+test/docs/.vitepress/.temp
+test/docs/.vitepress/.temp/*
+test/docs/.vitepress/cache
+test/docs/.vitepress/cache/*

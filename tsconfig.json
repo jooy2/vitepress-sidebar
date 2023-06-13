@@ -6,12 +6,19 @@
     "moduleResolution": "node",
     "lib": ["esnext"],
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
     "newLine": "lf"
   },
-  "include": ["lib/**/*.ts", "lib/**/*.d.ts", "test/**/*.spec.ts"],
+  "include": [
+    "lib/**/*.ts",
+    "lib/**/*.d.ts",
+    "test/**/*.spec.ts",
+    "test/docs/.vitepress/config.ts"
+  ],
   "exclude": ["node_modules"]
 }
