@@ -5,8 +5,9 @@
 **VitePress Sidebar** is a plugin for **[VitePress](https://vitepress.vuejs.org)** that automatically configures and manages the sidebar of your page with simple settings.
 
 - ⚡️ Optimized for the latest version of **VitePress**
-- ⚡️ Easy and versatile sidebar customization
+- ⚡️ Easy to use, lots of options to customize to your liking
 - ⚡️ Lightweight bundle file size
+- ⚡️ [Multiple Sidebars](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) support
 - ⚡️ TypeScript support
 
 ## Demo & Real-world Uses
