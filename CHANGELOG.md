@@ -5,6 +5,7 @@
 - **BREAKING CHANGES**: The `root` option was renamed to `documentRootPath`.
 - Support for multiple sidebars (Add `scanStartPath` and `resolvePath` option. Please read `README.md` file.)
 - Improved multiple validation checks
+- Improved Frontmatter inspections with special characters or newlines
 
 ## 1.7.5 (2023-05-28)
 

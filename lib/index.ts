@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { join, resolve } from 'path';
+import matter from 'gray-matter';
 
 declare interface Options {
   documentRootPath?: string;
@@ -261,9 +262,20 @@ export default class VitePressSidebar {
     if (options.useTitleFromFrontmatter) {
       // Use content frontmatter title value instead of file name
       try {
-        const data = readFileSync(filePath, 'utf-8');
-        const lines = data.split('\n');
+        const fileData = readFileSync(filePath, 'utf-8');
+
+        const { data } = matter(fileData);
+
+        // Try for using gray-matter
+        if (data?.title) {
+          const title = data?.title.toString();
+          return options.capitalizeFirst ? title.charAt(0).toUpperCase() + title.slice(1) : title;
+        }
+
+        // Try manual parsing
+        const lines = fileData.split('\n');
         let frontmatterStart = false;
+
         for (let i = 0, len = lines.length; i < len; i += 1) {
           let str = lines[i].toString().replace('\r', '');
           if (/^---$/.test(str)) {
