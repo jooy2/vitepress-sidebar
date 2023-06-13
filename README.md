@@ -139,7 +139,7 @@ Here's an example of the output from the above setup:
       ]
     }
   ],
-  '/folder/sub/': [
+  '/sub/path/': [
     {
       text: 'Sub',
       items: [{ text: 'sub-file', link: '/folder/subfolder/sub-file' }]
