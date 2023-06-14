@@ -732,4 +732,30 @@ describe('VitePress Sidebar Test Case', () => {
     );
     done();
   });
+
+  it('Multiple Sidebars (C)', (done) => {
+    assert.deepEqual(
+      generateSidebar([
+        {
+          documentRootPath: 'test/docs',
+          scanStartPath: 'folder/subfolder',
+          resolvePath: '/path/'
+        }
+      ]),
+      {
+        '/path/': [
+          {
+            text: 'Table of Contents',
+            items: [
+              {
+                text: 'sub-file',
+                link: '/folder/subfolder/sub-file'
+              }
+            ]
+          }
+        ]
+      }
+    );
+    done();
+  });
 });

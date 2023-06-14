@@ -52,6 +52,7 @@ export default class VitePressSidebar {
   static generateSidebar(options: Options | Options[]): Sidebar {
     const optionItems: Options[] = Array.isArray(options) ? options : [options];
     const sidebar: Sidebar = {};
+    let isMultipleSidebars = false;
 
     for (let i = 0; i < optionItems.length; i += 1) {
       const optionItem = optionItems[i];
@@ -95,6 +96,10 @@ export default class VitePressSidebar {
           optionItem
         );
 
+        if (optionItem.resolvePath) {
+          isMultipleSidebars = true;
+        }
+
         sidebar[optionItem.resolvePath || '/'] = sidebarResult?.items || [
           {
             text: optionItem.rootGroupText,
@@ -109,7 +114,7 @@ export default class VitePressSidebar {
     }
 
     // Single sidebar
-    if (Object.keys(sidebar).length === 1) {
+    if (!isMultipleSidebars && Object.keys(sidebar).length === 1) {
       return Object.values(sidebar)[0];
     }
 
