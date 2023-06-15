@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.1 (2023-06-15)
+
+- Make sure to apply multi-sidebar settings for settings containing `resolvePath`
+
 ## 1.8.0 (2023-06-13)
 
 - **BREAKING CHANGES**: The `root` option was renamed to `documentRootPath`.
