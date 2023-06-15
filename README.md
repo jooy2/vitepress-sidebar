@@ -161,6 +161,18 @@ The top-level path where documentation files are located. The default value is `
 
 This is the path where the `.vitepress` directory is located, and if the folder where the documentation is located in the project root is `/docs`, then the value of this option should be set to `docs` or `/docs`.
 
+```text
+.
+├─ package.json
+├─ src/
+├─ docs/        <--------------- `documentRootPath` ('/docs')
+│  ├─ .vitepress/        <------ VitePress config directory
+│  ├─ another-directory/
+│  ├─ hello.md
+│  └─ index.md
+└─ ...
+```
+
 ### `scanStartPath`
 
 - Type: `string|null`
