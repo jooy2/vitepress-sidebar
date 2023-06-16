@@ -124,6 +124,19 @@ generateSidebar([
 ]);
 ```
 
+The values of these options are used in the results as follows:
+
+```text
+{
+  <resolvePath>: [
+    {
+      text: <rootGroupText>,
+      items: [{ text: 'document', link: '<scanStartPath>/document' }]
+    }
+  ]
+}
+```
+
 Here's an example of the output from the above setup:
 
 ```json5
