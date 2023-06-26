@@ -35,6 +35,8 @@ $ pnpm i -D vitepress-sidebar
 
 In the `themeConfig` setting of `.vitepress/config.js` file, execute the autoGenerate function as shown below to automatically generate the sidebar.
 
+For more information about the configuration of `generateSidebar`, see **[Options](https://github.com/jooy2/vitepress-sidebar#options)** section below.
+
 ```javascript
 import { generateSidebar } from 'vitepress-sidebar';
 
