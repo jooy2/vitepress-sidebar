@@ -4,6 +4,11 @@ on:
   # trigger deployment on every push to main branch
   push:
     branches: [master]
+    paths:
+      - '**'
+      - '!LICENSE'
+      - '!*.md'
+      - '!.github/**'
   # trigger deployment manually
   workflow_dispatch:
 
