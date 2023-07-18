@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.2 (2023-07-18)
+
+- Remove unnecessary files
+- Upgrade package dependencies
+- Update `README.md`
+
 ## 1.8.1 (2023-06-15)
 
 - Make sure to apply multi-sidebar settings for settings containing `resolvePath`
