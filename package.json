@@ -1,6 +1,6 @@
 {
   "name": "vitepress-sidebar",
-  "version": "1.8.2",
+  "version": "1.9.0",
   "description": "A VitePress auto sidebar plugin that automatically creates a simple configuration.",
   "type": "module",
   "types": "dist/index.d.ts",
