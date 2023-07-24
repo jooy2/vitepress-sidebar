@@ -8,6 +8,7 @@ declare interface Options {
   resolvePath?: string;
   rootGroupText?: string;
   rootGroupLink?: string;
+  rootGroupCollapsed?: boolean;
   collapsed?: boolean;
   collapseDepth?: number;
   hyphenToSpace?: boolean;
@@ -107,7 +108,7 @@ export default class VitePressSidebar {
             items: sidebarResult as SidebarItem[],
             ...(optionItem.collapsed === null || optionItem.collapsed === undefined
               ? {}
-              : { collapsed: optionItem.collapseDepth! <= 1! && optionItem.collapsed })
+              : { collapsed: optionItem.rootGroupCollapsed })
           }
         ];
       }

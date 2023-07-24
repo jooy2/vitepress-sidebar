@@ -48,6 +48,7 @@ export default {
       // resolvePath: null,
       // rootGroupText: 'Contents',
       // rootGroupLink: 'https://github.com/jooy2',
+      // rootGroupCollapsed: false,
       // useTitleFromFileHeading: true,
       // useTitleFromFrontmatter: true,
       // hyphenToSpace: true,
@@ -77,30 +78,30 @@ generateSidebar({
 });
 ```
 
-```json
+```javascript
 [
   {
-    "text": "Table of Contents",
-    "items": [
-      { "text": "a", "link": "/a" },
-      { "text": "b_file_name", "link": "/b_file_name" },
-      { "text": "c file name", "link": "/c-file-name" },
+    text: 'Table of Contents',
+    items: [
+      { text: 'a', link: '/a' },
+      { text: 'b_file_name', link: '/b_file_name' },
+      { text: 'c file name', link: '/c-file-name' },
       {
-        "text": "folder",
-        "items": [
-          { "text": "folder file", "link": "/folder/folder-file" },
+        text: 'folder',
+        items: [
+          { text: 'folder file', link: '/folder/folder-file' },
           {
-            "text": "subfolder",
-            "items": [{ "text": "sub file", "link": "/folder/subfolder/sub-file" }],
-            "collapsed": true
+            text: 'subfolder',
+            items: [{ text: 'sub file', link: '/folder/subfolder/sub-file' }],
+            collapsed: true
           }
         ],
-        "collapsed": false
+        collapsed: false
       }
     ],
-    "collapsed": false
+    collapsed: undefined
   }
-]
+];
 ```
 
 ## Troubleshoot: `ERR_REQUIRE_ESM`
@@ -254,9 +255,18 @@ VitePress has a top-level group for every page, and that group needs a name, so 
 ### `rootGroupLink`
 
 - Type: `string`
-- Default: null
+- Default: `null`
 
 Sets the link to go to when the top-level group is clicked. If this option is not specified, it will behave as plain text.
+
+### `rootGroupCollapsed`
+
+- Type: `boolean`
+- Default: `null`
+
+The `rootGroupCollapsed` option sets whether child items of the root group are expanded or not. If specified with the default value of `null` or `undefined`, the expand/collapse button is not displayed. If the value is `true`, the child items are displayed collapsed, and if `false`, they are expanded.
+
+This option only applies to top-level item. For general item collapsibility, see the `collapsed` option.
 
 ### `useTitleFromFileHeading`
 

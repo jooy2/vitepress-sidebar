@@ -77,7 +77,7 @@ describe('VitePress Sidebar Test Case', () => {
             },
             { text: 'index', link: '/index' }
           ],
-          collapsed: false
+          collapsed: undefined
         }
       ]
     );
@@ -339,7 +339,8 @@ describe('VitePress Sidebar Test Case', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: 'test/docs',
-        collapsed: true
+        collapsed: true,
+        rootGroupCollapsed: true
       }),
       [
         {
@@ -410,7 +411,7 @@ describe('VitePress Sidebar Test Case', () => {
               collapsed: false
             }
           ],
-          collapsed: false
+          collapsed: undefined
         }
       ]
     );
