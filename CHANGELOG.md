@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.5 (2023-07-25)
+
+- Troubleshooting when links are not prefixed with `/`
+- Allow `null` or `undefined` value for collapsed options
+
 ## 1.9.0 (2023-07-24)
 
 - Add `rootGroupCollapsed` option. This option is separate from the `collapsed` option and allows you to set whether the RootGroup (the item displayed in the `Table of Contents`) is expanded or not. See `README.md` for more information.
