@@ -15,10 +15,12 @@ declare interface Options {
   underscoreToSpace?: boolean;
   capitalizeFirst?: boolean;
   includeRootIndexFile?: boolean;
+  includeFolderIndexFile?: boolean;
   useTitleFromFileHeading?: boolean;
   useTitleFromFrontmatter?: boolean;
   includeDotFiles?: boolean;
   convertSameNameSubFileToGroupIndexPage?: boolean;
+  useFolderLinkAsIndexPage?: boolean;
   folderLinkNotIncludesFileName?: boolean;
   includeEmptyFolder?: boolean;
   sortByFileName?: string[];
@@ -163,6 +165,10 @@ export default class VitePressSidebar {
           return null;
         }
 
+        if (depth !== 1 && x === 'index.md' && !options.includeFolderIndexFile) {
+          return null;
+        }
+
         if (!options.includeDotFiles && /^\./.test(x)) {
           return null;
         }
@@ -205,6 +211,8 @@ export default class VitePressSidebar {
                 (y: SidebarListItem) => y.text !== x
               );
             }
+          } else if (options.useFolderLinkAsIndexPage) {
+            withDirectoryLink = `${childItemPathDisplay}/index`;
           }
 
           if (options.includeEmptyFolder || directorySidebarItems.length > 0) {

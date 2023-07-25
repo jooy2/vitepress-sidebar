@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.0 (2023-07-25)
+
+- Add `includeFolderIndexFile` option
+- Add `useFolderLinkAsIndexPage` option
+
 ## 1.9.5 (2023-07-25)
 
 - Troubleshooting when links are not prefixed with `/`

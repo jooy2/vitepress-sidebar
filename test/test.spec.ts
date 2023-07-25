@@ -335,6 +335,46 @@ describe('VitePress Sidebar Test Case', () => {
     done();
   });
 
+  it('Option: useFolderLinkAsIndexPage', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'test/docs',
+        useFolderLinkAsIndexPage: true
+      }),
+      [
+        {
+          text: 'Table of Contents',
+          items: [
+            { text: 'a', link: '/a' },
+            { text: 'b_file_name', link: '/b_file_name' },
+            { text: 'c-file-name', link: '/c-file-name' },
+            {
+              text: 'folder',
+              link: '/folder/index',
+              items: [
+                { text: 'folder-file', link: '/folder/folder-file' },
+                {
+                  text: 'folder-index',
+                  link: '/folder/folder-index/index',
+                  items: [
+                    { text: 'another', link: '/folder/folder-index/another' },
+                    { text: 'folder-index', link: '/folder/folder-index/folder-index' }
+                  ]
+                },
+                {
+                  text: 'subfolder',
+                  link: '/folder/subfolder/index',
+                  items: [{ text: 'sub-file', link: '/folder/subfolder/sub-file' }]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
+    done();
+  });
+
   it('Option: collapsed', (done) => {
     assert.deepEqual(
       generateSidebar({
@@ -619,6 +659,46 @@ describe('VitePress Sidebar Test Case', () => {
                   text: 'subfolder',
                   items: [
                     { text: '.secret-file', link: '/folder/subfolder/.secret-file' },
+                    { text: 'sub-file', link: '/folder/subfolder/sub-file' }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
+    done();
+  });
+
+  it('Option: includeFolderIndexFile', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'test/docs',
+        includeFolderIndexFile: true
+      }),
+      [
+        {
+          text: 'Table of Contents',
+          items: [
+            { text: 'a', link: '/a' },
+            { text: 'b_file_name', link: '/b_file_name' },
+            { text: 'c-file-name', link: '/c-file-name' },
+            {
+              text: 'folder',
+              items: [
+                { text: 'folder-file', link: '/folder/folder-file' },
+                {
+                  text: 'folder-index',
+                  items: [
+                    { text: 'another', link: '/folder/folder-index/another' },
+                    { text: 'folder-index', link: '/folder/folder-index/folder-index' }
+                  ]
+                },
+                {
+                  text: 'subfolder',
+                  items: [
+                    { text: 'index', link: '/folder/subfolder/index' },
                     { text: 'sub-file', link: '/folder/subfolder/sub-file' }
                   ]
                 }

@@ -59,9 +59,11 @@ export default {
       // excludeFiles: ['first.md', 'secret.md'],
       // excludeFolders: ['secret-folder'],
       // includeDotFiles: false,
-      // includeRootIndexFile: true,
+      // includeRootIndexFile: false,
+      // includeFolderIndexFile: false,
       // includeEmptyFolder: false,
-      // convertSameNameSubFileToGroupIndexPage: false
+      // convertSameNameSubFileToGroupIndexPage: false,
+      // useFolderLinkAsIndexPage: false,
       // folderLinkNotIncludesFileName: false
     })
   }
@@ -367,7 +369,14 @@ If the value is `true`, also displays directories where no md file exists as a g
 - Type: `boolean`
 - Default: `false`
 
-If the value is `true`, also include the top-level path `index.md` file in the sidebar menu. (If the file does not exist, it is ignored.)
+If the value is `true`, also include the top-level path `index.md` file in the sidebar menu. Use the `includeFolderIndexFile` option to include the index file of the child items as well. (If the file does not exist, it is ignored.)
+
+### `includeFolderIndexFile`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, also include the folder path `index.md` file in the sidebar menu. Use the `includeRootIndexFile` option to include the index file of the root item as well. (If the file does not exist, it is ignored.)
 
 ### `convertSameNameSubFileToGroupIndexPage`
 
@@ -375,6 +384,13 @@ If the value is `true`, also include the top-level path `index.md` file in the s
 - Default: `false`
 
 If this value is `true`, then if a subfile with the same name as the folder exists, a link will be created in the folder to navigate to that file, and the file will not be displayed in the child item.
+
+### `useFolderLinkAsIndexPage`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, Set the link to go to the subfile `index.md` in each folder. Note that this option sets the link even if the `index.md` file doesn't exist in the child item, so if the file doesn't exist, you may get a 404 error.
 
 ### `folderLinkNotIncludesFileName`
 
