@@ -8,8 +8,8 @@ declare interface Options {
   resolvePath?: string;
   rootGroupText?: string;
   rootGroupLink?: string;
-  rootGroupCollapsed?: boolean;
-  collapsed?: boolean;
+  rootGroupCollapsed?: boolean | null | undefined;
+  collapsed?: boolean | null | undefined;
   collapseDepth?: number;
   hyphenToSpace?: boolean;
   underscoreToSpace?: boolean;
