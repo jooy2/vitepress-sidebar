@@ -149,6 +149,10 @@ export default class VitePressSidebar {
 
         if (options.documentRootPath && childItemPathDisplay.startsWith(options.documentRootPath)) {
           childItemPathDisplay = childItemPathDisplay.replace(options.documentRootPath, '');
+
+          if (!childItemPathDisplay.startsWith('/')) {
+            childItemPathDisplay = `/${childItemPathDisplay}`;
+          }
         }
 
         if (/\.vitepress/.test(childItemPath)) {
@@ -216,6 +220,7 @@ export default class VitePressSidebar {
 
           return null;
         }
+
         if (childItemPath.endsWith('.md')) {
           if (options.excludeFiles?.includes(x)) {
             return null;
