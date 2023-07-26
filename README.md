@@ -18,7 +18,7 @@ To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/
 
 ## Installation
 
-We recommend using **NodeJS 16.x** or higher. The **VitePress Sidebar** is written in `ESM`, for `CommonJS` the module is available by referring to the issue comment below: https://github.com/jooy2/vitepress-sidebar/issues/49#issuecomment-1532310510
+We recommend using **NodeJS 16.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](https://github.com/jooy2/vitepress-sidebar#troubleshoot-err_require_esm).
 
 ```shell
 # via npm
