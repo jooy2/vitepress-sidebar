@@ -74,7 +74,7 @@
     "terser": "^5.19.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6",
-    "vitepress": "^1.0.0-beta.6"
+    "vitepress": "^1.0.0-beta.7"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
