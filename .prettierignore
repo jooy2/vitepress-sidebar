@@ -1,5 +1,6 @@
 dist/
 .idea/
+.vscode/
 test/docs/
 node_modules/
 

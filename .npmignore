@@ -5,6 +5,7 @@ Thumbs.db
 
 # IDEs
 .idea/
+.vscode/
 
 # Project files
 lib/
