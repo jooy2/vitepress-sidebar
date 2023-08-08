@@ -76,8 +76,7 @@ describe('VitePress Sidebar Test Case', () => {
               collapsed: false
             },
             { text: 'index', link: '/index' }
-          ],
-          collapsed: undefined
+          ]
         }
       ]
     );
@@ -380,7 +379,7 @@ describe('VitePress Sidebar Test Case', () => {
       generateSidebar({
         documentRootPath: 'test/docs',
         collapsed: true,
-        rootGroupCollapsed: true
+        rootGroupCollapsed: false
       }),
       [
         {
@@ -410,7 +409,7 @@ describe('VitePress Sidebar Test Case', () => {
               collapsed: true
             }
           ],
-          collapsed: true
+          collapsed: false
         }
       ]
     );
@@ -450,8 +449,7 @@ describe('VitePress Sidebar Test Case', () => {
               ],
               collapsed: false
             }
-          ],
-          collapsed: undefined
+          ]
         }
       ]
     );
