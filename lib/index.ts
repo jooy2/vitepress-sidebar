@@ -108,7 +108,8 @@ export default class VitePressSidebar {
             text: optionItem.rootGroupText,
             ...(optionItem.rootGroupLink ? { link: optionItem.rootGroupLink } : {}),
             items: sidebarResult as SidebarItem[],
-            ...(optionItem.collapsed === null || optionItem.collapsed === undefined
+            ...(optionItem.rootGroupCollapsed === null ||
+            optionItem.rootGroupCollapsed === undefined
               ? {}
               : { collapsed: optionItem.rootGroupCollapsed })
           }

@@ -18,7 +18,7 @@ To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/
 
 ## Installation
 
-We recommend using **NodeJS 16.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](https://github.com/jooy2/vitepress-sidebar#troubleshoot-err_require_esm).
+We recommend using **Node.js 16.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](https://github.com/jooy2/vitepress-sidebar#troubleshoot-err_require_esm).
 
 ```shell
 # via npm
@@ -31,7 +31,7 @@ $ yarn add -D vitepress-sidebar
 $ pnpm i -D vitepress-sidebar
 ```
 
-## How to use
+## How to Use
 
 In the `themeConfig` setting of `.vitepress/config.js` file, execute the autoGenerate function as shown below to automatically generate the sidebar.
 

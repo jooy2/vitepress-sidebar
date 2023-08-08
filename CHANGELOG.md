@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.10.1 (2023-08-08)
+
+- Fixed issue with `rootGroupCollapsed` option not being applied correctly
+
 ## 1.10.0 (2023-07-25)
 
 - Add `includeFolderIndexFile` option
