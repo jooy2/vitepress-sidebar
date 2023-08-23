@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, statSync } from 'fs';
+import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 import matter from 'gray-matter';
 
@@ -20,12 +20,16 @@ declare interface Options {
   useTitleFromFrontmatter?: boolean;
   includeDotFiles?: boolean;
   convertSameNameSubFileToGroupIndexPage?: boolean;
-  useFolderLinkAsIndexPage?: boolean;
+  useIndexFileForFolderMenuInfo?: boolean;
   folderLinkNotIncludesFileName?: boolean;
   includeEmptyFolder?: boolean;
   sortByFileName?: string[];
   excludeFiles?: string[];
   excludeFolders?: string[];
+  root?: string; // Deprecated
+  includeEmptyGroup?: boolean; // Deprecated
+  withIndex?: boolean; // Deprecated
+  useFolderLinkAsIndexPage?: boolean; // Deprecated
 }
 
 declare interface SidebarListItem {
@@ -61,6 +65,22 @@ export default class VitePressSidebar {
       const optionItem = optionItems[i];
 
       if (Object.keys(optionItem).length > 0) {
+        // Exceptions for changed option names
+        if (optionItem.root) {
+          throw new Error('The `root` option was renamed to `documentRootPath`.');
+        }
+        if (optionItem.withIndex) {
+          throw new Error('The `withIndex` option was renamed to `includeRootIndexFile`.');
+        }
+        if (optionItem.includeEmptyGroup) {
+          throw new Error('The `includeEmptyGroup` option was renamed to `includeEmptyFolder`.');
+        }
+        if (optionItem.useFolderLinkAsIndexPage) {
+          throw new Error(
+            'The `useFolderLinkAsIndexPage` option was renamed to `useIndexFileForFolderMenuInfo`.'
+          );
+        }
+
         optionItem.documentRootPath = optionItem?.documentRootPath ?? '/';
 
         if (!/^\//.test(optionItem.documentRootPath)) {
@@ -212,8 +232,20 @@ export default class VitePressSidebar {
                 (y: SidebarListItem) => y.text !== x
               );
             }
-          } else if (options.useFolderLinkAsIndexPage) {
-            withDirectoryLink = `${childItemPathDisplay}/index`;
+          } else if (options.useIndexFileForFolderMenuInfo) {
+            // If an index.md file exists in a folder subfile,
+            // replace the name and link of the folder with what is set in index.md.
+            // The index.md file can still be displayed if the value of `includeFolderIndexFile` is `true`.
+            const childIndexFilePath = `${childItemPath}/index.md`;
+
+            if (existsSync(childIndexFilePath)) {
+              newDirectoryText = VitePressSidebar.getTitleFromMd(
+                'index',
+                childIndexFilePath,
+                options
+              );
+              withDirectoryLink = `${childItemPathDisplay}/index`;
+            }
           }
 
           if (options.includeEmptyFolder || directorySidebarItems.length > 0) {

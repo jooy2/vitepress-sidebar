@@ -334,11 +334,11 @@ describe('VitePress Sidebar Test Case', () => {
     done();
   });
 
-  it('Option: useFolderLinkAsIndexPage', (done) => {
+  it('Option: useIndexFileForFolderMenuInfo', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: 'test/docs',
-        useFolderLinkAsIndexPage: true
+        useIndexFileForFolderMenuInfo: true
       }),
       [
         {
@@ -349,19 +349,17 @@ describe('VitePress Sidebar Test Case', () => {
             { text: 'c-file-name', link: '/c-file-name' },
             {
               text: 'folder',
-              link: '/folder/index',
               items: [
                 { text: 'folder-file', link: '/folder/folder-file' },
                 {
                   text: 'folder-index',
-                  link: '/folder/folder-index/index',
                   items: [
                     { text: 'another', link: '/folder/folder-index/another' },
                     { text: 'folder-index', link: '/folder/folder-index/folder-index' }
                   ]
                 },
                 {
-                  text: 'subfolder',
+                  text: 'index',
                   link: '/folder/subfolder/index',
                   items: [{ text: 'sub-file', link: '/folder/subfolder/sub-file' }]
                 }

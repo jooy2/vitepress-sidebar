@@ -63,7 +63,7 @@ export default {
       // includeFolderIndexFile: false,
       // includeEmptyFolder: false,
       // convertSameNameSubFileToGroupIndexPage: false,
-      // useFolderLinkAsIndexPage: false,
+      // useIndexFileForFolderMenuInfo: false,
       // folderLinkNotIncludesFileName: false
     })
   }
@@ -385,12 +385,12 @@ If the value is `true`, also include the folder path `index.md` file in the side
 
 If this value is `true`, then if a subfile with the same name as the folder exists, a link will be created in the folder to navigate to that file, and the file will not be displayed in the child item.
 
-### `useFolderLinkAsIndexPage`
+### `useIndexFileForFolderMenuInfo`
 
 - Type: `boolean`
 - Default: `false`
 
-If this value is `true`, Set the link to go to the subfile `index.md` in each folder. Note that this option sets the link even if the `index.md` file doesn't exist in the child item, so if the file doesn't exist, you may get a 404 error.
+If this value is `true`, use the information set in the `index.md` file for the name and link of the folder menu when the `index.md` file contained within the folder exists. If the `index.md` file does not exist, no link is set and the menu name is displayed as the folder name.
 
 ### `folderLinkNotIncludesFileName`
 
