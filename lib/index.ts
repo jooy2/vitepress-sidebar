@@ -23,6 +23,8 @@ declare interface Options {
   useIndexFileForFolderMenuInfo?: boolean;
   folderLinkNotIncludesFileName?: boolean;
   includeEmptyFolder?: boolean;
+  sortMenusByName?: boolean;
+  sortMenusOrderByDescending?: boolean;
   sortByFileName?: string[];
   excludeFiles?: string[];
   excludeFolders?: string[];
@@ -176,7 +178,7 @@ export default class VitePressSidebar {
       directoryFiles = [...needSortItem, ...remainItem];
     }
 
-    return directoryFiles
+    let sidebarItems: SidebarListItem = directoryFiles
       .map((x: string) => {
         const childItemPath = resolve(currentDir, x);
         let childItemPathDisplay = `${displayDir}/${x}`.replace(/\/{2}/, '/').replace(/\.md$/, '');
@@ -298,6 +300,16 @@ export default class VitePressSidebar {
         return null;
       })
       .filter((x) => x !== null);
+
+    if (options.sortMenusByName) {
+      sidebarItems = VitePressSidebar.sortByObjectKey(
+        sidebarItems,
+        'text',
+        options.sortMenusOrderByDescending
+      );
+    }
+
+    return sidebarItems;
   }
 
   private static getTitleFromMd(
@@ -389,6 +401,19 @@ export default class VitePressSidebar {
     }
 
     return result;
+  }
+
+  private static sortByObjectKey(arr: SidebarListItem, key: string, desc = false): object[] {
+    return arr.sort((a: any, b: any) => {
+      if (!desc) {
+        if (a[key] < b[key]) return -1;
+        if (a[key] > b[key]) return 1;
+        return 0;
+      }
+      if (a[key] > b[key]) return -1;
+      if (a[key] < b[key]) return 1;
+      return 0;
+    });
   }
 }
 

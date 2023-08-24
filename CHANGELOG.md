@@ -5,6 +5,7 @@
 - **BREAKING CHANGES**: `useFolderLinkAsIndexPage` option was renamed to `useIndexFileForFolderMenuInfo`
 - **BREAKING CHANGES**: The `useFolderLinkAsIndexPage` option now also gets the title information of the `index.md` file, so the name of the folder menu is set to the title of the `index.md` file
 - The `useFolderLinkAsIndexPage` option, if the index file (`index.md`) does not exist, will display it without setting a link, replacing the name with the folder name
+- Add `sortMenusByName` and `sortMenusOrderByDescending` options
 - Added deprecated warning for changed option names
 
 ## 1.10.1 (2023-08-08)

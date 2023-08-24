@@ -277,6 +277,8 @@ This option only applies to top-level item. For general item collapsibility, see
 
 If the value is `true`, display the title with the `h1` heading content of the `.md` file. If the `h1` heading does not exist in the file, it displays `Unknown`.
 
+The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
+
 ### `useTitleFromFrontmatter`
 
 - Type: `boolean`
@@ -294,12 +296,28 @@ title: This is frontmatter title value.
 
 For more information, see the following articles: https://vitepress.dev/guide/frontmatter
 
+The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
+
 ### `sortByFileName`
 
 - Type: `Array<string>`
 - Default: `[]`
 
 Sort by an array of file names (including extensions) in order. If there is no value in the array that matches the filename, the sort priority is sent back. This applies to both files and directories, and the same arrangement rules apply to subdirectories as well.
+
+### `sortMenusByName`
+
+- Type: `boolean`
+- Default: `false`
+
+Sort the items in the menu item by name. Normally, folder scans are done with an ascending name sort, so the default sort is applied without this option applied, but if you use the `useTitleFromFileHeading` or `useTitleFromFrontmatter` options, you may need to re-sort by name because the menu name changes. This option forces sorting by name even for changed menu names.
+
+### `sortMenusOrderByDescending`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, sorts the items in the menu item in descending order. This option is only enabled when `sortMenusByName` is `true`.
 
 ### `collapsed`
 
