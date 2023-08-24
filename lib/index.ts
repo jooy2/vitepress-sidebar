@@ -25,9 +25,10 @@ declare interface Options {
   includeEmptyFolder?: boolean;
   sortMenusByName?: boolean;
   sortMenusOrderByDescending?: boolean;
-  sortByFileName?: string[];
+  manualSortFileNameByPriority?: string[];
   excludeFiles?: string[];
   excludeFolders?: string[];
+  sortByFileName?: string[]; // Deprecated
   root?: string; // Deprecated
   includeEmptyGroup?: boolean; // Deprecated
   withIndex?: boolean; // Deprecated
@@ -81,6 +82,14 @@ export default class VitePressSidebar {
             VitePressSidebar.generateDeprecateMessage('includeEmptyGroup', 'includeEmptyFolder')
           );
         }
+        if (optionItem.sortByFileName) {
+          throw new Error(
+            VitePressSidebar.generateDeprecateMessage(
+              'sortByFileName',
+              'manualSortFileNameByPriority'
+            )
+          );
+        }
         if (optionItem.useFolderLinkAsIndexPage) {
           throw new Error(
             VitePressSidebar.generateDeprecateMessage(
@@ -110,7 +119,7 @@ export default class VitePressSidebar {
 
         optionItem.rootGroupText = optionItem?.rootGroupText ?? 'Table of Contents';
         optionItem.collapseDepth = optionItem?.collapseDepth ?? 1;
-        optionItem.sortByFileName = optionItem?.sortByFileName ?? [];
+        optionItem.manualSortFileNameByPriority = optionItem?.manualSortFileNameByPriority ?? [];
         optionItem.excludeFiles = optionItem?.excludeFiles ?? [];
         optionItem.excludeFolders = optionItem?.excludeFolders ?? [];
 
@@ -168,11 +177,17 @@ export default class VitePressSidebar {
   ): SidebarListItem {
     let directoryFiles: string[] = readdirSync(currentDir);
 
-    if (options.sortByFileName!.length > 0) {
-      const needSortItem = directoryFiles.filter((x) => options.sortByFileName?.indexOf(x) !== -1);
-      const remainItem = directoryFiles.filter((x) => options.sortByFileName?.indexOf(x) === -1);
+    if (options.manualSortFileNameByPriority!.length > 0) {
+      const needSortItem = directoryFiles.filter(
+        (x) => options.manualSortFileNameByPriority?.indexOf(x) !== -1
+      );
+      const remainItem = directoryFiles.filter(
+        (x) => options.manualSortFileNameByPriority?.indexOf(x) === -1
+      );
       needSortItem.sort(
-        (a, b) => options.sortByFileName!.indexOf(a) - options.sortByFileName!.indexOf(b)
+        (a, b) =>
+          options.manualSortFileNameByPriority!.indexOf(a) -
+          options.manualSortFileNameByPriority!.indexOf(b)
       );
 
       directoryFiles = [...needSortItem, ...remainItem];

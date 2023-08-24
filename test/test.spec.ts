@@ -454,11 +454,11 @@ describe('VitePress Sidebar Test Case', () => {
     done();
   });
 
-  it('Option: sortByFileName', (done) => {
+  it('Option: manualSortFileNameByPriority', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: 'test/docs',
-        sortByFileName: ['c-file-name.md', 'empty', 'a.md', 'folder']
+        manualSortFileNameByPriority: ['c-file-name.md', 'empty', 'a.md', 'folder']
       }),
       [
         {

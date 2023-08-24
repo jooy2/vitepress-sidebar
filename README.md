@@ -55,7 +55,9 @@ export default {
       // underscoreToSpace: true,
       // collapsed: true,
       // collapseDepth: 2,
-      // sortByFileName: ['first.md', 'second', 'third.md'],
+      // sortMenusByName: false,
+      // sortMenusOrderByDescending: false,
+      // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
       // excludeFiles: ['first.md', 'secret.md'],
       // excludeFolders: ['secret-folder'],
       // includeDotFiles: false,
@@ -298,7 +300,7 @@ For more information, see the following articles: https://vitepress.dev/guide/fr
 
 The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
 
-### `sortByFileName`
+### `manualSortFileNameByPriority`
 
 - Type: `Array<string>`
 - Default: `[]`
