@@ -67,17 +67,24 @@ export default class VitePressSidebar {
       if (Object.keys(optionItem).length > 0) {
         // Exceptions for changed option names
         if (optionItem.root) {
-          throw new Error('The `root` option was renamed to `documentRootPath`.');
+          throw new Error(VitePressSidebar.generateDeprecateMessage('root', 'documentRootPath'));
         }
         if (optionItem.withIndex) {
-          throw new Error('The `withIndex` option was renamed to `includeRootIndexFile`.');
+          throw new Error(
+            VitePressSidebar.generateDeprecateMessage('withIndex', 'includeRootIndexFile')
+          );
         }
         if (optionItem.includeEmptyGroup) {
-          throw new Error('The `includeEmptyGroup` option was renamed to `includeEmptyFolder`.');
+          throw new Error(
+            VitePressSidebar.generateDeprecateMessage('includeEmptyGroup', 'includeEmptyFolder')
+          );
         }
         if (optionItem.useFolderLinkAsIndexPage) {
           throw new Error(
-            'The `useFolderLinkAsIndexPage` option was renamed to `useIndexFileForFolderMenuInfo`.'
+            VitePressSidebar.generateDeprecateMessage(
+              'useFolderLinkAsIndexPage',
+              'useIndexFileForFolderMenuInfo'
+            )
           );
         }
 
@@ -144,6 +151,10 @@ export default class VitePressSidebar {
 
     // Multiple sidebars
     return sidebar;
+  }
+
+  private static generateDeprecateMessage(original: string, renameTo: string) {
+    return `The \`${original}\` option was renamed to \`${renameTo}\`.`;
   }
 
   private static generateSidebarItem(
