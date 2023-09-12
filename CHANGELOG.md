@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.12.0 (2023-09-12)
+
+- Add `sortMenusByFrontmatterOrder` options
+
 ## 1.11.0 (2023-08-24)
 
 - **BREAKING CHANGES**: `useFolderLinkAsIndexPage` option was renamed to `useIndexFileForFolderMenuInfo`

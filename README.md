@@ -314,6 +314,13 @@ Sort by an array of file names (including extensions) in order. If there is no v
 
 Sort the items in the menu item by name. Normally, folder scans are done with an ascending name sort, so the default sort is applied without this option applied, but if you use the `useTitleFromFileHeading` or `useTitleFromFrontmatter` options, you may need to re-sort by name because the menu name changes. This option forces sorting by name even for changed menu names.
 
+### `sortMenusByFrontmatterOrder`
+
+- Type: `boolean`
+- Default: `false`
+
+Sorts the menu items by the `order` property of the frontmatter. For each folder, sorts the value (number) of the `order` property in ascending order, or descending order if the `sortMenusOrderByDescending` option is `true`. If the value of `order` is non-numeric or does not exist, `order` is judged to be `0`.
+
 ### `sortMenusOrderByDescending`
 
 - Type: `boolean`

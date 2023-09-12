@@ -10,6 +10,7 @@ title: this is not a frontmatter
 ---
 not title: this is not title
 title: A Title from Frontmatter
+order: 2
 ---
 
 This is Markdown file.

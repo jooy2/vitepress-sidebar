@@ -24,6 +24,7 @@ declare interface Options {
   folderLinkNotIncludesFileName?: boolean;
   includeEmptyFolder?: boolean;
   sortMenusByName?: boolean;
+  sortMenusByFrontmatterOrder?: boolean;
   sortMenusOrderByDescending?: boolean;
   manualSortFileNameByPriority?: string[];
   excludeFiles?: string[];
@@ -96,6 +97,11 @@ export default class VitePressSidebar {
               'useFolderLinkAsIndexPage',
               'useIndexFileForFolderMenuInfo'
             )
+          );
+        }
+        if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusByName) {
+          throw new Error(
+            'The `sortMenusByName` and `sortMenusByFrontmatterOrder` options cannot be used together.'
           );
         }
 
@@ -309,7 +315,10 @@ export default class VitePressSidebar {
 
           return {
             text: childItemText,
-            link: childItemPathDisplay
+            link: childItemPathDisplay,
+            ...(options.sortMenusByFrontmatterOrder
+              ? { order: VitePressSidebar.getOrderFromFrontmatter(childItemPath) }
+              : {})
           };
         }
         return null;
@@ -324,7 +333,48 @@ export default class VitePressSidebar {
       );
     }
 
+    if (options.sortMenusByFrontmatterOrder) {
+      sidebarItems = VitePressSidebar.sortByObjectKey(
+        sidebarItems,
+        'order',
+        options.sortMenusOrderByDescending
+      );
+
+      VitePressSidebar.deepDeleteKey(sidebarItems, 'order');
+    }
+
     return sidebarItems;
+  }
+
+  private static getOrderFromFrontmatter(filePath: string): number {
+    try {
+      const fileData = readFileSync(filePath, 'utf-8');
+
+      const { data } = matter(fileData);
+
+      // Try for using gray-matter
+      if (data?.order) {
+        return parseInt(data?.order, 10);
+      }
+
+      // Try manual parsing
+      const lines = fileData.split('\n');
+      let frontmatterStart = false;
+
+      for (let i = 0, len = lines.length; i < len; i += 1) {
+        const str = lines[i].toString().replace('\r', '');
+        if (/^---$/.test(str)) {
+          frontmatterStart = true;
+        }
+        if (/^order: (.*)/.test(str) && frontmatterStart) {
+          return parseInt(str.replace('order: ', ''), 10);
+        }
+      }
+    } catch (e) {
+      return 0;
+    }
+
+    return 0;
   }
 
   private static getTitleFromMd(
@@ -428,6 +478,22 @@ export default class VitePressSidebar {
       if (a[key] > b[key]) return -1;
       if (a[key] < b[key]) return 1;
       return 0;
+    });
+  }
+
+  private static deepDeleteKey(obj: SidebarListItem, key: string) {
+    if (typeof obj !== 'object' || obj === null) {
+      return;
+    }
+
+    if (Object.hasOwn(obj, key)) {
+      delete obj[key];
+    }
+
+    Object.keys(obj).forEach((item) => {
+      if (typeof obj[item] === 'object') {
+        VitePressSidebar.deepDeleteKey(obj[item], key);
+      }
     });
   }
 }

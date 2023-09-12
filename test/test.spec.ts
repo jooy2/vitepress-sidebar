@@ -707,6 +707,43 @@ describe('VitePress Sidebar Test Case', () => {
     done();
   });
 
+  it('Option: sortMenusByFrontmatterOrder', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'test/docs',
+        sortMenusByFrontmatterOrder: true
+      }),
+      [
+        {
+          text: 'Table of Contents',
+          items: [
+            { text: 'c-file-name', link: '/c-file-name' },
+            { text: 'a', link: '/a' },
+            { text: 'b_file_name', link: '/b_file_name' },
+            {
+              text: 'folder',
+              items: [
+                { text: 'folder-file', link: '/folder/folder-file' },
+                {
+                  text: 'folder-index',
+                  items: [
+                    { text: 'another', link: '/folder/folder-index/another' },
+                    { text: 'folder-index', link: '/folder/folder-index/folder-index' }
+                  ]
+                },
+                {
+                  text: 'subfolder',
+                  items: [{ text: 'sub-file', link: '/folder/subfolder/sub-file' }]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
+    done();
+  });
+
   it('Multiple Sidebars (A)', (done) => {
     assert.deepEqual(
       generateSidebar([
