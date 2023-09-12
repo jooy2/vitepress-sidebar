@@ -67,7 +67,8 @@ export default {
       // includeEmptyFolder: false,
       // convertSameNameSubFileToGroupIndexPage: false,
       // useIndexFileForFolderMenuInfo: false,
-      // folderLinkNotIncludesFileName: false
+      // folderLinkNotIncludesFileName: false,
+      // debugPrint: false,
     })
   }
 };
@@ -425,7 +426,14 @@ If this value is `true`, use the information set in the `index.md` file for the 
 - Type: `boolean`
 - Default: `false`
 
-If this value is `true`, When establishing a folder link, ignore the existence of child items and specify the link only as a folder path. This option is not commonly used and is utilized for rewrite rules. This option may need to be used in conjunction with other options where folder links are created.
+If this value is `true`, when establishing a folder link, ignore the existence of child items and specify the link only as a folder path. This option is not commonly used and is utilized for rewrite rules. This option may need to be used in conjunction with other options where folder links are created.
+
+### `debugPrint`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, prints the objects created after execution to the console log.
 
 ## Contribute
 

@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.12.5 (2023-)
+
+- Add `debugPrint` option
+
 ## 1.12.0 (2023-09-12)
 
-- Add `sortMenusByFrontmatterOrder` options
+- Add `sortMenusByFrontmatterOrder` option
 
 ## 1.11.0 (2023-08-24)
 

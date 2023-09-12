@@ -26,6 +26,7 @@ declare interface Options {
   sortMenusByName?: boolean;
   sortMenusByFrontmatterOrder?: boolean;
   sortMenusOrderByDescending?: boolean;
+  debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
   excludeFiles?: string[];
   excludeFolders?: string[];
@@ -64,6 +65,7 @@ export default class VitePressSidebar {
     const optionItems: Options[] = Array.isArray(options) ? options : [options];
     const sidebar: Sidebar = {};
     let isMultipleSidebars = false;
+    let enableDebugPrint = false;
 
     for (let i = 0; i < optionItems.length; i += 1) {
       const optionItem = optionItems[i];
@@ -103,6 +105,9 @@ export default class VitePressSidebar {
           throw new Error(
             'The `sortMenusByName` and `sortMenusByFrontmatterOrder` options cannot be used together.'
           );
+        }
+        if (optionItem.debugPrint && !enableDebugPrint) {
+          enableDebugPrint = true;
         }
 
         optionItem.documentRootPath = optionItem?.documentRootPath ?? '/';
@@ -159,6 +164,10 @@ export default class VitePressSidebar {
           }
         ];
       }
+    }
+
+    if (enableDebugPrint) {
+      process.stdout.write(JSON.stringify(sidebar, null, 2));
     }
 
     // Single sidebar
