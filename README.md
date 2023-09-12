@@ -18,7 +18,7 @@ To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/
 
 ## Installation
 
-We recommend using **Node.js 16.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](https://github.com/jooy2/vitepress-sidebar#troubleshoot-err_require_esm).
+We recommend using **Node.js 18.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](https://github.com/jooy2/vitepress-sidebar#troubleshoot-err_require_esm).
 
 ```shell
 # via npm
@@ -56,6 +56,7 @@ export default {
       // collapsed: true,
       // collapseDepth: 2,
       // sortMenusByName: false,
+      // sortMenusByFrontmatterOrder: false,
       // sortMenusOrderByDescending: false,
       // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
       // excludeFiles: ['first.md', 'secret.md'],
