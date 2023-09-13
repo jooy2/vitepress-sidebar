@@ -1,9 +1,11 @@
 # Changelog
 
-## 1.12.5 (2023-)
+## 1.13.0 (2023-09-13)
 
+- **BREAKING CHANGES**: The generator normally strips some of the Markdown syntax when using `useTitleFromFileHeading`. If you do not want to remove Markdown syntax, set the `keepMarkdownSyntaxFromTitle` option to `true`.
 - Add `debugPrint` option
 - Add `keepMarkdownSyntaxFromTitle` option
+- Improved test example files
 
 ## 1.12.0 (2023-09-12)
 
