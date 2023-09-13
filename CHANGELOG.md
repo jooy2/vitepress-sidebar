@@ -3,6 +3,7 @@
 ## 1.12.5 (2023-)
 
 - Add `debugPrint` option
+- Add `keepMarkdownSyntaxFromTitle` option
 
 ## 1.12.0 (2023-09-12)
 

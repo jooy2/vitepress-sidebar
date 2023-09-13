@@ -68,6 +68,7 @@ export default {
       // convertSameNameSubFileToGroupIndexPage: false,
       // useIndexFileForFolderMenuInfo: false,
       // folderLinkNotIncludesFileName: false,
+      // keepMarkdownSyntaxFromTitle: false,
       // debugPrint: false,
     })
   }
@@ -427,6 +428,13 @@ If this value is `true`, use the information set in the `index.md` file for the 
 - Default: `false`
 
 If this value is `true`, when establishing a folder link, ignore the existence of child items and specify the link only as a folder path. This option is not commonly used and is utilized for rewrite rules. This option may need to be used in conjunction with other options where folder links are created.
+
+### `keepMarkdownSyntaxFromTitle`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, preserves the Markdown syntax contained in the title text without removing it. Usually retains any highlighting or inline code. Hyperlink text is removed regardless of this option.
 
 ### `debugPrint`
 

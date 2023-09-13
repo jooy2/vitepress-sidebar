@@ -26,6 +26,7 @@ declare interface Options {
   sortMenusByName?: boolean;
   sortMenusByFrontmatterOrder?: boolean;
   sortMenusOrderByDescending?: boolean;
+  keepMarkdownSyntaxFromTitle?: boolean;
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
   excludeFiles?: string[];
@@ -435,9 +436,11 @@ export default class VitePressSidebar {
 
         for (let i = 0, len = lines.length; i < len; i += 1) {
           let str = lines[i].toString().replace('\r', '');
+
           if (/^---$/.test(str)) {
             frontmatterStart = true;
           }
+
           if (/^title: (.*)/.test(str) && frontmatterStart) {
             str = str.replace('title: ', '');
             return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
@@ -459,11 +462,14 @@ export default class VitePressSidebar {
             if (/\[(.*)]\(.*\)/.test(str)) {
               // Remove hyperlink from h1 if exists
               const execValue = /\[(.*)]\(.*\)/.exec(str)?.[1] || 'Unknown';
+
               return options.capitalizeFirst
                 ? execValue.charAt(0).toUpperCase() + execValue.slice(1)
                 : execValue;
             }
+
             str = str.replace(/^# /, '');
+
             return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
           }
         }
@@ -479,6 +485,14 @@ export default class VitePressSidebar {
 
       if (options.underscoreToSpace) {
         result = result.replace(/_/g, ' ');
+      }
+
+      // Remove certain Markdown format
+      if (!options.keepMarkdownSyntaxFromTitle) {
+        result = result.replace(/\*{1,2}([^*]+?)\*{1,2}/g, '$1');
+        result = result.replace(/_{1,2}([^_]+?)_{1,2}/g, '$1');
+        result = result.replace(/~{1,2}([^~]+?)~{1,2}/g, '$1');
+        result = result.replace(/`{1,3}([^`]+?)`{1,3}/g, '$1');
       }
     }
 
