@@ -166,17 +166,25 @@ export default class VitePressSidebar {
       }
     }
 
-    if (enableDebugPrint) {
-      process.stdout.write(JSON.stringify(sidebar, null, 2));
-    }
+    let sidebarResult;
 
     // Single sidebar
     if (!isMultipleSidebars && Object.keys(sidebar).length === 1) {
-      return Object.values(sidebar)[0];
+      sidebarResult = Object.values(sidebar)[0];
+    } else {
+      // Multiple sidebars
+      sidebarResult = sidebar;
     }
 
-    // Multiple sidebars
-    return sidebar;
+    if (enableDebugPrint) {
+      process.stdout.write(
+        `\n${'='.repeat(50)}\n${JSON.stringify(optionItems, null, 2)}\n${'-'.repeat(
+          50
+        )}\n${JSON.stringify(sidebarResult, null, 2)}\n${'='.repeat(50)}\n\n`
+      );
+    }
+
+    return sidebarResult;
   }
 
   private static generateDeprecateMessage(original: string, renameTo: string) {
