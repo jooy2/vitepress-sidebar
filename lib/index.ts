@@ -458,6 +458,7 @@ export default class VitePressSidebar {
         const lines = data.split('\n');
         for (let i = 0, len = lines.length; i < len; i += 1) {
           let str = lines[i].toString().replace('\r', '');
+
           if (/^# /.test(str)) {
             if (/\[(.*)]\(.*\)/.test(str)) {
               // Remove hyperlink from h1 if exists
@@ -469,6 +470,14 @@ export default class VitePressSidebar {
             }
 
             str = str.replace(/^# /, '');
+
+            // Remove certain Markdown format
+            if (!options.keepMarkdownSyntaxFromTitle) {
+              str = str.replace(/\*{1,2}([^*]+?)\*{1,2}/g, '$1');
+              str = str.replace(/_{1,2}([^_]+?)_{1,2}/g, '$1');
+              str = str.replace(/~{1,2}([^~]+?)~{1,2}/g, '$1');
+              str = str.replace(/`{1,3}([^`]+?)`{1,3}/g, '$1');
+            }
 
             return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
           }
@@ -485,14 +494,6 @@ export default class VitePressSidebar {
 
       if (options.underscoreToSpace) {
         result = result.replace(/_/g, ' ');
-      }
-
-      // Remove certain Markdown format
-      if (!options.keepMarkdownSyntaxFromTitle) {
-        result = result.replace(/\*{1,2}([^*]+?)\*{1,2}/g, '$1');
-        result = result.replace(/_{1,2}([^_]+?)_{1,2}/g, '$1');
-        result = result.replace(/~{1,2}([^~]+?)~{1,2}/g, '$1');
-        result = result.replace(/`{1,3}([^`]+?)`{1,3}/g, '$1');
       }
     }
 
