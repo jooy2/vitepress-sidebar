@@ -61,7 +61,7 @@ dist/
 
 # VitePress files
 test/dist/*
-test/docs/.vitepress/.temp
-test/docs/.vitepress/.temp/*
-test/docs/.vitepress/cache
-test/docs/.vitepress/cache/*
+example/.vitepress/.temp
+example/.vitepress/.temp/*
+example/.vitepress/cache
+example/.vitepress/cache/*

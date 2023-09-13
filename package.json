@@ -23,9 +23,9 @@
     "prepare": "npm run build",
     "format": "prettier .",
     "format:fix": "prettier . --write",
-    "docs:dev": "vitepress dev test/docs",
-    "docs:build": "vitepress build test/docs",
-    "docs:serve": "npm run docs:build && vitepress serve test/docs"
+    "docs:dev": "vitepress dev example",
+    "docs:build": "npm run build && vitepress build example",
+    "docs:serve": "npm run docs:build && vitepress serve example"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,5 +1,0 @@
----
-title: Front SubFolder
----
-
-# index

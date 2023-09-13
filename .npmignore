@@ -10,6 +10,7 @@ Thumbs.db
 # Project files
 lib/
 test/
+example/
 CHANGELOG.md
 CODE_OF_CONDUCT.md
 
