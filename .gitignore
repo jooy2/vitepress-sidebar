@@ -58,9 +58,9 @@ $RECYCLE.BIN/
 
 # Project files
 dist/
+docs-dist/
 
 # VitePress files
-test/dist/*
 example/.vitepress/.temp
 example/.vitepress/.temp/*
 example/.vitepress/cache

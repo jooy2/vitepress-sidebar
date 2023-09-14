@@ -79,8 +79,8 @@ export default {
 
 ```javascript
 generateSidebar({
-  documentRootPath: 'test/docs',
-  collapseDepth: 2,
+  documentRootPath: 'example',
+  useTitleFromFileHeading: true,
   hyphenToSpace: true
 });
 ```
@@ -90,23 +90,108 @@ generateSidebar({
   {
     text: 'Table of Contents',
     items: [
-      { text: 'a', link: '/a' },
-      { text: 'b_file_name', link: '/b_file_name' },
-      { text: 'c file name', link: '/c-file-name' },
       {
-        text: 'folder',
+        text: 'css',
         items: [
-          { text: 'folder file', link: '/folder/folder-file' },
           {
-            text: 'subfolder',
-            items: [{ text: 'sub file', link: '/folder/subfolder/sub-file' }],
-            collapsed: true
+            text: 'A',
+            link: '/css/a-css'
+          },
+          {
+            text: 'B',
+            link: '/css/b-css'
+          },
+          {
+            text: 'C',
+            link: '/css/c-css'
           }
-        ],
-        collapsed: false
+        ]
+      },
+      {
+        text: 'javascript',
+        items: [
+          {
+            text: 'ES Module',
+            link: '/javascript/es-module'
+          },
+          {
+            text: 'examples',
+            items: [
+              {
+                text: 'Examples',
+                link: '/javascript/examples/examples'
+              }
+            ]
+          },
+          {
+            text: 'functions',
+            items: [
+              {
+                text: 'prototypes',
+                items: [
+                  {
+                    text: 'Array',
+                    items: [
+                      {
+                        text: 'Array.indexOf',
+                        link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            text: 'Getting Started',
+            link: '/javascript/getting_started'
+          },
+          {
+            text: 'Helpful Links',
+            link: '/javascript/helpful-links'
+          },
+          {
+            text: 'package.json',
+            link: '/javascript/package.json'
+          },
+          {
+            text: 'vitepress how to',
+            items: [
+              {
+                text: 'frontmatter.example',
+                items: [
+                  {
+                    text: 'Examples of Bad Frontmatter',
+                    link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
+                  },
+                  {
+                    text: 'Properties of Frontmatter',
+                    link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
+                  },
+                  {
+                    text: 'Example of Frontmatter',
+                    link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
+                  },
+                  {
+                    text: 'Frontmatter? What is?',
+                    link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        text: 'markdown',
+        items: [
+          {
+            text: 'it',
+            link: '/markdown/markdown'
+          }
+        ]
       }
-    ],
-    collapsed: undefined
+    ]
   }
 ];
 ```

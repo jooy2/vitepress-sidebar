@@ -1,7 +1,8 @@
 dist/
+docs-dist/
 .idea/
 .vscode/
-test/docs/
+example/.vitepress/cache
 node_modules/
 
 package-lock.json

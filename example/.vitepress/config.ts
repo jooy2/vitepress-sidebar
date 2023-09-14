@@ -5,7 +5,7 @@ import { name, description, repository } from '../../package.json';
 export default {
   title: name,
   description,
-  outDir: './dist',
+  outDir: '../docs-dist',
   themeConfig: {
     sidebar: generateSidebar({
       documentRootPath: 'example',
