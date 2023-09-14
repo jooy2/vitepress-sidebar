@@ -8,13 +8,23 @@
 - ⚡️ Easy to use, lots of options to customize to your liking
 - ⚡️ Lightweight bundle file size
 - ⚡️ [Multiple Sidebars](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) support
+- ⚡️ [Frontmatter](https://vitepress.dev/guide/frontmatter) support
 - ⚡️ TypeScript support
 
 ## Demo & Real-world Uses
 
-**VitePress Sidebar** is utilized in a variety of project environments, including my own web services. An example homepage can be found here: https://til.jooy2.com
+**VitePress Sidebar** is utilized in a variety of project environments, including my own web services.
+
+An example homepage can be found here: https://vitepress-sidebar.jooy2.com
 
 To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/network/dependents
+
+To run and test the demo locally, clone this project and run the following commands:
+
+```shell
+$ npm i
+$ npm run docs:dev
+```
 
 ## Installation
 
