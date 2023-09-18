@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.14.0 (2023--)
+
+- Use a better algorithm for stripping formatting from titles that contain Markdown syntax
+
 ## 1.13.0 (2023-09-13)
 
 - **BREAKING CHANGES**: The generator normally strips some of the Markdown syntax when using `useTitleFromFileHeading`. If you do not want to remove Markdown syntax, set the `keepMarkdownSyntaxFromTitle` option to `true`.

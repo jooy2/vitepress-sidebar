@@ -460,16 +460,16 @@ export default class VitePressSidebar {
           let str = lines[i].toString().replace('\r', '');
 
           if (/^# /.test(str)) {
+            str = str.replace(/^# /, '');
+
             if (/\[(.*)]\(.*\)/.test(str)) {
               // Remove hyperlink from h1 if exists
-              const execValue = /\[(.*)]\(.*\)/.exec(str)?.[1] || 'Unknown';
-
-              return options.capitalizeFirst
-                ? execValue.charAt(0).toUpperCase() + execValue.slice(1)
-                : execValue;
+              const execValue = /(.*)?\[(.*)]\((.*)\)(.*)?/.exec(str) || '';
+              str =
+                execValue.length > 0
+                  ? `${execValue[1] || ''}${execValue[2] || ''}${execValue[4] || ''}`
+                  : '';
             }
-
-            str = str.replace(/^# /, '');
 
             // Remove certain Markdown format
             if (!options.keepMarkdownSyntaxFromTitle) {
