@@ -6,9 +6,6 @@ declare interface Options {
   documentRootPath?: string;
   scanStartPath?: string;
   resolvePath?: string;
-  rootGroupText?: string;
-  rootGroupLink?: string;
-  rootGroupCollapsed?: boolean | null | undefined;
   collapsed?: boolean | null | undefined;
   collapseDepth?: number;
   hyphenToSpace?: boolean;
@@ -31,6 +28,9 @@ declare interface Options {
   manualSortFileNameByPriority?: string[];
   excludeFiles?: string[];
   excludeFolders?: string[];
+  rootGroupText?: string; // Deprecated
+  rootGroupLink?: string; // Deprecated
+  rootGroupCollapsed?: boolean | null | undefined; // Deprecated
   sortByFileName?: string[]; // Deprecated
   root?: string; // Deprecated
   includeEmptyGroup?: boolean; // Deprecated
@@ -102,6 +102,15 @@ export default class VitePressSidebar {
             )
           );
         }
+        if (optionItem.rootGroupText) {
+          throw new Error(VitePressSidebar.generateDeprecateMessage('rootGroupText'));
+        }
+        if (optionItem.rootGroupLink) {
+          throw new Error(VitePressSidebar.generateDeprecateMessage('rootGroupLink'));
+        }
+        if (optionItem.rootGroupCollapsed) {
+          throw new Error(VitePressSidebar.generateDeprecateMessage('rootGroupCollapsed'));
+        }
         if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusByName) {
           throw new Error(
             'The `sortMenusByName` and `sortMenusByFrontmatterOrder` options cannot be used together.'
@@ -129,7 +138,6 @@ export default class VitePressSidebar {
           optionItem.collapsed = true;
         }
 
-        optionItem.rootGroupText = optionItem?.rootGroupText ?? 'Table of Contents';
         optionItem.collapseDepth = optionItem?.collapseDepth ?? 1;
         optionItem.manualSortFileNameByPriority = optionItem?.manualSortFileNameByPriority ?? [];
         optionItem.excludeFiles = optionItem?.excludeFiles ?? [];
@@ -153,17 +161,8 @@ export default class VitePressSidebar {
           isMultipleSidebars = true;
         }
 
-        sidebar[optionItem.resolvePath || '/'] = sidebarResult?.items || [
-          {
-            text: optionItem.rootGroupText,
-            ...(optionItem.rootGroupLink ? { link: optionItem.rootGroupLink } : {}),
-            items: sidebarResult as SidebarItem[],
-            ...(optionItem.rootGroupCollapsed === null ||
-            optionItem.rootGroupCollapsed === undefined
-              ? {}
-              : { collapsed: optionItem.rootGroupCollapsed })
-          }
-        ];
+        sidebar[optionItem.resolvePath || '/'] =
+          sidebarResult?.items || (sidebarResult as SidebarItem[]);
       }
     }
 
@@ -188,7 +187,10 @@ export default class VitePressSidebar {
     return sidebarResult;
   }
 
-  private static generateDeprecateMessage(original: string, renameTo: string) {
+  private static generateDeprecateMessage(original: string, renameTo?: string) {
+    if (!renameTo) {
+      return `The \`${original}\` option was deprecated. Please read CHANGELOG.md breaking changes.`;
+    }
     return `The \`${original}\` option was renamed to \`${renameTo}\`.`;
   }
 

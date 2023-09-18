@@ -56,9 +56,6 @@ export default {
       // documentRootPath: '/',
       // scanStartPath: null,
       // resolvePath: null,
-      // rootGroupText: 'Contents',
-      // rootGroupLink: 'https://github.com/jooy2',
-      // rootGroupCollapsed: false,
       // useTitleFromFileHeading: true,
       // useTitleFromFrontmatter: true,
       // hyphenToSpace: true,
@@ -90,118 +87,58 @@ export default {
 ```javascript
 generateSidebar({
   documentRootPath: 'example',
+  scanStartPath: 'javascript',
   useTitleFromFileHeading: true,
-  hyphenToSpace: true
+  hyphenToSpace: true,
+  excludeFolders: ['vitepress-how-to']
 });
 ```
 
 ```javascript
 [
   {
-    text: 'Table of Contents',
+    text: 'ES Module',
+    link: '/javascript/es-module'
+  },
+  {
+    text: 'examples',
     items: [
       {
-        text: 'css',
-        items: [
-          {
-            text: 'A',
-            link: '/css/a-css'
-          },
-          {
-            text: 'B',
-            link: '/css/b-css'
-          },
-          {
-            text: 'C',
-            link: '/css/c-css'
-          }
-        ]
-      },
+        text: 'undefinedExamplesundefined',
+        link: '/javascript/examples/examples'
+      }
+    ]
+  },
+  {
+    text: 'functions',
+    items: [
       {
-        text: 'javascript',
+        text: 'prototypes',
         items: [
           {
-            text: 'ES Module',
-            link: '/javascript/es-module'
-          },
-          {
-            text: 'examples',
+            text: 'Array',
             items: [
               {
-                text: 'Examples',
-                link: '/javascript/examples/examples'
+                text: 'Array.indexOf',
+                link: '/javascript/functions/prototypes/Array/Array.indexOf'
               }
             ]
-          },
-          {
-            text: 'functions',
-            items: [
-              {
-                text: 'prototypes',
-                items: [
-                  {
-                    text: 'Array',
-                    items: [
-                      {
-                        text: 'Array.indexOf',
-                        link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            text: 'Getting Started',
-            link: '/javascript/getting_started'
-          },
-          {
-            text: 'Helpful Links',
-            link: '/javascript/helpful-links'
-          },
-          {
-            text: 'package.json',
-            link: '/javascript/package.json'
-          },
-          {
-            text: 'vitepress how to',
-            items: [
-              {
-                text: 'frontmatter.example',
-                items: [
-                  {
-                    text: 'Examples of Bad Frontmatter',
-                    link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                  },
-                  {
-                    text: 'Properties of Frontmatter',
-                    link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                  },
-                  {
-                    text: 'Example of Frontmatter',
-                    link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                  },
-                  {
-                    text: 'Frontmatter? What is?',
-                    link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        text: 'markdown',
-        items: [
-          {
-            text: 'it',
-            link: '/markdown/markdown'
           }
         ]
       }
     ]
+  },
+  {
+    text: 'Getting Started',
+    link: '/javascript/getting_started'
+  },
+  {
+    text: 'Helpful Links',
+    link: '/javascript/helpful-links'
+  },
+  {
+    text: 'package.json',
+    link: '/javascript/package.json'
   }
 ];
 ```
@@ -251,7 +188,6 @@ generateSidebar([
   },
   {
     documentRootPath: 'test/docs',
-    rootGroupText: 'Sub',
     scanStartPath: 'folder/subfolder',
     resolvePath: '/sub/path/'
   }
@@ -264,7 +200,7 @@ The values of these options are used in the results as follows:
 {
   <resolvePath>: [
     {
-      text: <rootGroupText>,
+      text: 'subfolder',
       items: [{ text: 'document', link: '<scanStartPath>/document' }]
     }
   ]
@@ -344,31 +280,6 @@ This option is used to configure Multiple Sidebars. See the `Multiple Sidebars H
 Enter the path to the section to display a different sidebar for each path. The path must contain `/` before and after it. Options without this value will be set to the root section (`/`).
 
 e.g. `/`, `/path/sub-path`, `/guide/`...
-
-### `rootGroupText`
-
-- Type: `string`
-- Default: `'Table of Contents'`
-
-The name of a group to separate top-level documents with no separate subdirectories.
-
-VitePress has a top-level group for every page, and that group needs a name, so you can't arbitrarily remove the top-level group name.
-
-### `rootGroupLink`
-
-- Type: `string`
-- Default: `null`
-
-Sets the link to go to when the top-level group is clicked. If this option is not specified, it will behave as plain text.
-
-### `rootGroupCollapsed`
-
-- Type: `boolean`
-- Default: `null`
-
-The `rootGroupCollapsed` option sets whether child items of the root group are expanded or not. If specified with the default value of `null` or `undefined`, the expand/collapse button is not displayed. If the value is `true`, the child items are displayed collapsed, and if `false`, they are expanded.
-
-This option only applies to top-level item. For general item collapsibility, see the `collapsed` option.
 
 ### `useTitleFromFileHeading`
 

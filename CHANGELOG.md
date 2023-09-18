@@ -2,6 +2,7 @@
 
 ## 1.14.0 (2023--)
 
+- **BREAKING CHANGES**: The `rootGroupText`, `rootGroupLink`, and `rootGroupCollapsed` options was deprecated. You no longer need to define a rootGroup, and the subdirectory in the scan directory will be the groups section. This allows us to display the menu tree one step further and correctly represent the menu as intended in VitePress.
 - Use a better algorithm for stripping formatting from titles that contain Markdown syntax
 
 ## 1.13.0 (2023-09-13)

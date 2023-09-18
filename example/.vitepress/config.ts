@@ -8,9 +8,8 @@ export default {
   outDir: '../docs-dist',
   themeConfig: {
     sidebar: generateSidebar({
+      debugPrint: true,
       documentRootPath: 'example',
-      rootGroupText: 'Contents',
-      rootGroupLink: '/',
       collapsed: false,
       capitalizeFirst: true,
       useTitleFromFileHeading: true,
