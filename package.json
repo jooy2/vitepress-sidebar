@@ -1,6 +1,6 @@
 {
   "name": "vitepress-sidebar",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "A VitePress auto sidebar plugin that automatically creates a simple configuration.",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -62,7 +62,7 @@
   ],
   "devDependencies": {
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.6.0",
+    "@types/node": "^20.6.2",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
     "eslint": "^8.49.0",
