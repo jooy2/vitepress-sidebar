@@ -183,13 +183,21 @@ You can specify multiple configuration objects of type `Array` in the option val
 ```javascript
 generateSidebar([
   {
-    documentRootPath: 'test/docs',
-    resolvePath: '/'
+    debugPrint: true,
+    documentRootPath: 'example',
+    scanStartPath: 'css',
+    resolvePath: '/css/',
+    useTitleFromFileHeading: true,
+    excludeFiles: ['c-css.md']
   },
   {
-    documentRootPath: 'test/docs',
-    scanStartPath: 'folder/subfolder',
-    resolvePath: '/sub/path/'
+    debugPrint: true,
+    documentRootPath: 'example',
+    scanStartPath: 'javascript',
+    resolvePath: '/javascript/',
+    useTitleFromFrontmatter: true,
+    excludeFiles: ['package.json.md', 'helpful-links.md'],
+    excludeFolders: ['examples', 'vitepress-how-to']
   }
 ]);
 ```
@@ -211,21 +219,43 @@ Here's an example of the output from the above setup:
 
 ```json5
 {
-  '/': [
+  '/css/': [
     {
-      text: 'Table of Contents',
-      items: [
-        { text: 'a', link: '/a' },
-        { text: 'b_file_name', link: '/b_file_name' },
-        { text: 'c-file-name', link: '/c-file-name' }
-        // ...
-      ]
+      text: 'A',
+      link: '/css/a-css'
+    },
+    {
+      text: 'B',
+      link: '/css/b-css'
     }
   ],
-  '/sub/path/': [
+  '/javascript/': [
     {
-      text: 'Sub',
-      items: [{ text: 'sub-file', link: '/folder/subfolder/sub-file' }]
+      text: 'es-module',
+      link: '/javascript/es-module'
+    },
+    {
+      text: 'functions',
+      items: [
+        {
+          text: 'prototypes',
+          items: [
+            {
+              text: 'Array',
+              items: [
+                {
+                  text: 'Array.indexOf',
+                  link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      text: 'getting_started',
+      link: '/javascript/getting_started'
     }
   ]
 }

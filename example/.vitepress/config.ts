@@ -7,6 +7,7 @@ export default {
   description,
   outDir: '../docs-dist',
   themeConfig: {
+    // Single sidebar example
     sidebar: generateSidebar({
       debugPrint: true,
       documentRootPath: 'example',
@@ -17,6 +18,29 @@ export default {
       sortMenusByFrontmatterOrder: true,
       manualSortFileNameByPriority: ['getting_started.md', 'es-module.md', 'package.json.md']
     }),
+    /*
+    // Multiple sidebar example
+    sidebar: generateSidebar([
+      {
+        documentRootPath: 'example',
+        scanStartPath: 'css',
+        resolvePath: '/css/',
+        useTitleFromFileHeading: true,
+        excludeFiles: ['c-css.md']
+      },
+      {
+        documentRootPath: 'example',
+        scanStartPath: 'javascript',
+        resolvePath: '/javascript/',
+        useTitleFromFrontmatter: true,
+        excludeFiles: ['package.json.md', 'helpful-links.md'],
+        excludeFolders: ['examples', 'vitepress-how-to']
+      },
+      {
+        documentRootPath: 'example'
+      }
+    ]),
+     */
     search: {
       provider: 'local'
     },
