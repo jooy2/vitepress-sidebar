@@ -28,14 +28,38 @@ declare interface Options {
   manualSortFileNameByPriority?: string[];
   excludeFiles?: string[];
   excludeFolders?: string[];
-  rootGroupText?: string; // Deprecated
-  rootGroupLink?: string; // Deprecated
-  rootGroupCollapsed?: boolean | null | undefined; // Deprecated
-  sortByFileName?: string[]; // Deprecated
-  root?: string; // Deprecated
-  includeEmptyGroup?: boolean; // Deprecated
-  withIndex?: boolean; // Deprecated
-  useFolderLinkAsIndexPage?: boolean; // Deprecated
+  /**
+   * @deprecated
+   */
+  rootGroupText?: string;
+  /**
+   * @deprecated
+   */
+  rootGroupLink?: string;
+  /**
+   * @deprecated
+   */
+  rootGroupCollapsed?: boolean | null | undefined;
+  /**
+   * @deprecated
+   */
+  sortByFileName?: string[];
+  /**
+   * @deprecated
+   */
+  root?: string;
+  /**
+   * @deprecated
+   */
+  includeEmptyGroup?: boolean;
+  /**
+   * @deprecated
+   */
+  withIndex?: boolean;
+  /**
+   * @deprecated
+   */
+  useFolderLinkAsIndexPage?: boolean;
 }
 
 declare interface SidebarListItem {
