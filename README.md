@@ -72,6 +72,9 @@ export default {
       // includeRootIndexFile: false,
       // includeFolderIndexFile: false,
       // includeEmptyFolder: false,
+      // rootGroupText: 'Contents',
+      // rootGroupLink: 'https://github.com/jooy2',
+      // rootGroupCollapsed: false,
       // convertSameNameSubFileToGroupIndexPage: false,
       // useIndexFileForFolderMenuInfo: false,
       // folderLinkNotIncludesFileName: false,
@@ -208,8 +211,8 @@ The values of these options are used in the results as follows:
 {
   <resolvePath>: [
     {
-      text: 'subfolder',
-      items: [{ text: 'document', link: '<scanStartPath>/document' }]
+      base: <resolvePath>,
+      items: [{ text: 'My Document', link: 'document/hello' }] // `<scanStartPath>/document/hello`
     }
   ]
 }
@@ -301,7 +304,7 @@ This option is used to configure Multiple Sidebars. See the `Multiple Sidebars H
 
 The path to the root directory to scan for document lists. Files in the path set in `documentRootPath` outside the path set in `scanStartPath` will not be scanned. It is recommended that you also set `documentRootPath` if you specify `scanStartPath` because the parent path set in `documentRootPath` should appear in the `link`.
 
-For example, if the root path is `/docs` and the document to be scanned is `/docs/sub-dir/scan-me`, the setting would look like this
+For example, if the root path is `/docs` and the document to be scanned is `/docs/sub-dir/scan-me`, the setting would look like this:
 
 - `documentRootPath`: `/docs`,
 - `scanStartPath`: `sub-dir/scan-me` (Do not include the path to `documentRootPath`.)
@@ -449,6 +452,29 @@ If the value is `true`, also include the top-level path `index.md` file in the s
 - Default: `false`
 
 If the value is `true`, also include the folder path `index.md` file in the sidebar menu. Use the `includeRootIndexFile` option to include the index file of the root item as well. (If the file does not exist, it is ignored.)
+
+### `rootGroupText`
+
+- Type: `string`
+- Default: `'Table of Contents'`
+
+rootGroup specifies the entire group for the menu, regardless of directory structure. This uses one menu step, so you should be careful about using it, and you can disable the rootGroup option if you don't need it. If you specify this value, you specify a name for the top-level menu.
+
+### `rootGroupLink`
+
+- Type: `string`
+- Default: `null`
+
+For more information about rootGroup, see the `rootGroupText` option description. Specifying this value specifies a link to the rootGroup. If the value is empty, no link is added.
+
+### `rootGroupCollapsed`
+
+- Type: `boolean`
+- Default: `null`
+
+For more information about rootGroup, see the `rootGroupText` option description. The `rootGroupCollapsed` option sets whether child items of the root group are expanded or not. If specified with the default value of `null` or `undefined`, the expand/collapse button is not displayed. If the value is `true`, the child items are displayed collapsed, and if `false`, they are expanded.
+
+This option only applies to top-level item. For general item collapsibility, see the `collapsed` option.
 
 ### `convertSameNameSubFileToGroupIndexPage`
 

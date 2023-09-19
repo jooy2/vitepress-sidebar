@@ -2233,6 +2233,84 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
+  it('Option: rootGroup related configurations (A)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'example',
+        rootGroupText: 'Hello',
+        rootGroupLink: 'https://github.com/jooy2/vitepress-sidebar',
+        rootGroupCollapsed: true,
+        excludeFolders: ['javascript', 'markdown']
+      }),
+      [
+        {
+          text: 'Hello',
+          link: 'https://github.com/jooy2/vitepress-sidebar',
+          items: [
+            {
+              text: 'css',
+              items: [
+                {
+                  text: 'a-css',
+                  link: '/css/a-css'
+                },
+                {
+                  text: 'b-css',
+                  link: '/css/b-css'
+                },
+                {
+                  text: 'c-css',
+                  link: '/css/c-css'
+                }
+              ]
+            }
+          ],
+          collapsed: true
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('Option: rootGroup related configurations (B)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'example',
+        rootGroupText: '',
+        rootGroupCollapsed: false,
+        excludeFolders: ['javascript', 'markdown']
+      }),
+      [
+        {
+          text: '',
+          items: [
+            {
+              text: 'css',
+              items: [
+                {
+                  text: 'a-css',
+                  link: '/css/a-css'
+                },
+                {
+                  text: 'b-css',
+                  link: '/css/b-css'
+                },
+                {
+                  text: 'c-css',
+                  link: '/css/c-css'
+                }
+              ]
+            }
+          ],
+          collapsed: false
+        }
+      ]
+    );
+
+    done();
+  });
+
   it('Option: keepMarkdownSyntaxFromTitle', (done) => {
     assert.deepEqual(
       generateSidebar({
