@@ -3,10 +3,11 @@
 ## 1.15.0 (2023-09-19)
 
 - Fix correct base url for multiple sidebars
+- The `rootGroupText`, `rootGroupLink`, and `rootGroupCollapsed` options are available again. However, these options are no longer required.
 
 ## 1.14.0 (2023-09-18)
 
-- **BREAKING CHANGES**: The `rootGroupText`, `rootGroupLink`, and `rootGroupCollapsed` options was deprecated. You no longer need to define a rootGroup, and the subdirectory in the scan directory will be the groups section. This allows us to display the menu tree one step further and correctly represent the menu as intended in VitePress.
+- **NOTE**: The options `rootGroupText`, `rootGroupLink`, and `rootGroupCollapsed` are not available in this version. Please update to the latest version. These options have been restored!
 - Use a better algorithm for stripping formatting from titles that contain Markdown syntax
 
 ## 1.13.0 (2023-09-13)
