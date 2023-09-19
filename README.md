@@ -219,45 +219,51 @@ Here's an example of the output from the above setup:
 
 ```json5
 {
-  '/css/': [
-    {
-      text: 'A',
-      link: '/css/a-css'
-    },
-    {
-      text: 'B',
-      link: '/css/b-css'
-    }
-  ],
-  '/javascript/': [
-    {
-      text: 'es-module',
-      link: '/javascript/es-module'
-    },
-    {
-      text: 'functions',
-      items: [
-        {
-          text: 'prototypes',
-          items: [
-            {
-              text: 'Array',
-              items: [
-                {
-                  text: 'Array.indexOf',
-                  link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      text: 'getting_started',
-      link: '/javascript/getting_started'
-    }
-  ]
+  '/css/': {
+    base: '/css/',
+    items: [
+      {
+        text: 'A',
+        link: 'a-css'
+      },
+      {
+        text: 'B',
+        link: 'b-css'
+      }
+    ]
+  },
+  '/javascript/': {
+    base: '/javascript/',
+    items: [
+      {
+        text: 'es-module',
+        link: 'es-module'
+      },
+      {
+        text: 'functions',
+        items: [
+          {
+            text: 'prototypes',
+            items: [
+              {
+                text: 'Array',
+                items: [
+                  {
+                    text: 'Array.indexOf',
+                    link: 'functions/prototypes/Array/Array.indexOf'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        text: 'getting_started',
+        link: 'getting_started'
+      }
+    ]
+  }
 }
 ```
 

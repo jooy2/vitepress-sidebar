@@ -2367,197 +2367,206 @@ describe('VitePress Sidebar Test', () => {
         }
       ]),
       {
-        '/': [
-          {
-            text: 'css',
-            items: [
-              {
-                text: 'a-css',
-                link: '/css/a-css'
-              },
-              {
-                text: 'b-css',
-                link: '/css/b-css'
-              },
-              {
-                text: 'c-css',
-                link: '/css/c-css'
-              }
-            ]
-          },
-          {
-            text: 'javascript',
-            items: [
-              {
-                text: 'es-module',
-                link: '/javascript/es-module'
-              },
-              {
-                text: 'examples',
-                items: [
-                  {
-                    text: 'examples',
-                    link: '/javascript/examples/examples'
-                  }
-                ]
-              },
-              {
-                text: 'functions',
-                items: [
-                  {
-                    text: 'prototypes',
-                    items: [
-                      {
-                        text: 'Array',
-                        items: [
-                          {
-                            text: 'Array.indexOf',
-                            link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                text: 'getting_started',
-                link: '/javascript/getting_started'
-              },
-              {
-                text: 'helpful-links',
-                link: '/javascript/helpful-links'
-              },
-              {
-                text: 'package.json',
-                link: '/javascript/package.json'
-              },
-              {
-                text: 'vitepress-how-to',
-                items: [
-                  {
-                    text: 'frontmatter.example',
-                    items: [
-                      {
-                        text: 'bad-frontmatter-example',
-                        link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                      },
-                      {
-                        text: 'frontmatter-properties',
-                        link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                      },
-                      {
-                        text: 'use-frontmatter',
-                        link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                      },
-                      {
-                        text: 'what-is-frontmatter',
-                        link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            text: 'markdown',
-            items: [
-              {
-                text: 'markdown',
-                link: '/markdown/markdown'
-              }
-            ]
-          }
-        ],
-        '/javascript/': [
-          {
-            text: 'es-module',
-            link: '/javascript/es-module'
-          },
-          {
-            text: 'examples',
-            items: [
-              {
-                text: 'examples',
-                link: '/javascript/examples/examples'
-              }
-            ]
-          },
-          {
-            text: 'functions',
-            items: [
-              {
-                text: 'prototypes',
-                items: [
-                  {
-                    text: 'Array',
-                    items: [
-                      {
-                        text: 'Array.indexOf',
-                        link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            text: 'getting_started',
-            link: '/javascript/getting_started'
-          },
-          {
-            text: 'helpful-links',
-            link: '/javascript/helpful-links'
-          },
-          {
-            text: 'package.json',
-            link: '/javascript/package.json'
-          },
-          {
-            text: 'vitepress-how-to',
-            items: [
-              {
-                text: 'frontmatter.example',
-                items: [
-                  {
-                    text: 'bad-frontmatter-example',
-                    link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                  },
-                  {
-                    text: 'frontmatter-properties',
-                    link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                  },
-                  {
-                    text: 'use-frontmatter',
-                    link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                  },
-                  {
-                    text: 'what-is-frontmatter',
-                    link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        '/javascript/functions': [
-          {
-            text: 'prototypes',
-            items: [
-              {
-                text: 'Array',
-                items: [
-                  {
-                    text: 'Array.indexOf',
-                    link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+        '/': {
+          base: '/',
+          items: [
+            {
+              text: 'css',
+              items: [
+                {
+                  text: 'a-css',
+                  link: 'css/a-css'
+                },
+                {
+                  text: 'b-css',
+                  link: 'css/b-css'
+                },
+                {
+                  text: 'c-css',
+                  link: 'css/c-css'
+                }
+              ]
+            },
+            {
+              text: 'javascript',
+              items: [
+                {
+                  text: 'es-module',
+                  link: 'javascript/es-module'
+                },
+                {
+                  text: 'examples',
+                  items: [
+                    {
+                      text: 'examples',
+                      link: 'javascript/examples/examples'
+                    }
+                  ]
+                },
+                {
+                  text: 'functions',
+                  items: [
+                    {
+                      text: 'prototypes',
+                      items: [
+                        {
+                          text: 'Array',
+                          items: [
+                            {
+                              text: 'Array.indexOf',
+                              link: 'javascript/functions/prototypes/Array/Array.indexOf'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  text: 'getting_started',
+                  link: 'javascript/getting_started'
+                },
+                {
+                  text: 'helpful-links',
+                  link: 'javascript/helpful-links'
+                },
+                {
+                  text: 'package.json',
+                  link: 'javascript/package.json'
+                },
+                {
+                  text: 'vitepress-how-to',
+                  items: [
+                    {
+                      text: 'frontmatter.example',
+                      items: [
+                        {
+                          text: 'bad-frontmatter-example',
+                          link: 'javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
+                        },
+                        {
+                          text: 'frontmatter-properties',
+                          link: 'javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
+                        },
+                        {
+                          text: 'use-frontmatter',
+                          link: 'javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
+                        },
+                        {
+                          text: 'what-is-frontmatter',
+                          link: 'javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              text: 'markdown',
+              items: [
+                {
+                  text: 'markdown',
+                  link: 'markdown/markdown'
+                }
+              ]
+            }
+          ]
+        },
+        '/javascript/': {
+          base: '/javascript/',
+          items: [
+            {
+              text: 'es-module',
+              link: 'es-module'
+            },
+            {
+              text: 'examples',
+              items: [
+                {
+                  text: 'examples',
+                  link: 'examples/examples'
+                }
+              ]
+            },
+            {
+              text: 'functions',
+              items: [
+                {
+                  text: 'prototypes',
+                  items: [
+                    {
+                      text: 'Array',
+                      items: [
+                        {
+                          text: 'Array.indexOf',
+                          link: 'functions/prototypes/Array/Array.indexOf'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              text: 'getting_started',
+              link: 'getting_started'
+            },
+            {
+              text: 'helpful-links',
+              link: 'helpful-links'
+            },
+            {
+              text: 'package.json',
+              link: 'package.json'
+            },
+            {
+              text: 'vitepress-how-to',
+              items: [
+                {
+                  text: 'frontmatter.example',
+                  items: [
+                    {
+                      text: 'bad-frontmatter-example',
+                      link: 'vitepress-how-to/frontmatter.example/bad-frontmatter-example'
+                    },
+                    {
+                      text: 'frontmatter-properties',
+                      link: 'vitepress-how-to/frontmatter.example/frontmatter-properties'
+                    },
+                    {
+                      text: 'use-frontmatter',
+                      link: 'vitepress-how-to/frontmatter.example/use-frontmatter'
+                    },
+                    {
+                      text: 'what-is-frontmatter',
+                      link: 'vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        '/javascript/functions': {
+          base: '/javascript/functions',
+          items: [
+            {
+              text: 'prototypes',
+              items: [
+                {
+                  text: 'Array',
+                  items: [
+                    {
+                      text: 'Array.indexOf',
+                      link: 'prototypes/Array/Array.indexOf'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       }
     );
 
@@ -2574,22 +2583,25 @@ describe('VitePress Sidebar Test', () => {
         }
       ]),
       {
-        '/javascript/functions': [
-          {
-            text: 'prototypes',
-            items: [
-              {
-                text: 'Array',
-                items: [
-                  {
-                    text: 'Array.indexOf',
-                    link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+        '/javascript/functions': {
+          base: '/javascript/functions',
+          items: [
+            {
+              text: 'prototypes',
+              items: [
+                {
+                  text: 'Array',
+                  items: [
+                    {
+                      text: 'Array.indexOf',
+                      link: 'prototypes/Array/Array.indexOf'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       }
     );
 

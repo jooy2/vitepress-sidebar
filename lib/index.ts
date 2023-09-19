@@ -76,8 +76,13 @@ export type SidebarItem = {
   collapsed?: boolean;
 };
 
+export interface SidebarMultiItem {
+  base?: string;
+  items: SidebarItem[];
+}
+
 export interface SidebarMulti {
-  [path: string]: SidebarItem[];
+  [path: string]: SidebarMultiItem;
 }
 
 export type Sidebar = SidebarItem[] | SidebarMulti;
@@ -185,8 +190,10 @@ export default class VitePressSidebar {
           isMultipleSidebars = true;
         }
 
-        sidebar[optionItem.resolvePath || '/'] =
-          sidebarResult?.items || (sidebarResult as SidebarItem[]);
+        sidebar[optionItem.resolvePath || '/'] = {
+          base: optionItem.resolvePath || '',
+          items: sidebarResult?.items || (sidebarResult as SidebarItem[])
+        };
       }
     }
 
@@ -194,7 +201,7 @@ export default class VitePressSidebar {
 
     // Single sidebar
     if (!isMultipleSidebars && Object.keys(sidebar).length === 1) {
-      sidebarResult = Object.values(sidebar)[0];
+      sidebarResult = Object.values(sidebar)[0].items;
     } else {
       // Multiple sidebars
       sidebarResult = sidebar;
@@ -249,9 +256,21 @@ export default class VitePressSidebar {
         let childItemPathDisplay = `${displayDir}/${x}`.replace(/\/{2}/, '/').replace(/\.md$/, '');
 
         if (options.documentRootPath && childItemPathDisplay.startsWith(options.documentRootPath)) {
-          childItemPathDisplay = childItemPathDisplay.replace(options.documentRootPath, '');
+          childItemPathDisplay = childItemPathDisplay.replace(
+            new RegExp(`^${options.documentRootPath}`, 'g'),
+            ''
+          );
 
-          if (!childItemPathDisplay.startsWith('/')) {
+          if (options.resolvePath) {
+            childItemPathDisplay = childItemPathDisplay.replace(
+              new RegExp(`^${options.resolvePath}`, 'g'),
+              ''
+            );
+
+            if (childItemPathDisplay.startsWith('/')) {
+              childItemPathDisplay = childItemPathDisplay.replace(/^\//g, '');
+            }
+          } else if (!childItemPathDisplay.startsWith('/')) {
             childItemPathDisplay = `/${childItemPathDisplay}`;
           }
         }
