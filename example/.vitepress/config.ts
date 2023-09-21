@@ -15,6 +15,8 @@ export default {
       capitalizeFirst: true,
       useTitleFromFileHeading: true,
       useTitleFromFrontmatter: true,
+      useFolderTitleFromIndexFile: true,
+      useFolderLinkFromIndexFile: true,
       sortMenusByFrontmatterOrder: true,
       manualSortFileNameByPriority: ['getting_started.md', 'es-module.md', 'package.json.md']
     }),

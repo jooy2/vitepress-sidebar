@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.0 (2023-09-21)
+
+- **BREAKING CHANGES**: The `useIndexFileForFolderMenuInfo` option has been split into the `useFolderTitleFromIndexFile` and `useFolderLinkFromIndexFile` options. Therefore, the old option is deprecated. You can now specify whether the folder menu should get its name and link from the `index.md` file, respectively. For more information, see `README.md`.
+- Make sure the link to the index page is clearly marked (e.g., `folder/` instead of `folder/index`).
+
 ## 1.15.0 (2023-09-19)
 
 - Fix correct base url for multiple sidebars

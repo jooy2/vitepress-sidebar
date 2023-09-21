@@ -879,11 +879,126 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: useIndexFileForFolderMenuInfo', (done) => {
+  it('Option: useFolderTitleFromIndexFile', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: 'example',
-        useIndexFileForFolderMenuInfo: true
+        useFolderTitleFromIndexFile: true,
+        useTitleFromFileHeading: true
+      }),
+      [
+        {
+          text: 'css',
+          items: [
+            {
+              text: 'A',
+              link: '/css/a-css'
+            },
+            {
+              text: 'B',
+              link: '/css/b-css'
+            },
+            {
+              text: 'C',
+              link: '/css/c-css'
+            }
+          ]
+        },
+        {
+          text: 'JavaScript',
+          items: [
+            {
+              text: 'ES Module',
+              link: '/javascript/es-module'
+            },
+            {
+              text: 'examples',
+              items: [
+                {
+                  text: 'Examples',
+                  link: '/javascript/examples/examples'
+                }
+              ]
+            },
+            {
+              text: 'JavaScript Functions',
+              items: [
+                {
+                  text: 'prototypes',
+                  items: [
+                    {
+                      text: 'Array',
+                      items: [
+                        {
+                          text: 'Array.indexOf',
+                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              text: 'Getting Started',
+              link: '/javascript/getting_started'
+            },
+            {
+              text: 'Helpful Links',
+              link: '/javascript/helpful-links'
+            },
+            {
+              text: 'package.json',
+              link: '/javascript/package.json'
+            },
+            {
+              text: 'vitepress-how-to',
+              items: [
+                {
+                  text: 'frontmatter.example',
+                  items: [
+                    {
+                      text: 'Examples of Bad Frontmatter',
+                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
+                    },
+                    {
+                      text: 'Properties of Frontmatter',
+                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
+                    },
+                    {
+                      text: 'Example of Frontmatter',
+                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
+                    },
+                    {
+                      text: 'Frontmatter? What is?',
+                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          text: 'Markdown Index',
+          items: [
+            {
+              text: 'What is Markdown language? How to use it?',
+              link: '/markdown/markdown'
+            }
+          ]
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('Option: useFolderLinkFromIndexFile', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'example',
+        useFolderLinkFromIndexFile: true
       }),
       [
         {
@@ -904,8 +1019,8 @@ describe('VitePress Sidebar Test', () => {
           ]
         },
         {
-          text: 'index',
-          link: '/javascript/index',
+          text: 'javascript',
+          link: '/javascript/',
           items: [
             {
               text: 'es-module',
@@ -921,8 +1036,8 @@ describe('VitePress Sidebar Test', () => {
               ]
             },
             {
-              text: 'index',
-              link: '/javascript/functions/index',
+              text: 'functions',
+              link: '/javascript/functions/',
               items: [
                 {
                   text: 'prototypes',
@@ -981,8 +1096,8 @@ describe('VitePress Sidebar Test', () => {
           ]
         },
         {
-          text: 'index',
-          link: '/markdown/index',
+          text: 'markdown',
+          link: '/markdown/',
           items: [
             {
               text: 'markdown',

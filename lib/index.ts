@@ -15,9 +15,10 @@ declare interface Options {
   includeFolderIndexFile?: boolean;
   useTitleFromFileHeading?: boolean;
   useTitleFromFrontmatter?: boolean;
+  useFolderTitleFromIndexFile?: boolean;
+  useFolderLinkFromIndexFile?: boolean;
   includeDotFiles?: boolean;
   convertSameNameSubFileToGroupIndexPage?: boolean;
-  useIndexFileForFolderMenuInfo?: boolean;
   folderLinkNotIncludesFileName?: boolean;
   includeEmptyFolder?: boolean;
   sortMenusByName?: boolean;
@@ -51,6 +52,10 @@ declare interface Options {
    * @deprecated
    */
   useFolderLinkAsIndexPage?: boolean;
+  /**
+   * @deprecated
+   */
+  useIndexFileForFolderMenuInfo?: boolean;
 }
 
 declare interface SidebarListItem {
@@ -119,6 +124,14 @@ export default class VitePressSidebar {
             VitePressSidebar.generateDeprecateMessage(
               'useFolderLinkAsIndexPage',
               'useIndexFileForFolderMenuInfo'
+            )
+          );
+        }
+        if (optionItem.useIndexFileForFolderMenuInfo) {
+          throw new Error(
+            VitePressSidebar.generateDeprecateMessage(
+              'useIndexFileForFolderMenuInfo',
+              'useFolderTitleFromIndexFile` and `useFolderLinkFromIndexFile'
             )
           );
         }
@@ -320,19 +333,23 @@ export default class VitePressSidebar {
                 (y: SidebarListItem) => y.text !== x
               );
             }
-          } else if (options.useIndexFileForFolderMenuInfo) {
+          } else {
             // If an index.md file exists in a folder subfile,
-            // replace the name and link of the folder with what is set in index.md.
+            // replace the name or link of the folder with what is set in index.md.
             // The index.md file can still be displayed if the value of `includeFolderIndexFile` is `true`.
             const childIndexFilePath = `${childItemPath}/index.md`;
 
             if (existsSync(childIndexFilePath)) {
-              newDirectoryText = VitePressSidebar.getTitleFromMd(
-                'index',
-                childIndexFilePath,
-                options
-              );
-              withDirectoryLink = `${childItemPathDisplay}/index`;
+              if (options.useFolderTitleFromIndexFile) {
+                newDirectoryText = VitePressSidebar.getTitleFromMd(
+                  'index',
+                  childIndexFilePath,
+                  options
+                );
+              }
+              if (options.useFolderLinkFromIndexFile) {
+                withDirectoryLink = `${childItemPathDisplay}/`;
+              }
             }
           }
 

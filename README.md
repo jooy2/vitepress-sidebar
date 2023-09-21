@@ -58,6 +58,8 @@ export default {
       // resolvePath: null,
       // useTitleFromFileHeading: true,
       // useTitleFromFrontmatter: true,
+      // useFolderTitleFromIndexFile: false,
+      // useFolderLinkFromIndexFile: false,
       // hyphenToSpace: true,
       // underscoreToSpace: true,
       // collapsed: true,
@@ -76,7 +78,6 @@ export default {
       // rootGroupLink: 'https://github.com/jooy2',
       // rootGroupCollapsed: false,
       // convertSameNameSubFileToGroupIndexPage: false,
-      // useIndexFileForFolderMenuInfo: false,
       // folderLinkNotIncludesFileName: false,
       // keepMarkdownSyntaxFromTitle: false,
       // debugPrint: false,
@@ -348,6 +349,24 @@ For more information, see the following articles: https://vitepress.dev/guide/fr
 
 The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
 
+### `useFolderTitleFromIndexFile`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, use the information in the current folder's `index.md` file to get the menu name. If the `index.md` file does not exist, the folder name is used. Since we typically get the name `index` from the `index.md` file, we recommend using the `useTitleFromFileHeading` or `useTitleFromFrontmatter` options together to get the title from the Markdown header or Frontmatter of that file.
+
+The `index.md` file is hidden from the sidebar menu, but the index file can be shown in the menu if the `includeFolderIndexFile` option is `true`.
+
+### `useFolderLinkFromIndexFile`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, specifies a link to the folder so that you can navigate to the `index.md` file in the current folder. If the `index.md` file does not exist, no link is created.
+
+The `index.md` file is hidden from the sidebar menu, but the index file can be shown in the menu if the `includeFolderIndexFile` option is `true`.
+
 ### `manualSortFileNameByPriority`
 
 - Type: `Array<string>`
@@ -482,13 +501,6 @@ This option only applies to top-level item. For general item collapsibility, see
 - Default: `false`
 
 If this value is `true`, then if a subfile with the same name as the folder exists, a link will be created in the folder to navigate to that file, and the file will not be displayed in the child item.
-
-### `useIndexFileForFolderMenuInfo`
-
-- Type: `boolean`
-- Default: `false`
-
-If this value is `true`, use the information set in the `index.md` file for the name and link of the folder menu when the `index.md` file contained within the folder exists. If the `index.md` file does not exist, no link is set and the menu name is displayed as the folder name.
 
 ### `folderLinkNotIncludesFileName`
 
