@@ -85,7 +85,7 @@ export default class VitePressSidebar {
   static generateSidebar(options: Options | Options[]): Sidebar {
     const optionItems: Options[] = Array.isArray(options) ? options : [options];
     const sidebar: Sidebar = {};
-    let isMultipleSidebars = false;
+    const isMultipleSidebars = Array.isArray(options);
     let enableDebugPrint = false;
 
     for (let i = 0; i < optionItems.length; i += 1) {
@@ -167,10 +167,6 @@ export default class VitePressSidebar {
           null,
           optionItem
         );
-
-        if (optionItem.resolvePath) {
-          isMultipleSidebars = true;
-        }
 
         sidebar[optionItem.resolvePath || '/'] = {
           base: optionItem.resolvePath || '',
