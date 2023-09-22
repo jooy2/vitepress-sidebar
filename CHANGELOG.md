@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.16.5 (2023-09-22)
+
+- Fix nested links being created in multiple sidebars
+
 ## 1.16.0 (2023-09-21)
 
 - **BREAKING CHANGES**: The `useIndexFileForFolderMenuInfo` option has been split into the `useFolderTitleFromIndexFile` and `useFolderLinkFromIndexFile` options. Therefore, the old option is deprecated. You can now specify whether the folder menu should get its name and link from the `index.md` file, respectively. For more information, see `README.md`.
