@@ -150,14 +150,6 @@ export default class VitePressSidebar {
           optionItem.documentRootPath = `/${optionItem.documentRootPath}`;
         }
 
-        if (optionItem.scanStartPath && !/^\//.test(optionItem.scanStartPath)) {
-          optionItem.scanStartPath = `/${optionItem.scanStartPath}`;
-        }
-
-        if (optionItem.scanStartPath && /\/$/.test(optionItem.scanStartPath)) {
-          optionItem.scanStartPath = optionItem.scanStartPath.replace(/\/$/, '');
-        }
-
         if (optionItem.collapseDepth) {
           optionItem.collapsed = true;
         }
@@ -170,7 +162,9 @@ export default class VitePressSidebar {
         let scanPath = optionItem.documentRootPath;
 
         if (optionItem.scanStartPath) {
-          scanPath = `${optionItem.documentRootPath}${optionItem.scanStartPath}`;
+          scanPath = `${optionItem.documentRootPath}/${optionItem.scanStartPath}`
+            .replace(/\/{2,}/g, '/')
+            .replace('/$', '');
         }
 
         const sidebarResult: SidebarListItem = VitePressSidebar.generateSidebarItem(
@@ -265,15 +259,17 @@ export default class VitePressSidebar {
             ''
           );
 
-          if (options.resolvePath) {
-            childItemPathDisplay = childItemPathDisplay.replace(
-              new RegExp(`^${options.resolvePath}`, 'g'),
-              ''
-            );
+          if (options.scanStartPath || options.resolvePath) {
+            childItemPathDisplay = childItemPathDisplay.replace(/^\//g, '');
 
-            if (childItemPathDisplay.startsWith('/')) {
-              childItemPathDisplay = childItemPathDisplay.replace(/^\//g, '');
+            if (options.scanStartPath) {
+              childItemPathDisplay = childItemPathDisplay.replace(
+                new RegExp(`^${options.scanStartPath}`, 'g'),
+                ''
+              );
             }
+
+            childItemPathDisplay = childItemPathDisplay.replace(/^\//g, '');
           } else if (!childItemPathDisplay.startsWith('/')) {
             childItemPathDisplay = `/${childItemPathDisplay}`;
           }
