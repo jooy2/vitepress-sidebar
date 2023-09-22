@@ -62,19 +62,19 @@
   ],
   "devDependencies": {
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.6.2",
-    "@typescript-eslint/eslint-plugin": "^6.7.0",
-    "@typescript-eslint/parser": "^6.7.0",
+    "@types/node": "^20.6.3",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.1",
     "mocha": "^10.2.0",
     "prettier": "^3.0.3",
-    "terser": "^5.19.4",
+    "terser": "^5.20.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "vitepress": "^1.0.0-rc.14"
+    "vitepress": "^1.0.0-rc.15"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
