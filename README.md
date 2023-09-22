@@ -108,7 +108,7 @@ generateSidebar({
     text: 'examples',
     items: [
       {
-        text: 'undefinedExamplesundefined',
+        text: 'Examples',
         link: '/javascript/examples/examples'
       }
     ]
