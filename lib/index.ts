@@ -200,8 +200,8 @@ export default class VitePressSidebar {
 
     let sidebarResult;
 
-    // Single sidebar
     if (!isMultipleSidebars && Object.keys(sidebar).length === 1) {
+      // Single sidebar
       sidebarResult = Object.values(sidebar)[0].items;
     } else {
       // Multiple sidebars
@@ -239,6 +239,7 @@ export default class VitePressSidebar {
       const remainItem = directoryFiles.filter(
         (x) => options.manualSortFileNameByPriority?.indexOf(x) === -1
       );
+
       needSortItem.sort(
         (a, b) =>
           options.manualSortFileNameByPriority!.indexOf(a) -
@@ -416,7 +417,6 @@ export default class VitePressSidebar {
   private static getOrderFromFrontmatter(filePath: string): number {
     try {
       const fileData = readFileSync(filePath, 'utf-8');
-
       const { data } = matter(fileData);
 
       // Try for using gray-matter
@@ -430,6 +430,7 @@ export default class VitePressSidebar {
 
       for (let i = 0, len = lines.length; i < len; i += 1) {
         const str = lines[i].toString().replace('\r', '');
+
         if (/^---$/.test(str)) {
           frontmatterStart = true;
         }
@@ -470,12 +471,12 @@ export default class VitePressSidebar {
       // Use content frontmatter title value instead of file name
       try {
         const fileData = readFileSync(filePath, 'utf-8');
-
         const { data } = matter(fileData);
 
         // Try for using gray-matter
         if (data?.title) {
           const title = data?.title.toString();
+
           return options.capitalizeFirst ? title.charAt(0).toUpperCase() + title.slice(1) : title;
         }
 
@@ -505,6 +506,7 @@ export default class VitePressSidebar {
       try {
         const data = readFileSync(filePath, 'utf-8');
         const lines = data.split('\n');
+
         for (let i = 0, len = lines.length; i < len; i += 1) {
           let str = lines[i].toString().replace('\r', '');
 
@@ -514,6 +516,7 @@ export default class VitePressSidebar {
             if (/\[(.*)]\(.*\)/.test(str)) {
               // Remove hyperlink from h1 if exists
               const execValue = /(.*)?\[(.*)]\((.*)\)(.*)?/.exec(str) || '';
+
               str =
                 execValue.length > 0
                   ? `${execValue[1] || ''}${execValue[2] || ''}${execValue[4] || ''}`
@@ -554,10 +557,12 @@ export default class VitePressSidebar {
       if (!desc) {
         if (a[key] < b[key]) return -1;
         if (a[key] > b[key]) return 1;
+
         return 0;
       }
       if (a[key] > b[key]) return -1;
       if (a[key] < b[key]) return 1;
+
       return 0;
     });
   }
