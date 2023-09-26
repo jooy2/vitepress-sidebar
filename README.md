@@ -6,18 +6,18 @@
 
 - ⚡️ Optimized for the latest version of **VitePress**
 - ⚡️ Easy to use, lots of options to customize to your liking
-- ⚡️ Lightweight bundle file size
+- ⚡️ Lightweight bundle file size, zero dependencies
 - ⚡️ [Multiple Sidebars](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) support
 - ⚡️ [Frontmatter](https://vitepress.dev/guide/frontmatter) support
-- ⚡️ TypeScript support
+- ⚡️ [TypeScript](https://www.typescriptlang.org) support
+- ⚡️ Customize menus for sorting, special character conversion, file and folder filters, and more
 
 ## Demo & Real-world Uses
 
 **VitePress Sidebar** is utilized in a variety of project environments, including my own web services.
 
-An example homepage can be found here: https://vitepress-sidebar.jooy2.com
-
-To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/network/dependents
+- An example homepage can be found here: https://vitepress-sidebar.jooy2.com
+- To explore packages used other than: https://github.com/jooy2/vitepress-sidebar/network/dependents
 
 To run and test the demo locally, clone this project and run the following commands:
 
@@ -67,6 +67,7 @@ export default {
       // sortMenusByName: false,
       // sortMenusByFrontmatterOrder: false,
       // sortMenusOrderByDescending: false,
+      // sortMenusOrderNumerically: false,
       // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
       // excludeFiles: ['first.md', 'secret.md'],
       // excludeFolders: ['secret-folder'],
@@ -96,9 +97,8 @@ generateSidebar({
   hyphenToSpace: true,
   excludeFolders: ['vitepress-how-to']
 });
-```
 
-```javascript
+/*
 [
   {
     text: 'ES Module',
@@ -145,133 +145,8 @@ generateSidebar({
     link: '/javascript/package.json'
   }
 ];
+*/
 ```
-
-## Troubleshoot: `ERR_REQUIRE_ESM`
-
-`vitepress-sidebar` is an **ESM** module. If your project is using **CJS**, you will need to convert it to an **ESM** module.
-
-For more information about the **ESM** module, see below: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
-
-To address these issues, there are several solutions below:
-
-### Solution A
-
-If you are trying to use it with a CJS project, change the file extension from `.js` to `.mjs` and try again. You can define that you want to use the module script for a specific file.
-
-### Solution B
-
-in the package.json file, add the line `"type": "module"` line. This may require the project to be converted to an ESM project.
-
-```json5
-{
-  name: 'docs',
-  type: 'module', // <-- Add this
-  version: '1.0.0',
-  scripts: {
-    dev: 'vitepress dev src',
-    build: 'vitepress build src',
-    serve: 'vitepress serve src'
-  }
-}
-```
-
-## Multiple Sidebars How-to
-
-To learn more about multiple sidebars, see the articles below:
-
-https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars
-
-You can specify multiple configuration objects of type `Array` in the option value of the `generateSidebar` function. Each object value can have different settings. If you use the `scanStartPath` and `resolvePath` options together, you can configure multiple sidebars.
-
-```javascript
-generateSidebar([
-  {
-    debugPrint: true,
-    documentRootPath: 'example',
-    scanStartPath: 'css',
-    resolvePath: '/css/',
-    useTitleFromFileHeading: true,
-    excludeFiles: ['c-css.md']
-  },
-  {
-    debugPrint: true,
-    documentRootPath: 'example',
-    scanStartPath: 'javascript',
-    resolvePath: '/javascript/',
-    useTitleFromFrontmatter: true,
-    excludeFiles: ['package.json.md', 'helpful-links.md'],
-    excludeFolders: ['examples', 'vitepress-how-to']
-  }
-]);
-```
-
-The values of these options are used in the results as follows:
-
-```text
-{
-  <resolvePath>: [
-    {
-      base: <resolvePath>,
-      items: [{ text: 'My Document', link: 'document/hello' }] // `<scanStartPath>/document/hello`
-    }
-  ]
-}
-```
-
-Here's an example of the output from the above setup:
-
-```json5
-{
-  '/css/': {
-    base: '/css/',
-    items: [
-      {
-        text: 'A',
-        link: 'a-css'
-      },
-      {
-        text: 'B',
-        link: 'b-css'
-      }
-    ]
-  },
-  '/javascript/': {
-    base: '/javascript/',
-    items: [
-      {
-        text: 'es-module',
-        link: 'es-module'
-      },
-      {
-        text: 'functions',
-        items: [
-          {
-            text: 'prototypes',
-            items: [
-              {
-                text: 'Array',
-                items: [
-                  {
-                    text: 'Array.indexOf',
-                    link: 'functions/prototypes/Array/Array.indexOf'
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        text: 'getting_started',
-        link: 'getting_started'
-      }
-    ]
-  }
-}
-```
-
-Learn more about `scanStartPath` and `resolvePath` in the `Options` section of `README.md`.
 
 ## Options
 
@@ -532,7 +407,133 @@ If this value is `true`, preserves the Markdown syntax contained in the title te
 - Type: `boolean`
 - Default: `false`
 
-If this value is `true`, prints the objects created after execution to the console log.
+If this value is `true`, prints the objects created after execution to the console log. If you configured Multiple sidebars, it will output all sidebar results even if you only include one of the options.
+
+## Multiple Sidebars How-to
+
+To learn more about multiple sidebars, see the articles below:
+
+https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars
+
+You can specify multiple configuration objects of type `Array` in the option value of the `generateSidebar` function. Each object value can have different settings. If you use the `scanStartPath` and `resolvePath` options together, you can configure multiple sidebars.
+
+```javascript
+generateSidebar([
+  {
+    debugPrint: true,
+    documentRootPath: 'example',
+    scanStartPath: 'css',
+    resolvePath: '/css/',
+    useTitleFromFileHeading: true,
+    excludeFiles: ['c-css.md']
+  },
+  {
+    debugPrint: true,
+    documentRootPath: 'example',
+    scanStartPath: 'javascript',
+    resolvePath: '/javascript/',
+    useTitleFromFrontmatter: true,
+    excludeFiles: ['package.json.md', 'helpful-links.md'],
+    excludeFolders: ['examples', 'vitepress-how-to']
+  }
+]);
+```
+
+The values of these options are used in the results as follows:
+
+```text
+{
+  <resolvePath>: [
+    {
+      base: <resolvePath>,
+      items: [{ text: 'My Document', link: 'document/hello' }] // `<scanStartPath>/document/hello`
+    }
+  ]
+}
+```
+
+Here's an example of the output from the above setup:
+
+```json5
+{
+  '/css/': {
+    base: '/css/',
+    items: [
+      {
+        text: 'A',
+        link: 'a-css'
+      },
+      {
+        text: 'B',
+        link: 'b-css'
+      }
+    ]
+  },
+  '/javascript/': {
+    base: '/javascript/',
+    items: [
+      {
+        text: 'es-module',
+        link: 'es-module'
+      },
+      {
+        text: 'functions',
+        items: [
+          {
+            text: 'prototypes',
+            items: [
+              {
+                text: 'Array',
+                items: [
+                  {
+                    text: 'Array.indexOf',
+                    link: 'functions/prototypes/Array/Array.indexOf'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        text: 'getting_started',
+        link: 'getting_started'
+      }
+    ]
+  }
+}
+```
+
+Learn more about `scanStartPath` and `resolvePath` in the `Options` section of `README.md`.
+
+## Troubleshoot: `ERR_REQUIRE_ESM`
+
+`vitepress-sidebar` is an **ESM** module. If your project is using **CJS**, you will need to convert it to an **ESM** module.
+
+For more information about the **ESM** module, see below: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+To address these issues, there are several solutions below:
+
+### Solution A
+
+If you are trying to use it with a CJS project, change the file extension from `.js` to `.mjs` and try again. You can define that you want to use the module script for a specific file.
+
+### Solution B
+
+in the package.json file, add the line `"type": "module"` line. This may require the project to be converted to an ESM project.
+
+```json5
+{
+  name: 'docs',
+  type: 'module', // <-- Add this
+  version: '1.0.0',
+  scripts: {
+    dev: 'vitepress dev src',
+    build: 'vitepress build src',
+    serve: 'vitepress serve src'
+  }
+}
+```
 
 ## Contribute
 
