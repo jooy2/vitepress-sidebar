@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.17.0 (2023-09-26)
+
+- Add `sortMenusOrderNumerically` option
+
 ## 1.16.5 (2023-09-22)
 
 - Fix nested links being created in multiple sidebars

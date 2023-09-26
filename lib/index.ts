@@ -24,6 +24,7 @@ declare interface Options {
   sortMenusByName?: boolean;
   sortMenusByFrontmatterOrder?: boolean;
   sortMenusOrderByDescending?: boolean;
+  sortMenusOrderNumerically?: boolean;
   keepMarkdownSyntaxFromTitle?: boolean;
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
@@ -137,7 +138,18 @@ export default class VitePressSidebar {
         }
         if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusByName) {
           throw new Error(
-            'The `sortMenusByName` and `sortMenusByFrontmatterOrder` options cannot be used together.'
+            VitePressSidebar.generateNotTogetherMessage(
+              'sortMenusByFrontmatterOrder',
+              'sortMenusByName'
+            )
+          );
+        }
+        if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusOrderNumerically) {
+          throw new Error(
+            VitePressSidebar.generateNotTogetherMessage(
+              'sortMenusByFrontmatterOrder',
+              'sortMenusOrderNumerically'
+            )
           );
         }
         if (optionItem.debugPrint && !enableDebugPrint) {
@@ -221,6 +233,10 @@ export default class VitePressSidebar {
 
   private static generateDeprecateMessage(original: string, renameTo: string) {
     return `The \`${original}\` option was renamed to \`${renameTo}\`.`;
+  }
+
+  private static generateNotTogetherMessage(option1: string, option2: string) {
+    return `The \`${option1}\` and \`${option2}\` options cannot be used together.`;
   }
 
   private static generateSidebarItem(
@@ -411,6 +427,15 @@ export default class VitePressSidebar {
       VitePressSidebar.deepDeleteKey(sidebarItems, 'order');
     }
 
+    if (options.sortMenusOrderNumerically) {
+      sidebarItems = VitePressSidebar.sortByObjectKey(
+        sidebarItems,
+        'text',
+        options.sortMenusOrderByDescending,
+        true
+      );
+    }
+
     return sidebarItems;
   }
 
@@ -552,7 +577,24 @@ export default class VitePressSidebar {
     return result;
   }
 
-  private static sortByObjectKey(arr: SidebarListItem, key: string, desc = false): object[] {
+  private static sortByObjectKey(
+    arr: SidebarListItem,
+    key: string,
+    desc = false,
+    numerically = false
+  ): object[] {
+    if (numerically) {
+      const collator = new Intl.Collator([], { numeric: true });
+
+      const result = arr.sort((a: any, b: any) => collator.compare(a[key], b[key]));
+
+      if (desc) {
+        return result.reverse();
+      }
+
+      return result;
+    }
+
     return arr.sort((a: any, b: any) => {
       if (!desc) {
         if (a[key] < b[key]) return -1;

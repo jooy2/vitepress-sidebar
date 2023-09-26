@@ -395,6 +395,17 @@ Sorts the menu items by the `order` property of the frontmatter. For each folder
 
 If this value is `true`, sorts the items in the menu item in descending order. This option is only enabled when `sortMenusByName` is `true`.
 
+### `sortMenusOrderNumerically`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, If a menu name contains a number at the beginning, it is sorted by the lower number, not the name. For example, if you have files named `1-a`, `10-a`, and `2-a`, a normal sort would sort by name, `['1-a', '10-a', '2-a']`. This causes the menu to display in an unintended order because `10-a` takes precedence over `2-a`.
+
+With this option, they are sorted as follows: `['1-a', '2-a', '10-a']`
+
+It should be used with the `sortMenusOrderByDescending` option if you want a descending sort.
+
 ### `collapsed`
 
 - Type: `boolean`
