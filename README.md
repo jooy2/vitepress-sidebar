@@ -101,10 +101,6 @@ generateSidebar({
 /*
 [
   {
-    text: 'ES Module',
-    link: '/javascript/es-module'
-  },
-  {
     text: 'examples',
     items: [
       {
@@ -135,14 +131,6 @@ generateSidebar({
   {
     text: 'Getting Started',
     link: '/javascript/getting_started'
-  },
-  {
-    text: 'Helpful Links',
-    link: '/javascript/helpful-links'
-  },
-  {
-    text: 'package.json',
-    link: '/javascript/package.json'
   }
 ];
 */
