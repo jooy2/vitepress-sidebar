@@ -53,6 +53,10 @@ import { generateSidebar } from 'vitepress-sidebar';
 export default {
   themeConfig: {
     sidebar: generateSidebar({
+      /*
+       * For detailed instructions, see the links below:
+       * https://github.com/jooy2/vitepress-sidebar#options
+       */
       // documentRootPath: '/',
       // scanStartPath: null,
       // resolvePath: null,
