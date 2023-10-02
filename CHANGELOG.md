@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.18.0 (2023-10-02)
+
+- Add `capitalizeEachWords` option
+- The option to modify menu names is also reflected correctly when pulling names from MarkDown heading, frontmatter.
+
 ## 1.17.0 (2023-09-26)
 
 - Add `sortMenusOrderNumerically` option

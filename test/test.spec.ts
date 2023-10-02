@@ -2599,6 +2599,113 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
+  it('Option: capitalizeEachWords', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        hyphenToSpace: true,
+        documentRootPath: 'example',
+        excludeFolders: ['html', 'markdown'],
+        capitalizeEachWords: true
+      }),
+      [
+        {
+          text: 'Css',
+          items: [
+            {
+              text: 'A Css',
+              link: '/css/a-css'
+            },
+            {
+              text: 'B Css',
+              link: '/css/b-css'
+            },
+            {
+              text: 'C Css',
+              link: '/css/c-css'
+            }
+          ]
+        },
+        {
+          text: 'Javascript',
+          items: [
+            {
+              text: 'Es Module',
+              link: '/javascript/es-module'
+            },
+            {
+              text: 'Examples',
+              items: [
+                {
+                  text: 'Examples',
+                  link: '/javascript/examples/examples'
+                }
+              ]
+            },
+            {
+              text: 'Functions',
+              items: [
+                {
+                  text: 'Prototypes',
+                  items: [
+                    {
+                      text: 'Array',
+                      items: [
+                        {
+                          text: 'Array.indexof',
+                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              text: 'Getting_started',
+              link: '/javascript/getting_started'
+            },
+            {
+              text: 'Helpful Links',
+              link: '/javascript/helpful-links'
+            },
+            {
+              text: 'Package.json',
+              link: '/javascript/package.json'
+            },
+            {
+              text: 'Vitepress How To',
+              items: [
+                {
+                  text: 'Frontmatter.example',
+                  items: [
+                    {
+                      text: 'Bad Frontmatter Example',
+                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
+                    },
+                    {
+                      text: 'Frontmatter Properties',
+                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
+                    },
+                    {
+                      text: 'Use Frontmatter',
+                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
+                    },
+                    {
+                      text: 'What Is Frontmatter',
+                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
+
+    done();
+  });
+
   it('Multiple Sidebars (A)', (done) => {
     assert.deepEqual(
       generateSidebar([

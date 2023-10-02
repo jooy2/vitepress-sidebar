@@ -11,6 +11,7 @@ declare interface Options {
   hyphenToSpace?: boolean;
   underscoreToSpace?: boolean;
   capitalizeFirst?: boolean;
+  capitalizeEachWords?: boolean;
   includeRootIndexFile?: boolean;
   includeFolderIndexFile?: boolean;
   useTitleFromFileHeading?: boolean;
@@ -470,6 +471,10 @@ export default class VitePressSidebar {
     return 0;
   }
 
+  private static capitalizeFirst(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   private static formatTitle(options: Options, title: string): string {
     let result = title;
 
@@ -481,8 +486,16 @@ export default class VitePressSidebar {
       result = result.replace(/_/g, ' ');
     }
 
-    if (options.capitalizeFirst) {
-      result = result.charAt(0).toUpperCase() + result.slice(1);
+    if (options.capitalizeEachWords) {
+      const splitStr = result.trim().toLowerCase().split(' ');
+
+      for (let i = 0; i < splitStr.length; i += 1) {
+        splitStr[i] = VitePressSidebar.capitalizeFirst(splitStr[i]);
+      }
+
+      result = splitStr.join(' ');
+    } else if (options.capitalizeFirst) {
+      result = VitePressSidebar.capitalizeFirst(result);
     }
 
     return result;
@@ -561,7 +574,7 @@ export default class VitePressSidebar {
               str = str.replace(/`{1,3}([^`]+?)`{1,3}/g, '$1');
             }
 
-            return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+            return VitePressSidebar.formatTitle(options, str);
           }
         }
       } catch {

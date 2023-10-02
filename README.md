@@ -62,6 +62,8 @@ export default {
       // useFolderLinkFromIndexFile: false,
       // hyphenToSpace: true,
       // underscoreToSpace: true,
+      // capitalizeFirst: false,
+      // capitalizeEachWords: false,
       // collapsed: true,
       // collapseDepth: 2,
       // sortMenusByName: false,
@@ -288,21 +290,28 @@ At the specified depth, the menu group is made collapsed. When this option is sp
 - Type: `boolean`
 - Default: `false`
 
-If the value is `true`, the `-` symbol included in the file name is converted to a space and displayed as a title.
+If the value is `true`, the `-` symbol included in the file name is converted to a space and displayed as a title. This option is also affected when the menu name is imported via a MarkDown heading or frontmatter.
 
 ### `underscoreToSpace`
 
 - Type: `boolean`
 - Default: `false`
 
-If the value is `true`, the `_` symbol included in the file name is converted to a space and displayed as a title.
+If the value is `true`, the `_` symbol included in the file name is converted to a space and displayed as a title. This option is also affected when the menu name is imported via a MarkDown heading or frontmatter.
 
 ### `capitalizeFirst`
 
 - Type: `boolean`
 - Default: `false`
 
-If the value is `true`, the first letter of the menu name is forced to uppercase. The same applies if the title is specified with `useTitleFromFileHeading`.
+If the value is `true`, the first letter of the menu name is forced to uppercase. This option is also affected when the menu name is imported via a MarkDown heading or frontmatter.
+
+### `capitalizeEachWords`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, Capitalize all first letters of words separated by spaces. This option is also affected when the menu name is imported via a MarkDown heading or frontmatter.
 
 ### `excludeFiles`
 
