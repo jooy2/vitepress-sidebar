@@ -470,26 +470,32 @@ export default class VitePressSidebar {
     return 0;
   }
 
+  private static formatTitle(options: Options, title: string): string {
+    let result = title;
+
+    if (options.hyphenToSpace) {
+      result = result.replace(/-/g, ' ');
+    }
+
+    if (options.underscoreToSpace) {
+      result = result.replace(/_/g, ' ');
+    }
+
+    if (options.capitalizeFirst) {
+      result = result.charAt(0).toUpperCase() + result.slice(1);
+    }
+
+    return result;
+  }
+
   private static getTitleFromMd(
     fileName: string,
     filePath: string,
     options: Options,
     isDirectory = false
   ): string {
-    let result: string = options.capitalizeFirst
-      ? fileName.charAt(0).toUpperCase() + fileName.slice(1)
-      : fileName;
-
     if (isDirectory) {
-      if (options.hyphenToSpace) {
-        result = result.replace(/-/g, ' ');
-      }
-
-      if (options.underscoreToSpace) {
-        result = result.replace(/_/g, ' ');
-      }
-
-      return result;
+      return VitePressSidebar.formatTitle(options, fileName);
     }
 
     if (options.useTitleFromFrontmatter) {
@@ -500,9 +506,7 @@ export default class VitePressSidebar {
 
         // Try for using gray-matter
         if (data?.title) {
-          const title = data?.title.toString();
-
-          return options.capitalizeFirst ? title.charAt(0).toUpperCase() + title.slice(1) : title;
+          return VitePressSidebar.formatTitle(options, data.title.toString());
         }
 
         // Try manual parsing
@@ -518,7 +522,8 @@ export default class VitePressSidebar {
 
           if (/^title: (.*)/.test(str) && frontmatterStart) {
             str = str.replace('title: ', '');
-            return options.capitalizeFirst ? str.charAt(0).toUpperCase() + str.slice(1) : str;
+
+            return VitePressSidebar.formatTitle(options, str);
           }
         }
       } catch {
@@ -562,19 +567,9 @@ export default class VitePressSidebar {
       } catch {
         return 'Unknown';
       }
-    } else {
-      result = result.replace(/\.md$/, '');
-
-      if (options.hyphenToSpace) {
-        result = result.replace(/-/g, ' ');
-      }
-
-      if (options.underscoreToSpace) {
-        result = result.replace(/_/g, ' ');
-      }
     }
 
-    return result;
+    return VitePressSidebar.formatTitle(options, fileName.replace(/\.md$/, ''));
   }
 
   private static sortByObjectKey(
