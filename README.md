@@ -421,7 +421,6 @@ You can specify multiple configuration objects of type `Array` in the option val
 ```javascript
 generateSidebar([
   {
-    debugPrint: true,
     documentRootPath: 'example',
     scanStartPath: 'css',
     resolvePath: '/css/',
@@ -429,7 +428,6 @@ generateSidebar([
     excludeFiles: ['c-css.md']
   },
   {
-    debugPrint: true,
     documentRootPath: 'example',
     scanStartPath: 'javascript',
     resolvePath: '/javascript/',
