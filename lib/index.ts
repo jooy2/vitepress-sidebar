@@ -378,7 +378,7 @@ export default class VitePressSidebar {
                 ? {}
                 : { collapsed: depth >= options.collapseDepth! && options.collapsed }),
               ...(options.sortMenusByFrontmatterOrder
-                ? { order: VitePressSidebar.getOrderFromFrontmatter(childItemPath) }
+                ? { order: VitePressSidebar.getOrderFromFrontmatter(newDirectoryPagePath) }
                 : {})
             };
           }
