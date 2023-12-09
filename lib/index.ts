@@ -324,15 +324,17 @@ export default class VitePressSidebar {
             ) || [];
 
           let newDirectoryText = VitePressSidebar.getTitleFromMd(x, childItemPath, options, true);
+          let newDirectoryPagePath = childItemPath;
           let withDirectoryLink;
 
           if (options.convertSameNameSubFileToGroupIndexPage) {
             const findItem = directorySidebarItems.find((y: SidebarListItem) => y.text === x);
 
             if (findItem) {
+              newDirectoryPagePath = resolve(childItemPath, `${findItem.text}.md`);
               newDirectoryText = VitePressSidebar.getTitleFromMd(
                 x,
-                resolve(childItemPath, `${findItem.text}.md`),
+                newDirectoryPagePath,
                 options,
                 false
               );
@@ -351,13 +353,13 @@ export default class VitePressSidebar {
             // If an index.md file exists in a folder subfile,
             // replace the name or link of the folder with what is set in index.md.
             // The index.md file can still be displayed if the value of `includeFolderIndexFile` is `true`.
-            const childIndexFilePath = `${childItemPath}/index.md`;
+            newDirectoryPagePath = `${childItemPath}/index.md`;
 
-            if (existsSync(childIndexFilePath)) {
+            if (existsSync(newDirectoryPagePath)) {
               if (options.useFolderTitleFromIndexFile) {
                 newDirectoryText = VitePressSidebar.getTitleFromMd(
                   'index',
-                  childIndexFilePath,
+                  newDirectoryPagePath,
                   options
                 );
               }
@@ -374,7 +376,10 @@ export default class VitePressSidebar {
               items: directorySidebarItems,
               ...(options.collapsed === null || options.collapsed === undefined
                 ? {}
-                : { collapsed: depth >= options.collapseDepth! && options.collapsed })
+                : { collapsed: depth >= options.collapseDepth! && options.collapsed }),
+              ...(options.sortMenusByFrontmatterOrder
+                ? { order: VitePressSidebar.getOrderFromFrontmatter(childItemPath) }
+                : {})
             };
           }
 
