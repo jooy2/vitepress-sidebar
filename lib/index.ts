@@ -380,7 +380,12 @@ export default class VitePressSidebar {
                 ? {}
                 : { collapsed: depth >= options.collapseDepth! && options.collapsed }),
               ...(options.sortMenusByFrontmatterOrder
-                ? { order: VitePressSidebar.getOrderFromFrontmatter(newDirectoryPagePath) }
+                ? {
+                    order: VitePressSidebar.getOrderFromFrontmatter(
+                      newDirectoryPagePath,
+                      options.frontmatterOrderDefaultValue!
+                    )
+                  }
                 : {})
             };
           }
@@ -603,7 +608,7 @@ export default class VitePressSidebar {
     desc = false,
     numerically = false
   ): object[] {
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i += 1) {
       if (arr[i].items && arr[i].items.length) {
         arr[i].items = VitePressSidebar.sortByObjectKey(arr[i].items, key, desc, numerically);
       }
