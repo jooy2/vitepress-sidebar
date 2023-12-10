@@ -591,6 +591,12 @@ export default class VitePressSidebar {
     desc = false,
     numerically = false
   ): object[] {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i].items && arr[i].items.length) {
+        arr[i].items = VitePressSidebar.sortByObjectKey(arr[i].items, key, desc, numerically);
+      }
+    }
+
     if (numerically) {
       const collator = new Intl.Collator([], { numeric: true });
 
