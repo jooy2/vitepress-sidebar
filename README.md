@@ -74,6 +74,7 @@ export default {
       // sortMenusByFrontmatterOrder: false,
       // sortMenusOrderByDescending: false,
       // sortMenusOrderNumerically: false,
+      // frontmatterOrderDefaultValue: 0,
       // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
       // excludeFiles: ['first.md', 'secret.md'],
       // excludeFolders: ['secret-folder'],
@@ -262,7 +263,7 @@ Sorts the menu items by the `order` property of the frontmatter. For each folder
 - Type: `boolean`
 - Default: `false`
 
-If this value is `true`, sorts the items in the menu item in descending order. This option is only enabled when `sortMenusByName` is `true`.
+If this value is `true`, sorts the items in the menu item in descending order. This option is only enabled when `sortMenusByName` or `sortMenusByFrontmatterOrder` is `true`.
 
 ### `sortMenusOrderNumerically`
 
@@ -274,6 +275,13 @@ If this value is `true`, If a menu name contains a number at the beginning, it i
 With this option, they are sorted as follows: `['1-a', '2-a', '10-a']`
 
 It should be used with the `sortMenusOrderByDescending` option if you want a descending sort.
+
+### `frontmatterOrderDefaultValue`
+
+- Type: `number`
+- Default: `0`
+
+Sets the default value for the `order` property of the frontmatter when not set. This option is only enabled when `sortMenusByFrontmatterOrder` is `true`.
 
 ### `collapsed`
 

@@ -34,6 +34,7 @@ declare interface Options {
   rootGroupText?: string;
   rootGroupLink?: string;
   rootGroupCollapsed?: boolean | null | undefined;
+  frontmatterOrderDefaultValue?: number;
   /**
    * @deprecated
    */
@@ -171,6 +172,7 @@ export default class VitePressSidebar {
         optionItem.manualSortFileNameByPriority = optionItem?.manualSortFileNameByPriority ?? [];
         optionItem.excludeFiles = optionItem?.excludeFiles ?? [];
         optionItem.excludeFolders = optionItem?.excludeFolders ?? [];
+        optionItem.frontmatterOrderDefaultValue = optionItem?.frontmatterOrderDefaultValue ?? 0;
 
         let scanPath = optionItem.documentRootPath;
 
@@ -402,7 +404,12 @@ export default class VitePressSidebar {
             text: childItemText,
             link: childItemPathDisplay,
             ...(options.sortMenusByFrontmatterOrder
-              ? { order: VitePressSidebar.getOrderFromFrontmatter(childItemPath) }
+              ? {
+                  order: VitePressSidebar.getOrderFromFrontmatter(
+                    childItemPath,
+                    options.frontmatterOrderDefaultValue!
+                  )
+                }
               : {})
           };
         }
@@ -440,7 +447,7 @@ export default class VitePressSidebar {
     return sidebarItems;
   }
 
-  private static getOrderFromFrontmatter(filePath: string): number {
+  private static getOrderFromFrontmatter(filePath: string, defaultOrder: number): number {
     try {
       const fileData = readFileSync(filePath, 'utf-8');
       const { data } = matter(fileData);
@@ -465,10 +472,10 @@ export default class VitePressSidebar {
         }
       }
     } catch (e) {
-      return 0;
+      return defaultOrder;
     }
 
-    return 0;
+    return defaultOrder;
   }
 
   private static capitalizeFirst(str: string): string {
