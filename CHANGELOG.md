@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.18.5 (2023-12-11)
+
+- Add `frontmatterOrderDefaultValue` option (@aslafy-z)
+- Fix recursive sort of items (@aslafy-z)
+- Retrieve ordering for top level folder indexes (@aslafy-z)
+
 ## 1.18.0 (2023-10-02)
 
 - Add `capitalizeEachWords` option
