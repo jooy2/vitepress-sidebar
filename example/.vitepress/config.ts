@@ -1,8 +1,9 @@
 import { generateSidebar } from '../../dist';
 import { name, description, repository } from '../../package.json';
+import { defineConfig } from 'vitepress';
 
 // Ref: https://vitepress.vuejs.org/config/introduction
-export default {
+export default defineConfig({
   title: name,
   description,
   outDir: '../docs-dist',
@@ -48,4 +49,4 @@ export default {
     },
     socialLinks: [{ icon: 'github', link: repository.url.replace('.git', '') }]
   }
-};
+});
