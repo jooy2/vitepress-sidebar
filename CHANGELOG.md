@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.18.6 (2024-01-03)
+
+- Fix typescript issue
+
 ## 1.18.5 (2023-12-11)
 
 - Add `frontmatterOrderDefaultValue` option (@aslafy-z)
