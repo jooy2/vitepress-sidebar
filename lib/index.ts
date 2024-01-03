@@ -191,7 +191,7 @@ export default class VitePressSidebar {
         );
 
         sidebar[optionItem.resolvePath || '/'] = {
-          base: optionItem.resolvePath || '',
+          base: optionItem.resolvePath || '/',
           items:
             sidebarResult?.items ||
             (optionItem.rootGroupText ||
