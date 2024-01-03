@@ -76,7 +76,7 @@ export type SidebarItem = {
 };
 
 export interface SidebarMultiItem {
-  base?: string;
+  base: string;
   items: SidebarItem[];
 }
 
