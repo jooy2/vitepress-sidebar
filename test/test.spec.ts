@@ -1805,6 +1805,23 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
+  it('Option: excludeFilesByFrontmatter', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'example/.special-cases/exclude-files-by-frontmatter',
+        excludeFilesByFrontmatter: true
+      }),
+      [
+        {
+          text: 'included',
+          link: '/included'
+        }
+      ]
+    );
+
+    done();
+  });
+
   it('Option: excludeFolders', (done) => {
     assert.deepEqual(
       generateSidebar({
@@ -2545,53 +2562,41 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusOrderNumerically', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
-        includeDotFiles: true,
-        excludeFolders: ['.secret', 'css', 'html', 'javascript', 'markdown'],
+        documentRootPath: 'example/.special-cases/numeric-title',
         sortMenusOrderNumerically: true
       }),
       [
         {
-          text: '.special-cases',
-          items: [
-            {
-              text: 'numeric-title',
-              items: [
-                {
-                  text: '0-file',
-                  link: '/.special-cases/numeric-title/0-file'
-                },
-                {
-                  text: '1-file',
-                  link: '/.special-cases/numeric-title/1-file'
-                },
-                {
-                  text: '2-file',
-                  link: '/.special-cases/numeric-title/2-file'
-                },
-                {
-                  text: '3-afile',
-                  link: '/.special-cases/numeric-title/3-afile'
-                },
-                {
-                  text: '3-bfile',
-                  link: '/.special-cases/numeric-title/3-bfile'
-                },
-                {
-                  text: '10-file',
-                  link: '/.special-cases/numeric-title/10-file'
-                },
-                {
-                  text: '11-file',
-                  link: '/.special-cases/numeric-title/11-file'
-                },
-                {
-                  text: '100-file',
-                  link: '/.special-cases/numeric-title/100-file'
-                }
-              ]
-            }
-          ]
+          text: '0-file',
+          link: '/0-file'
+        },
+        {
+          text: '1-file',
+          link: '/1-file'
+        },
+        {
+          text: '2-file',
+          link: '/2-file'
+        },
+        {
+          text: '3-afile',
+          link: '/3-afile'
+        },
+        {
+          text: '3-bfile',
+          link: '/3-bfile'
+        },
+        {
+          text: '10-file',
+          link: '/10-file'
+        },
+        {
+          text: '11-file',
+          link: '/11-file'
+        },
+        {
+          text: '100-file',
+          link: '/100-file'
         }
       ]
     );

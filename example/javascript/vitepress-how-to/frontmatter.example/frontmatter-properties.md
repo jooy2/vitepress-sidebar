@@ -2,7 +2,7 @@
 title: Frontmatter Properties
 date: 2023-01-01
 category: document
-order: 3
+order: '3'
 author: jooy2.com
 ---
 

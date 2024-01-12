@@ -19,7 +19,8 @@ export default defineConfig({
       useFolderTitleFromIndexFile: true,
       useFolderLinkFromIndexFile: true,
       sortMenusByFrontmatterOrder: true,
-      manualSortFileNameByPriority: ['getting_started.md', 'es-module.md', 'package.json.md']
+      manualSortFileNameByPriority: ['getting_started.md', 'es-module.md', 'package.json.md'],
+      excludeFilesByFrontmatter: true
     }),
     /*
     // Multiple sidebar example
