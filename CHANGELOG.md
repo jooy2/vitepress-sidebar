@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.19.0 (2024-02-26)
+
+- Add `excludeFilesByFrontmatter` option (@aslafy-z)
+
 ## 1.18.6 (2024-01-03)
 
 - Fix typescript issue
