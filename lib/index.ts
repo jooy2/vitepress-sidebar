@@ -30,6 +30,7 @@ declare interface Options {
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
   excludeFiles?: string[];
+  excludeFilesByFrontmatter?: boolean;
   excludeFolders?: string[];
   rootGroupText?: string;
   rootGroupLink?: string;
@@ -394,7 +395,11 @@ export default class VitePressSidebar {
         }
 
         if (childItemPath.endsWith('.md')) {
-          if (options.excludeFiles?.includes(x)) {
+          if (
+            options.excludeFiles?.includes(x) ||
+            (options.excludeFilesByFrontmatter &&
+              VitePressSidebar.getExcludeFromFrontmatter(childItemPath))
+          ) {
             return null;
           }
 
@@ -457,14 +462,16 @@ export default class VitePressSidebar {
     return sidebarItems;
   }
 
-  private static getOrderFromFrontmatter(filePath: string, defaultOrder: number): number {
+  // Get a single value of type T from Frontmatter
+  // Defaults to defaultValue
+  private static getValueFromFrontmatter<T>(filePath: string, key: string, defaultValue: T): T {
     try {
       const fileData = readFileSync(filePath, 'utf-8');
       const { data } = matter(fileData);
 
       // Try for using gray-matter
-      if (data?.order) {
-        return parseInt(data?.order, 10);
+      if (data?.[key]) {
+        return data[key];
       }
 
       // Try manual parsing
@@ -477,15 +484,27 @@ export default class VitePressSidebar {
         if (/^---$/.test(str)) {
           frontmatterStart = true;
         }
-        if (/^order: (.*)/.test(str) && frontmatterStart) {
-          return parseInt(str.replace('order: ', ''), 10);
+        if (new RegExp(`^${key}: (.*)`).test(str) && frontmatterStart) {
+          return JSON.parse(str.replace(`${key}: `, '')) as T;
         }
       }
     } catch (e) {
-      return defaultOrder;
+      return defaultValue;
     }
+    return defaultValue;
+  }
 
-    return defaultOrder;
+  private static getOrderFromFrontmatter(filePath: string, defaultOrder: number): number {
+    const stringValue = VitePressSidebar.getValueFromFrontmatter<string>(
+      filePath,
+      'order',
+      defaultOrder.toString()
+    );
+    return parseInt(stringValue, 10);
+  }
+
+  private static getExcludeFromFrontmatter(filePath: string): boolean {
+    return VitePressSidebar.getValueFromFrontmatter<boolean>(filePath, 'exclude', false) === true;
   }
 
   private static capitalizeFirst(str: string): string {
@@ -530,34 +549,13 @@ export default class VitePressSidebar {
 
     if (options.useTitleFromFrontmatter) {
       // Use content frontmatter title value instead of file name
-      try {
-        const fileData = readFileSync(filePath, 'utf-8');
-        const { data } = matter(fileData);
-
-        // Try for using gray-matter
-        if (data?.title) {
-          return VitePressSidebar.formatTitle(options, data.title.toString());
-        }
-
-        // Try manual parsing
-        const lines = fileData.split('\n');
-        let frontmatterStart = false;
-
-        for (let i = 0, len = lines.length; i < len; i += 1) {
-          let str = lines[i].toString().replace('\r', '');
-
-          if (/^---$/.test(str)) {
-            frontmatterStart = true;
-          }
-
-          if (/^title: (.*)/.test(str) && frontmatterStart) {
-            str = str.replace('title: ', '');
-
-            return VitePressSidebar.formatTitle(options, str);
-          }
-        }
-      } catch {
-        return 'Unknown';
+      const value = VitePressSidebar.getValueFromFrontmatter<string | undefined>(
+        filePath,
+        'title',
+        undefined
+      );
+      if (value) {
+        return VitePressSidebar.formatTitle(options, value);
       }
     }
 

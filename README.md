@@ -77,6 +77,7 @@ export default {
       // frontmatterOrderDefaultValue: 0,
       // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
       // excludeFiles: ['first.md', 'secret.md'],
+      // excludeFilesByFrontmatter: false,
       // excludeFolders: ['secret-folder'],
       // includeDotFiles: false,
       // includeRootIndexFile: false,
@@ -331,6 +332,13 @@ If the value is `true`, Capitalize all first letters of words separated by space
 - Default: `[]`
 
 Files that correspond to an array of file names (including extensions) are not shown in the list.
+
+### `excludeFilesByFrontmatter`
+
+- Type: `boolean`
+- Default: `false`
+
+Exclude files dependning on the `exclude` property of the frontmatter. If the value of `exclude` is non-boolean or does not exist, `exclude` is judged to be `false`.
 
 ### `excludeFolders`
 
