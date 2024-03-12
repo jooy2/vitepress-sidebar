@@ -1020,7 +1020,7 @@ describe('VitePress Sidebar Test', () => {
         },
         {
           text: 'javascript',
-          link: '/javascript/',
+          link: '/javascript/index.md',
           items: [
             {
               text: 'es-module',
@@ -1037,7 +1037,7 @@ describe('VitePress Sidebar Test', () => {
             },
             {
               text: 'functions',
-              link: '/javascript/functions/',
+              link: '/javascript/functions/index.md',
               items: [
                 {
                   text: 'prototypes',
@@ -1097,7 +1097,7 @@ describe('VitePress Sidebar Test', () => {
         },
         {
           text: 'markdown',
-          link: '/markdown/',
+          link: '/markdown/index.md',
           items: [
             {
               text: 'markdown',
@@ -2704,6 +2704,35 @@ describe('VitePress Sidebar Test', () => {
               ]
             }
           ]
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('Option: sortMenusByFrontmatterDate', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'example/.special-cases/date-sort',
+        sortMenusByFrontmatterDate: true
+      }),
+      [
+        {
+          text: '1',
+          link: '/1'
+        },
+        {
+          text: '3',
+          link: '/3'
+        },
+        {
+          text: '4',
+          link: '/4'
+        },
+        {
+          text: '2',
+          link: '/2'
         }
       ]
     );

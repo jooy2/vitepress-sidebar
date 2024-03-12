@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.20.0 (2024-03-12)
+
+- Add `sortMenusByFrontmatterDate` option
+- In `useFolderLinkFromIndexFile`, show the path to `index.md` together
+
 ## 1.19.0 (2024-02-26)
 
 - Add `excludeFilesByFrontmatter` option (@aslafy-z)

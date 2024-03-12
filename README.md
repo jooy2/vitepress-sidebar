@@ -259,6 +259,13 @@ Sort the items in the menu item by name. Normally, folder scans are done with an
 
 Sorts the menu items by the `order` property of the frontmatter. For each folder, sorts the value (number) of the `order` property in ascending order, or descending order if the `sortMenusOrderByDescending` option is `true`. If the value of `order` is non-numeric or does not exist, `order` is judged to be `0`.
 
+### `sortMenusByFrontmatterDate`
+
+- Type: `boolean`
+- Default: `false`
+
+Sorts the menu items by the `date` property of the frontmatter. It also sorts the `date` property values in ascending order by oldest date (or descending order if the ``option is`true`) The date format must match `YYYY-MM-DD` or the JavaScript Date data type.
+
 ### `sortMenusOrderByDescending`
 
 - Type: `boolean`

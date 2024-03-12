@@ -24,6 +24,7 @@ declare interface Options {
   includeEmptyFolder?: boolean;
   sortMenusByName?: boolean;
   sortMenusByFrontmatterOrder?: boolean;
+  sortMenusByFrontmatterDate?: boolean;
   sortMenusOrderByDescending?: boolean;
   sortMenusOrderNumerically?: boolean;
   keepMarkdownSyntaxFromTitle?: boolean;
@@ -64,6 +65,14 @@ declare interface Options {
 
 declare interface SidebarListItem {
   [key: string]: any;
+}
+
+declare interface SortByObjectKeyOptions {
+  arr: SidebarListItem;
+  key: string;
+  desc?: boolean;
+  numerically?: boolean;
+  dateSort?: boolean;
 }
 
 /*
@@ -152,6 +161,14 @@ export default class VitePressSidebar {
             VitePressSidebar.generateNotTogetherMessage(
               'sortMenusByFrontmatterOrder',
               'sortMenusOrderNumerically'
+            )
+          );
+        }
+        if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusByFrontmatterDate) {
+          throw new Error(
+            VitePressSidebar.generateNotTogetherMessage(
+              'sortMenusByFrontmatterOrder',
+              'sortMenusByFrontmatterDate'
             )
           );
         }
@@ -387,6 +404,11 @@ export default class VitePressSidebar {
                       options.frontmatterOrderDefaultValue!
                     )
                   }
+                : {}),
+              ...(options.sortMenusByFrontmatterDate
+                ? {
+                    date: VitePressSidebar.getDateFromFrontmatter(childItemPath)
+                  }
                 : {})
             };
           }
@@ -425,6 +447,11 @@ export default class VitePressSidebar {
                     options.frontmatterOrderDefaultValue!
                   )
                 }
+              : {}),
+            ...(options.sortMenusByFrontmatterDate
+              ? {
+                  date: VitePressSidebar.getDateFromFrontmatter(childItemPath)
+                }
               : {})
           };
         }
@@ -433,30 +460,41 @@ export default class VitePressSidebar {
       .filter((x) => x !== null);
 
     if (options.sortMenusByName) {
-      sidebarItems = VitePressSidebar.sortByObjectKey(
-        sidebarItems,
-        'text',
-        options.sortMenusOrderByDescending
-      );
+      sidebarItems = VitePressSidebar.sortByObjectKey({
+        arr: sidebarItems,
+        key: 'text',
+        desc: options.sortMenusOrderByDescending
+      });
     }
 
     if (options.sortMenusByFrontmatterOrder) {
-      sidebarItems = VitePressSidebar.sortByObjectKey(
-        sidebarItems,
-        'order',
-        options.sortMenusOrderByDescending
-      );
+      sidebarItems = VitePressSidebar.sortByObjectKey({
+        arr: sidebarItems,
+        key: 'order',
+        desc: options.sortMenusOrderByDescending
+      });
 
       VitePressSidebar.deepDeleteKey(sidebarItems, 'order');
     }
 
+    if (options.sortMenusByFrontmatterDate) {
+      sidebarItems = VitePressSidebar.sortByObjectKey({
+        arr: sidebarItems,
+        key: 'date',
+        desc: options.sortMenusOrderByDescending,
+        dateSort: true
+      });
+
+      VitePressSidebar.deepDeleteKey(sidebarItems, 'date');
+    }
+
     if (options.sortMenusOrderNumerically) {
-      sidebarItems = VitePressSidebar.sortByObjectKey(
-        sidebarItems,
-        'text',
-        options.sortMenusOrderByDescending,
-        true
-      );
+      sidebarItems = VitePressSidebar.sortByObjectKey({
+        arr: sidebarItems,
+        key: 'text',
+        desc: options.sortMenusOrderByDescending,
+        numerically: true
+      });
     }
 
     return sidebarItems;
@@ -495,12 +533,14 @@ export default class VitePressSidebar {
   }
 
   private static getOrderFromFrontmatter(filePath: string, defaultOrder: number): number {
-    const stringValue = VitePressSidebar.getValueFromFrontmatter<string>(
-      filePath,
-      'order',
-      defaultOrder.toString()
+    return parseInt(
+      VitePressSidebar.getValueFromFrontmatter<string>(filePath, 'order', defaultOrder.toString()),
+      10
     );
-    return parseInt(stringValue, 10);
+  }
+
+  private static getDateFromFrontmatter(filePath: string): string {
+    return VitePressSidebar.getValueFromFrontmatter<string>(filePath, 'date', '0001-01-01');
   }
 
   private static getExcludeFromFrontmatter(filePath: string): boolean {
@@ -600,39 +640,51 @@ export default class VitePressSidebar {
     return VitePressSidebar.formatTitle(options, fileName.replace(/\.md$/, ''));
   }
 
-  private static sortByObjectKey(
-    arr: SidebarListItem,
-    key: string,
-    desc = false,
-    numerically = false
-  ): object[] {
-    for (let i = 0; i < arr.length; i += 1) {
-      if (arr[i].items && arr[i].items.length) {
-        arr[i].items = VitePressSidebar.sortByObjectKey(arr[i].items, key, desc, numerically);
+  private static sortByObjectKey(options: SortByObjectKeyOptions): object[] {
+    for (let i = 0; i < options.arr.length; i += 1) {
+      if (options.arr[i].items && options.arr[i].items.length) {
+        options.arr[i].items = VitePressSidebar.sortByObjectKey({
+          ...options,
+          arr: options.arr[i].items
+        });
       }
     }
 
-    if (numerically) {
+    if (options.numerically) {
       const collator = new Intl.Collator([], { numeric: true });
 
-      const result = arr.sort((a: any, b: any) => collator.compare(a[key], b[key]));
+      const result = options.arr.sort((a: any, b: any) =>
+        collator.compare(a[options.key], b[options.key])
+      );
 
-      if (desc) {
+      if (options.desc) {
         return result.reverse();
       }
 
       return result;
     }
 
-    return arr.sort((a: any, b: any) => {
-      if (!desc) {
-        if (a[key] < b[key]) return -1;
-        if (a[key] > b[key]) return 1;
+    if (options.dateSort) {
+      const result = options.arr.sort(
+        (a: any, b: any) => new Date(a[options.key]).valueOf() - new Date(b[options.key]).valueOf()
+      );
+
+      if (options.desc) {
+        return result.reverse();
+      }
+
+      return result;
+    }
+
+    return options.arr.sort((a: any, b: any) => {
+      if (!options.desc) {
+        if (a[options.key] < b[options.key]) return -1;
+        if (a[options.key] > b[options.key]) return 1;
 
         return 0;
       }
-      if (a[key] > b[key]) return -1;
-      if (a[key] < b[key]) return 1;
+      if (a[options.key] > b[options.key]) return -1;
+      if (a[options.key] < b[options.key]) return 1;
 
       return 0;
     });
