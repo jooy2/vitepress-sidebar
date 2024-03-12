@@ -346,6 +346,7 @@ export default class VitePressSidebar {
           let newDirectoryText = VitePressSidebar.getTitleFromMd(x, childItemPath, options, true);
           let newDirectoryPagePath = childItemPath;
           let withDirectoryLink;
+          let isNotEmptyDirectory = false;
 
           if (options.convertSameNameSubFileToGroupIndexPage) {
             const findItem = directorySidebarItems.find((y: SidebarListItem) => y.text === x);
@@ -376,6 +377,8 @@ export default class VitePressSidebar {
             newDirectoryPagePath = `${childItemPath}/index.md`;
 
             if (existsSync(newDirectoryPagePath)) {
+              isNotEmptyDirectory = true;
+
               if (options.useFolderTitleFromIndexFile) {
                 newDirectoryText = VitePressSidebar.getTitleFromMd(
                   'index',
@@ -389,7 +392,11 @@ export default class VitePressSidebar {
             }
           }
 
-          if (options.includeEmptyFolder || directorySidebarItems.length > 0) {
+          if (
+            options.includeEmptyFolder ||
+            directorySidebarItems.length > 0 ||
+            isNotEmptyDirectory
+          ) {
             return {
               text: newDirectoryText,
               ...(withDirectoryLink ? { link: withDirectoryLink } : {}),

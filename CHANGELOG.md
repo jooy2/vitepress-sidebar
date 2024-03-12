@@ -4,6 +4,7 @@
 
 - Add `sortMenusByFrontmatterDate` option
 - In `useFolderLinkFromIndexFile`, show the path to `index.md` together
+- Fix folders with only an index file are not recognized as empty
 
 ## 1.19.0 (2024-02-26)
 
