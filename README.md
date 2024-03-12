@@ -72,8 +72,10 @@ export default {
       // collapseDepth: 2,
       // sortMenusByName: false,
       // sortMenusByFrontmatterOrder: false,
+      // sortMenusByFrontmatterDate: false,
       // sortMenusOrderByDescending: false,
-      // sortMenusOrderNumerically: false,
+      // sortMenusOrderNumericallyFromTitle: false,
+      // sortMenusOrderNumericallyFromLink: false,
       // frontmatterOrderDefaultValue: 0,
       // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
       // excludeFiles: ['first.md', 'secret.md'],
@@ -273,7 +275,7 @@ Sorts the menu items by the `date` property of the frontmatter. It also sorts th
 
 If this value is `true`, sorts the items in the menu item in descending order. This option is only enabled when `sortMenusByName` or `sortMenusByFrontmatterOrder` is `true`.
 
-### `sortMenusOrderNumerically`
+### `sortMenusOrderNumericallyFromTitle`
 
 - Type: `boolean`
 - Default: `false`
@@ -281,6 +283,15 @@ If this value is `true`, sorts the items in the menu item in descending order. T
 If this value is `true`, If a menu name contains a number at the beginning, it is sorted by the lower number, not the name. For example, if you have files named `1-a`, `10-a`, and `2-a`, a normal sort would sort by name, `['1-a', '10-a', '2-a']`. This causes the menu to display in an unintended order because `10-a` takes precedence over `2-a`.
 
 With this option, they are sorted as follows: `['1-a', '2-a', '10-a']`
+
+It should be used with the `sortMenusOrderByDescending` option if you want a descending sort.
+
+### `sortMenusOrderNumericallyFromLink`
+
+- Type: `boolean`
+- Default: `false`
+
+If this value is `true`, If a menu name contains a number at the beginning, it is sorted by the lower number, not the name. This option is the same as `sortMenusOrderNumericallyFromTitle`, but sorts by links instead of file titles. Therefore, it cannot be used with the `sortMenusOrderNumericallyFromTitle` option.
 
 It should be used with the `sortMenusOrderByDescending` option if you want a descending sort.
 

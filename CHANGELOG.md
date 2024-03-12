@@ -2,7 +2,9 @@
 
 ## 1.20.0 (2024-03-12)
 
+- **BREAKING CHANGES**: The `sortMenusOrderNumerically` option has been split into the `sortMenusOrderNumericallyFromTitle` and `sortMenusOrderNumericallyFromLink` options. Therefore, the old option is deprecated. Renamed to allow you to sort by file title or link. For more information, see `README.md`.
 - Add `sortMenusByFrontmatterDate` option
+- Add `sortMenusOrderNumericallyFromLink` option
 - In `useFolderLinkFromIndexFile`, show the path to `index.md` together
 - Fix folders with only an index file are not recognized as empty
 

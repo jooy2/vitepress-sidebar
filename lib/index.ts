@@ -26,7 +26,8 @@ declare interface Options {
   sortMenusByFrontmatterOrder?: boolean;
   sortMenusByFrontmatterDate?: boolean;
   sortMenusOrderByDescending?: boolean;
-  sortMenusOrderNumerically?: boolean;
+  sortMenusOrderNumericallyFromTitle?: boolean;
+  sortMenusOrderNumericallyFromLink?: boolean;
   keepMarkdownSyntaxFromTitle?: boolean;
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
@@ -37,6 +38,10 @@ declare interface Options {
   rootGroupLink?: string;
   rootGroupCollapsed?: boolean | null | undefined;
   frontmatterOrderDefaultValue?: number;
+  /**
+   * @deprecated
+   */
+  sortMenusOrderNumerically?: boolean;
   /**
    * @deprecated
    */
@@ -148,6 +153,14 @@ export default class VitePressSidebar {
             )
           );
         }
+        if (optionItem.sortMenusOrderNumerically) {
+          throw new Error(
+            VitePressSidebar.generateDeprecateMessage(
+              'sortMenusOrderNumerically',
+              'sortMenusOrderNumericallyFromTitle` and `sortMenusOrderNumericallyFromLink'
+            )
+          );
+        }
         if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusByName) {
           throw new Error(
             VitePressSidebar.generateNotTogetherMessage(
@@ -156,11 +169,15 @@ export default class VitePressSidebar {
             )
           );
         }
-        if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusOrderNumerically) {
+        if (
+          optionItem.sortMenusByFrontmatterOrder &&
+          (optionItem.sortMenusOrderNumericallyFromTitle ||
+            optionItem.sortMenusOrderNumericallyFromLink)
+        ) {
           throw new Error(
             VitePressSidebar.generateNotTogetherMessage(
               'sortMenusByFrontmatterOrder',
-              'sortMenusOrderNumerically'
+              'sortMenusOrderNumericallyFromTitle or sortMenusOrderNumericallyFromLink'
             )
           );
         }
@@ -495,10 +512,19 @@ export default class VitePressSidebar {
       VitePressSidebar.deepDeleteKey(sidebarItems, 'date');
     }
 
-    if (options.sortMenusOrderNumerically) {
+    if (options.sortMenusOrderNumericallyFromTitle) {
       sidebarItems = VitePressSidebar.sortByObjectKey({
         arr: sidebarItems,
         key: 'text',
+        desc: options.sortMenusOrderByDescending,
+        numerically: true
+      });
+    }
+
+    if (options.sortMenusOrderNumericallyFromLink) {
+      sidebarItems = VitePressSidebar.sortByObjectKey({
+        arr: sidebarItems,
+        key: 'link',
         desc: options.sortMenusOrderByDescending,
         numerically: true
       });
@@ -551,7 +577,7 @@ export default class VitePressSidebar {
   }
 
   private static getExcludeFromFrontmatter(filePath: string): boolean {
-    return VitePressSidebar.getValueFromFrontmatter<boolean>(filePath, 'exclude', false) === true;
+    return VitePressSidebar.getValueFromFrontmatter<boolean>(filePath, 'exclude', false);
   }
 
   private static capitalizeFirst(str: string): string {

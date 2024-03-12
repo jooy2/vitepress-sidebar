@@ -2559,11 +2559,11 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: sortMenusOrderNumerically', (done) => {
+  it('Option: sortMenusOrderNumericallyFromTitle', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: 'example/.special-cases/numeric-title',
-        sortMenusOrderNumerically: true
+        sortMenusOrderNumericallyFromTitle: true
       }),
       [
         {
@@ -2597,6 +2597,37 @@ describe('VitePress Sidebar Test', () => {
         {
           text: '100-file',
           link: '/100-file'
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('Option: sortMenusOrderNumericallyFromLink', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'example/.special-cases/folder-title-from-index',
+        useFolderTitleFromIndexFile: true,
+        useFolderLinkFromIndexFile: true,
+        sortMenusOrderNumericallyFromLink: true,
+        useTitleFromFileHeading: true
+      }),
+      [
+        {
+          link: '/1-a/index.md',
+          text: 'One',
+          items: []
+        },
+        {
+          link: '/2-a/index.md',
+          text: 'Two',
+          items: []
+        },
+        {
+          link: '/10-a/index.md',
+          text: 'Ten',
+          items: []
         }
       ]
     );
