@@ -367,7 +367,7 @@ export default class VitePressSidebar {
                 );
               }
               if (options.useFolderLinkFromIndexFile) {
-                withDirectoryLink = `${childItemPathDisplay}/`;
+                withDirectoryLink = `${childItemPathDisplay}/index.md`;
               }
             }
           }
