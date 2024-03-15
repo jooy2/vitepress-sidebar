@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.21.0 (2024--)
+## 1.21.0 (2024-03-15)
 
 - Add `removePrefixAfterOrdering` and `prefixSeparator` option
+- Documentation enhancements
 
 ## 1.20.0 (2024-03-12)
 
