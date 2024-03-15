@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.21.0 (2024--)
+
+- Add `removePrefixAfterOrdering` and `prefixSeparator` option
+
 ## 1.20.0 (2024-03-12)
 
 - **BREAKING CHANGES**: The `sortMenusOrderNumerically` option has been split into the `sortMenusOrderNumericallyFromTitle` and `sortMenusOrderNumericallyFromLink` options. Therefore, the old option is deprecated. Renamed to allow you to sort by file title or link. For more information, see `README.md`.

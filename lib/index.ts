@@ -34,6 +34,8 @@ declare interface Options {
   excludeFiles?: string[];
   excludeFilesByFrontmatter?: boolean;
   excludeFolders?: string[];
+  removePrefixAfterOrdering?: boolean;
+  prefixSeparator?: string;
   rootGroupText?: string;
   rootGroupLink?: string;
   rootGroupCollapsed?: boolean | null | undefined;
@@ -189,6 +191,10 @@ export default class VitePressSidebar {
             )
           );
         }
+        if (optionItem.removePrefixAfterOrdering && !optionItem.prefixSeparator) {
+          throw new Error(`'prefixSeparator' should not use empty string`);
+        }
+
         if (optionItem.debugPrint && !enableDebugPrint) {
           enableDebugPrint = true;
         }
@@ -201,6 +207,10 @@ export default class VitePressSidebar {
 
         if (optionItem.collapseDepth) {
           optionItem.collapsed = true;
+        }
+
+        if (!optionItem.prefixSeparator) {
+          optionItem.prefixSeparator = '.';
         }
 
         optionItem.collapseDepth = optionItem?.collapseDepth ?? 1;
@@ -217,13 +227,20 @@ export default class VitePressSidebar {
             .replace('/$', '');
         }
 
-        const sidebarResult: SidebarListItem = VitePressSidebar.generateSidebarItem(
+        let sidebarResult: SidebarListItem = VitePressSidebar.generateSidebarItem(
           1,
           join(process.cwd(), scanPath),
           scanPath,
           null,
           optionItem
         );
+
+        if (optionItem.removePrefixAfterOrdering) {
+          sidebarResult = VitePressSidebar.removeNumericPrefixFromTitleAndLink(
+            sidebarResult,
+            optionItem
+          );
+        }
 
         sidebar[optionItem.resolvePath || '/'] = {
           base: optionItem.resolvePath || '/',
@@ -741,6 +758,33 @@ export default class VitePressSidebar {
         VitePressSidebar.deepDeleteKey(obj[item], key);
       }
     });
+  }
+
+  private static removeNumericPrefixFromTitleAndLink(
+    sidebarList: SidebarListItem,
+    options: Options
+  ): SidebarListItem {
+    const sidebarListLength = sidebarList.length;
+
+    for (let i = 0; i < sidebarListLength; i += 1) {
+      const obj = sidebarList[i];
+
+      for (let j = 0; j < Object.keys(obj).length; j += 1) {
+        const key = Object.keys(obj)[j];
+
+        if (key === 'text') {
+          const splitItem = obj[key].split(options.prefixSeparator);
+
+          splitItem.shift();
+
+          obj[key] = splitItem.join(options.prefixSeparator);
+        } else if (key === 'items') {
+          obj[key] = VitePressSidebar.removeNumericPrefixFromTitleAndLink(obj[key], options);
+        }
+      }
+    }
+
+    return sidebarList;
   }
 }
 

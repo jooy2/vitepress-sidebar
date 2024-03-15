@@ -2138,6 +2138,49 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
+  it('Option: removePrefixAfterOrdering', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: 'example/.special-cases/numeric-prefix',
+        removePrefixAfterOrdering: true,
+        prefixSeparator: '-'
+      }),
+      [
+        {
+          text: '1-1-one-file',
+          link: '/1-1-1-one-file'
+        },
+        {
+          text: 'folder',
+          items: [
+            {
+              text: 'file',
+              link: '/1-folder/11-file'
+            }
+          ]
+        },
+        {
+          text: 'one-file',
+          link: '/1-one-file'
+        },
+        {
+          text: 'three-file',
+          link: '/1-three-file'
+        },
+        {
+          text: 'four-file',
+          link: '/1.1.1-four-file'
+        },
+        {
+          text: 'two-file',
+          link: '/2-two-file'
+        }
+      ]
+    );
+
+    done();
+  });
+
   it('Option: sortMenusByName', (done) => {
     assert.deepEqual(
       generateSidebar({

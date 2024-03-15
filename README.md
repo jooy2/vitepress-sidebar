@@ -78,6 +78,8 @@ export default {
       // sortMenusOrderNumericallyFromLink: false,
       // frontmatterOrderDefaultValue: 0,
       // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
+      // removePrefixAfterOrdering: false,
+      // prefixSeparator: '.',
       // excludeFiles: ['first.md', 'secret.md'],
       // excludeFilesByFrontmatter: false,
       // excludeFolders: ['secret-folder'],
@@ -392,6 +394,32 @@ If the value is `true`, also include the top-level path `index.md` file in the s
 - Default: `false`
 
 If the value is `true`, also include the folder path `index.md` file in the sidebar menu. Use the `includeRootIndexFile` option to include the index file of the root item as well. (If the file does not exist, it is ignored.)
+
+### `removePrefixAfterOrdering`
+
+- Type: `boolean`
+- Default: `false`
+
+Removes a specific prefix from each menu title from the menu items that appear after everything is done. This is ideal if you want to sort by the number in the filename without using frontmatter's sorting, and you don't want that number to be visible in the menu.
+
+For example, if `prefixSeparator` is the default (`.`), the following menus will be renamed as follows
+
+- File name: `1.hello` -> Menu name: `hello`
+- File name: `1.1.hello` -> Menu name: `1.hello`
+- File name: `1-1.hello` -> Menu name: `hello`
+
+Removes letters only once based on the separator, so a child item like `1.1.` should be used like `1-1.`.
+
+Can be used with the `prefixSeparator` option. See that option's description for more information.
+
+(Note: prefix only affects the title, the link will use the file link as it is).
+
+### `prefixSeparator`
+
+- Type: `string`
+- Default: `'.'`
+
+It is used with the `removePrefixAfterOrdering` option and allows you to customize the characters (1 or more) that separate the prefixes to be removed from the title.
 
 ### `rootGroupText`
 
