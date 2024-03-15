@@ -1,58 +1,183 @@
 import assert from 'assert';
 import { generateSidebar } from '../dist';
 
+const TEST_DIR_BASE = 'test/res';
+
 describe('VitePress Sidebar Test', () => {
-  it('Basic configurations', (done) => {
+  it('Without configurations', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example'
+        documentRootPath: TEST_DIR_BASE
       }),
       [
         {
-          text: 'css',
+          text: 'folder-with-index',
           items: [
             {
-              text: 'a-css',
-              link: '/css/a-css'
+              text: '1-a',
+              items: []
             },
             {
-              text: 'b-css',
-              link: '/css/b-css'
+              text: '10-a',
+              items: []
             },
             {
-              text: 'c-css',
-              link: '/css/c-css'
+              text: '2-a',
+              items: []
             }
           ]
         },
         {
-          text: 'javascript',
+          text: 'folder-with-same-name-file',
           items: [
             {
-              text: 'es-module',
-              link: '/javascript/es-module'
+              text: 'folder-with-same-name-file',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ]
+        },
+        {
+          text: 'folder-with-special-char-file',
+          items: [
+            {
+              text: 'hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
             },
             {
-              text: 'examples',
+              text: 'special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ]
+        },
+        {
+          text: 'frontmatter-basic',
+          items: [
+            {
+              text: 'a',
+              link: '/frontmatter-basic/a'
+            },
+            {
+              text: 'b',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'c',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'd',
+              link: '/frontmatter-basic/d'
+            }
+          ]
+        },
+        {
+          text: 'numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
               items: [
                 {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ]
             },
             {
-              text: 'functions',
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ]
+        },
+        {
+          text: 'numeric-title',
+          items: [
+            {
+              text: '0-file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1-file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10-file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100-file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11-file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2-file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3-afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3-bfile',
+              link: '/numeric-title/3-bfile'
+            }
+          ]
+        },
+        {
+          text: 'recursive',
+          items: [
+            {
+              text: 'folderA',
               items: [
                 {
-                  text: 'prototypes',
+                  text: 'a',
+                  link: '/recursive/folderA/a'
+                },
+                {
+                  text: 'folderAA',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'aa',
+                      link: '/recursive/folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'folderAAA',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'aaaaa',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -61,51 +186,23 @@ describe('VitePress Sidebar Test', () => {
               ]
             },
             {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
+              text: 'folderB',
               items: [
                 {
-                  text: 'frontmatter.example',
+                  text: 'folderBB',
                   items: [
                     {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                      text: 'folderBBB',
+                      items: [
+                        {
+                          text: 'bbb',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ]
                     }
                   ]
                 }
               ]
-            }
-          ]
-        },
-        {
-          text: 'markdown',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
             }
           ]
         }
@@ -118,96 +215,170 @@ describe('VitePress Sidebar Test', () => {
   it('With complex configurations (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         collapsed: false,
         hyphenToSpace: true,
         underscoreToSpace: true,
         includeRootIndexFile: true,
         useTitleFromFrontmatter: true,
-        excludeFiles: ['b-css.md', 'c-css.md'],
-        excludeFolders: ['functions']
+        excludeFiles: ['a.md', 'c.md'],
+        excludeFolders: [
+          'folder-with-index',
+          'folder-with-same-name-file',
+          'folder-with-special-char-file'
+        ]
       }),
       [
         {
-          text: 'css',
+          text: 'frontmatter basic',
           items: [
             {
-              text: 'a css',
-              link: '/css/a-css'
+              text: 'B Frontmatter',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'D Frontmatter',
+              link: '/frontmatter-basic/d'
             }
           ],
           collapsed: false
         },
         {
-          text: 'index',
-          link: '/index'
-        },
-        {
-          text: 'javascript',
+          text: 'numeric prefix',
           items: [
             {
-              text: 'es module',
-              link: '/javascript/es-module'
+              text: '1 1 1 one file',
+              link: '/numeric-prefix/1-1-1-one-file'
             },
             {
-              text: 'examples',
+              text: '1 folder',
               items: [
                 {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
+                  text: '11 file',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ],
               collapsed: false
             },
             {
-              text: 'getting started',
-              link: '/javascript/getting_started'
+              text: '1 one file',
+              link: '/numeric-prefix/1-one-file'
             },
             {
-              text: 'helpful links',
-              link: '/javascript/helpful-links'
+              text: '1 three file',
+              link: '/numeric-prefix/1-three-file'
             },
             {
-              text: 'package.json',
-              link: '/javascript/package.json'
+              text: '1.1.1 four file',
+              link: '/numeric-prefix/1.1.1-four-file'
             },
             {
-              text: 'vitepress how to',
+              text: '2 two file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ],
+          collapsed: false
+        },
+        {
+          text: 'numeric title',
+          items: [
+            {
+              text: '0 file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1 file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10 file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100 file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11 file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2 file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3 afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3 bfile',
+              link: '/numeric-title/3-bfile'
+            }
+          ],
+          collapsed: false
+        },
+        {
+          text: 'recursive',
+          items: [
+            {
+              text: 'folderA',
               items: [
                 {
-                  text: 'frontmatter.example',
+                  text: 'folderAA',
                   items: [
                     {
-                      text: 'Bad Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
+                      text: 'aa',
+                      link: '/recursive/folderA/folderAA/aa'
                     },
                     {
-                      text: 'Frontmatter Properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'What is Frontmatter?',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                      text: 'folderAAA',
+                      items: [
+                        {
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'aaaaa',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ],
+                              collapsed: false
+                            }
+                          ],
+                          collapsed: false
+                        }
+                      ],
+                      collapsed: false
                     }
                   ],
                   collapsed: false
                 }
               ],
               collapsed: false
-            }
-          ],
-          collapsed: false
-        },
-        {
-          text: 'markdown',
-          items: [
+            },
             {
-              text: 'markdown',
-              link: '/markdown/markdown'
+              text: 'folderB',
+              items: [
+                {
+                  text: 'folderBB',
+                  items: [
+                    {
+                      text: 'folderBBB',
+                      items: [
+                        {
+                          text: 'bbb',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ],
+                      collapsed: false
+                    }
+                  ],
+                  collapsed: false
+                }
+              ],
+              collapsed: false
             }
           ],
           collapsed: false
@@ -221,11 +392,11 @@ describe('VitePress Sidebar Test', () => {
   it('With complex configurations (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         includeEmptyFolder: true,
         includeDotFiles: true,
-        excludeFiles: ['c-file-name.md', 'sub-file.md'],
-        excludeFolders: ['empty', 'folder-index', '.special-cases'],
+        excludeFiles: [],
+        excludeFolders: ['numeric-prefix', 'numeric-title', 'recursive', '.special-markdown'],
         hyphenToSpace: true,
         underscoreToSpace: true,
         capitalizeFirst: true,
@@ -234,120 +405,87 @@ describe('VitePress Sidebar Test', () => {
       }),
       [
         {
-          text: '.secret',
+          text: '.dot directory',
           items: [
             {
-              text: 'Document',
-              link: '/.secret/document'
+              text: 'DotFile',
+              link: '/.dot-directory/.dot-file'
+            },
+            {
+              text: 'File',
+              link: '/.dot-directory/normal-file'
             }
           ]
         },
         {
-          text: 'Css',
-          items: [
-            {
-              text: 'A',
-              link: '/css/a-css'
-            },
-            {
-              text: 'B',
-              link: '/css/b-css'
-            },
-            {
-              text: 'C',
-              link: '/css/c-css'
-            }
-          ]
-        },
-        {
-          text: 'Html',
+          text: 'Empty',
           items: []
         },
         {
-          text: 'Javascript',
+          text: 'Folder with index',
           items: [
             {
-              text: 'ES Module',
-              link: '/javascript/es-module'
+              text: '1 a',
+              items: []
             },
             {
-              text: 'Examples',
-              items: [
-                {
-                  text: 'Examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
+              text: '10 a',
+              items: []
             },
             {
-              text: 'Functions',
-              items: [
-                {
-                  text: 'Prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'Getting Started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'Helpful Links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'Package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'Vitepress how to',
-              items: [
-                {
-                  text: 'Secret Document',
-                  link: '/javascript/vitepress-how-to/.secret-document'
-                },
-                {
-                  text: 'Frontmatter.example',
-                  items: [
-                    {
-                      text: 'Bad Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Frontmatter Properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'What is Frontmatter?',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
+              text: '2 a',
+              items: []
             }
           ]
         },
         {
-          text: 'Markdown',
+          text: 'Folder with same name file',
           items: [
             {
-              text: 'What is Markdown language? How to use it?',
-              link: '/markdown/markdown'
+              text: 'Folder With Same Name File',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ]
+        },
+        {
+          text: 'Folder with special char file',
+          items: [
+            {
+              text: 'Hypen Doc File',
+              link: '/folder-with-special-char-file/hypen-doc'
+            },
+            {
+              text: 'Special Characters File',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'Underscore Doc File',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ]
+        },
+        {
+          text: 'Folder within md',
+          items: []
+        },
+        {
+          text: 'Frontmatter basic',
+          items: [
+            {
+              text: 'A Frontmatter',
+              link: '/frontmatter-basic/a'
+            },
+            {
+              text: 'B Frontmatter',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'C Frontmatter',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'D Frontmatter',
+              link: '/frontmatter-basic/d'
             }
           ]
         }
@@ -360,55 +498,178 @@ describe('VitePress Sidebar Test', () => {
   it('Option: useTitleFromFileHeading', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         useTitleFromFileHeading: true
       }),
       [
         {
-          text: 'css',
+          text: 'folder-with-index',
           items: [
             {
-              text: 'A',
-              link: '/css/a-css'
+              text: '1-a',
+              items: []
             },
             {
-              text: 'B',
-              link: '/css/b-css'
+              text: '10-a',
+              items: []
             },
             {
-              text: 'C',
-              link: '/css/c-css'
+              text: '2-a',
+              items: []
             }
           ]
         },
         {
-          text: 'javascript',
+          text: 'folder-with-same-name-file',
           items: [
             {
-              text: 'ES Module',
-              link: '/javascript/es-module'
+              text: 'Folder With Same Name File',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ]
+        },
+        {
+          text: 'folder-with-special-char-file',
+          items: [
+            {
+              text: 'Hypen Doc File',
+              link: '/folder-with-special-char-file/hypen-doc'
             },
             {
-              text: 'examples',
+              text: 'Special Characters File',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'Underscore Doc File',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ]
+        },
+        {
+          text: 'frontmatter-basic',
+          items: [
+            {
+              text: 'A File',
+              link: '/frontmatter-basic/a'
+            },
+            {
+              text: 'B File',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'C File',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'D File',
+              link: '/frontmatter-basic/d'
+            }
+          ]
+        },
+        {
+          text: 'numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
               items: [
                 {
-                  text: 'Examples',
-                  link: '/javascript/examples/examples'
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ]
             },
             {
-              text: 'functions',
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ]
+        },
+        {
+          text: 'numeric-title',
+          items: [
+            {
+              text: '0. Hello',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1. Hello',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10. Hello',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100. Hello',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11. Hello',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2. Hello',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3. Hello (A)',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3. Hello (B)',
+              link: '/numeric-title/3-bfile'
+            }
+          ]
+        },
+        {
+          text: 'recursive',
+          items: [
+            {
+              text: 'folderA',
               items: [
                 {
-                  text: 'prototypes',
+                  text: 'A File',
+                  link: '/recursive/folderA/a'
+                },
+                {
+                  text: 'folderAA',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'AA File',
+                      link: '/recursive/folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'folderAAA',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'AAAAA File',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -417,51 +678,23 @@ describe('VitePress Sidebar Test', () => {
               ]
             },
             {
-              text: 'Getting Started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'Helpful Links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
+              text: 'folderB',
               items: [
                 {
-                  text: 'frontmatter.example',
+                  text: 'folderBB',
                   items: [
                     {
-                      text: 'Examples of Bad Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Properties of Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Example of Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'Frontmatter? What is?',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                      text: 'folderBBB',
+                      items: [
+                        {
+                          text: 'BBB File',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ]
                     }
                   ]
                 }
               ]
-            }
-          ]
-        },
-        {
-          text: 'markdown',
-          items: [
-            {
-              text: 'What is Markdown language? How to use it?',
-              link: '/markdown/markdown'
             }
           ]
         }
@@ -474,111 +707,26 @@ describe('VitePress Sidebar Test', () => {
   it('Option: useTitleFromFrontmatter', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
         useTitleFromFileHeading: true,
         useTitleFromFrontmatter: true
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'A',
-              link: '/css/a-css'
-            },
-            {
-              text: 'B',
-              link: '/css/b-css'
-            },
-            {
-              text: 'C',
-              link: '/css/c-css'
-            }
-          ]
+          text: 'A Frontmatter',
+          link: '/a'
         },
         {
-          text: 'javascript',
-          items: [
-            {
-              text: 'ES Module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'Examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'Getting Started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'Helpful Links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'Bad Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Frontmatter Properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'What is Frontmatter?',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: 'B Frontmatter',
+          link: '/b'
         },
         {
-          text: 'markdown',
-          items: [
-            {
-              text: 'What is Markdown language? How to use it?',
-              link: '/markdown/markdown'
-            }
-          ]
+          text: 'C Frontmatter',
+          link: '/c'
+        },
+        {
+          text: 'D Frontmatter',
+          link: '/d'
         }
       ]
     );
@@ -589,92 +737,13 @@ describe('VitePress Sidebar Test', () => {
   it('Option: convertSameNameSubFileToGroupIndexPage (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
         convertSameNameSubFileToGroupIndexPage: true
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'a-css',
-              link: '/css/a-css'
-            },
-            {
-              text: 'b-css',
-              link: '/css/b-css'
-            },
-            {
-              text: 'c-css',
-              link: '/css/c-css'
-            }
-          ]
-        },
-        {
-          text: 'javascript',
-          items: [
-            {
-              text: 'es-module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: 'folder-with-same-name-file',
+          link: '/folder-with-same-name-file'
         }
       ]
     );
@@ -685,94 +754,15 @@ describe('VitePress Sidebar Test', () => {
   it('Option: convertSameNameSubFileToGroupIndexPage (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
         useTitleFromFileHeading: true,
         useTitleFromFrontmatter: true,
         convertSameNameSubFileToGroupIndexPage: true
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'A',
-              link: '/css/a-css'
-            },
-            {
-              text: 'B',
-              link: '/css/b-css'
-            },
-            {
-              text: 'C',
-              link: '/css/c-css'
-            }
-          ]
-        },
-        {
-          text: 'javascript',
-          items: [
-            {
-              text: 'ES Module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'Getting Started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'Helpful Links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'Bad Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Frontmatter Properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'What is Frontmatter?',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: 'Folder With Same Name File',
+          link: '/folder-with-same-name-file'
         }
       ]
     );
@@ -783,7 +773,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: convertSameNameSubFileToGroupIndexPage (C)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
         useTitleFromFileHeading: true,
         useTitleFromFrontmatter: true,
         convertSameNameSubFileToGroupIndexPage: true,
@@ -791,87 +781,8 @@ describe('VitePress Sidebar Test', () => {
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'A',
-              link: '/css/a-css'
-            },
-            {
-              text: 'B',
-              link: '/css/b-css'
-            },
-            {
-              text: 'C',
-              link: '/css/c-css'
-            }
-          ]
-        },
-        {
-          text: 'javascript',
-          items: [
-            {
-              text: 'ES Module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'Getting Started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'Helpful Links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'Bad Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Frontmatter Properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'What is Frontmatter?',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: 'Folder With Same Name File',
+          link: '/folder-with-same-name-file'
         }
       ]
     );
@@ -882,111 +793,22 @@ describe('VitePress Sidebar Test', () => {
   it('Option: useFolderTitleFromIndexFile', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
         useFolderTitleFromIndexFile: true,
         useTitleFromFileHeading: true
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'A',
-              link: '/css/a-css'
-            },
-            {
-              text: 'B',
-              link: '/css/b-css'
-            },
-            {
-              text: 'C',
-              link: '/css/c-css'
-            }
-          ]
+          text: 'One',
+          items: []
         },
         {
-          text: 'JavaScript',
-          items: [
-            {
-              text: 'ES Module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'Examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'JavaScript Functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'Getting Started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'Helpful Links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'Examples of Bad Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Properties of Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Example of Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'Frontmatter? What is?',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: 'Ten',
+          items: []
         },
         {
-          text: 'Markdown Index',
-          items: [
-            {
-              text: 'What is Markdown language? How to use it?',
-              link: '/markdown/markdown'
-            }
-          ]
+          text: 'Two',
+          items: []
         }
       ]
     );
@@ -997,113 +819,24 @@ describe('VitePress Sidebar Test', () => {
   it('Option: useFolderLinkFromIndexFile', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
         useFolderLinkFromIndexFile: true
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'a-css',
-              link: '/css/a-css'
-            },
-            {
-              text: 'b-css',
-              link: '/css/b-css'
-            },
-            {
-              text: 'c-css',
-              link: '/css/c-css'
-            }
-          ]
+          text: '1-a',
+          link: '/1-a/index.md',
+          items: []
         },
         {
-          text: 'javascript',
-          link: '/javascript/index.md',
-          items: [
-            {
-              text: 'es-module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'functions',
-              link: '/javascript/functions/index.md',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: '10-a',
+          link: '/10-a/index.md',
+          items: []
         },
         {
-          text: 'markdown',
-          link: '/markdown/index.md',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
-            }
-          ]
+          text: '2-a',
+          link: '/2-a/index.md',
+          items: []
         }
       ]
     );
@@ -1114,57 +847,190 @@ describe('VitePress Sidebar Test', () => {
   it('Option: collapsed', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         collapsed: true
       }),
       [
         {
-          text: 'css',
+          text: 'folder-with-index',
           items: [
             {
-              text: 'a-css',
-              link: '/css/a-css'
+              text: '1-a',
+              items: [],
+              collapsed: true
             },
             {
-              text: 'b-css',
-              link: '/css/b-css'
+              text: '10-a',
+              items: [],
+              collapsed: true
             },
             {
-              text: 'c-css',
-              link: '/css/c-css'
+              text: '2-a',
+              items: [],
+              collapsed: true
             }
           ],
           collapsed: true
         },
         {
-          text: 'javascript',
+          text: 'folder-with-same-name-file',
           items: [
             {
-              text: 'es-module',
-              link: '/javascript/es-module'
+              text: 'folder-with-same-name-file',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ],
+          collapsed: true
+        },
+        {
+          text: 'folder-with-special-char-file',
+          items: [
+            {
+              text: 'hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
             },
             {
-              text: 'examples',
+              text: 'special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ],
+          collapsed: true
+        },
+        {
+          text: 'frontmatter-basic',
+          items: [
+            {
+              text: 'a',
+              link: '/frontmatter-basic/a'
+            },
+            {
+              text: 'b',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'c',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'd',
+              link: '/frontmatter-basic/d'
+            }
+          ],
+          collapsed: true
+        },
+        {
+          text: 'numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
               items: [
                 {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ],
               collapsed: true
             },
             {
-              text: 'functions',
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ],
+          collapsed: true
+        },
+        {
+          text: 'numeric-title',
+          items: [
+            {
+              text: '0-file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1-file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10-file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100-file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11-file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2-file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3-afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3-bfile',
+              link: '/numeric-title/3-bfile'
+            }
+          ],
+          collapsed: true
+        },
+        {
+          text: 'recursive',
+          items: [
+            {
+              text: 'folderA',
               items: [
                 {
-                  text: 'prototypes',
+                  text: 'a',
+                  link: '/recursive/folderA/a'
+                },
+                {
+                  text: 'folderAA',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'aa',
+                      link: '/recursive/folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'folderAAA',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'aaaaa',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ],
+                              collapsed: true
+                            }
+                          ],
+                          collapsed: true
                         }
                       ],
                       collapsed: true
@@ -1176,54 +1042,26 @@ describe('VitePress Sidebar Test', () => {
               collapsed: true
             },
             {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
+              text: 'folderB',
               items: [
                 {
-                  text: 'frontmatter.example',
+                  text: 'folderBB',
                   items: [
                     {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                      text: 'folderBBB',
+                      items: [
+                        {
+                          text: 'bbb',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ],
+                      collapsed: true
                     }
                   ],
                   collapsed: true
                 }
               ],
               collapsed: true
-            }
-          ],
-          collapsed: true
-        },
-        {
-          text: 'markdown',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
             }
           ],
           collapsed: true
@@ -1237,57 +1075,190 @@ describe('VitePress Sidebar Test', () => {
   it('Option: collapseDepth', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         collapseDepth: 2
       }),
       [
         {
-          text: 'css',
+          text: 'folder-with-index',
           items: [
             {
-              text: 'a-css',
-              link: '/css/a-css'
+              text: '1-a',
+              items: [],
+              collapsed: true
             },
             {
-              text: 'b-css',
-              link: '/css/b-css'
+              text: '10-a',
+              items: [],
+              collapsed: true
             },
             {
-              text: 'c-css',
-              link: '/css/c-css'
+              text: '2-a',
+              items: [],
+              collapsed: true
             }
           ],
           collapsed: false
         },
         {
-          text: 'javascript',
+          text: 'folder-with-same-name-file',
           items: [
             {
-              text: 'es-module',
-              link: '/javascript/es-module'
+              text: 'folder-with-same-name-file',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ],
+          collapsed: false
+        },
+        {
+          text: 'folder-with-special-char-file',
+          items: [
+            {
+              text: 'hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
             },
             {
-              text: 'examples',
+              text: 'special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ],
+          collapsed: false
+        },
+        {
+          text: 'frontmatter-basic',
+          items: [
+            {
+              text: 'a',
+              link: '/frontmatter-basic/a'
+            },
+            {
+              text: 'b',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'c',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'd',
+              link: '/frontmatter-basic/d'
+            }
+          ],
+          collapsed: false
+        },
+        {
+          text: 'numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
               items: [
                 {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ],
               collapsed: true
             },
             {
-              text: 'functions',
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ],
+          collapsed: false
+        },
+        {
+          text: 'numeric-title',
+          items: [
+            {
+              text: '0-file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1-file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10-file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100-file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11-file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2-file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3-afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3-bfile',
+              link: '/numeric-title/3-bfile'
+            }
+          ],
+          collapsed: false
+        },
+        {
+          text: 'recursive',
+          items: [
+            {
+              text: 'folderA',
               items: [
                 {
-                  text: 'prototypes',
+                  text: 'a',
+                  link: '/recursive/folderA/a'
+                },
+                {
+                  text: 'folderAA',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'aa',
+                      link: '/recursive/folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'folderAAA',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'aaaaa',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ],
+                              collapsed: true
+                            }
+                          ],
+                          collapsed: true
                         }
                       ],
                       collapsed: true
@@ -1299,54 +1270,26 @@ describe('VitePress Sidebar Test', () => {
               collapsed: true
             },
             {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
+              text: 'folderB',
               items: [
                 {
-                  text: 'frontmatter.example',
+                  text: 'folderBB',
                   items: [
                     {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                      text: 'folderBBB',
+                      items: [
+                        {
+                          text: 'bbb',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ],
+                      collapsed: true
                     }
                   ],
                   collapsed: true
                 }
               ],
               collapsed: true
-            }
-          ],
-          collapsed: false
-        },
-        {
-          text: 'markdown',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
             }
           ],
           collapsed: false
@@ -1360,115 +1303,25 @@ describe('VitePress Sidebar Test', () => {
   it('Option: manualSortFileNameByPriority', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
-        manualSortFileNameByPriority: [
-          'getting_started.md',
-          'es-module.md',
-          'functions',
-          'examples'
-        ]
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
+        manualSortFileNameByPriority: ['b.md', 'a.md', 'd.md', 'c.md']
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'a-css',
-              link: '/css/a-css'
-            },
-            {
-              text: 'b-css',
-              link: '/css/b-css'
-            },
-            {
-              text: 'c-css',
-              link: '/css/c-css'
-            }
-          ]
+          text: 'b',
+          link: '/b'
         },
         {
-          text: 'javascript',
-          items: [
-            {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'es-module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: 'a',
+          link: '/a'
         },
         {
-          text: 'markdown',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
-            }
-          ]
+          text: 'd',
+          link: '/d'
+        },
+        {
+          text: 'c',
+          link: '/c'
         }
       ]
     );
@@ -1479,55 +1332,178 @@ describe('VitePress Sidebar Test', () => {
   it('Option: capitalizeFirst', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         capitalizeFirst: true
       }),
       [
         {
-          text: 'Css',
+          text: 'Folder-with-index',
           items: [
             {
-              text: 'A-css',
-              link: '/css/a-css'
+              text: '1-a',
+              items: []
             },
             {
-              text: 'B-css',
-              link: '/css/b-css'
+              text: '10-a',
+              items: []
             },
             {
-              text: 'C-css',
-              link: '/css/c-css'
+              text: '2-a',
+              items: []
             }
           ]
         },
         {
-          text: 'Javascript',
+          text: 'Folder-with-same-name-file',
           items: [
             {
-              text: 'Es-module',
-              link: '/javascript/es-module'
+              text: 'Folder-with-same-name-file',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ]
+        },
+        {
+          text: 'Folder-with-special-char-file',
+          items: [
+            {
+              text: 'Hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
             },
             {
-              text: 'Examples',
+              text: 'Special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'Underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ]
+        },
+        {
+          text: 'Frontmatter-basic',
+          items: [
+            {
+              text: 'A',
+              link: '/frontmatter-basic/a'
+            },
+            {
+              text: 'B',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'C',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'D',
+              link: '/frontmatter-basic/d'
+            }
+          ]
+        },
+        {
+          text: 'Numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
               items: [
                 {
-                  text: 'Examples',
-                  link: '/javascript/examples/examples'
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ]
             },
             {
-              text: 'Functions',
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ]
+        },
+        {
+          text: 'Numeric-title',
+          items: [
+            {
+              text: '0-file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1-file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10-file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100-file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11-file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2-file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3-afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3-bfile',
+              link: '/numeric-title/3-bfile'
+            }
+          ]
+        },
+        {
+          text: 'Recursive',
+          items: [
+            {
+              text: 'FolderA',
               items: [
                 {
-                  text: 'Prototypes',
+                  text: 'A',
+                  link: '/recursive/folderA/a'
+                },
+                {
+                  text: 'FolderAA',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'Aa',
+                      link: '/recursive/folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'FolderAAA',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                          text: 'FolderAAAA',
+                          items: [
+                            {
+                              text: 'FolderAAAAA',
+                              items: [
+                                {
+                                  text: 'Aaaaa',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -1536,51 +1512,23 @@ describe('VitePress Sidebar Test', () => {
               ]
             },
             {
-              text: 'Getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'Helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'Package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'Vitepress-how-to',
+              text: 'FolderB',
               items: [
                 {
-                  text: 'Frontmatter.example',
+                  text: 'FolderBB',
                   items: [
                     {
-                      text: 'Bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'What-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                      text: 'FolderBBB',
+                      items: [
+                        {
+                          text: 'Bbb',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ]
                     }
                   ]
                 }
               ]
-            }
-          ]
-        },
-        {
-          text: 'Markdown',
-          items: [
-            {
-              text: 'Markdown',
-              link: '/markdown/markdown'
             }
           ]
         }
@@ -1593,59 +1541,186 @@ describe('VitePress Sidebar Test', () => {
   it('Option: includeEmptyFolder', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         includeEmptyFolder: true
       }),
       [
         {
-          text: 'css',
+          text: 'empty',
+          items: []
+        },
+        {
+          text: 'folder-with-index',
           items: [
             {
-              text: 'a-css',
-              link: '/css/a-css'
+              text: '1-a',
+              items: []
             },
             {
-              text: 'b-css',
-              link: '/css/b-css'
+              text: '10-a',
+              items: []
             },
             {
-              text: 'c-css',
-              link: '/css/c-css'
+              text: '2-a',
+              items: []
             }
           ]
         },
         {
-          text: 'html',
+          text: 'folder-with-same-name-file',
+          items: [
+            {
+              text: 'folder-with-same-name-file',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ]
+        },
+        {
+          text: 'folder-with-special-char-file',
+          items: [
+            {
+              text: 'hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
+            },
+            {
+              text: 'special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ]
+        },
+        {
+          text: 'folder-within-md',
           items: []
         },
         {
-          text: 'javascript',
+          text: 'frontmatter-basic',
           items: [
             {
-              text: 'es-module',
-              link: '/javascript/es-module'
+              text: 'a',
+              link: '/frontmatter-basic/a'
             },
             {
-              text: 'examples',
+              text: 'b',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'c',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'd',
+              link: '/frontmatter-basic/d'
+            }
+          ]
+        },
+        {
+          text: 'numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
               items: [
                 {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ]
             },
             {
-              text: 'functions',
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ]
+        },
+        {
+          text: 'numeric-title',
+          items: [
+            {
+              text: '0-file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1-file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10-file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100-file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11-file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2-file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3-afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3-bfile',
+              link: '/numeric-title/3-bfile'
+            }
+          ]
+        },
+        {
+          text: 'recursive',
+          items: [
+            {
+              text: 'folderA',
               items: [
                 {
-                  text: 'prototypes',
+                  text: 'a',
+                  link: '/recursive/folderA/a'
+                },
+                {
+                  text: 'folderAA',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'aa',
+                      link: '/recursive/folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'folderAAA',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'aaaaa',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -1654,51 +1729,27 @@ describe('VitePress Sidebar Test', () => {
               ]
             },
             {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
+              text: 'folderB',
               items: [
                 {
-                  text: 'frontmatter.example',
+                  text: 'folderBB',
                   items: [
                     {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                      text: 'folderBBB',
+                      items: [
+                        {
+                          text: 'bbb',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ]
                     }
                   ]
                 }
               ]
-            }
-          ]
-        },
-        {
-          text: 'markdown',
-          items: [
+            },
             {
-              text: 'markdown',
-              link: '/markdown/markdown'
+              text: 'folderC',
+              items: []
             }
           ]
         }
@@ -1711,93 +1762,28 @@ describe('VitePress Sidebar Test', () => {
   it('Option: excludeFiles', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/numeric-title`,
         excludeFiles: [
-          'bad-frontmatter-example.md',
-          'es-module.md',
-          'helpful-links.md',
-          'b-css.md',
-          'c-css.md',
-          'frontmatter-properties.md'
+          '0-file.md',
+          'not-exist-file.md',
+          '3-afile.md',
+          '3-bfile.md',
+          '11-file.md',
+          '100-file.md'
         ]
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'a-css',
-              link: '/css/a-css'
-            }
-          ]
+          text: '1-file',
+          link: '/1-file'
         },
         {
-          text: 'javascript',
-          items: [
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: '10-file',
+          link: '/10-file'
         },
         {
-          text: 'markdown',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
-            }
-          ]
+          text: '2-file',
+          link: '/2-file'
         }
       ]
     );
@@ -1808,13 +1794,17 @@ describe('VitePress Sidebar Test', () => {
   it('Option: excludeFilesByFrontmatter', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example/.special-cases/exclude-files-by-frontmatter',
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
         excludeFilesByFrontmatter: true
       }),
       [
         {
-          text: 'included',
-          link: '/included'
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'c',
+          link: '/c'
         }
       ]
     );
@@ -1825,56 +1815,110 @@ describe('VitePress Sidebar Test', () => {
   it('Option: excludeFolders', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
-        excludeFolders: ['examples', 'vitepress-how-to', 'css']
+        documentRootPath: TEST_DIR_BASE,
+        excludeFolders: [
+          'folder-with-index',
+          'frontmatter-basic',
+          'not-exist-folder',
+          'numeic-prefix',
+          'recursive'
+        ]
       }),
       [
         {
-          text: 'javascript',
+          text: 'folder-with-same-name-file',
           items: [
             {
-              text: 'es-module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
+              text: 'folder-with-same-name-file',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
             }
           ]
         },
         {
-          text: 'markdown',
+          text: 'folder-with-special-char-file',
           items: [
             {
-              text: 'markdown',
-              link: '/markdown/markdown'
+              text: 'hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
+            },
+            {
+              text: 'special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ]
+        },
+        {
+          text: 'numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
+              items: [
+                {
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
+                }
+              ]
+            },
+            {
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ]
+        },
+        {
+          text: 'numeric-title',
+          items: [
+            {
+              text: '0-file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1-file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10-file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100-file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11-file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2-file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3-afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3-bfile',
+              link: '/numeric-title/3-bfile'
             }
           ]
         }
@@ -1887,122 +1931,62 @@ describe('VitePress Sidebar Test', () => {
   it('Option: includeDotFiles', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         includeDotFiles: true,
-        excludeFolders: ['.special-cases']
+        excludeFolders: [
+          'folder-with-same-name-file',
+          '.special-markdown',
+          'recursive',
+          'frontmatter-basic',
+          'numeric-prefix',
+          'numeric-title'
+        ]
       }),
       [
         {
-          text: '.secret',
+          text: '.dot-directory',
           items: [
             {
-              text: 'document',
-              link: '/.secret/document'
+              text: '.dot-file',
+              link: '/.dot-directory/.dot-file'
+            },
+            {
+              text: 'normal-file',
+              link: '/.dot-directory/normal-file'
             }
           ]
         },
         {
-          text: 'css',
+          text: 'folder-with-index',
           items: [
             {
-              text: 'a-css',
-              link: '/css/a-css'
+              text: '1-a',
+              items: []
             },
             {
-              text: 'b-css',
-              link: '/css/b-css'
+              text: '10-a',
+              items: []
             },
             {
-              text: 'c-css',
-              link: '/css/c-css'
+              text: '2-a',
+              items: []
             }
           ]
         },
         {
-          text: 'javascript',
+          text: 'folder-with-special-char-file',
           items: [
             {
-              text: 'es-module',
-              link: '/javascript/es-module'
+              text: 'hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
             },
             {
-              text: 'examples',
-              items: [
-                {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
+              text: 'special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
             },
             {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: '.secret-document',
-                  link: '/javascript/vitepress-how-to/.secret-document'
-                },
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          text: 'markdown',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
+              text: 'underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
             }
           ]
         }
@@ -2015,120 +1999,34 @@ describe('VitePress Sidebar Test', () => {
   it('Option: includeFolderIndexFile', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
         includeFolderIndexFile: true
       }),
       [
         {
-          text: 'css',
+          text: '1-a',
           items: [
             {
-              text: 'a-css',
-              link: '/css/a-css'
-            },
-            {
-              text: 'b-css',
-              link: '/css/b-css'
-            },
-            {
-              text: 'c-css',
-              link: '/css/c-css'
+              text: 'index',
+              link: '/1-a/index'
             }
           ]
         },
         {
-          text: 'javascript',
+          text: '10-a',
           items: [
             {
-              text: 'es-module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'index',
-                  link: '/javascript/functions/index'
-                },
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
               text: 'index',
-              link: '/javascript/index'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
+              link: '/10-a/index'
             }
           ]
         },
         {
-          text: 'markdown',
+          text: '2-a',
           items: [
             {
               text: 'index',
-              link: '/markdown/index'
-            },
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
+              link: '/2-a/index'
             }
           ]
         }
@@ -2141,7 +2039,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: removePrefixAfterOrdering', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example/.special-cases/numeric-prefix',
+        documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
         removePrefixAfterOrdering: true,
         prefixSeparator: '-'
       }),
@@ -2184,55 +2082,178 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusByName', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         sortMenusByName: true
       }),
       [
         {
-          text: 'css',
+          text: 'folder-with-index',
           items: [
             {
-              text: 'a-css',
-              link: '/css/a-css'
+              text: '1-a',
+              items: []
             },
             {
-              text: 'b-css',
-              link: '/css/b-css'
+              text: '10-a',
+              items: []
             },
             {
-              text: 'c-css',
-              link: '/css/c-css'
+              text: '2-a',
+              items: []
             }
           ]
         },
         {
-          text: 'javascript',
+          text: 'folder-with-same-name-file',
           items: [
             {
-              text: 'es-module',
-              link: '/javascript/es-module'
+              text: 'folder-with-same-name-file',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ]
+        },
+        {
+          text: 'folder-with-special-char-file',
+          items: [
+            {
+              text: 'hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
             },
             {
-              text: 'examples',
+              text: 'special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ]
+        },
+        {
+          text: 'frontmatter-basic',
+          items: [
+            {
+              text: 'a',
+              link: '/frontmatter-basic/a'
+            },
+            {
+              text: 'b',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'c',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'd',
+              link: '/frontmatter-basic/d'
+            }
+          ]
+        },
+        {
+          text: 'numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
               items: [
                 {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ]
             },
             {
-              text: 'functions',
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ]
+        },
+        {
+          text: 'numeric-title',
+          items: [
+            {
+              text: '0-file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1-file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10-file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100-file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11-file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2-file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3-afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3-bfile',
+              link: '/numeric-title/3-bfile'
+            }
+          ]
+        },
+        {
+          text: 'recursive',
+          items: [
+            {
+              text: 'folderA',
               items: [
                 {
-                  text: 'prototypes',
+                  text: 'a',
+                  link: '/recursive/folderA/a'
+                },
+                {
+                  text: 'folderAA',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'aa',
+                      link: '/recursive/folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'folderAAA',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'aaaaa',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -2241,51 +2262,23 @@ describe('VitePress Sidebar Test', () => {
               ]
             },
             {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
+              text: 'folderB',
               items: [
                 {
-                  text: 'frontmatter.example',
+                  text: 'folderBB',
                   items: [
                     {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                      text: 'folderBBB',
+                      items: [
+                        {
+                          text: 'bbb',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ]
                     }
                   ]
                 }
               ]
-            }
-          ]
-        },
-        {
-          text: 'markdown',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
             }
           ]
         }
@@ -2298,110 +2291,25 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusByFrontmatterOrder', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
         sortMenusByFrontmatterOrder: true
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: 'a-css',
-              link: '/css/a-css'
-            },
-            {
-              text: 'b-css',
-              link: '/css/b-css'
-            },
-            {
-              text: 'c-css',
-              link: '/css/c-css'
-            }
-          ]
+          text: 'd',
+          link: '/d'
         },
         {
-          text: 'javascript',
-          items: [
-            {
-              text: 'es-module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'getting_started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'what-is-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'bad-frontmatter-example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: 'b',
+          link: '/b'
         },
         {
-          text: 'markdown',
-          items: [
-            {
-              text: 'markdown',
-              link: '/markdown/markdown'
-            }
-          ]
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'a',
+          link: '/a'
         }
       ]
     );
@@ -2412,11 +2320,10 @@ describe('VitePress Sidebar Test', () => {
   it('Option: rootGroup related configurations (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         rootGroupText: 'Hello',
         rootGroupLink: 'https://github.com/jooy2/vitepress-sidebar',
-        rootGroupCollapsed: true,
-        excludeFolders: ['javascript', 'markdown']
+        rootGroupCollapsed: true
       }),
       [
         {
@@ -2424,19 +2331,198 @@ describe('VitePress Sidebar Test', () => {
           link: 'https://github.com/jooy2/vitepress-sidebar',
           items: [
             {
-              text: 'css',
+              text: 'folder-with-index',
               items: [
                 {
-                  text: 'a-css',
-                  link: '/css/a-css'
+                  text: '1-a',
+                  items: []
                 },
                 {
-                  text: 'b-css',
-                  link: '/css/b-css'
+                  text: '10-a',
+                  items: []
                 },
                 {
-                  text: 'c-css',
-                  link: '/css/c-css'
+                  text: '2-a',
+                  items: []
+                }
+              ]
+            },
+            {
+              text: 'folder-with-same-name-file',
+              items: [
+                {
+                  text: 'folder-with-same-name-file',
+                  link: '/folder-with-same-name-file/folder-with-same-name-file'
+                }
+              ]
+            },
+            {
+              text: 'folder-with-special-char-file',
+              items: [
+                {
+                  text: 'hypen-doc',
+                  link: '/folder-with-special-char-file/hypen-doc'
+                },
+                {
+                  text: 'special@#$characters',
+                  link: '/folder-with-special-char-file/special@#$characters'
+                },
+                {
+                  text: 'underscore_doc',
+                  link: '/folder-with-special-char-file/underscore_doc'
+                }
+              ]
+            },
+            {
+              text: 'frontmatter-basic',
+              items: [
+                {
+                  text: 'a',
+                  link: '/frontmatter-basic/a'
+                },
+                {
+                  text: 'b',
+                  link: '/frontmatter-basic/b'
+                },
+                {
+                  text: 'c',
+                  link: '/frontmatter-basic/c'
+                },
+                {
+                  text: 'd',
+                  link: '/frontmatter-basic/d'
+                }
+              ]
+            },
+            {
+              text: 'numeric-prefix',
+              items: [
+                {
+                  text: '1-1-1-one-file',
+                  link: '/numeric-prefix/1-1-1-one-file'
+                },
+                {
+                  text: '1-folder',
+                  items: [
+                    {
+                      text: '11-file',
+                      link: '/numeric-prefix/1-folder/11-file'
+                    }
+                  ]
+                },
+                {
+                  text: '1-one-file',
+                  link: '/numeric-prefix/1-one-file'
+                },
+                {
+                  text: '1-three-file',
+                  link: '/numeric-prefix/1-three-file'
+                },
+                {
+                  text: '1.1.1-four-file',
+                  link: '/numeric-prefix/1.1.1-four-file'
+                },
+                {
+                  text: '2-two-file',
+                  link: '/numeric-prefix/2-two-file'
+                }
+              ]
+            },
+            {
+              text: 'numeric-title',
+              items: [
+                {
+                  text: '0-file',
+                  link: '/numeric-title/0-file'
+                },
+                {
+                  text: '1-file',
+                  link: '/numeric-title/1-file'
+                },
+                {
+                  text: '10-file',
+                  link: '/numeric-title/10-file'
+                },
+                {
+                  text: '100-file',
+                  link: '/numeric-title/100-file'
+                },
+                {
+                  text: '11-file',
+                  link: '/numeric-title/11-file'
+                },
+                {
+                  text: '2-file',
+                  link: '/numeric-title/2-file'
+                },
+                {
+                  text: '3-afile',
+                  link: '/numeric-title/3-afile'
+                },
+                {
+                  text: '3-bfile',
+                  link: '/numeric-title/3-bfile'
+                }
+              ]
+            },
+            {
+              text: 'recursive',
+              items: [
+                {
+                  text: 'folderA',
+                  items: [
+                    {
+                      text: 'a',
+                      link: '/recursive/folderA/a'
+                    },
+                    {
+                      text: 'folderAA',
+                      items: [
+                        {
+                          text: 'aa',
+                          link: '/recursive/folderA/folderAA/aa'
+                        },
+                        {
+                          text: 'folderAAA',
+                          items: [
+                            {
+                              text: 'folderAAAA',
+                              items: [
+                                {
+                                  text: 'folderAAAAA',
+                                  items: [
+                                    {
+                                      text: 'aaaaa',
+                                      link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  text: 'folderB',
+                  items: [
+                    {
+                      text: 'folderBB',
+                      items: [
+                        {
+                          text: 'folderBBB',
+                          items: [
+                            {
+                              text: 'bbb',
+                              link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 }
               ]
             }
@@ -2452,29 +2538,109 @@ describe('VitePress Sidebar Test', () => {
   it('Option: rootGroup related configurations (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: TEST_DIR_BASE,
         rootGroupText: '',
         rootGroupCollapsed: false,
-        excludeFolders: ['javascript', 'markdown']
+        excludeFolders: [
+          'recursive',
+          'folder-with-index',
+          'folder-with-same-name-file',
+          'folder-with-special-char-file'
+        ]
       }),
       [
         {
           text: '',
           items: [
             {
-              text: 'css',
+              text: 'frontmatter-basic',
               items: [
                 {
-                  text: 'a-css',
-                  link: '/css/a-css'
+                  text: 'a',
+                  link: '/frontmatter-basic/a'
                 },
                 {
-                  text: 'b-css',
-                  link: '/css/b-css'
+                  text: 'b',
+                  link: '/frontmatter-basic/b'
                 },
                 {
-                  text: 'c-css',
-                  link: '/css/c-css'
+                  text: 'c',
+                  link: '/frontmatter-basic/c'
+                },
+                {
+                  text: 'd',
+                  link: '/frontmatter-basic/d'
+                }
+              ]
+            },
+            {
+              text: 'numeric-prefix',
+              items: [
+                {
+                  text: '1-1-1-one-file',
+                  link: '/numeric-prefix/1-1-1-one-file'
+                },
+                {
+                  text: '1-folder',
+                  items: [
+                    {
+                      text: '11-file',
+                      link: '/numeric-prefix/1-folder/11-file'
+                    }
+                  ]
+                },
+                {
+                  text: '1-one-file',
+                  link: '/numeric-prefix/1-one-file'
+                },
+                {
+                  text: '1-three-file',
+                  link: '/numeric-prefix/1-three-file'
+                },
+                {
+                  text: '1.1.1-four-file',
+                  link: '/numeric-prefix/1.1.1-four-file'
+                },
+                {
+                  text: '2-two-file',
+                  link: '/numeric-prefix/2-two-file'
+                }
+              ]
+            },
+            {
+              text: 'numeric-title',
+              items: [
+                {
+                  text: '0-file',
+                  link: '/numeric-title/0-file'
+                },
+                {
+                  text: '1-file',
+                  link: '/numeric-title/1-file'
+                },
+                {
+                  text: '10-file',
+                  link: '/numeric-title/10-file'
+                },
+                {
+                  text: '100-file',
+                  link: '/numeric-title/100-file'
+                },
+                {
+                  text: '11-file',
+                  link: '/numeric-title/11-file'
+                },
+                {
+                  text: '2-file',
+                  link: '/numeric-title/2-file'
+                },
+                {
+                  text: '3-afile',
+                  link: '/numeric-title/3-afile'
+                },
+                {
+                  text: '3-bfile',
+                  link: '/numeric-title/3-bfile'
                 }
               ]
             }
@@ -2490,111 +2656,14 @@ describe('VitePress Sidebar Test', () => {
   it('Option: keepMarkdownSyntaxFromTitle', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example',
+        documentRootPath: `${TEST_DIR_BASE}/.special-markdown`,
         useTitleFromFileHeading: true,
         keepMarkdownSyntaxFromTitle: true
       }),
       [
         {
-          text: 'css',
-          items: [
-            {
-              text: '**A**',
-              link: '/css/a-css'
-            },
-            {
-              text: 'B',
-              link: '/css/b-css'
-            },
-            {
-              text: 'C',
-              link: '/css/c-css'
-            }
-          ]
-        },
-        {
-          text: 'javascript',
-          items: [
-            {
-              text: 'ES Module',
-              link: '/javascript/es-module'
-            },
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'Examples',
-                  link: '/javascript/examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexOf',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'Getting Started',
-              link: '/javascript/getting_started'
-            },
-            {
-              text: 'Helpful Links',
-              link: '/javascript/helpful-links'
-            },
-            {
-              text: '`package.json`',
-              link: '/javascript/package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'Examples of Bad Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Properties of Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Example of Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'Frontmatter? What is?',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          text: 'markdown',
-          items: [
-            {
-              text: 'What ~~is~~ `Markdown` **language**? How ~~to~~ **use** it?',
-              link: '/markdown/markdown'
-            }
-          ]
+          text: '**Test** ~~Page~~',
+          link: '/special-markdown'
         }
       ]
     );
@@ -2605,7 +2674,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusOrderNumericallyFromTitle', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example/.special-cases/numeric-title',
+        documentRootPath: `${TEST_DIR_BASE}/numeric-title`,
         sortMenusOrderNumericallyFromTitle: true
       }),
       [
@@ -2650,7 +2719,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusOrderNumericallyFromLink', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example/.special-cases/folder-title-from-index',
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
         useFolderTitleFromIndexFile: true,
         useFolderLinkFromIndexFile: true,
         sortMenusOrderNumericallyFromLink: true,
@@ -2682,100 +2751,117 @@ describe('VitePress Sidebar Test', () => {
     assert.deepEqual(
       generateSidebar({
         hyphenToSpace: true,
-        documentRootPath: 'example',
-        excludeFolders: ['html', 'markdown'],
+        documentRootPath: TEST_DIR_BASE,
+        excludeFolders: ['recursive', 'folder-with-index', 'folder-with-same-name-file'],
         capitalizeEachWords: true
       }),
       [
         {
-          text: 'Css',
+          text: 'Folder With Special Char File',
           items: [
             {
-              text: 'A Css',
-              link: '/css/a-css'
+              text: 'Hypen Doc',
+              link: '/folder-with-special-char-file/hypen-doc'
             },
             {
-              text: 'B Css',
-              link: '/css/b-css'
+              text: 'Special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
             },
             {
-              text: 'C Css',
-              link: '/css/c-css'
+              text: 'Underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
             }
           ]
         },
         {
-          text: 'Javascript',
+          text: 'Frontmatter Basic',
           items: [
             {
-              text: 'Es Module',
-              link: '/javascript/es-module'
+              text: 'A',
+              link: '/frontmatter-basic/a'
             },
             {
-              text: 'Examples',
+              text: 'B',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'C',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'D',
+              link: '/frontmatter-basic/d'
+            }
+          ]
+        },
+        {
+          text: 'Numeric Prefix',
+          items: [
+            {
+              text: '1 1 1 One File',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1 Folder',
               items: [
                 {
-                  text: 'Examples',
-                  link: '/javascript/examples/examples'
+                  text: '11 File',
+                  link: '/numeric-prefix/1-folder/11-file'
                 }
               ]
             },
             {
-              text: 'Functions',
-              items: [
-                {
-                  text: 'Prototypes',
-                  items: [
-                    {
-                      text: 'Array',
-                      items: [
-                        {
-                          text: 'Array.indexof',
-                          link: '/javascript/functions/prototypes/Array/Array.indexOf'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              text: '1 One File',
+              link: '/numeric-prefix/1-one-file'
             },
             {
-              text: 'Getting_started',
-              link: '/javascript/getting_started'
+              text: '1 Three File',
+              link: '/numeric-prefix/1-three-file'
             },
             {
-              text: 'Helpful Links',
-              link: '/javascript/helpful-links'
+              text: '1.1.1 Four File',
+              link: '/numeric-prefix/1.1.1-four-file'
             },
             {
-              text: 'Package.json',
-              link: '/javascript/package.json'
+              text: '2 Two File',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ]
+        },
+        {
+          text: 'Numeric Title',
+          items: [
+            {
+              text: '0 File',
+              link: '/numeric-title/0-file'
             },
             {
-              text: 'Vitepress How To',
-              items: [
-                {
-                  text: 'Frontmatter.example',
-                  items: [
-                    {
-                      text: 'Bad Frontmatter Example',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'Frontmatter Properties',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'Use Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'What Is Frontmatter',
-                      link: '/javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
+              text: '1 File',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10 File',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100 File',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11 File',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2 File',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3 Afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3 Bfile',
+              link: '/numeric-title/3-bfile'
             }
           ]
         }
@@ -2788,25 +2874,25 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusByFrontmatterDate', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: 'example/.special-cases/date-sort',
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
         sortMenusByFrontmatterDate: true
       }),
       [
         {
-          text: '1',
-          link: '/1'
+          text: 'b',
+          link: '/b'
         },
         {
-          text: '3',
-          link: '/3'
+          text: 'a',
+          link: '/a'
         },
         {
-          text: '4',
-          link: '/4'
+          text: 'c',
+          link: '/c'
         },
         {
-          text: '2',
-          link: '/2'
+          text: 'd',
+          link: '/d'
         }
       ]
     );
@@ -2818,18 +2904,18 @@ describe('VitePress Sidebar Test', () => {
     assert.deepEqual(
       generateSidebar([
         {
-          documentRootPath: 'example',
+          documentRootPath: TEST_DIR_BASE,
           resolvePath: '/'
         },
         {
-          documentRootPath: 'example',
-          scanStartPath: 'javascript',
-          resolvePath: '/javascript/'
+          documentRootPath: TEST_DIR_BASE,
+          scanStartPath: 'recursive',
+          resolvePath: '/recursive/'
         },
         {
-          documentRootPath: 'example',
-          scanStartPath: 'javascript/functions',
-          resolvePath: '/javascript/functions'
+          documentRootPath: TEST_DIR_BASE,
+          scanStartPath: 'folder-with-index/2-a',
+          resolvePath: '/folder-with-index/2-a'
         }
       ]),
       {
@@ -2837,50 +2923,173 @@ describe('VitePress Sidebar Test', () => {
           base: '/',
           items: [
             {
-              text: 'css',
+              text: 'folder-with-index',
               items: [
                 {
-                  text: 'a-css',
-                  link: 'css/a-css'
+                  text: '1-a',
+                  items: []
                 },
                 {
-                  text: 'b-css',
-                  link: 'css/b-css'
+                  text: '10-a',
+                  items: []
                 },
                 {
-                  text: 'c-css',
-                  link: 'css/c-css'
+                  text: '2-a',
+                  items: []
                 }
               ]
             },
             {
-              text: 'javascript',
+              text: 'folder-with-same-name-file',
               items: [
                 {
-                  text: 'es-module',
-                  link: 'javascript/es-module'
+                  text: 'folder-with-same-name-file',
+                  link: 'folder-with-same-name-file/folder-with-same-name-file'
+                }
+              ]
+            },
+            {
+              text: 'folder-with-special-char-file',
+              items: [
+                {
+                  text: 'hypen-doc',
+                  link: 'folder-with-special-char-file/hypen-doc'
                 },
                 {
-                  text: 'examples',
+                  text: 'special@#$characters',
+                  link: 'folder-with-special-char-file/special@#$characters'
+                },
+                {
+                  text: 'underscore_doc',
+                  link: 'folder-with-special-char-file/underscore_doc'
+                }
+              ]
+            },
+            {
+              text: 'frontmatter-basic',
+              items: [
+                {
+                  text: 'a',
+                  link: 'frontmatter-basic/a'
+                },
+                {
+                  text: 'b',
+                  link: 'frontmatter-basic/b'
+                },
+                {
+                  text: 'c',
+                  link: 'frontmatter-basic/c'
+                },
+                {
+                  text: 'd',
+                  link: 'frontmatter-basic/d'
+                }
+              ]
+            },
+            {
+              text: 'numeric-prefix',
+              items: [
+                {
+                  text: '1-1-1-one-file',
+                  link: 'numeric-prefix/1-1-1-one-file'
+                },
+                {
+                  text: '1-folder',
                   items: [
                     {
-                      text: 'examples',
-                      link: 'javascript/examples/examples'
+                      text: '11-file',
+                      link: 'numeric-prefix/1-folder/11-file'
                     }
                   ]
                 },
                 {
-                  text: 'functions',
+                  text: '1-one-file',
+                  link: 'numeric-prefix/1-one-file'
+                },
+                {
+                  text: '1-three-file',
+                  link: 'numeric-prefix/1-three-file'
+                },
+                {
+                  text: '1.1.1-four-file',
+                  link: 'numeric-prefix/1.1.1-four-file'
+                },
+                {
+                  text: '2-two-file',
+                  link: 'numeric-prefix/2-two-file'
+                }
+              ]
+            },
+            {
+              text: 'numeric-title',
+              items: [
+                {
+                  text: '0-file',
+                  link: 'numeric-title/0-file'
+                },
+                {
+                  text: '1-file',
+                  link: 'numeric-title/1-file'
+                },
+                {
+                  text: '10-file',
+                  link: 'numeric-title/10-file'
+                },
+                {
+                  text: '100-file',
+                  link: 'numeric-title/100-file'
+                },
+                {
+                  text: '11-file',
+                  link: 'numeric-title/11-file'
+                },
+                {
+                  text: '2-file',
+                  link: 'numeric-title/2-file'
+                },
+                {
+                  text: '3-afile',
+                  link: 'numeric-title/3-afile'
+                },
+                {
+                  text: '3-bfile',
+                  link: 'numeric-title/3-bfile'
+                }
+              ]
+            },
+            {
+              text: 'recursive',
+              items: [
+                {
+                  text: 'folderA',
                   items: [
                     {
-                      text: 'prototypes',
+                      text: 'a',
+                      link: 'recursive/folderA/a'
+                    },
+                    {
+                      text: 'folderAA',
                       items: [
                         {
-                          text: 'Array',
+                          text: 'aa',
+                          link: 'recursive/folderA/folderAA/aa'
+                        },
+                        {
+                          text: 'folderAAA',
                           items: [
                             {
-                              text: 'Array.indexOf',
-                              link: 'javascript/functions/prototypes/Array/Array.indexOf'
+                              text: 'folderAAAA',
+                              items: [
+                                {
+                                  text: 'folderAAAAA',
+                                  items: [
+                                    {
+                                      text: 'aaaaa',
+                                      link: 'recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                    }
+                                  ]
+                                }
+                              ]
                             }
                           ]
                         }
@@ -2889,38 +3098,61 @@ describe('VitePress Sidebar Test', () => {
                   ]
                 },
                 {
-                  text: 'getting_started',
-                  link: 'javascript/getting_started'
-                },
-                {
-                  text: 'helpful-links',
-                  link: 'javascript/helpful-links'
-                },
-                {
-                  text: 'package.json',
-                  link: 'javascript/package.json'
-                },
-                {
-                  text: 'vitepress-how-to',
+                  text: 'folderB',
                   items: [
                     {
-                      text: 'frontmatter.example',
+                      text: 'folderBB',
                       items: [
                         {
-                          text: 'bad-frontmatter-example',
-                          link: 'javascript/vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                        },
+                          text: 'folderBBB',
+                          items: [
+                            {
+                              text: 'bbb',
+                              link: 'recursive/folderB/folderBB/folderBBB/bbb'
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        '/recursive/': {
+          base: '/recursive/',
+          items: [
+            {
+              text: 'folderA',
+              items: [
+                {
+                  text: 'a',
+                  link: 'folderA/a'
+                },
+                {
+                  text: 'folderAA',
+                  items: [
+                    {
+                      text: 'aa',
+                      link: 'folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'folderAAA',
+                      items: [
                         {
-                          text: 'frontmatter-properties',
-                          link: 'javascript/vitepress-how-to/frontmatter.example/frontmatter-properties'
-                        },
-                        {
-                          text: 'use-frontmatter',
-                          link: 'javascript/vitepress-how-to/frontmatter.example/use-frontmatter'
-                        },
-                        {
-                          text: 'what-is-frontmatter',
-                          link: 'javascript/vitepress-how-to/frontmatter.example/what-is-frontmatter'
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'aaaaa',
+                                  link: 'folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ]
+                            }
+                          ]
                         }
                       ]
                     }
@@ -2929,109 +3161,29 @@ describe('VitePress Sidebar Test', () => {
               ]
             },
             {
-              text: 'markdown',
+              text: 'folderB',
               items: [
                 {
-                  text: 'markdown',
-                  link: 'markdown/markdown'
-                }
-              ]
-            }
-          ]
-        },
-        '/javascript/': {
-          base: '/javascript/',
-          items: [
-            {
-              text: 'es-module',
-              link: 'es-module'
-            },
-            {
-              text: 'examples',
-              items: [
-                {
-                  text: 'examples',
-                  link: 'examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'functions',
-              items: [
-                {
-                  text: 'prototypes',
+                  text: 'folderBB',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'folderBBB',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: 'functions/prototypes/Array/Array.indexOf'
+                          text: 'bbb',
+                          link: 'folderB/folderBB/folderBBB/bbb'
                         }
                       ]
                     }
                   ]
                 }
               ]
-            },
-            {
-              text: 'getting_started',
-              link: 'getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: 'helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: 'package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'bad-frontmatter-example',
-                      link: 'vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: 'vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: 'vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: 'vitepress-how-to/frontmatter.example/what-is-frontmatter'
-                    }
-                  ]
-                }
-              ]
             }
           ]
         },
-        '/javascript/functions': {
-          base: '/javascript/functions',
-          items: [
-            {
-              text: 'prototypes',
-              items: [
-                {
-                  text: 'Array',
-                  items: [
-                    {
-                      text: 'Array.indexOf',
-                      link: 'prototypes/Array/Array.indexOf'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+        '/folder-with-index/2-a': {
+          base: '/folder-with-index/2-a',
+          items: []
         }
       }
     );
@@ -3043,24 +3195,42 @@ describe('VitePress Sidebar Test', () => {
     assert.deepEqual(
       generateSidebar([
         {
-          documentRootPath: 'example',
-          scanStartPath: 'javascript/functions',
-          resolvePath: '/javascript/functions'
+          documentRootPath: TEST_DIR_BASE,
+          scanStartPath: 'recursive/folderA',
+          resolvePath: '/recursive/folderA'
         }
       ]),
       {
-        '/javascript/functions': {
-          base: '/javascript/functions',
+        '/recursive/folderA': {
+          base: '/recursive/folderA',
           items: [
             {
-              text: 'prototypes',
+              text: 'a',
+              link: 'a'
+            },
+            {
+              text: 'folderAA',
               items: [
                 {
-                  text: 'Array',
+                  text: 'aa',
+                  link: 'folderAA/aa'
+                },
+                {
+                  text: 'folderAAA',
                   items: [
                     {
-                      text: 'Array.indexOf',
-                      link: 'prototypes/Array/Array.indexOf'
+                      text: 'folderAAAA',
+                      items: [
+                        {
+                          text: 'folderAAAAA',
+                          items: [
+                            {
+                              text: 'aaaaa',
+                              link: 'folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }
@@ -3079,84 +3249,46 @@ describe('VitePress Sidebar Test', () => {
       generateSidebar([
         {
           documentRootPath: '/',
-          resolvePath: '/javascript/',
-          scanStartPath: 'example/javascript'
+          resolvePath: '/abc/',
+          scanStartPath: `${TEST_DIR_BASE}/recursive/folderA`
         },
         {
-          documentRootPath: 'example',
+          documentRootPath: TEST_DIR_BASE,
           resolvePath: '/test/',
-          scanStartPath: 'javascript/vitepress-how-to'
+          scanStartPath: 'recursive/folderB'
         }
       ]),
       {
-        '/javascript/': {
-          base: '/javascript/',
+        '/abc/': {
+          base: '/abc/',
           items: [
             {
-              text: 'es-module',
-              link: 'es-module'
+              text: 'a',
+              link: 'a'
             },
             {
-              text: 'examples',
+              text: 'folderAA',
               items: [
                 {
-                  text: 'examples',
-                  link: 'examples/examples'
-                }
-              ]
-            },
-            {
-              text: 'functions',
-              items: [
+                  text: 'aa',
+                  link: 'folderAA/aa'
+                },
                 {
-                  text: 'prototypes',
+                  text: 'folderAAA',
                   items: [
                     {
-                      text: 'Array',
+                      text: 'folderAAAA',
                       items: [
                         {
-                          text: 'Array.indexOf',
-                          link: 'functions/prototypes/Array/Array.indexOf'
+                          text: 'folderAAAAA',
+                          items: [
+                            {
+                              text: 'aaaaa',
+                              link: 'folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                            }
+                          ]
                         }
                       ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'getting_started',
-              link: 'getting_started'
-            },
-            {
-              text: 'helpful-links',
-              link: 'helpful-links'
-            },
-            {
-              text: 'package.json',
-              link: 'package.json'
-            },
-            {
-              text: 'vitepress-how-to',
-              items: [
-                {
-                  text: 'frontmatter.example',
-                  items: [
-                    {
-                      text: 'bad-frontmatter-example',
-                      link: 'vitepress-how-to/frontmatter.example/bad-frontmatter-example'
-                    },
-                    {
-                      text: 'frontmatter-properties',
-                      link: 'vitepress-how-to/frontmatter.example/frontmatter-properties'
-                    },
-                    {
-                      text: 'use-frontmatter',
-                      link: 'vitepress-how-to/frontmatter.example/use-frontmatter'
-                    },
-                    {
-                      text: 'what-is-frontmatter',
-                      link: 'vitepress-how-to/frontmatter.example/what-is-frontmatter'
                     }
                   ]
                 }
@@ -3168,23 +3300,16 @@ describe('VitePress Sidebar Test', () => {
           base: '/test/',
           items: [
             {
-              text: 'frontmatter.example',
+              text: 'folderBB',
               items: [
                 {
-                  text: 'bad-frontmatter-example',
-                  link: 'frontmatter.example/bad-frontmatter-example'
-                },
-                {
-                  text: 'frontmatter-properties',
-                  link: 'frontmatter.example/frontmatter-properties'
-                },
-                {
-                  text: 'use-frontmatter',
-                  link: 'frontmatter.example/use-frontmatter'
-                },
-                {
-                  text: 'what-is-frontmatter',
-                  link: 'frontmatter.example/what-is-frontmatter'
+                  text: 'folderBBB',
+                  items: [
+                    {
+                      text: 'bbb',
+                      link: 'folderBB/folderBBB/bbb'
+                    }
+                  ]
                 }
               ]
             }

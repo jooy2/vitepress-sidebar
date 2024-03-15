@@ -5,7 +5,7 @@ on:
   push:
     branches: [master]
     paths:
-      - example/**
+      - docs/**
       - package.json
       - package-lock.json
   # trigger deployment manually
