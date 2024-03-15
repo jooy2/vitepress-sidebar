@@ -334,6 +334,10 @@ export default class VitePressSidebar {
           return null;
         }
 
+        if (/node_modules/.test(childItemPath)) {
+          return null;
+        }
+
         if (depth === 1 && x === 'index.md' && !options.includeRootIndexFile) {
           return null;
         }
