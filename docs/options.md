@@ -30,7 +30,7 @@ This is the path where the `.vitepress` directory is located, and if the folder 
 - Type: `string|null`
 - Default: `null`
 
-This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section in `README.md`.
+This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
 
 The path to the root directory to scan for document lists. Files in the path set in `documentRootPath` outside the path set in `scanStartPath` will not be scanned. It is recommended that you also set `documentRootPath` if you specify `scanStartPath` because the parent path set in `documentRootPath` should appear in the `link`.
 
@@ -44,7 +44,7 @@ For example, if the root path is `/docs` and the document to be scanned is `/doc
 - Type: `string|null`
 - Default: `null`
 
-This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section in `README.md`.
+This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
 
 Enter the path to the section to display a different sidebar for each path. The path must contain `/` before and after it. Options without this value will be set to the root section (`/`).
 

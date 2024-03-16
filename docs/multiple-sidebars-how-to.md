@@ -95,4 +95,4 @@ Here's an example of the output from the above setup:
 }
 ```
 
-Learn more about `scanStartPath` and `resolvePath` in the `Options` section of `README.md`.
+Learn more about `scanStartPath` and `resolvePath` in the `Options` section.
