@@ -31,6 +31,19 @@ export default defineConfig({
     search: {
       provider: 'local'
     },
-    socialLinks: [{ icon: 'github', link: repository.url.replace('.git', '') }]
+    nav: [
+      {
+        text: 'Changelog',
+        link: 'https://github.com/jooy2/vitepress-sidebar/blob/master/CHANGELOG.md'
+      }
+    ],
+    socialLinks: [
+      { icon: 'npm', link: 'https://www.npmjs.com/package/vitepress-sidebar' },
+      { icon: 'github', link: repository.url.replace('.git', '') }
+    ],
+    footer: {
+      message: 'Released under the MIT License',
+      copyright: '© <a href="https://jooy2.com">Jooy2</a>'
+    }
   }
 });
