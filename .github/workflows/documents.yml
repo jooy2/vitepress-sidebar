@@ -26,10 +26,6 @@ jobs:
         with:
           node-version: '20'
 
-      # copy changelog.md file
-      - name: Copy CHANGELOG.md file
-        run: cp ../CHANGELOG.md ./docs/changelog.md
-
       # cache node_modules
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -40,6 +36,10 @@ jobs:
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
+
+      # copy changelog.md file
+      - name: Copy CHANGELOG.md file
+        run: cp CHANGELOG.md ./docs/changelog.md
 
       # install dependencies if the cache did not hit
       - name: Install dependencies
