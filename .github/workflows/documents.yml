@@ -37,6 +37,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
+      # copy and replace string index.md file
+      - name: Copy CHANGELOG.md file
+        run: cp ../CHANGELOG.md ./docs/changelog.md
+
       # install dependencies if the cache did not hit
       - name: Install dependencies
         if: steps.npm-cache.outputs.cache-hit != 'true'

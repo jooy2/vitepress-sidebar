@@ -1,10 +1,10 @@
 import { generateSidebar } from '../../dist';
-import { name, description, repository, homepage } from '../../package.json';
+import { description, repository, homepage } from '../../package.json';
 import { defineConfig } from 'vitepress';
 
 // Ref: https://vitepress.vuejs.org/config/introduction
 export default defineConfig({
-  title: name,
+  title: 'VitePress Sidebar',
   description,
   outDir: '../docs-dist',
   cleanUrls: true,
@@ -26,6 +26,7 @@ export default defineConfig({
       capitalizeFirst: true,
       useTitleFromFileHeading: true,
       useTitleFromFrontmatter: true,
+      frontmatterOrderDefaultValue: 9, // For 'CHANGELOG.md'
       sortMenusByFrontmatterOrder: true
     }),
     search: {
@@ -33,8 +34,16 @@ export default defineConfig({
     },
     nav: [
       {
+        text: 'Installation',
+        link: 'getting-started'
+      },
+      {
+        text: 'API Reference',
+        link: 'api'
+      },
+      {
         text: 'Changelog',
-        link: 'https://github.com/jooy2/vitepress-sidebar/blob/master/CHANGELOG.md'
+        link: 'changelog'
       }
     ],
     socialLinks: [
