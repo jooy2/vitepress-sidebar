@@ -6,6 +6,7 @@ on:
     branches: [master]
     paths:
       - docs/**
+      - .github/workflows/documents.yml
       - package.json
       - package-lock.json
   # trigger deployment manually
