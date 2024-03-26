@@ -2,7 +2,9 @@
 order: 2
 ---
 
-# Options (API)
+# API
+
+This page describes all the options in the VitePress Sidebar.
 
 ## `documentRootPath`
 

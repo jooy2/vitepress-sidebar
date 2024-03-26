@@ -4,7 +4,7 @@ order: 1
 
 # Installation
 
-We recommend using **Node.js 18.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](https://github.com/jooy2/vitepress-sidebar#troubleshoot-err_require_esm).
+We recommend using **Node.js 18.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](/troubleshooting#err-require-esm).
 
 ```shell
 # via npm
@@ -19,9 +19,51 @@ $ pnpm i -D vitepress-sidebar
 
 ## How to Use
 
-In the `themeConfig` setting of `.vitepress/config.js` file, execute the autoGenerate function as shown below to automatically generate the sidebar.
+You can automatically generate a sidebar using the `generateSidebar` method of VitePress Sidebar.
 
-For more information about the configuration of `generateSidebar`, see **[Options](https://github.com/jooy2/vitepress-sidebar#options)** section below.
+It scans the folder against the given root path (`documentRootPath`), finds the markdown files before they were built by VitePress, and returns a menu generated based on the folder tree structure.
+
+First, import `vitepress-sidebar` in one of the two ways below.
+
+### 1. Using named-import
+
+```javascript
+import { generateSidebar } from 'vitepress-sidebar';
+
+const vitepressSidebarOptions = {
+  /* Options... */
+};
+
+export default {
+  themeConfig: {
+    sidebar: generateSidebar(vitepressSidebarOptions)
+  }
+};
+```
+
+### 2. Using default-import
+
+```javascript
+import VitePressSidebar from 'vitepress-sidebar';
+
+const vitepressSidebarOptions = {
+  /* Options... */
+};
+
+export default {
+  themeConfig: {
+    sidebar: VitePressSidebar.generateSidebar(vitepressSidebarOptions)
+  }
+};
+```
+
+Use the `generateSidebar` method in the `themeConfig.sidebar` property of the `.vitepress/config.js` file, which is VitePress's configuration file. VitePress's configuration file might have a different filename or extension depending on your project's settings.
+
+To test how this will output, try building VitePress with the `debugPrint` option set to `true`. You should see the output in the console.
+
+For more information about the configuration of `generateSidebar`, see **[API](/api)** section below.
+
+## Code Example
 
 ```javascript
 import { generateSidebar } from 'vitepress-sidebar';
@@ -75,7 +117,7 @@ export default {
 };
 ```
 
-### Example output
+## Example output
 
 ```javascript
 generateSidebar({
