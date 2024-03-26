@@ -9,7 +9,7 @@ on:
       - '!*.md'
       - '!.github/**'
       - '!.vscode/**'
-      - '!.docs/**'
+      - '!docs/**'
   # trigger deployment manually
   workflow_dispatch:
 
