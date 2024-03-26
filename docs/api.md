@@ -6,6 +6,43 @@ order: 2
 
 This page describes all the options in the VitePress Sidebar.
 
+## @ Quick search
+
+| Resolving Paths                       | Grouping                                  |
+| ------------------------------------- | ----------------------------------------- |
+| [documentRootPath](#documentrootpath) | [collapsed](#collapsed)                   |
+| [scanStartPath](#scanstartpath)       | [collapseDepth](#collapsedepth)           |
+| [resolvePath](#resolvepath)           | [rootGroupText](#rootgrouptext)           |
+|                                       | [rootGroupLink](#rootgrouplink)           |
+|                                       | [rootGroupCollapsed](#rootgroupcollapsed) |
+
+| Getting Menu Title | Getting Menu Link |
+| --- | --- |
+| [useTitleFromFileHeading](#usetitlefromfileheading) | [convertSameNameSubFileToGroupIndexPage](#convertsamenamesubfiletogroupindexpage) |
+| [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
+| [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
+
+| Include/Exclude | Styling Menu Title |
+| --- | --- |
+| [excludeFiles](#excludefiles) | [hyphenToSpace](#hyphentospace) |
+| [excludeFilesByFrontmatter](#excludefilesbyfrontmatter) | [underscoreToSpace](#underscoretospace) |
+| [excludeFolders](#excludefolders) | [capitalizeFirst](#capitalizefirst) |
+| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+
+| Sorting | Misc |
+| --- | --- |
+| [manualSortFileNameByPriority](#manualsortfilenamebypriority) | [debugPrint](#debugprint) |
+| [sortMenusByName](#sortmenusbyname) |  |
+| [frontmatterOrderDefaultValue](#frontmatterorderdefaultvalue) |  |
+| [sortMenusByFrontmatterOrder](#sortmenusbyfrontmatterorder) |  |
+| [sortMenusByFrontmatterDate](#sortmenusbyfrontmatterdate) |  |
+| [sortMenusOrderByDescending](#sortmenusorderbydescending) |  |
+| [sortMenusOrderNumericallyFromTitle](#sortmenusordernumericallyfromtitle) |  |
+| [sortMenusOrderNumericallyFromLink](#sortmenusordernumericallyfromlink) |  |
+
 ## `documentRootPath`
 
 - Type: `string`
