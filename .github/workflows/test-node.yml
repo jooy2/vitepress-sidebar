@@ -8,6 +8,8 @@ on:
       - '!LICENSE'
       - '!*.md'
       - '!.github/**'
+      - '!.vscode/**'
+      - '!.docs/**'
   # trigger deployment manually
   workflow_dispatch:
 
