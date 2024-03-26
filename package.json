@@ -64,8 +64,8 @@
   "devDependencies": {
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.30",
-    "@typescript-eslint/eslint-plugin": "^7.3.1",
-    "@typescript-eslint/parser": "^7.3.1",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
@@ -75,7 +75,7 @@
     "terser": "^5.29.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.3",
-    "vitepress": "^1.0.0"
+    "vitepress": "^1.0.1"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
