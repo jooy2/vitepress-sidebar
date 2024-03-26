@@ -14,7 +14,7 @@ hero:
       link: /getting-started
     - theme: alt
       text: API
-      link: /options
+      link: /api
     - theme: alt
       text: GitHub
       link: https://github.com/jooy2/vitepress-sidebar
