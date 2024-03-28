@@ -25,6 +25,7 @@ declare interface Options {
   sortMenusByName?: boolean;
   sortMenusByFrontmatterOrder?: boolean;
   sortMenusByFrontmatterDate?: boolean;
+  sortMenusByFileDatePrefix?: boolean;
   sortMenusOrderByDescending?: boolean;
   sortMenusOrderNumericallyFromTitle?: boolean;
   sortMenusOrderNumericallyFromLink?: boolean;
@@ -79,7 +80,9 @@ declare interface SortByObjectKeyOptions {
   key: string;
   desc?: boolean;
   numerically?: boolean;
-  dateSort?: boolean;
+  datePrefixSeparator?: string | RegExp;
+  dateSortFromFrontmatter?: boolean;
+  dateSortFromTextWithPrefix?: boolean;
 }
 
 /*
@@ -165,14 +168,19 @@ export default class VitePressSidebar {
         }
         if (
           VitePressSidebar.isTrueMinimumNumberOfTimes(
-            [optionItem.sortMenusByFrontmatterOrder, optionItem.sortMenusByName],
+            [
+              optionItem.sortMenusByFrontmatterOrder,
+              optionItem.sortMenusByName,
+              optionItem.sortMenusByFileDatePrefix
+            ],
             2
           )
         ) {
           throw new Error(
             VitePressSidebar.generateNotTogetherMessage([
               'sortMenusByFrontmatterOrder',
-              'sortMenusByName'
+              'sortMenusByName',
+              'sortMenusByFileDatePrefix'
             ])
           );
         }
@@ -252,10 +260,7 @@ export default class VitePressSidebar {
         );
 
         if (optionItem.removePrefixAfterOrdering) {
-          sidebarResult = VitePressSidebar.removeNumericPrefixFromTitleAndLink(
-            sidebarResult,
-            optionItem
-          );
+          sidebarResult = VitePressSidebar.removePrefixFromTitleAndLink(sidebarResult, optionItem);
         }
 
         sidebar[optionItem.resolvePath || '/'] = {
@@ -528,6 +533,16 @@ export default class VitePressSidebar {
       });
     }
 
+    if (options.sortMenusByFileDatePrefix) {
+      sidebarItems = VitePressSidebar.sortByObjectKey({
+        arr: sidebarItems,
+        key: 'text',
+        desc: options.sortMenusOrderByDescending,
+        dateSortFromTextWithPrefix: true,
+        datePrefixSeparator: options.prefixSeparator
+      });
+    }
+
     if (options.sortMenusByFrontmatterOrder) {
       sidebarItems = VitePressSidebar.sortByObjectKey({
         arr: sidebarItems,
@@ -543,7 +558,7 @@ export default class VitePressSidebar {
         arr: sidebarItems,
         key: 'date',
         desc: options.sortMenusOrderByDescending,
-        dateSort: true
+        dateSortFromFrontmatter: true
       });
 
       VitePressSidebar.deepDeleteKey(sidebarItems, 'date');
@@ -734,10 +749,27 @@ export default class VitePressSidebar {
       return result;
     }
 
-    if (options.dateSort) {
+    if (options.dateSortFromFrontmatter) {
       const result = options.arr.sort(
         (a: any, b: any) => new Date(a[options.key]).valueOf() - new Date(b[options.key]).valueOf()
       );
+
+      if (options.desc) {
+        return result.reverse();
+      }
+
+      return result;
+    }
+
+    if (options.dateSortFromTextWithPrefix) {
+      const dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}/g;
+
+      const result = options.arr.sort((a: any, b: any) => {
+        const aDate = a[options.key].split(dateRegex)?.[0];
+        const bDate = b[options.key].split(dateRegex)?.[0];
+
+        return new Date(aDate).valueOf() - new Date(bDate).valueOf();
+      });
 
       if (options.desc) {
         return result.reverse();
@@ -776,7 +808,7 @@ export default class VitePressSidebar {
     });
   }
 
-  private static removeNumericPrefixFromTitleAndLink(
+  private static removePrefixFromTitleAndLink(
     sidebarList: SidebarListItem,
     options: Options
   ): SidebarListItem {
@@ -795,7 +827,7 @@ export default class VitePressSidebar {
 
           obj[key] = splitItem.join(options.prefixSeparator);
         } else if (key === 'items') {
-          obj[key] = VitePressSidebar.removeNumericPrefixFromTitleAndLink(obj[key], options);
+          obj[key] = VitePressSidebar.removePrefixFromTitleAndLink(obj[key], options);
         }
       }
     }

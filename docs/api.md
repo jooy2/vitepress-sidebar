@@ -36,8 +36,9 @@ This page describes all the options in the VitePress Sidebar.
 | --- | --- |
 | [manualSortFileNameByPriority](#manualsortfilenamebypriority) | [debugPrint](#debugprint) |
 | [sortMenusByName](#sortmenusbyname) |  |
-| [frontmatterOrderDefaultValue](#frontmatterorderdefaultvalue) |  |
+| [sortMenusByFileDatePrefix](#sortmenusbyfiledateprefix) |  |
 | [sortMenusByFrontmatterOrder](#sortmenusbyfrontmatterorder) |  |
+| [frontmatterOrderDefaultValue](#frontmatterorderdefaultvalue) |  |
 | [sortMenusByFrontmatterDate](#sortmenusbyfrontmatterdate) |  |
 | [sortMenusOrderByDescending](#sortmenusorderbydescending) |  |
 | [sortMenusOrderNumericallyFromTitle](#sortmenusordernumericallyfromtitle) |  |
@@ -148,6 +149,17 @@ Sort by an array of file names (including extensions) in order. If there is no v
 - Default: `false`
 
 Sort the items in the menu item by name. Normally, folder scans are done with an ascending name sort, so the default sort is applied without this option applied, but if you use the `useTitleFromFileHeading` or `useTitleFromFrontmatter` options, you may need to re-sort by name because the menu name changes. This option forces sorting by name even for changed menu names.
+
+## `sortMenusByFileDatePrefix`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, sorts by date prefix in the name of the menu item. The date format must be in the form `YYYY-MM-DD` (e.g. `2024-01-01-menu-name`, `2024-01-02.menu-name`...)
+
+To remove date prefixes that remain in the menu text afterward, you can utilize the `prefixSeparator` and `removePrefixAfterOrdering` options.
+
+The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
 
 ## `sortMenusByFrontmatterOrder`
 

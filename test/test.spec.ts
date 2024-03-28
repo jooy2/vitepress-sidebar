@@ -396,7 +396,13 @@ describe('VitePress Sidebar Test', () => {
         includeEmptyFolder: true,
         includeDotFiles: true,
         excludeFiles: [],
-        excludeFolders: ['numeric-prefix', 'numeric-title', 'recursive', '.special-markdown'],
+        excludeFolders: [
+          'numeric-prefix',
+          'numeric-title',
+          'recursive',
+          '.special-markdown',
+          '.title-with-date-header'
+        ],
         hyphenToSpace: true,
         underscoreToSpace: true,
         capitalizeFirst: true,
@@ -1936,6 +1942,7 @@ describe('VitePress Sidebar Test', () => {
         excludeFolders: [
           'folder-with-same-name-file',
           '.special-markdown',
+          '.title-with-date-header',
           'recursive',
           'frontmatter-basic',
           'numeric-prefix',
@@ -2279,6 +2286,102 @@ describe('VitePress Sidebar Test', () => {
                   ]
                 }
               ]
+            }
+          ]
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('Option: sortMenusByFileDatePrefix (A)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/.title-with-date-header`,
+        sortMenusByFileDatePrefix: true
+      }),
+      [
+        {
+          text: '2024-01-01-hello',
+          items: [
+            {
+              text: '2024-01-01-hello',
+              link: '/2024-01-01-hello/2024-01-01-hello'
+            },
+            {
+              text: '2024-01-02-hi',
+              link: '/2024-01-01-hello/2024-01-02-hi'
+            },
+            {
+              text: '2024-02-01-hello',
+              link: '/2024-01-01-hello/2024-02-01-hello'
+            }
+          ]
+        },
+        {
+          text: '2024-02-01-test',
+          items: [
+            {
+              text: '2024-02-01-hello',
+              link: '/2024-02-01-test/2024-02-01-hello'
+            },
+            {
+              text: '2024-02-02-hi',
+              link: '/2024-02-01-test/2024-02-02-hi'
+            },
+            {
+              text: '2024-03-01-hi',
+              link: '/2024-02-01-test/2024-03-01-hi'
+            }
+          ]
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('Option: sortMenusByFileDatePrefix (B)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/.title-with-date-header`,
+        sortMenusByFileDatePrefix: true,
+        prefixSeparator: /[0-9]{4}-[0-9]{2}-[0-9]{2}-/g,
+        removePrefixAfterOrdering: true
+      }),
+      [
+        {
+          text: 'hello',
+          items: [
+            {
+              text: 'hello',
+              link: '/2024-01-01-hello/2024-01-01-hello'
+            },
+            {
+              text: 'hi',
+              link: '/2024-01-01-hello/2024-01-02-hi'
+            },
+            {
+              text: 'hello',
+              link: '/2024-01-01-hello/2024-02-01-hello'
+            }
+          ]
+        },
+        {
+          text: 'test',
+          items: [
+            {
+              text: 'hello',
+              link: '/2024-02-01-test/2024-02-01-hello'
+            },
+            {
+              text: 'hi',
+              link: '/2024-02-01-test/2024-02-02-hi'
+            },
+            {
+              text: 'hi',
+              link: '/2024-02-01-test/2024-03-01-hi'
             }
           ]
         }

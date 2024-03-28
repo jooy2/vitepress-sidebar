@@ -3,6 +3,7 @@
 ## 1.22.0 (2024-03-28)
 
 - `prefixSeparator` now accepts regular expressions
+- Add `sortMenusByFileDatePrefix` option
 
 ## 1.21.0 (2024-03-15)
 
