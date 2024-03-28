@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.22.0 (2024-03-28)
+
+- `prefixSeparator` now accepts regular expressions
+
 ## 1.21.0 (2024-03-15)
 
 - Add `removePrefixAfterOrdering` and `prefixSeparator` option

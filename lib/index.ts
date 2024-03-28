@@ -35,7 +35,7 @@ declare interface Options {
   excludeFilesByFrontmatter?: boolean;
   excludeFolders?: string[];
   removePrefixAfterOrdering?: boolean;
-  prefixSeparator?: string;
+  prefixSeparator?: string | RegExp;
   rootGroupText?: string;
   rootGroupLink?: string;
   rootGroupCollapsed?: boolean | null | undefined;

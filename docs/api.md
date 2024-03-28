@@ -301,7 +301,7 @@ For example, if `prefixSeparator` is the default (`.`), the following menus will
 - File name: `1.1.hello` -> Menu name: `1.hello`
 - File name: `1-1.hello` -> Menu name: `hello`
 
-Removes letters only once based on the separator, so a child item like `1.1.` should be used like `1-1.`.
+Removes letters only once based on the separator, so a child item like `1.1.` should be used like `1-1.`. Alternatively, you can set a regular expression on the `prefixSeparator` value to work around it.
 
 Can be used with the `prefixSeparator` option. See that option's description for more information.
 
@@ -309,10 +309,14 @@ Can be used with the `prefixSeparator` option. See that option's description for
 
 ## `prefixSeparator`
 
-- Type: `string`
+- Type: `string|RegExp`
 - Default: `'.'`
 
-It is used with the `removePrefixAfterOrdering` option and allows you to customize the characters (1 or more) that separate the prefixes to be removed from the title.
+This option can only be used in conjunction with the `removePrefixAfterOrdering` option to remove the prefix.
+
+Removes the first part of a specified number of characters (at least one) from the extracted menu text. For example, if the menu name is `1. Text`, and you set the `prefixSeparator` value to `. `, the result will be just `Text`.
+
+You can also use regular expressions. Values matching the regular expression are removed. For example, to remove the date before the string in `2024-01-01-hello`, specify the `prefixSeparator` value as `/[0-9]{4}-[0-9]{2}-[0-9]{2}-/g`. The result is `hello`.
 
 ## `rootGroupText`
 
