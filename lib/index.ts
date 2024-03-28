@@ -163,32 +163,48 @@ export default class VitePressSidebar {
             )
           );
         }
-        if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusByName) {
+        if (
+          VitePressSidebar.isTrueMinimumNumberOfTimes(
+            [optionItem.sortMenusByFrontmatterOrder, optionItem.sortMenusByName],
+            2
+          )
+        ) {
           throw new Error(
-            VitePressSidebar.generateNotTogetherMessage(
+            VitePressSidebar.generateNotTogetherMessage([
               'sortMenusByFrontmatterOrder',
               'sortMenusByName'
-            )
+            ])
           );
         }
         if (
-          optionItem.sortMenusByFrontmatterOrder &&
-          (optionItem.sortMenusOrderNumericallyFromTitle ||
-            optionItem.sortMenusOrderNumericallyFromLink)
+          VitePressSidebar.isTrueMinimumNumberOfTimes(
+            [
+              optionItem.sortMenusByFrontmatterOrder,
+              optionItem.sortMenusOrderNumericallyFromTitle,
+              optionItem.sortMenusOrderNumericallyFromLink
+            ],
+            2
+          )
         ) {
           throw new Error(
-            VitePressSidebar.generateNotTogetherMessage(
+            VitePressSidebar.generateNotTogetherMessage([
               'sortMenusByFrontmatterOrder',
-              'sortMenusOrderNumericallyFromTitle or sortMenusOrderNumericallyFromLink'
-            )
+              'sortMenusOrderNumericallyFromTitle',
+              'sortMenusOrderNumericallyFromLink'
+            ])
           );
         }
-        if (optionItem.sortMenusByFrontmatterOrder && optionItem.sortMenusByFrontmatterDate) {
+        if (
+          VitePressSidebar.isTrueMinimumNumberOfTimes(
+            [optionItem.sortMenusByFrontmatterOrder, optionItem.sortMenusByFrontmatterDate],
+            2
+          )
+        ) {
           throw new Error(
-            VitePressSidebar.generateNotTogetherMessage(
+            VitePressSidebar.generateNotTogetherMessage([
               'sortMenusByFrontmatterOrder',
               'sortMenusByFrontmatterDate'
-            )
+            ])
           );
         }
         if (optionItem.removePrefixAfterOrdering && !optionItem.prefixSeparator) {
@@ -290,8 +306,8 @@ export default class VitePressSidebar {
     return `The \`${original}\` option was renamed to \`${renameTo}\`.`;
   }
 
-  private static generateNotTogetherMessage(option1: string, option2: string) {
-    return `The \`${option1}\` and \`${option2}\` options cannot be used together.`;
+  private static generateNotTogetherMessage(options: string[]) {
+    return `These options cannot be used together: ${options.join(', ')}`;
   }
 
   private static generateSidebarItem(
@@ -785,6 +801,19 @@ export default class VitePressSidebar {
     }
 
     return sidebarList;
+  }
+
+  private static isTrueMinimumNumberOfTimes(conditions: any[], minimumCount = 1): boolean {
+    const conditionLength = conditions.length;
+    let trueCount = 0;
+
+    for (let i = 0; i < conditionLength; i += 1) {
+      if (typeof conditions[i] === 'boolean' && conditions[i]) {
+        trueCount += 1;
+      }
+    }
+
+    return trueCount >= minimumCount;
   }
 }
 
