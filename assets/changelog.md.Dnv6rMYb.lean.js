@@ -1,0 +1,1 @@
+import{_ as e,c as o,o as a,a4 as i}from"./chunks/framework.4aTu-Nia.js";const f=JSON.parse('{"title":"Changelog","description":"","frontmatter":{},"headers":[],"relativePath":"changelog.md","filePath":"changelog.md"}'),l={name:"changelog.md"},d=i("",91),t=[d];function r(n,c,s,h,u,p){return a(),o("div",null,t)}const b=e(l,[["render",r]]);export{f as __pageData,b as default};
