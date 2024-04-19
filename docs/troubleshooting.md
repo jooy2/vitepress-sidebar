@@ -18,7 +18,7 @@ If you are trying to use it with a CJS project, change the file extension from `
 
 ### Solution B
 
-in the package.json file, add the line `"type": "module"` line. This may require the project to be converted to an ESM project.
+in the `package.json` file, add the line `"type": "module"` line. This may require the project to be converted to an ESM project.
 
 ```json5
 {
