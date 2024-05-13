@@ -25,7 +25,7 @@ This page describes all the options in the VitePress Sidebar.
 | Include/Exclude | Styling Menu Title |
 | --- | --- |
 | [excludeFiles](#excludefiles) | [hyphenToSpace](#hyphentospace) |
-| [excludeFilesByFrontmatter](#excludefilesbyfrontmatter) | [underscoreToSpace](#underscoretospace) |
+| [excludeFilesByFrontmatterFieldName](#excludeFilesByFrontmatterFieldName) | [underscoreToSpace](#underscoretospace) |
 | [excludeFolders](#excludefolders) | [capitalizeFirst](#capitalizefirst) |
 | [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
 | [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
@@ -258,12 +258,29 @@ If the value is `true`, Capitalize all first letters of words separated by space
 
 Files that correspond to an array of file names (including extensions) are not shown in the list.
 
-## `excludeFilesByFrontmatter`
+## `excludeFilesByFrontmatterFieldName`
 
-- Type: `boolean`
-- Default: `false`
+- Type: `string|null`
+- Default: `null`
 
-Exclude files dependning on the `exclude` property of the frontmatter. If the value of `exclude` is non-boolean or does not exist, `exclude` is judged to be `false`.
+Documents with the value of the specified frontmatter field name set to `true` are excluded from the menu.
+
+If no option is specified or the option value is undefined, it is ignored.
+
+For example, if the option value is `exclude`, documents whose content contains `exclude: true` are not displayed in the menu.
+
+```markdown
+---
+title: This article is excluded.
+exclude: true
+---
+
+# Article
+
+Content
+```
+
+Depending on the value of this option, you can use other names like `draft`, `hide`, etc. instead of `exclude`.
 
 ## `excludeFolders`
 

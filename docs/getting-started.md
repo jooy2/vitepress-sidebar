@@ -109,7 +109,7 @@ export default {
       // removePrefixAfterOrdering: false,
       // prefixSeparator: '.',
       // excludeFiles: ['first.md', 'secret.md'],
-      // excludeFilesByFrontmatter: false,
+      // excludeFilesByFrontmatterFieldName: 'exclude',
       // excludeFolders: ['secret-folder'],
       // includeDotFiles: false,
       // includeRootIndexFile: false,

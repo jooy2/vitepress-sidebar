@@ -2289,11 +2289,11 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: excludeFilesByFrontmatter', (done) => {
+  it('Option: excludeFilesByFrontmatterFieldName', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
-        excludeFilesByFrontmatter: true
+        excludeFilesByFrontmatterFieldName: 'exclude'
       }),
       [
         {

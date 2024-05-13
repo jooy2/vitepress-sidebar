@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.23.0 (2024-05-)
+
+- **BREAKING CHANGES**: The `excludeFilesByFrontmatter` option is deprecated and replaced by the `excludeFilesByFrontmatterFieldName` option. You can now specify any field name you want, including Frontmatter's `exclude` field name, and documents will be excluded from the menu when that field value is `true`. Existing users should work fine with the following settings `excludeFilesByFrontmatterFieldName: 'exclude'`. For more information, see the documentation.
+- Allow empty values or empty object options to be passed in
+
 ## 1.22.0 (2024-03-28)
 
 - `prefixSeparator` now accepts regular expressions

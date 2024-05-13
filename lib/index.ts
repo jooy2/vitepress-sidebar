@@ -33,7 +33,7 @@ declare interface Options {
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
   excludeFiles?: string[];
-  excludeFilesByFrontmatter?: boolean;
+  excludeFilesByFrontmatterFieldName?: string;
   excludeFolders?: string[];
   removePrefixAfterOrdering?: boolean;
   prefixSeparator?: string | RegExp;
@@ -41,6 +41,10 @@ declare interface Options {
   rootGroupLink?: string;
   rootGroupCollapsed?: boolean | null | undefined;
   frontmatterOrderDefaultValue?: number;
+  /**
+   * @deprecated
+   */
+  excludeFilesByFrontmatter?: boolean;
   /**
    * @deprecated
    */
@@ -152,6 +156,14 @@ export default class VitePressSidebar {
           VitePressSidebar.generateDeprecateMessage(
             'useFolderLinkAsIndexPage',
             'useIndexFileForFolderMenuInfo'
+          )
+        );
+      }
+      if (optionItem.excludeFilesByFrontmatter) {
+        throw new Error(
+          VitePressSidebar.generateDeprecateMessage(
+            'excludeFilesByFrontmatter',
+            'excludeFilesByFrontmatterFieldName'
           )
         );
       }
@@ -489,8 +501,10 @@ export default class VitePressSidebar {
         if (childItemPath.endsWith('.md')) {
           if (
             options.excludeFiles?.includes(x) ||
-            (options.excludeFilesByFrontmatter &&
-              VitePressSidebar.getExcludeFromFrontmatter(childItemPath))
+            VitePressSidebar.getExcludeFromFrontmatter(
+              childItemPath,
+              options.excludeFilesByFrontmatterFieldName
+            )
           ) {
             return null;
           }
@@ -632,8 +646,19 @@ export default class VitePressSidebar {
     return VitePressSidebar.getValueFromFrontmatter<string>(filePath, 'date', '0001-01-01');
   }
 
-  private static getExcludeFromFrontmatter(filePath: string): boolean {
-    return VitePressSidebar.getValueFromFrontmatter<boolean>(filePath, 'exclude', false);
+  private static getExcludeFromFrontmatter(
+    filePath: string,
+    excludeFrontmatterFieldName?: string
+  ): boolean {
+    if (!excludeFrontmatterFieldName) {
+      return false;
+    }
+
+    return VitePressSidebar.getValueFromFrontmatter<boolean>(
+      filePath,
+      excludeFrontmatterFieldName,
+      false
+    );
   }
 
   private static capitalizeFirst(str: string): string {
