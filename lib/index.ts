@@ -110,180 +110,184 @@ export type Sidebar = SidebarItem[] | SidebarMulti;
  * */
 
 export default class VitePressSidebar {
-  static generateSidebar(options: Options | Options[]): Sidebar {
-    const optionItems: Options[] = Array.isArray(options) ? options : [options];
+  static generateSidebar(options?: Options | Options[]): Sidebar {
     const sidebar: Sidebar = {};
     const isMultipleSidebars = Array.isArray(options);
     let enableDebugPrint = false;
+    let optionItems: (Options | undefined)[];
+
+    if (options === undefined) {
+      optionItems = [{}];
+    } else {
+      optionItems = Array.isArray(options) ? options : [options];
+    }
 
     for (let i = 0; i < optionItems.length; i += 1) {
-      const optionItem = optionItems[i];
+      const optionItem = optionItems[i]!;
 
-      if (Object.keys(optionItem).length > 0) {
-        // Exceptions for changed option names
-        if (optionItem.root) {
-          throw new Error(VitePressSidebar.generateDeprecateMessage('root', 'documentRootPath'));
-        }
-        if (optionItem.withIndex) {
-          throw new Error(
-            VitePressSidebar.generateDeprecateMessage('withIndex', 'includeRootIndexFile')
-          );
-        }
-        if (optionItem.includeEmptyGroup) {
-          throw new Error(
-            VitePressSidebar.generateDeprecateMessage('includeEmptyGroup', 'includeEmptyFolder')
-          );
-        }
-        if (optionItem.sortByFileName) {
-          throw new Error(
-            VitePressSidebar.generateDeprecateMessage(
-              'sortByFileName',
-              'manualSortFileNameByPriority'
-            )
-          );
-        }
-        if (optionItem.useFolderLinkAsIndexPage) {
-          throw new Error(
-            VitePressSidebar.generateDeprecateMessage(
-              'useFolderLinkAsIndexPage',
-              'useIndexFileForFolderMenuInfo'
-            )
-          );
-        }
-        if (optionItem.useIndexFileForFolderMenuInfo) {
-          throw new Error(
-            VitePressSidebar.generateDeprecateMessage(
-              'useIndexFileForFolderMenuInfo',
-              'useFolderTitleFromIndexFile` and `useFolderLinkFromIndexFile'
-            )
-          );
-        }
-        if (optionItem.sortMenusOrderNumerically) {
-          throw new Error(
-            VitePressSidebar.generateDeprecateMessage(
-              'sortMenusOrderNumerically',
-              'sortMenusOrderNumericallyFromTitle` and `sortMenusOrderNumericallyFromLink'
-            )
-          );
-        }
-        if (
-          VitePressSidebar.isTrueMinimumNumberOfTimes(
-            [
-              optionItem.sortMenusByFrontmatterOrder,
-              optionItem.sortMenusByName,
-              optionItem.sortMenusByFileDatePrefix
-            ],
-            2
-          )
-        ) {
-          throw new Error(
-            VitePressSidebar.generateNotTogetherMessage([
-              'sortMenusByFrontmatterOrder',
-              'sortMenusByName',
-              'sortMenusByFileDatePrefix'
-            ])
-          );
-        }
-        if (
-          VitePressSidebar.isTrueMinimumNumberOfTimes(
-            [
-              optionItem.sortMenusByFrontmatterOrder,
-              optionItem.sortMenusOrderNumericallyFromTitle,
-              optionItem.sortMenusOrderNumericallyFromLink
-            ],
-            2
-          )
-        ) {
-          throw new Error(
-            VitePressSidebar.generateNotTogetherMessage([
-              'sortMenusByFrontmatterOrder',
-              'sortMenusOrderNumericallyFromTitle',
-              'sortMenusOrderNumericallyFromLink'
-            ])
-          );
-        }
-        if (
-          VitePressSidebar.isTrueMinimumNumberOfTimes(
-            [optionItem.sortMenusByFrontmatterOrder, optionItem.sortMenusByFrontmatterDate],
-            2
-          )
-        ) {
-          throw new Error(
-            VitePressSidebar.generateNotTogetherMessage([
-              'sortMenusByFrontmatterOrder',
-              'sortMenusByFrontmatterDate'
-            ])
-          );
-        }
-        if (optionItem.removePrefixAfterOrdering && !optionItem.prefixSeparator) {
-          throw new Error(`'prefixSeparator' should not use empty string`);
-        }
-
-        if (optionItem.debugPrint && !enableDebugPrint) {
-          enableDebugPrint = true;
-        }
-
-        optionItem.documentRootPath = optionItem?.documentRootPath ?? '/';
-
-        if (!/^\//.test(optionItem.documentRootPath)) {
-          optionItem.documentRootPath = `/${optionItem.documentRootPath}`;
-        }
-
-        if (optionItem.collapseDepth) {
-          optionItem.collapsed = true;
-        }
-
-        if (!optionItem.prefixSeparator) {
-          optionItem.prefixSeparator = '.';
-        }
-
-        optionItem.collapseDepth = optionItem?.collapseDepth ?? 1;
-        optionItem.manualSortFileNameByPriority = optionItem?.manualSortFileNameByPriority ?? [];
-        optionItem.excludeFiles = optionItem?.excludeFiles ?? [];
-        optionItem.excludeFolders = optionItem?.excludeFolders ?? [];
-        optionItem.frontmatterOrderDefaultValue = optionItem?.frontmatterOrderDefaultValue ?? 0;
-
-        let scanPath = optionItem.documentRootPath;
-
-        if (optionItem.scanStartPath) {
-          scanPath = `${optionItem.documentRootPath}/${optionItem.scanStartPath}`
-            .replace(/\/{2,}/g, '/')
-            .replace('/$', '');
-        }
-
-        let sidebarResult: SidebarListItem = VitePressSidebar.generateSidebarItem(
-          1,
-          join(process.cwd(), scanPath),
-          scanPath,
-          null,
-          optionItem
-        );
-
-        if (optionItem.removePrefixAfterOrdering) {
-          sidebarResult = VitePressSidebar.removePrefixFromTitleAndLink(sidebarResult, optionItem);
-        }
-
-        sidebar[optionItem.resolvePath || '/'] = {
-          base: optionItem.resolvePath || '/',
-          items:
-            sidebarResult?.items ||
-            (optionItem.rootGroupText ||
-            optionItem.rootGroupLink ||
-            optionItem.rootGroupCollapsed === true ||
-            optionItem.rootGroupCollapsed === false
-              ? [
-                  {
-                    text: optionItem.rootGroupText,
-                    ...(optionItem.rootGroupLink ? { link: optionItem.rootGroupLink } : {}),
-                    items: sidebarResult as SidebarItem[],
-                    ...(optionItem.rootGroupCollapsed === null
-                      ? {}
-                      : { collapsed: optionItem.rootGroupCollapsed })
-                  }
-                ]
-              : (sidebarResult as SidebarItem[]))
-        };
+      // Exceptions for changed option names
+      if (optionItem.root) {
+        throw new Error(VitePressSidebar.generateDeprecateMessage('root', 'documentRootPath'));
       }
+      if (optionItem.withIndex) {
+        throw new Error(
+          VitePressSidebar.generateDeprecateMessage('withIndex', 'includeRootIndexFile')
+        );
+      }
+      if (optionItem.includeEmptyGroup) {
+        throw new Error(
+          VitePressSidebar.generateDeprecateMessage('includeEmptyGroup', 'includeEmptyFolder')
+        );
+      }
+      if (optionItem.sortByFileName) {
+        throw new Error(
+          VitePressSidebar.generateDeprecateMessage(
+            'sortByFileName',
+            'manualSortFileNameByPriority'
+          )
+        );
+      }
+      if (optionItem.useFolderLinkAsIndexPage) {
+        throw new Error(
+          VitePressSidebar.generateDeprecateMessage(
+            'useFolderLinkAsIndexPage',
+            'useIndexFileForFolderMenuInfo'
+          )
+        );
+      }
+      if (optionItem.useIndexFileForFolderMenuInfo) {
+        throw new Error(
+          VitePressSidebar.generateDeprecateMessage(
+            'useIndexFileForFolderMenuInfo',
+            'useFolderTitleFromIndexFile` and `useFolderLinkFromIndexFile'
+          )
+        );
+      }
+      if (optionItem.sortMenusOrderNumerically) {
+        throw new Error(
+          VitePressSidebar.generateDeprecateMessage(
+            'sortMenusOrderNumerically',
+            'sortMenusOrderNumericallyFromTitle` and `sortMenusOrderNumericallyFromLink'
+          )
+        );
+      }
+      if (
+        VitePressSidebar.isTrueMinimumNumberOfTimes(
+          [
+            optionItem.sortMenusByFrontmatterOrder,
+            optionItem.sortMenusByName,
+            optionItem.sortMenusByFileDatePrefix
+          ],
+          2
+        )
+      ) {
+        throw new Error(
+          VitePressSidebar.generateNotTogetherMessage([
+            'sortMenusByFrontmatterOrder',
+            'sortMenusByName',
+            'sortMenusByFileDatePrefix'
+          ])
+        );
+      }
+      if (
+        VitePressSidebar.isTrueMinimumNumberOfTimes(
+          [
+            optionItem.sortMenusByFrontmatterOrder,
+            optionItem.sortMenusOrderNumericallyFromTitle,
+            optionItem.sortMenusOrderNumericallyFromLink
+          ],
+          2
+        )
+      ) {
+        throw new Error(
+          VitePressSidebar.generateNotTogetherMessage([
+            'sortMenusByFrontmatterOrder',
+            'sortMenusOrderNumericallyFromTitle',
+            'sortMenusOrderNumericallyFromLink'
+          ])
+        );
+      }
+      if (
+        VitePressSidebar.isTrueMinimumNumberOfTimes(
+          [optionItem.sortMenusByFrontmatterOrder, optionItem.sortMenusByFrontmatterDate],
+          2
+        )
+      ) {
+        throw new Error(
+          VitePressSidebar.generateNotTogetherMessage([
+            'sortMenusByFrontmatterOrder',
+            'sortMenusByFrontmatterDate'
+          ])
+        );
+      }
+      if (optionItem.removePrefixAfterOrdering && !optionItem.prefixSeparator) {
+        throw new Error(`'prefixSeparator' should not use empty string`);
+      }
+
+      if (optionItem.debugPrint && !enableDebugPrint) {
+        enableDebugPrint = true;
+      }
+
+      optionItem.documentRootPath = optionItem?.documentRootPath ?? '/';
+
+      if (!/^\//.test(optionItem.documentRootPath)) {
+        optionItem.documentRootPath = `/${optionItem.documentRootPath}`;
+      }
+
+      if (optionItem.collapseDepth) {
+        optionItem.collapsed = true;
+      }
+
+      if (!optionItem.prefixSeparator) {
+        optionItem.prefixSeparator = '.';
+      }
+
+      optionItem.collapseDepth = optionItem?.collapseDepth ?? 1;
+      optionItem.manualSortFileNameByPriority = optionItem?.manualSortFileNameByPriority ?? [];
+      optionItem.excludeFiles = optionItem?.excludeFiles ?? [];
+      optionItem.excludeFolders = optionItem?.excludeFolders ?? [];
+      optionItem.frontmatterOrderDefaultValue = optionItem?.frontmatterOrderDefaultValue ?? 0;
+
+      let scanPath = optionItem.documentRootPath;
+
+      if (optionItem.scanStartPath) {
+        scanPath = `${optionItem.documentRootPath}/${optionItem.scanStartPath}`
+          .replace(/\/{2,}/g, '/')
+          .replace('/$', '');
+      }
+
+      let sidebarResult: SidebarListItem = VitePressSidebar.generateSidebarItem(
+        1,
+        join(process.cwd(), scanPath),
+        scanPath,
+        null,
+        optionItem
+      );
+
+      if (optionItem.removePrefixAfterOrdering) {
+        sidebarResult = VitePressSidebar.removePrefixFromTitleAndLink(sidebarResult, optionItem);
+      }
+
+      sidebar[optionItem.resolvePath || '/'] = {
+        base: optionItem.resolvePath || '/',
+        items:
+          sidebarResult?.items ||
+          (optionItem.rootGroupText ||
+          optionItem.rootGroupLink ||
+          optionItem.rootGroupCollapsed === true ||
+          optionItem.rootGroupCollapsed === false
+            ? [
+                {
+                  text: optionItem.rootGroupText,
+                  ...(optionItem.rootGroupLink ? { link: optionItem.rootGroupLink } : {}),
+                  items: sidebarResult as SidebarItem[],
+                  ...(optionItem.rootGroupCollapsed === null
+                    ? {}
+                    : { collapsed: optionItem.rootGroupCollapsed })
+                }
+              ]
+            : (sidebarResult as SidebarItem[]))
+      };
     }
 
     let sidebarResult;

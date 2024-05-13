@@ -4,210 +4,494 @@ import { generateSidebar } from '../dist';
 const TEST_DIR_BASE = 'test/res';
 
 describe('VitePress Sidebar Test', () => {
-  it('Without configurations', (done) => {
-    assert.deepEqual(
-      generateSidebar({
-        documentRootPath: TEST_DIR_BASE
-      }),
-      [
-        {
-          text: 'folder-with-index',
-          items: [
-            {
-              text: '1-a',
-              items: []
-            },
-            {
-              text: '10-a',
-              items: []
-            },
-            {
-              text: '2-a',
-              items: []
-            }
-          ]
-        },
-        {
-          text: 'folder-with-same-name-file',
-          items: [
-            {
-              text: 'folder-with-same-name-file',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ]
-        },
-        {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
-        },
-        {
-          text: 'frontmatter-basic',
-          items: [
-            {
-              text: 'a',
-              link: '/frontmatter-basic/a'
-            },
-            {
-              text: 'b',
-              link: '/frontmatter-basic/b'
-            },
-            {
-              text: 'c',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'd',
-              link: '/frontmatter-basic/d'
-            }
-          ]
-        },
-        {
-          text: 'numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
-              items: [
-                {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ]
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ]
-        },
-        {
-          text: 'numeric-title',
-          items: [
-            {
-              text: '0-file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1-file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10-file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100-file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11-file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2-file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3-afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3-bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ]
-        },
-        {
-          text: 'recursive',
-          items: [
-            {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'a',
-                  link: '/recursive/folderA/a'
-                },
-                {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'aa',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'aaaaa',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'folderB',
-              items: [
-                {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'bbb',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    );
+  it('No configurations (A)', (done) => {
+    assert.deepEqual(generateSidebar(), [
+      {
+        text: 'CHANGELOG',
+        link: '/CHANGELOG'
+      },
+      {
+        text: 'CODE_OF_CONDUCT',
+        link: '/CODE_OF_CONDUCT'
+      },
+      {
+        text: 'README',
+        link: '/README'
+      },
+      {
+        text: 'docs',
+        items: [
+          {
+            text: 'api',
+            link: '/docs/api'
+          },
+          {
+            text: 'getting-started',
+            link: '/docs/getting-started'
+          },
+          {
+            text: 'multiple-sidebars-how-to',
+            link: '/docs/multiple-sidebars-how-to'
+          },
+          {
+            text: 'troubleshooting',
+            link: '/docs/troubleshooting'
+          }
+        ]
+      },
+      {
+        text: 'test',
+        items: [
+          {
+            text: 'res',
+            items: [
+              {
+                text: 'folder-with-index',
+                items: [
+                  {
+                    text: '1-a',
+                    items: []
+                  },
+                  {
+                    text: '10-a',
+                    items: []
+                  },
+                  {
+                    text: '2-a',
+                    items: []
+                  }
+                ]
+              },
+              {
+                text: 'folder-with-same-name-file',
+                items: [
+                  {
+                    text: 'folder-with-same-name-file',
+                    link: '/test/res/folder-with-same-name-file/folder-with-same-name-file'
+                  }
+                ]
+              },
+              {
+                text: 'folder-with-special-char-file',
+                items: [
+                  {
+                    text: 'hypen-doc',
+                    link: '/test/res/folder-with-special-char-file/hypen-doc'
+                  },
+                  {
+                    text: 'special@#$characters',
+                    link: '/test/res/folder-with-special-char-file/special@#$characters'
+                  },
+                  {
+                    text: 'underscore_doc',
+                    link: '/test/res/folder-with-special-char-file/underscore_doc'
+                  }
+                ]
+              },
+              {
+                text: 'frontmatter-basic',
+                items: [
+                  {
+                    text: 'a',
+                    link: '/test/res/frontmatter-basic/a'
+                  },
+                  {
+                    text: 'b',
+                    link: '/test/res/frontmatter-basic/b'
+                  },
+                  {
+                    text: 'c',
+                    link: '/test/res/frontmatter-basic/c'
+                  },
+                  {
+                    text: 'd',
+                    link: '/test/res/frontmatter-basic/d'
+                  }
+                ]
+              },
+              {
+                text: 'numeric-prefix',
+                items: [
+                  {
+                    text: '1-1-1-one-file',
+                    link: '/test/res/numeric-prefix/1-1-1-one-file'
+                  },
+                  {
+                    text: '1-folder',
+                    items: [
+                      {
+                        text: '11-file',
+                        link: '/test/res/numeric-prefix/1-folder/11-file'
+                      }
+                    ]
+                  },
+                  {
+                    text: '1-one-file',
+                    link: '/test/res/numeric-prefix/1-one-file'
+                  },
+                  {
+                    text: '1-three-file',
+                    link: '/test/res/numeric-prefix/1-three-file'
+                  },
+                  {
+                    text: '1.1.1-four-file',
+                    link: '/test/res/numeric-prefix/1.1.1-four-file'
+                  },
+                  {
+                    text: '2-two-file',
+                    link: '/test/res/numeric-prefix/2-two-file'
+                  }
+                ]
+              },
+              {
+                text: 'numeric-title',
+                items: [
+                  {
+                    text: '0-file',
+                    link: '/test/res/numeric-title/0-file'
+                  },
+                  {
+                    text: '1-file',
+                    link: '/test/res/numeric-title/1-file'
+                  },
+                  {
+                    text: '10-file',
+                    link: '/test/res/numeric-title/10-file'
+                  },
+                  {
+                    text: '100-file',
+                    link: '/test/res/numeric-title/100-file'
+                  },
+                  {
+                    text: '11-file',
+                    link: '/test/res/numeric-title/11-file'
+                  },
+                  {
+                    text: '2-file',
+                    link: '/test/res/numeric-title/2-file'
+                  },
+                  {
+                    text: '3-afile',
+                    link: '/test/res/numeric-title/3-afile'
+                  },
+                  {
+                    text: '3-bfile',
+                    link: '/test/res/numeric-title/3-bfile'
+                  }
+                ]
+              },
+              {
+                text: 'recursive',
+                items: [
+                  {
+                    text: 'folderA',
+                    items: [
+                      {
+                        text: 'a',
+                        link: '/test/res/recursive/folderA/a'
+                      },
+                      {
+                        text: 'folderAA',
+                        items: [
+                          {
+                            text: 'aa',
+                            link: '/test/res/recursive/folderA/folderAA/aa'
+                          },
+                          {
+                            text: 'folderAAA',
+                            items: [
+                              {
+                                text: 'folderAAAA',
+                                items: [
+                                  {
+                                    text: 'folderAAAAA',
+                                    items: [
+                                      {
+                                        text: 'aaaaa',
+                                        link: '/test/res/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    text: 'folderB',
+                    items: [
+                      {
+                        text: 'folderBB',
+                        items: [
+                          {
+                            text: 'folderBBB',
+                            items: [
+                              {
+                                text: 'bbb',
+                                link: '/test/res/recursive/folderB/folderBB/folderBBB/bbb'
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+
+    done();
+  });
+
+  it('No configurations (B)', (done) => {
+    assert.deepEqual(generateSidebar({}), [
+      {
+        text: 'CHANGELOG',
+        link: '/CHANGELOG'
+      },
+      {
+        text: 'CODE_OF_CONDUCT',
+        link: '/CODE_OF_CONDUCT'
+      },
+      {
+        text: 'README',
+        link: '/README'
+      },
+      {
+        text: 'docs',
+        items: [
+          {
+            text: 'api',
+            link: '/docs/api'
+          },
+          {
+            text: 'getting-started',
+            link: '/docs/getting-started'
+          },
+          {
+            text: 'multiple-sidebars-how-to',
+            link: '/docs/multiple-sidebars-how-to'
+          },
+          {
+            text: 'troubleshooting',
+            link: '/docs/troubleshooting'
+          }
+        ]
+      },
+      {
+        text: 'test',
+        items: [
+          {
+            text: 'res',
+            items: [
+              {
+                text: 'folder-with-index',
+                items: [
+                  {
+                    text: '1-a',
+                    items: []
+                  },
+                  {
+                    text: '10-a',
+                    items: []
+                  },
+                  {
+                    text: '2-a',
+                    items: []
+                  }
+                ]
+              },
+              {
+                text: 'folder-with-same-name-file',
+                items: [
+                  {
+                    text: 'folder-with-same-name-file',
+                    link: '/test/res/folder-with-same-name-file/folder-with-same-name-file'
+                  }
+                ]
+              },
+              {
+                text: 'folder-with-special-char-file',
+                items: [
+                  {
+                    text: 'hypen-doc',
+                    link: '/test/res/folder-with-special-char-file/hypen-doc'
+                  },
+                  {
+                    text: 'special@#$characters',
+                    link: '/test/res/folder-with-special-char-file/special@#$characters'
+                  },
+                  {
+                    text: 'underscore_doc',
+                    link: '/test/res/folder-with-special-char-file/underscore_doc'
+                  }
+                ]
+              },
+              {
+                text: 'frontmatter-basic',
+                items: [
+                  {
+                    text: 'a',
+                    link: '/test/res/frontmatter-basic/a'
+                  },
+                  {
+                    text: 'b',
+                    link: '/test/res/frontmatter-basic/b'
+                  },
+                  {
+                    text: 'c',
+                    link: '/test/res/frontmatter-basic/c'
+                  },
+                  {
+                    text: 'd',
+                    link: '/test/res/frontmatter-basic/d'
+                  }
+                ]
+              },
+              {
+                text: 'numeric-prefix',
+                items: [
+                  {
+                    text: '1-1-1-one-file',
+                    link: '/test/res/numeric-prefix/1-1-1-one-file'
+                  },
+                  {
+                    text: '1-folder',
+                    items: [
+                      {
+                        text: '11-file',
+                        link: '/test/res/numeric-prefix/1-folder/11-file'
+                      }
+                    ]
+                  },
+                  {
+                    text: '1-one-file',
+                    link: '/test/res/numeric-prefix/1-one-file'
+                  },
+                  {
+                    text: '1-three-file',
+                    link: '/test/res/numeric-prefix/1-three-file'
+                  },
+                  {
+                    text: '1.1.1-four-file',
+                    link: '/test/res/numeric-prefix/1.1.1-four-file'
+                  },
+                  {
+                    text: '2-two-file',
+                    link: '/test/res/numeric-prefix/2-two-file'
+                  }
+                ]
+              },
+              {
+                text: 'numeric-title',
+                items: [
+                  {
+                    text: '0-file',
+                    link: '/test/res/numeric-title/0-file'
+                  },
+                  {
+                    text: '1-file',
+                    link: '/test/res/numeric-title/1-file'
+                  },
+                  {
+                    text: '10-file',
+                    link: '/test/res/numeric-title/10-file'
+                  },
+                  {
+                    text: '100-file',
+                    link: '/test/res/numeric-title/100-file'
+                  },
+                  {
+                    text: '11-file',
+                    link: '/test/res/numeric-title/11-file'
+                  },
+                  {
+                    text: '2-file',
+                    link: '/test/res/numeric-title/2-file'
+                  },
+                  {
+                    text: '3-afile',
+                    link: '/test/res/numeric-title/3-afile'
+                  },
+                  {
+                    text: '3-bfile',
+                    link: '/test/res/numeric-title/3-bfile'
+                  }
+                ]
+              },
+              {
+                text: 'recursive',
+                items: [
+                  {
+                    text: 'folderA',
+                    items: [
+                      {
+                        text: 'a',
+                        link: '/test/res/recursive/folderA/a'
+                      },
+                      {
+                        text: 'folderAA',
+                        items: [
+                          {
+                            text: 'aa',
+                            link: '/test/res/recursive/folderA/folderAA/aa'
+                          },
+                          {
+                            text: 'folderAAA',
+                            items: [
+                              {
+                                text: 'folderAAAA',
+                                items: [
+                                  {
+                                    text: 'folderAAAAA',
+                                    items: [
+                                      {
+                                        text: 'aaaaa',
+                                        link: '/test/res/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    text: 'folderB',
+                    items: [
+                      {
+                        text: 'folderBB',
+                        items: [
+                          {
+                            text: 'folderBBB',
+                            items: [
+                              {
+                                text: 'bbb',
+                                link: '/test/res/recursive/folderB/folderBB/folderBBB/bbb'
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]);
 
     done();
   });
@@ -492,6 +776,214 @@ describe('VitePress Sidebar Test', () => {
             {
               text: 'D Frontmatter',
               link: '/frontmatter-basic/d'
+            }
+          ]
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('Option: documentRootPath', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: TEST_DIR_BASE
+      }),
+      [
+        {
+          text: 'folder-with-index',
+          items: [
+            {
+              text: '1-a',
+              items: []
+            },
+            {
+              text: '10-a',
+              items: []
+            },
+            {
+              text: '2-a',
+              items: []
+            }
+          ]
+        },
+        {
+          text: 'folder-with-same-name-file',
+          items: [
+            {
+              text: 'folder-with-same-name-file',
+              link: '/folder-with-same-name-file/folder-with-same-name-file'
+            }
+          ]
+        },
+        {
+          text: 'folder-with-special-char-file',
+          items: [
+            {
+              text: 'hypen-doc',
+              link: '/folder-with-special-char-file/hypen-doc'
+            },
+            {
+              text: 'special@#$characters',
+              link: '/folder-with-special-char-file/special@#$characters'
+            },
+            {
+              text: 'underscore_doc',
+              link: '/folder-with-special-char-file/underscore_doc'
+            }
+          ]
+        },
+        {
+          text: 'frontmatter-basic',
+          items: [
+            {
+              text: 'a',
+              link: '/frontmatter-basic/a'
+            },
+            {
+              text: 'b',
+              link: '/frontmatter-basic/b'
+            },
+            {
+              text: 'c',
+              link: '/frontmatter-basic/c'
+            },
+            {
+              text: 'd',
+              link: '/frontmatter-basic/d'
+            }
+          ]
+        },
+        {
+          text: 'numeric-prefix',
+          items: [
+            {
+              text: '1-1-1-one-file',
+              link: '/numeric-prefix/1-1-1-one-file'
+            },
+            {
+              text: '1-folder',
+              items: [
+                {
+                  text: '11-file',
+                  link: '/numeric-prefix/1-folder/11-file'
+                }
+              ]
+            },
+            {
+              text: '1-one-file',
+              link: '/numeric-prefix/1-one-file'
+            },
+            {
+              text: '1-three-file',
+              link: '/numeric-prefix/1-three-file'
+            },
+            {
+              text: '1.1.1-four-file',
+              link: '/numeric-prefix/1.1.1-four-file'
+            },
+            {
+              text: '2-two-file',
+              link: '/numeric-prefix/2-two-file'
+            }
+          ]
+        },
+        {
+          text: 'numeric-title',
+          items: [
+            {
+              text: '0-file',
+              link: '/numeric-title/0-file'
+            },
+            {
+              text: '1-file',
+              link: '/numeric-title/1-file'
+            },
+            {
+              text: '10-file',
+              link: '/numeric-title/10-file'
+            },
+            {
+              text: '100-file',
+              link: '/numeric-title/100-file'
+            },
+            {
+              text: '11-file',
+              link: '/numeric-title/11-file'
+            },
+            {
+              text: '2-file',
+              link: '/numeric-title/2-file'
+            },
+            {
+              text: '3-afile',
+              link: '/numeric-title/3-afile'
+            },
+            {
+              text: '3-bfile',
+              link: '/numeric-title/3-bfile'
+            }
+          ]
+        },
+        {
+          text: 'recursive',
+          items: [
+            {
+              text: 'folderA',
+              items: [
+                {
+                  text: 'a',
+                  link: '/recursive/folderA/a'
+                },
+                {
+                  text: 'folderAA',
+                  items: [
+                    {
+                      text: 'aa',
+                      link: '/recursive/folderA/folderAA/aa'
+                    },
+                    {
+                      text: 'folderAAA',
+                      items: [
+                        {
+                          text: 'folderAAAA',
+                          items: [
+                            {
+                              text: 'folderAAAAA',
+                              items: [
+                                {
+                                  text: 'aaaaa',
+                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              text: 'folderB',
+              items: [
+                {
+                  text: 'folderBB',
+                  items: [
+                    {
+                      text: 'folderBBB',
+                      items: [
+                        {
+                          text: 'bbb',
+                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
