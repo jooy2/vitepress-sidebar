@@ -5,7 +5,7 @@ const TEST_DIR_BASE = 'test/res';
 
 describe('VitePress Sidebar Test', () => {
   it('No configurations (A)', (done) => {
-    assert.deepEqual(generateSidebar(), [
+    assert.deepStrictEqual(generateSidebar(), [
       {
         text: 'CHANGELOG',
         link: '/CHANGELOG'
@@ -251,7 +251,7 @@ describe('VitePress Sidebar Test', () => {
   });
 
   it('No configurations (B)', (done) => {
-    assert.deepEqual(generateSidebar({}), [
+    assert.deepStrictEqual(generateSidebar({}), [
       {
         text: 'CHANGELOG',
         link: '/CHANGELOG'
