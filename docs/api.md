@@ -334,7 +334,9 @@ Removes letters only once based on the separator, so a child item like `1.1.` sh
 
 Can be used with the `prefixSeparator` option. See that option's description for more information.
 
-(Note: prefix only affects the title, the link will use the file link as it is).
+(Note A: prefix only affects the title, the link will use the file link as it is).
+
+(Note B: This option is ignored if you use the `useTitleFromFileHeading` or `useTitleFromFrontmatter` options).
 
 ## `prefixSeparator`
 
