@@ -867,11 +867,18 @@ export default class VitePressSidebar {
         const key = Object.keys(obj)[j];
 
         if (key === 'text') {
-          const splitItem = obj[key].split(options.prefixSeparator);
+          if (
+            !(
+              !(options.prefixSeparator instanceof RegExp) &&
+              obj[key].indexOf(options.prefixSeparator) === -1
+            )
+          ) {
+            const splitItem = obj[key].split(options.prefixSeparator);
 
-          splitItem.shift();
+            splitItem.shift();
 
-          obj[key] = splitItem.join(options.prefixSeparator);
+            obj[key] = splitItem.join(options.prefixSeparator);
+          }
         } else if (key === 'items') {
           obj[key] = VitePressSidebar.removePrefixFromTitleAndLink(obj[key], options);
         }

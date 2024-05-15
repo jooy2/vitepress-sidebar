@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.23.1 (2024-05-)
+
+- Warning against using the `removePrefixAfterOrdering` option and the `useTitleFrom` option together
+- Fix to return full filename if separator is not present in filename when using `removePrefixAfterOrdering` option
+
 ## 1.23.0 (2024-05-13)
 
 - **BREAKING CHANGES**: The `excludeFilesByFrontmatter` option is deprecated and replaced by the `excludeFilesByFrontmatterFieldName` option. You can now specify any field name you want, including Frontmatter's `exclude` field name, and documents will be excluded from the menu when that field value is `true`. Existing users should work fine with the following settings `excludeFilesByFrontmatterFieldName: 'exclude'`. For more information, see the documentation.
