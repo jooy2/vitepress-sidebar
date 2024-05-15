@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.23.1 (2024-05-)
+## 1.23.1 (2024-05-15)
 
 - Warning against using the `removePrefixAfterOrdering` option and the `useTitleFrom` option together
 - Fix to return full filename if separator is not present in filename when using `removePrefixAfterOrdering` option
