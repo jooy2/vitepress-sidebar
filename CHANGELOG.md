@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.23.2 (2024-05-16)
+
+- Revert `5ed188e`. do not warn 'use option together'
+
 ## 1.23.1 (2024-05-15)
 
 - Warning against using the `removePrefixAfterOrdering` option and the `useTitleFrom` option together

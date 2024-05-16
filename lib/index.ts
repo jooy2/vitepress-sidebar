@@ -204,23 +204,6 @@ export default class VitePressSidebar {
       if (
         VitePressSidebar.isTrueMinimumNumberOfTimes(
           [
-            optionItem.useTitleFromFileHeading || optionItem.useTitleFromFrontmatter,
-            optionItem.removePrefixAfterOrdering
-          ],
-          2
-        )
-      ) {
-        throw new Error(
-          VitePressSidebar.generateNotTogetherMessage([
-            'useTitleFromFileHeading',
-            'useTitleFromFrontmatter',
-            'removePrefixAfterOrdering'
-          ])
-        );
-      }
-      if (
-        VitePressSidebar.isTrueMinimumNumberOfTimes(
-          [
             optionItem.sortMenusByFrontmatterOrder,
             optionItem.sortMenusOrderNumericallyFromTitle,
             optionItem.sortMenusOrderNumericallyFromLink
