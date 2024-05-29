@@ -91,4 +91,4 @@ Here's an example of the output from the above setup:
 }
 ```
 
-Learn more about `scanStartPath` and `resolvePath` in the [API](/api#scanstartpath) section.
+Learn more about `scanStartPath` and `resolvePath` in the [API](/guide/api#scanstartpath) section.
