@@ -22,6 +22,7 @@ export default defineConfig({
     sidebar: generateSidebar({
       debugPrint: true,
       documentRootPath: 'docs',
+      manualSortFileNameByPriority: ['guide', 'advanced-usage'],
       collapsed: false,
       capitalizeFirst: true,
       useTitleFromFileHeading: true,
@@ -35,11 +36,11 @@ export default defineConfig({
     nav: [
       {
         text: 'Installation',
-        link: 'getting-started'
+        link: '/guide/getting-started'
       },
       {
         text: 'API Reference',
-        link: 'api'
+        link: '/guide/api'
       },
       {
         text: 'Changelog',

@@ -11,10 +11,10 @@ hero:
   actions:
     - theme: brand
       text: Getting Started
-      link: /getting-started
+      link: /guide/getting-started
     - theme: alt
       text: API
-      link: /api
+      link: /guide/api
     - theme: alt
       text: GitHub
       link: https://github.com/jooy2/vitepress-sidebar

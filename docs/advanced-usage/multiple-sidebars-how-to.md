@@ -1,7 +1,3 @@
----
-order: 3
----
-
 # Multiple Sidebars How-to
 
 To learn more about multiple sidebars, see the articles below:

@@ -1,10 +1,4 @@
----
-order: 4
----
-
-# Troubleshooting
-
-## `ERR_REQUIRE_ESM`
+# `ERR_REQUIRE_ESM`
 
 `vitepress-sidebar` is an **ESM** module. If your project is using **CJS**, you will need to convert it to an **ESM** module.
 
