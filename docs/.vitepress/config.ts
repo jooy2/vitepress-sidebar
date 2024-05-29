@@ -23,6 +23,7 @@ export default defineConfig({
       debugPrint: true,
       documentRootPath: 'docs',
       manualSortFileNameByPriority: ['guide', 'advanced-usage'],
+      excludeFiles: ['changelog.md'],
       collapsed: false,
       capitalizeFirst: true,
       useTitleFromFileHeading: true,
