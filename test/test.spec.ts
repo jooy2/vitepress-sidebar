@@ -1232,6 +1232,29 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
+  it('Option: frontmatterTitleFieldName', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
+        useTitleFromFileHeading: true,
+        useTitleFromFrontmatter: true,
+        frontmatterTitleFieldName: 'sidebar_title'
+      }),
+      [
+        {
+          text: 'A Frontmatter Customized',
+          link: '/a'
+        },
+        {
+          text: 'B Frontmatter',
+          link: '/b'
+        }
+      ]
+    );
+
+    done();
+  });
+
   it('Option: convertSameNameSubFileToGroupIndexPage (A)', (done) => {
     assert.deepEqual(
       generateSidebar({

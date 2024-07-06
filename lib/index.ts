@@ -41,6 +41,7 @@ declare interface Options {
   rootGroupLink?: string;
   rootGroupCollapsed?: boolean | null | undefined;
   frontmatterOrderDefaultValue?: number;
+  frontmatterTitleFieldName?: string;
   /**
    * @deprecated
    */
@@ -703,11 +704,19 @@ export default class VitePressSidebar {
 
     if (options.useTitleFromFrontmatter) {
       // Use content frontmatter title value instead of file name
-      const value = VitePressSidebar.getValueFromFrontmatter<string | undefined>(
+      let value = VitePressSidebar.getValueFromFrontmatter<string | undefined>(
         filePath,
-        'title',
+        options.frontmatterTitleFieldName || 'title',
         undefined
       );
+      // Try to use title front-matter as fallback
+      if (!value) {
+        value = VitePressSidebar.getValueFromFrontmatter<string | undefined>(
+          filePath,
+          'title',
+          undefined
+        );
+      }
       if (value) {
         return VitePressSidebar.formatTitle(options, value);
       }

@@ -21,6 +21,7 @@ This page describes all the options in the VitePress Sidebar.
 | [useTitleFromFileHeading](#usetitlefromfileheading) | [convertSameNameSubFileToGroupIndexPage](#convertsamenamesubfiletogroupindexpage) |
 | [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
 | [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
+| [frontmatterTitleFieldName](#frontmatterTitleFieldName) |  |
 
 | Include/Exclude | Styling Menu Title |
 | --- | --- |
@@ -107,6 +108,13 @@ The default menu items are sorted in folder tree order, so set the `sortMenusByN
 If the value is `true`, display the title based on the value of `title` in `Frontmatter` in the file. If this value cannot be parsed, it will be taken from the `h1` tag if the `useTitleFromFileHeading` option is `true`, and from the filename if that fails.
 
 The `Frontmatter` should be located at the top of the document, and should look like this (Space is required between the `title:` value and the title.)
+
+## `frontmatterTitleFieldName`
+
+- Type: `string`
+- Default: `title`
+
+Display the title based on the value of this option in `Frontmatter` in the file. If the specified value is not exists in `Frontmatter`, then the default `title` will used as fallback.
 
 ```markdown
 ---
