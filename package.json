@@ -62,20 +62,20 @@
     "autosidebar"
   ],
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
-    "@types/node": "^20.12.12",
-    "@typescript-eslint/eslint-plugin": "^7.9.0",
-    "@typescript-eslint/parser": "^7.9.0",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20.14.10",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
-    "mocha": "^10.4.0",
-    "prettier": "^3.2.5",
-    "terser": "^5.31.0",
+    "mocha": "^10.6.0",
+    "prettier": "^3.3.2",
+    "terser": "^5.31.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5",
-    "vitepress": "^1.2.0"
+    "typescript": "^5.5.3",
+    "vitepress": "^1.2.3"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
