@@ -21,7 +21,7 @@ This page describes all the options in the VitePress Sidebar.
 | [useTitleFromFileHeading](#usetitlefromfileheading) | [convertSameNameSubFileToGroupIndexPage](#convertsamenamesubfiletogroupindexpage) |
 | [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
 | [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
-| [frontmatterTitleFieldName](#frontmatterTitleFieldName) |  |
+| [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
 
 | Include/Exclude | Styling Menu Title |
 | --- | --- |

@@ -1,8 +1,8 @@
 # Changelog
 
-## 1.23.3 (2024-07-05)
+## 1.24.0 (2024-07-06)
 
-- Add `frontmatterTitleFieldName` option. When used with `useTitleFromFrontmatter`, the `text` field of sidebar will extract from the value of `frontmatterTitleFieldName` instead of default `title` field if it exists.
+- Add `frontmatterTitleFieldName` option. When used with `useTitleFromFrontmatter`, the `text` field of sidebar will extract from the value of `frontmatterTitleFieldName` instead of default `title` field if it exists. (@liudonghua123)
 
 ## 1.23.2 (2024-05-16)
 
