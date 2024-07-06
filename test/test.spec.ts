@@ -1,497 +1,64 @@
 import assert from 'assert';
 import { generateSidebar } from '../dist';
 
-const TEST_DIR_BASE = 'test/res';
+const TEST_DIR_BASE = 'test/resources';
 
 describe('VitePress Sidebar Test', () => {
   it('No configurations (A)', (done) => {
-    assert.deepStrictEqual(generateSidebar(), [
-      {
-        text: 'CHANGELOG',
-        link: '/CHANGELOG'
-      },
-      {
-        text: 'CODE_OF_CONDUCT',
-        link: '/CODE_OF_CONDUCT'
-      },
-      {
-        text: 'README',
-        link: '/README'
-      },
-      {
-        text: 'docs',
-        items: [
-          {
-            text: 'api',
-            link: '/docs/api'
-          },
-          {
-            text: 'getting-started',
-            link: '/docs/getting-started'
-          },
-          {
-            text: 'multiple-sidebars-how-to',
-            link: '/docs/multiple-sidebars-how-to'
-          },
-          {
-            text: 'troubleshooting',
-            link: '/docs/troubleshooting'
-          }
-        ]
-      },
-      {
-        text: 'test',
-        items: [
-          {
-            text: 'res',
-            items: [
-              {
-                text: 'folder-with-index',
-                items: [
-                  {
-                    text: '1-a',
-                    items: []
-                  },
-                  {
-                    text: '10-a',
-                    items: []
-                  },
-                  {
-                    text: '2-a',
-                    items: []
-                  }
-                ]
-              },
-              {
-                text: 'folder-with-same-name-file',
-                items: [
-                  {
-                    text: 'folder-with-same-name-file',
-                    link: '/test/res/folder-with-same-name-file/folder-with-same-name-file'
-                  }
-                ]
-              },
-              {
-                text: 'folder-with-special-char-file',
-                items: [
-                  {
-                    text: 'hypen-doc',
-                    link: '/test/res/folder-with-special-char-file/hypen-doc'
-                  },
-                  {
-                    text: 'special@#$characters',
-                    link: '/test/res/folder-with-special-char-file/special@#$characters'
-                  },
-                  {
-                    text: 'underscore_doc',
-                    link: '/test/res/folder-with-special-char-file/underscore_doc'
-                  }
-                ]
-              },
-              {
-                text: 'frontmatter-basic',
-                items: [
-                  {
-                    text: 'a',
-                    link: '/test/res/frontmatter-basic/a'
-                  },
-                  {
-                    text: 'b',
-                    link: '/test/res/frontmatter-basic/b'
-                  },
-                  {
-                    text: 'c',
-                    link: '/test/res/frontmatter-basic/c'
-                  },
-                  {
-                    text: 'd',
-                    link: '/test/res/frontmatter-basic/d'
-                  }
-                ]
-              },
-              {
-                text: 'numeric-prefix',
-                items: [
-                  {
-                    text: '1-1-1-one-file',
-                    link: '/test/res/numeric-prefix/1-1-1-one-file'
-                  },
-                  {
-                    text: '1-folder',
-                    items: [
-                      {
-                        text: '11-file',
-                        link: '/test/res/numeric-prefix/1-folder/11-file'
-                      }
-                    ]
-                  },
-                  {
-                    text: '1-one-file',
-                    link: '/test/res/numeric-prefix/1-one-file'
-                  },
-                  {
-                    text: '1-three-file',
-                    link: '/test/res/numeric-prefix/1-three-file'
-                  },
-                  {
-                    text: '1.1.1-four-file',
-                    link: '/test/res/numeric-prefix/1.1.1-four-file'
-                  },
-                  {
-                    text: '2-two-file',
-                    link: '/test/res/numeric-prefix/2-two-file'
-                  }
-                ]
-              },
-              {
-                text: 'numeric-title',
-                items: [
-                  {
-                    text: '0-file',
-                    link: '/test/res/numeric-title/0-file'
-                  },
-                  {
-                    text: '1-file',
-                    link: '/test/res/numeric-title/1-file'
-                  },
-                  {
-                    text: '10-file',
-                    link: '/test/res/numeric-title/10-file'
-                  },
-                  {
-                    text: '100-file',
-                    link: '/test/res/numeric-title/100-file'
-                  },
-                  {
-                    text: '11-file',
-                    link: '/test/res/numeric-title/11-file'
-                  },
-                  {
-                    text: '2-file',
-                    link: '/test/res/numeric-title/2-file'
-                  },
-                  {
-                    text: '3-afile',
-                    link: '/test/res/numeric-title/3-afile'
-                  },
-                  {
-                    text: '3-bfile',
-                    link: '/test/res/numeric-title/3-bfile'
-                  }
-                ]
-              },
-              {
-                text: 'recursive',
-                items: [
-                  {
-                    text: 'folderA',
-                    items: [
-                      {
-                        text: 'a',
-                        link: '/test/res/recursive/folderA/a'
-                      },
-                      {
-                        text: 'folderAA',
-                        items: [
-                          {
-                            text: 'aa',
-                            link: '/test/res/recursive/folderA/folderAA/aa'
-                          },
-                          {
-                            text: 'folderAAA',
-                            items: [
-                              {
-                                text: 'folderAAAA',
-                                items: [
-                                  {
-                                    text: 'folderAAAAA',
-                                    items: [
-                                      {
-                                        text: 'aaaaa',
-                                        link: '/test/res/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    text: 'folderB',
-                    items: [
-                      {
-                        text: 'folderBB',
-                        items: [
-                          {
-                            text: 'folderBBB',
-                            items: [
-                              {
-                                text: 'bbb',
-                                link: '/test/res/recursive/folderB/folderBB/folderBBB/bbb'
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]);
-
-    done();
-  });
-
-  it('No configurations (B)', (done) => {
-    assert.deepStrictEqual(generateSidebar({}), [
-      {
-        text: 'CHANGELOG',
-        link: '/CHANGELOG'
-      },
-      {
-        text: 'CODE_OF_CONDUCT',
-        link: '/CODE_OF_CONDUCT'
-      },
-      {
-        text: 'README',
-        link: '/README'
-      },
-      {
-        text: 'docs',
-        items: [
-          {
-            text: 'api',
-            link: '/docs/api'
-          },
-          {
-            text: 'getting-started',
-            link: '/docs/getting-started'
-          },
-          {
-            text: 'multiple-sidebars-how-to',
-            link: '/docs/multiple-sidebars-how-to'
-          },
-          {
-            text: 'troubleshooting',
-            link: '/docs/troubleshooting'
-          }
-        ]
-      },
-      {
-        text: 'test',
-        items: [
-          {
-            text: 'res',
-            items: [
-              {
-                text: 'folder-with-index',
-                items: [
-                  {
-                    text: '1-a',
-                    items: []
-                  },
-                  {
-                    text: '10-a',
-                    items: []
-                  },
-                  {
-                    text: '2-a',
-                    items: []
-                  }
-                ]
-              },
-              {
-                text: 'folder-with-same-name-file',
-                items: [
-                  {
-                    text: 'folder-with-same-name-file',
-                    link: '/test/res/folder-with-same-name-file/folder-with-same-name-file'
-                  }
-                ]
-              },
-              {
-                text: 'folder-with-special-char-file',
-                items: [
-                  {
-                    text: 'hypen-doc',
-                    link: '/test/res/folder-with-special-char-file/hypen-doc'
-                  },
-                  {
-                    text: 'special@#$characters',
-                    link: '/test/res/folder-with-special-char-file/special@#$characters'
-                  },
-                  {
-                    text: 'underscore_doc',
-                    link: '/test/res/folder-with-special-char-file/underscore_doc'
-                  }
-                ]
-              },
-              {
-                text: 'frontmatter-basic',
-                items: [
-                  {
-                    text: 'a',
-                    link: '/test/res/frontmatter-basic/a'
-                  },
-                  {
-                    text: 'b',
-                    link: '/test/res/frontmatter-basic/b'
-                  },
-                  {
-                    text: 'c',
-                    link: '/test/res/frontmatter-basic/c'
-                  },
-                  {
-                    text: 'd',
-                    link: '/test/res/frontmatter-basic/d'
-                  }
-                ]
-              },
-              {
-                text: 'numeric-prefix',
-                items: [
-                  {
-                    text: '1-1-1-one-file',
-                    link: '/test/res/numeric-prefix/1-1-1-one-file'
-                  },
-                  {
-                    text: '1-folder',
-                    items: [
-                      {
-                        text: '11-file',
-                        link: '/test/res/numeric-prefix/1-folder/11-file'
-                      }
-                    ]
-                  },
-                  {
-                    text: '1-one-file',
-                    link: '/test/res/numeric-prefix/1-one-file'
-                  },
-                  {
-                    text: '1-three-file',
-                    link: '/test/res/numeric-prefix/1-three-file'
-                  },
-                  {
-                    text: '1.1.1-four-file',
-                    link: '/test/res/numeric-prefix/1.1.1-four-file'
-                  },
-                  {
-                    text: '2-two-file',
-                    link: '/test/res/numeric-prefix/2-two-file'
-                  }
-                ]
-              },
-              {
-                text: 'numeric-title',
-                items: [
-                  {
-                    text: '0-file',
-                    link: '/test/res/numeric-title/0-file'
-                  },
-                  {
-                    text: '1-file',
-                    link: '/test/res/numeric-title/1-file'
-                  },
-                  {
-                    text: '10-file',
-                    link: '/test/res/numeric-title/10-file'
-                  },
-                  {
-                    text: '100-file',
-                    link: '/test/res/numeric-title/100-file'
-                  },
-                  {
-                    text: '11-file',
-                    link: '/test/res/numeric-title/11-file'
-                  },
-                  {
-                    text: '2-file',
-                    link: '/test/res/numeric-title/2-file'
-                  },
-                  {
-                    text: '3-afile',
-                    link: '/test/res/numeric-title/3-afile'
-                  },
-                  {
-                    text: '3-bfile',
-                    link: '/test/res/numeric-title/3-bfile'
-                  }
-                ]
-              },
-              {
-                text: 'recursive',
-                items: [
-                  {
-                    text: 'folderA',
-                    items: [
-                      {
-                        text: 'a',
-                        link: '/test/res/recursive/folderA/a'
-                      },
-                      {
-                        text: 'folderAA',
-                        items: [
-                          {
-                            text: 'aa',
-                            link: '/test/res/recursive/folderA/folderAA/aa'
-                          },
-                          {
-                            text: 'folderAAA',
-                            items: [
-                              {
-                                text: 'folderAAAA',
-                                items: [
-                                  {
-                                    text: 'folderAAAAA',
-                                    items: [
-                                      {
-                                        text: 'aaaaa',
-                                        link: '/test/res/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                      }
-                                    ]
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    text: 'folderB',
-                    items: [
-                      {
-                        text: 'folderBB',
-                        items: [
-                          {
-                            text: 'folderBBB',
-                            items: [
-                              {
-                                text: 'bbb',
-                                link: '/test/res/recursive/folderB/folderBB/folderBBB/bbb'
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]);
+    assert.deepStrictEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`
+      }),
+      [
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'folder',
+          items: [
+            {
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
+            },
+            {
+              text: 'folder-test',
+              link: '/folder/folder-test'
+            },
+            {
+              text: 'subFolder',
+              items: [
+                {
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'test',
+          link: '/test'
+        }
+      ]
+    );
 
     done();
   });
@@ -499,173 +66,47 @@ describe('VitePress Sidebar Test', () => {
   it('With complex configurations (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         collapsed: false,
         hyphenToSpace: true,
         underscoreToSpace: true,
         includeRootIndexFile: true,
         useTitleFromFrontmatter: true,
         excludeFiles: ['a.md', 'c.md'],
-        excludeFolders: [
-          'folder-with-index',
-          'folder-with-same-name-file',
-          'folder-with-special-char-file'
-        ]
+        excludeFolders: ['folder-2']
       }),
       [
         {
-          text: 'frontmatter basic',
-          items: [
-            {
-              text: 'B Frontmatter',
-              link: '/frontmatter-basic/b'
-            },
-            {
-              text: 'D Frontmatter',
-              link: '/frontmatter-basic/d'
-            }
-          ],
-          collapsed: false
+          text: 'b',
+          link: '/b'
         },
         {
-          text: 'numeric prefix',
+          text: 'folder',
           items: [
             {
-              text: '1 1 1 one file',
-              link: '/numeric-prefix/1-1-1-one-file'
+              text: 'folder test 2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: '1 folder',
+              text: 'folder test',
+              link: '/folder/folder-test'
+            },
+            {
+              text: 'subFolder',
               items: [
                 {
-                  text: '11 file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ],
-              collapsed: false
-            },
-            {
-              text: '1 one file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1 three file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1 four file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2 two file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ],
-          collapsed: false
-        },
-        {
-          text: 'numeric title',
-          items: [
-            {
-              text: '0 file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1 file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10 file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100 file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11 file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2 file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3 afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3 bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ],
-          collapsed: false
-        },
-        {
-          text: 'recursive',
-          items: [
-            {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'aa',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'aaaaa',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ],
-                              collapsed: false
-                            }
-                          ],
-                          collapsed: false
-                        }
-                      ],
-                      collapsed: false
-                    }
-                  ],
-                  collapsed: false
-                }
-              ],
-              collapsed: false
-            },
-            {
-              text: 'folderB',
-              items: [
-                {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'bbb',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ],
-                      collapsed: false
-                    }
-                  ],
-                  collapsed: false
+                  text: 'sub folder test',
+                  link: '/folder/subFolder/sub-folder-test'
                 }
               ],
               collapsed: false
             }
           ],
           collapsed: false
+        },
+        {
+          text: 'test',
+          link: '/test'
         }
       ]
     );
@@ -676,17 +117,11 @@ describe('VitePress Sidebar Test', () => {
   it('With complex configurations (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         includeEmptyFolder: true,
         includeDotFiles: true,
         excludeFiles: [],
-        excludeFolders: [
-          'numeric-prefix',
-          'numeric-title',
-          'recursive',
-          '.special-markdown',
-          '.title-with-date-header'
-        ],
+        excludeFolders: ['subFolder'],
         hyphenToSpace: true,
         underscoreToSpace: true,
         capitalizeFirst: true,
@@ -695,89 +130,42 @@ describe('VitePress Sidebar Test', () => {
       }),
       [
         {
-          text: '.dot directory',
+          text: 'A',
+          link: '/a'
+        },
+        {
+          text: 'B',
+          link: '/b'
+        },
+        {
+          text: 'C',
+          link: '/c'
+        },
+        {
+          text: 'Folder',
           items: [
             {
-              text: 'DotFile',
-              link: '/.dot-directory/.dot-file'
+              text: 'Folder test 2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: 'File',
-              link: '/.dot-directory/normal-file'
+              text: 'FolderTestFile',
+              link: '/folder/folder-test'
             }
           ]
         },
         {
-          text: 'Empty',
-          items: []
-        },
-        {
-          text: 'Folder with index',
+          text: 'Folder 2',
           items: [
             {
-              text: '1 a',
-              items: []
-            },
-            {
-              text: '10 a',
-              items: []
-            },
-            {
-              text: '2 a',
-              items: []
+              text: 'Folder2 File',
+              link: '/folder-2/folder2'
             }
           ]
         },
         {
-          text: 'Folder with same name file',
-          items: [
-            {
-              text: 'Folder With Same Name File',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ]
-        },
-        {
-          text: 'Folder with special char file',
-          items: [
-            {
-              text: 'Hypen Doc File',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'Special Characters File',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'Underscore Doc File',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
-        },
-        {
-          text: 'Folder within md',
-          items: []
-        },
-        {
-          text: 'Frontmatter basic',
-          items: [
-            {
-              text: 'A Frontmatter',
-              link: '/frontmatter-basic/a'
-            },
-            {
-              text: 'B Frontmatter',
-              link: '/frontmatter-basic/b'
-            },
-            {
-              text: 'C Frontmatter',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'D Frontmatter',
-              link: '/frontmatter-basic/d'
-            }
-          ]
+          text: 'TestFile',
+          link: '/test'
         }
       ]
     );
@@ -788,204 +176,12 @@ describe('VitePress Sidebar Test', () => {
   it('Option: documentRootPath', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE
+        documentRootPath: `${TEST_DIR_BASE}/general/folder/subFolder`
       }),
       [
         {
-          text: 'folder-with-index',
-          items: [
-            {
-              text: '1-a',
-              items: []
-            },
-            {
-              text: '10-a',
-              items: []
-            },
-            {
-              text: '2-a',
-              items: []
-            }
-          ]
-        },
-        {
-          text: 'folder-with-same-name-file',
-          items: [
-            {
-              text: 'folder-with-same-name-file',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ]
-        },
-        {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
-        },
-        {
-          text: 'frontmatter-basic',
-          items: [
-            {
-              text: 'a',
-              link: '/frontmatter-basic/a'
-            },
-            {
-              text: 'b',
-              link: '/frontmatter-basic/b'
-            },
-            {
-              text: 'c',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'd',
-              link: '/frontmatter-basic/d'
-            }
-          ]
-        },
-        {
-          text: 'numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
-              items: [
-                {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ]
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ]
-        },
-        {
-          text: 'numeric-title',
-          items: [
-            {
-              text: '0-file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1-file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10-file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100-file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11-file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2-file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3-afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3-bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ]
-        },
-        {
-          text: 'recursive',
-          items: [
-            {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'a',
-                  link: '/recursive/folderA/a'
-                },
-                {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'aa',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'aaaaa',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'folderB',
-              items: [
-                {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'bbb',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          text: 'sub-folder-test',
+          link: '/sub-folder-test'
         }
       ]
     );
@@ -996,205 +192,56 @@ describe('VitePress Sidebar Test', () => {
   it('Option: useTitleFromFileHeading', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         useTitleFromFileHeading: true
       }),
       [
         {
-          text: 'folder-with-index',
-          items: [
-            {
-              text: '1-a',
-              items: []
-            },
-            {
-              text: '10-a',
-              items: []
-            },
-            {
-              text: '2-a',
-              items: []
-            }
-          ]
+          text: 'A',
+          link: '/a'
         },
         {
-          text: 'folder-with-same-name-file',
-          items: [
-            {
-              text: 'Folder With Same Name File',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ]
+          text: 'B',
+          link: '/b'
         },
         {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'Hypen Doc File',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'Special Characters File',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'Underscore Doc File',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
+          text: 'C',
+          link: '/c'
         },
         {
-          text: 'frontmatter-basic',
+          text: 'folder',
           items: [
             {
-              text: 'A File',
-              link: '/frontmatter-basic/a'
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: 'B File',
-              link: '/frontmatter-basic/b'
+              text: 'FolderTestFile',
+              link: '/folder/folder-test'
             },
             {
-              text: 'C File',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'D File',
-              link: '/frontmatter-basic/d'
-            }
-          ]
-        },
-        {
-          text: 'numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
+              text: 'subFolder',
               items: [
                 {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ]
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ]
-        },
-        {
-          text: 'numeric-title',
-          items: [
-            {
-              text: '0. Hello',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1. Hello',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10. Hello',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100. Hello',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11. Hello',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2. Hello',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3. Hello (A)',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3. Hello (B)',
-              link: '/numeric-title/3-bfile'
-            }
-          ]
-        },
-        {
-          text: 'recursive',
-          items: [
-            {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'A File',
-                  link: '/recursive/folderA/a'
-                },
-                {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'AA File',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'AAAAA File',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'folderB',
-              items: [
-                {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'BBB File',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ]
-                    }
-                  ]
+                  text: 'SubFolderTestFile',
+                  link: '/folder/subFolder/sub-folder-test'
                 }
               ]
             }
           ]
+        },
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'Folder2 File',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'TestFile',
+          link: '/test'
         }
       ]
     );
@@ -1235,7 +282,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: frontmatterTitleFieldName', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-custom-title-field`,
         useTitleFromFileHeading: true,
         useTitleFromFrontmatter: true,
         frontmatterTitleFieldName: 'sidebar_title'
@@ -1368,224 +415,59 @@ describe('VitePress Sidebar Test', () => {
   it('Option: collapsed', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         collapsed: true
       }),
       [
         {
-          text: 'folder-with-index',
-          items: [
-            {
-              text: '1-a',
-              items: [],
-              collapsed: true
-            },
-            {
-              text: '10-a',
-              items: [],
-              collapsed: true
-            },
-            {
-              text: '2-a',
-              items: [],
-              collapsed: true
-            }
-          ],
-          collapsed: true
+          text: 'a',
+          link: '/a'
         },
         {
-          text: 'folder-with-same-name-file',
-          items: [
-            {
-              text: 'folder-with-same-name-file',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ],
-          collapsed: true
+          text: 'b',
+          link: '/b'
         },
         {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ],
-          collapsed: true
+          text: 'c',
+          link: '/c'
         },
         {
-          text: 'frontmatter-basic',
+          text: 'folder',
           items: [
             {
-              text: 'a',
-              link: '/frontmatter-basic/a'
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: 'b',
-              link: '/frontmatter-basic/b'
+              text: 'folder-test',
+              link: '/folder/folder-test'
             },
             {
-              text: 'c',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'd',
-              link: '/frontmatter-basic/d'
-            }
-          ],
-          collapsed: true
-        },
-        {
-          text: 'numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
+              text: 'subFolder',
               items: [
                 {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ],
-              collapsed: true
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ],
-          collapsed: true
-        },
-        {
-          text: 'numeric-title',
-          items: [
-            {
-              text: '0-file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1-file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10-file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100-file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11-file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2-file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3-afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3-bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ],
-          collapsed: true
-        },
-        {
-          text: 'recursive',
-          items: [
-            {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'a',
-                  link: '/recursive/folderA/a'
-                },
-                {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'aa',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'aaaaa',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ],
-                              collapsed: true
-                            }
-                          ],
-                          collapsed: true
-                        }
-                      ],
-                      collapsed: true
-                    }
-                  ],
-                  collapsed: true
-                }
-              ],
-              collapsed: true
-            },
-            {
-              text: 'folderB',
-              items: [
-                {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'bbb',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ],
-                      collapsed: true
-                    }
-                  ],
-                  collapsed: true
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
                 }
               ],
               collapsed: true
             }
           ],
           collapsed: true
+        },
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ],
+          collapsed: true
+        },
+        {
+          text: 'test',
+          link: '/test'
         }
       ]
     );
@@ -1596,224 +478,59 @@ describe('VitePress Sidebar Test', () => {
   it('Option: collapseDepth', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         collapseDepth: 2
       }),
       [
         {
-          text: 'folder-with-index',
-          items: [
-            {
-              text: '1-a',
-              items: [],
-              collapsed: true
-            },
-            {
-              text: '10-a',
-              items: [],
-              collapsed: true
-            },
-            {
-              text: '2-a',
-              items: [],
-              collapsed: true
-            }
-          ],
-          collapsed: false
+          text: 'a',
+          link: '/a'
         },
         {
-          text: 'folder-with-same-name-file',
-          items: [
-            {
-              text: 'folder-with-same-name-file',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ],
-          collapsed: false
+          text: 'b',
+          link: '/b'
         },
         {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ],
-          collapsed: false
+          text: 'c',
+          link: '/c'
         },
         {
-          text: 'frontmatter-basic',
+          text: 'folder',
           items: [
             {
-              text: 'a',
-              link: '/frontmatter-basic/a'
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: 'b',
-              link: '/frontmatter-basic/b'
+              text: 'folder-test',
+              link: '/folder/folder-test'
             },
             {
-              text: 'c',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'd',
-              link: '/frontmatter-basic/d'
-            }
-          ],
-          collapsed: false
-        },
-        {
-          text: 'numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
+              text: 'subFolder',
               items: [
                 {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ],
-              collapsed: true
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ],
-          collapsed: false
-        },
-        {
-          text: 'numeric-title',
-          items: [
-            {
-              text: '0-file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1-file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10-file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100-file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11-file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2-file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3-afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3-bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ],
-          collapsed: false
-        },
-        {
-          text: 'recursive',
-          items: [
-            {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'a',
-                  link: '/recursive/folderA/a'
-                },
-                {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'aa',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'aaaaa',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ],
-                              collapsed: true
-                            }
-                          ],
-                          collapsed: true
-                        }
-                      ],
-                      collapsed: true
-                    }
-                  ],
-                  collapsed: true
-                }
-              ],
-              collapsed: true
-            },
-            {
-              text: 'folderB',
-              items: [
-                {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'bbb',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ],
-                      collapsed: true
-                    }
-                  ],
-                  collapsed: true
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
                 }
               ],
               collapsed: true
             }
           ],
           collapsed: false
+        },
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ],
+          collapsed: false
+        },
+        {
+          text: 'test',
+          link: '/test'
         }
       ]
     );
@@ -1853,205 +570,56 @@ describe('VitePress Sidebar Test', () => {
   it('Option: capitalizeFirst', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         capitalizeFirst: true
       }),
       [
         {
-          text: 'Folder-with-index',
-          items: [
-            {
-              text: '1-a',
-              items: []
-            },
-            {
-              text: '10-a',
-              items: []
-            },
-            {
-              text: '2-a',
-              items: []
-            }
-          ]
+          text: 'A',
+          link: '/a'
         },
         {
-          text: 'Folder-with-same-name-file',
-          items: [
-            {
-              text: 'Folder-with-same-name-file',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ]
+          text: 'B',
+          link: '/b'
         },
         {
-          text: 'Folder-with-special-char-file',
-          items: [
-            {
-              text: 'Hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'Special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'Underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
+          text: 'C',
+          link: '/c'
         },
         {
-          text: 'Frontmatter-basic',
+          text: 'Folder',
           items: [
             {
-              text: 'A',
-              link: '/frontmatter-basic/a'
+              text: 'Folder-test-2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: 'B',
-              link: '/frontmatter-basic/b'
+              text: 'Folder-test',
+              link: '/folder/folder-test'
             },
             {
-              text: 'C',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'D',
-              link: '/frontmatter-basic/d'
-            }
-          ]
-        },
-        {
-          text: 'Numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
+              text: 'SubFolder',
               items: [
                 {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ]
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ]
-        },
-        {
-          text: 'Numeric-title',
-          items: [
-            {
-              text: '0-file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1-file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10-file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100-file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11-file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2-file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3-afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3-bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ]
-        },
-        {
-          text: 'Recursive',
-          items: [
-            {
-              text: 'FolderA',
-              items: [
-                {
-                  text: 'A',
-                  link: '/recursive/folderA/a'
-                },
-                {
-                  text: 'FolderAA',
-                  items: [
-                    {
-                      text: 'Aa',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'FolderAAA',
-                      items: [
-                        {
-                          text: 'FolderAAAA',
-                          items: [
-                            {
-                              text: 'FolderAAAAA',
-                              items: [
-                                {
-                                  text: 'Aaaaa',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'FolderB',
-              items: [
-                {
-                  text: 'FolderBB',
-                  items: [
-                    {
-                      text: 'FolderBBB',
-                      items: [
-                        {
-                          text: 'Bbb',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ]
-                    }
-                  ]
+                  text: 'Sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
                 }
               ]
             }
           ]
+        },
+        {
+          text: 'Folder-2',
+          items: [
+            {
+              text: 'Folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'Test',
+          link: '/test'
         }
       ]
     );
@@ -2062,217 +630,60 @@ describe('VitePress Sidebar Test', () => {
   it('Option: includeEmptyFolder', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         includeEmptyFolder: true
       }),
       [
         {
-          text: 'empty',
-          items: []
+          text: 'a',
+          link: '/a'
         },
         {
-          text: 'folder-with-index',
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'folder',
           items: [
             {
-              text: '1-a',
-              items: []
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: '10-a',
-              items: []
+              text: 'folder-test',
+              link: '/folder/folder-test'
             },
             {
-              text: '2-a',
-              items: []
-            }
-          ]
-        },
-        {
-          text: 'folder-with-same-name-file',
-          items: [
-            {
-              text: 'folder-with-same-name-file',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ]
-        },
-        {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
-        },
-        {
-          text: 'folder-within-md',
-          items: []
-        },
-        {
-          text: 'frontmatter-basic',
-          items: [
-            {
-              text: 'a',
-              link: '/frontmatter-basic/a'
-            },
-            {
-              text: 'b',
-              link: '/frontmatter-basic/b'
-            },
-            {
-              text: 'c',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'd',
-              link: '/frontmatter-basic/d'
-            }
-          ]
-        },
-        {
-          text: 'numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
+              text: 'subFolder',
               items: [
                 {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ]
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ]
-        },
-        {
-          text: 'numeric-title',
-          items: [
-            {
-              text: '0-file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1-file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10-file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100-file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11-file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2-file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3-afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3-bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ]
-        },
-        {
-          text: 'recursive',
-          items: [
-            {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'a',
-                  link: '/recursive/folderA/a'
+                  text: 'empty',
+                  items: []
                 },
                 {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'aa',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'aaaaa',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
                 }
               ]
-            },
-            {
-              text: 'folderB',
-              items: [
-                {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'bbb',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'folderC',
-              items: []
             }
           ]
+        },
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'test',
+          link: '/test'
         }
       ]
     );
@@ -2336,112 +747,25 @@ describe('VitePress Sidebar Test', () => {
   it('Option: excludeFolders', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
-        excludeFolders: [
-          'folder-with-index',
-          'frontmatter-basic',
-          'not-exist-folder',
-          'numeic-prefix',
-          'recursive'
-        ]
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        excludeFolders: ['folder', 'folder-2']
       }),
       [
         {
-          text: 'folder-with-same-name-file',
-          items: [
-            {
-              text: 'folder-with-same-name-file',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ]
+          text: 'a',
+          link: '/a'
         },
         {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
+          text: 'b',
+          link: '/b'
         },
         {
-          text: 'numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
-              items: [
-                {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ]
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ]
+          text: 'c',
+          link: '/c'
         },
         {
-          text: 'numeric-title',
-          items: [
-            {
-              text: '0-file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1-file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10-file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100-file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11-file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2-file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3-afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3-bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ]
+          text: 'test',
+          link: '/test'
         }
       ]
     );
@@ -2452,65 +776,69 @@ describe('VitePress Sidebar Test', () => {
   it('Option: includeDotFiles', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
-        includeDotFiles: true,
-        excludeFolders: [
-          'folder-with-same-name-file',
-          '.special-markdown',
-          '.title-with-date-header',
-          'recursive',
-          'frontmatter-basic',
-          'numeric-prefix',
-          'numeric-title'
-        ]
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        includeDotFiles: true
       }),
       [
         {
-          text: '.dot-directory',
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'folder',
           items: [
             {
-              text: '.dot-file',
-              link: '/.dot-directory/.dot-file'
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: 'normal-file',
-              link: '/.dot-directory/normal-file'
+              text: 'folder-test',
+              link: '/folder/folder-test'
+            },
+            {
+              text: 'subFolder',
+              items: [
+                {
+                  text: '.dot-directory',
+                  items: [
+                    {
+                      text: 'hidden',
+                      link: '/folder/subFolder/.dot-directory/hidden'
+                    }
+                  ]
+                },
+                {
+                  text: '.hidden',
+                  link: '/folder/subFolder/.hidden'
+                },
+                {
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
+                }
+              ]
             }
           ]
         },
         {
-          text: 'folder-with-index',
+          text: 'folder-2',
           items: [
             {
-              text: '1-a',
-              items: []
-            },
-            {
-              text: '10-a',
-              items: []
-            },
-            {
-              text: '2-a',
-              items: []
+              text: 'folder2',
+              link: '/folder-2/folder2'
             }
           ]
         },
         {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
+          text: 'test',
+          link: '/test'
         }
       ]
     );
@@ -2604,205 +932,56 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusByName', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         sortMenusByName: true
       }),
       [
         {
-          text: 'folder-with-index',
-          items: [
-            {
-              text: '1-a',
-              items: []
-            },
-            {
-              text: '10-a',
-              items: []
-            },
-            {
-              text: '2-a',
-              items: []
-            }
-          ]
+          text: 'a',
+          link: '/a'
         },
         {
-          text: 'folder-with-same-name-file',
-          items: [
-            {
-              text: 'folder-with-same-name-file',
-              link: '/folder-with-same-name-file/folder-with-same-name-file'
-            }
-          ]
+          text: 'b',
+          link: '/b'
         },
         {
-          text: 'folder-with-special-char-file',
-          items: [
-            {
-              text: 'hypen-doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
+          text: 'c',
+          link: '/c'
         },
         {
-          text: 'frontmatter-basic',
+          text: 'folder',
           items: [
             {
-              text: 'a',
-              link: '/frontmatter-basic/a'
+              text: 'folder-test',
+              link: '/folder/folder-test'
             },
             {
-              text: 'b',
-              link: '/frontmatter-basic/b'
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: 'c',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'd',
-              link: '/frontmatter-basic/d'
-            }
-          ]
-        },
-        {
-          text: 'numeric-prefix',
-          items: [
-            {
-              text: '1-1-1-one-file',
-              link: '/numeric-prefix/1-1-1-one-file'
-            },
-            {
-              text: '1-folder',
+              text: 'subFolder',
               items: [
                 {
-                  text: '11-file',
-                  link: '/numeric-prefix/1-folder/11-file'
-                }
-              ]
-            },
-            {
-              text: '1-one-file',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1-three-file',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1-four-file',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2-two-file',
-              link: '/numeric-prefix/2-two-file'
-            }
-          ]
-        },
-        {
-          text: 'numeric-title',
-          items: [
-            {
-              text: '0-file',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1-file',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10-file',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100-file',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11-file',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2-file',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3-afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3-bfile',
-              link: '/numeric-title/3-bfile'
-            }
-          ]
-        },
-        {
-          text: 'recursive',
-          items: [
-            {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'a',
-                  link: '/recursive/folderA/a'
-                },
-                {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'aa',
-                      link: '/recursive/folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'aaaaa',
-                                  link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'folderB',
-              items: [
-                {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'bbb',
-                          link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                        }
-                      ]
-                    }
-                  ]
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
                 }
               ]
             }
           ]
+        },
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'test',
+          link: '/test'
         }
       ]
     );
@@ -2813,7 +992,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusByFileDatePrefix (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/.title-with-date-header`,
+        documentRootPath: `${TEST_DIR_BASE}/title-with-date-header`,
         sortMenusByFileDatePrefix: true
       }),
       [
@@ -2860,7 +1039,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: sortMenusByFileDatePrefix (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/.title-with-date-header`,
+        documentRootPath: `${TEST_DIR_BASE}/title-with-date-header`,
         sortMenusByFileDatePrefix: true,
         prefixSeparator: /[0-9]{4}-[0-9]{2}-[0-9]{2}-/g,
         removePrefixAfterOrdering: true
@@ -2938,7 +1117,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: rootGroup related configurations (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         rootGroupText: 'Hello',
         rootGroupLink: 'https://github.com/jooy2/vitepress-sidebar',
         rootGroupCollapsed: true
@@ -2949,200 +1128,51 @@ describe('VitePress Sidebar Test', () => {
           link: 'https://github.com/jooy2/vitepress-sidebar',
           items: [
             {
-              text: 'folder-with-index',
-              items: [
-                {
-                  text: '1-a',
-                  items: []
-                },
-                {
-                  text: '10-a',
-                  items: []
-                },
-                {
-                  text: '2-a',
-                  items: []
-                }
-              ]
+              text: 'a',
+              link: '/a'
             },
             {
-              text: 'folder-with-same-name-file',
-              items: [
-                {
-                  text: 'folder-with-same-name-file',
-                  link: '/folder-with-same-name-file/folder-with-same-name-file'
-                }
-              ]
+              text: 'b',
+              link: '/b'
             },
             {
-              text: 'folder-with-special-char-file',
-              items: [
-                {
-                  text: 'hypen-doc',
-                  link: '/folder-with-special-char-file/hypen-doc'
-                },
-                {
-                  text: 'special@#$characters',
-                  link: '/folder-with-special-char-file/special@#$characters'
-                },
-                {
-                  text: 'underscore_doc',
-                  link: '/folder-with-special-char-file/underscore_doc'
-                }
-              ]
+              text: 'c',
+              link: '/c'
             },
             {
-              text: 'frontmatter-basic',
+              text: 'folder',
               items: [
                 {
-                  text: 'a',
-                  link: '/frontmatter-basic/a'
+                  text: 'folder-test-2',
+                  link: '/folder/folder-test-2'
                 },
                 {
-                  text: 'b',
-                  link: '/frontmatter-basic/b'
+                  text: 'folder-test',
+                  link: '/folder/folder-test'
                 },
                 {
-                  text: 'c',
-                  link: '/frontmatter-basic/c'
-                },
-                {
-                  text: 'd',
-                  link: '/frontmatter-basic/d'
-                }
-              ]
-            },
-            {
-              text: 'numeric-prefix',
-              items: [
-                {
-                  text: '1-1-1-one-file',
-                  link: '/numeric-prefix/1-1-1-one-file'
-                },
-                {
-                  text: '1-folder',
+                  text: 'subFolder',
                   items: [
                     {
-                      text: '11-file',
-                      link: '/numeric-prefix/1-folder/11-file'
-                    }
-                  ]
-                },
-                {
-                  text: '1-one-file',
-                  link: '/numeric-prefix/1-one-file'
-                },
-                {
-                  text: '1-three-file',
-                  link: '/numeric-prefix/1-three-file'
-                },
-                {
-                  text: '1.1.1-four-file',
-                  link: '/numeric-prefix/1.1.1-four-file'
-                },
-                {
-                  text: '2-two-file',
-                  link: '/numeric-prefix/2-two-file'
-                }
-              ]
-            },
-            {
-              text: 'numeric-title',
-              items: [
-                {
-                  text: '0-file',
-                  link: '/numeric-title/0-file'
-                },
-                {
-                  text: '1-file',
-                  link: '/numeric-title/1-file'
-                },
-                {
-                  text: '10-file',
-                  link: '/numeric-title/10-file'
-                },
-                {
-                  text: '100-file',
-                  link: '/numeric-title/100-file'
-                },
-                {
-                  text: '11-file',
-                  link: '/numeric-title/11-file'
-                },
-                {
-                  text: '2-file',
-                  link: '/numeric-title/2-file'
-                },
-                {
-                  text: '3-afile',
-                  link: '/numeric-title/3-afile'
-                },
-                {
-                  text: '3-bfile',
-                  link: '/numeric-title/3-bfile'
-                }
-              ]
-            },
-            {
-              text: 'recursive',
-              items: [
-                {
-                  text: 'folderA',
-                  items: [
-                    {
-                      text: 'a',
-                      link: '/recursive/folderA/a'
-                    },
-                    {
-                      text: 'folderAA',
-                      items: [
-                        {
-                          text: 'aa',
-                          link: '/recursive/folderA/folderAA/aa'
-                        },
-                        {
-                          text: 'folderAAA',
-                          items: [
-                            {
-                              text: 'folderAAAA',
-                              items: [
-                                {
-                                  text: 'folderAAAAA',
-                                  items: [
-                                    {
-                                      text: 'aaaaa',
-                                      link: '/recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  text: 'folderB',
-                  items: [
-                    {
-                      text: 'folderBB',
-                      items: [
-                        {
-                          text: 'folderBBB',
-                          items: [
-                            {
-                              text: 'bbb',
-                              link: '/recursive/folderB/folderBB/folderBBB/bbb'
-                            }
-                          ]
-                        }
-                      ]
+                      text: 'sub-folder-test',
+                      link: '/folder/subFolder/sub-folder-test'
                     }
                   ]
                 }
               ]
+            },
+            {
+              text: 'folder-2',
+              items: [
+                {
+                  text: 'folder2',
+                  link: '/folder-2/folder2'
+                }
+              ]
+            },
+            {
+              text: 'test',
+              link: '/test'
             }
           ],
           collapsed: true
@@ -3156,111 +1186,60 @@ describe('VitePress Sidebar Test', () => {
   it('Option: rootGroup related configurations (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: TEST_DIR_BASE,
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         rootGroupText: '',
-        rootGroupCollapsed: false,
-        excludeFolders: [
-          'recursive',
-          'folder-with-index',
-          'folder-with-same-name-file',
-          'folder-with-special-char-file'
-        ]
+        rootGroupCollapsed: false
       }),
       [
         {
           text: '',
           items: [
             {
-              text: 'frontmatter-basic',
-              items: [
-                {
-                  text: 'a',
-                  link: '/frontmatter-basic/a'
-                },
-                {
-                  text: 'b',
-                  link: '/frontmatter-basic/b'
-                },
-                {
-                  text: 'c',
-                  link: '/frontmatter-basic/c'
-                },
-                {
-                  text: 'd',
-                  link: '/frontmatter-basic/d'
-                }
-              ]
+              text: 'a',
+              link: '/a'
             },
             {
-              text: 'numeric-prefix',
+              text: 'b',
+              link: '/b'
+            },
+            {
+              text: 'c',
+              link: '/c'
+            },
+            {
+              text: 'folder',
               items: [
                 {
-                  text: '1-1-1-one-file',
-                  link: '/numeric-prefix/1-1-1-one-file'
+                  text: 'folder-test-2',
+                  link: '/folder/folder-test-2'
                 },
                 {
-                  text: '1-folder',
+                  text: 'folder-test',
+                  link: '/folder/folder-test'
+                },
+                {
+                  text: 'subFolder',
                   items: [
                     {
-                      text: '11-file',
-                      link: '/numeric-prefix/1-folder/11-file'
+                      text: 'sub-folder-test',
+                      link: '/folder/subFolder/sub-folder-test'
                     }
                   ]
-                },
-                {
-                  text: '1-one-file',
-                  link: '/numeric-prefix/1-one-file'
-                },
-                {
-                  text: '1-three-file',
-                  link: '/numeric-prefix/1-three-file'
-                },
-                {
-                  text: '1.1.1-four-file',
-                  link: '/numeric-prefix/1.1.1-four-file'
-                },
-                {
-                  text: '2-two-file',
-                  link: '/numeric-prefix/2-two-file'
                 }
               ]
             },
             {
-              text: 'numeric-title',
+              text: 'folder-2',
               items: [
                 {
-                  text: '0-file',
-                  link: '/numeric-title/0-file'
-                },
-                {
-                  text: '1-file',
-                  link: '/numeric-title/1-file'
-                },
-                {
-                  text: '10-file',
-                  link: '/numeric-title/10-file'
-                },
-                {
-                  text: '100-file',
-                  link: '/numeric-title/100-file'
-                },
-                {
-                  text: '11-file',
-                  link: '/numeric-title/11-file'
-                },
-                {
-                  text: '2-file',
-                  link: '/numeric-title/2-file'
-                },
-                {
-                  text: '3-afile',
-                  link: '/numeric-title/3-afile'
-                },
-                {
-                  text: '3-bfile',
-                  link: '/numeric-title/3-bfile'
+                  text: 'folder2',
+                  link: '/folder-2/folder2'
                 }
               ]
+            },
+            {
+              text: 'test',
+              link: '/test'
             }
           ],
           collapsed: false
@@ -3274,7 +1253,7 @@ describe('VitePress Sidebar Test', () => {
   it('Option: keepMarkdownSyntaxFromTitle', (done) => {
     assert.deepEqual(
       generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/.special-markdown`,
+        documentRootPath: `${TEST_DIR_BASE}/special-markdown`,
         useTitleFromFileHeading: true,
         keepMarkdownSyntaxFromTitle: true
       }),
@@ -3369,119 +1348,56 @@ describe('VitePress Sidebar Test', () => {
     assert.deepEqual(
       generateSidebar({
         hyphenToSpace: true,
-        documentRootPath: TEST_DIR_BASE,
-        excludeFolders: ['recursive', 'folder-with-index', 'folder-with-same-name-file'],
+        documentRootPath: `${TEST_DIR_BASE}/general`,
         capitalizeEachWords: true
       }),
       [
         {
-          text: 'Folder With Special Char File',
-          items: [
-            {
-              text: 'Hypen Doc',
-              link: '/folder-with-special-char-file/hypen-doc'
-            },
-            {
-              text: 'Special@#$characters',
-              link: '/folder-with-special-char-file/special@#$characters'
-            },
-            {
-              text: 'Underscore_doc',
-              link: '/folder-with-special-char-file/underscore_doc'
-            }
-          ]
+          text: 'A',
+          link: '/a'
         },
         {
-          text: 'Frontmatter Basic',
-          items: [
-            {
-              text: 'A',
-              link: '/frontmatter-basic/a'
-            },
-            {
-              text: 'B',
-              link: '/frontmatter-basic/b'
-            },
-            {
-              text: 'C',
-              link: '/frontmatter-basic/c'
-            },
-            {
-              text: 'D',
-              link: '/frontmatter-basic/d'
-            }
-          ]
+          text: 'B',
+          link: '/b'
         },
         {
-          text: 'Numeric Prefix',
+          text: 'C',
+          link: '/c'
+        },
+        {
+          text: 'Folder',
           items: [
             {
-              text: '1 1 1 One File',
-              link: '/numeric-prefix/1-1-1-one-file'
+              text: 'Folder Test 2',
+              link: '/folder/folder-test-2'
             },
             {
-              text: '1 Folder',
+              text: 'Folder Test',
+              link: '/folder/folder-test'
+            },
+            {
+              text: 'Subfolder',
               items: [
                 {
-                  text: '11 File',
-                  link: '/numeric-prefix/1-folder/11-file'
+                  text: 'Sub Folder Test',
+                  link: '/folder/subFolder/sub-folder-test'
                 }
               ]
-            },
-            {
-              text: '1 One File',
-              link: '/numeric-prefix/1-one-file'
-            },
-            {
-              text: '1 Three File',
-              link: '/numeric-prefix/1-three-file'
-            },
-            {
-              text: '1.1.1 Four File',
-              link: '/numeric-prefix/1.1.1-four-file'
-            },
-            {
-              text: '2 Two File',
-              link: '/numeric-prefix/2-two-file'
             }
           ]
         },
         {
-          text: 'Numeric Title',
+          text: 'Folder 2',
           items: [
             {
-              text: '0 File',
-              link: '/numeric-title/0-file'
-            },
-            {
-              text: '1 File',
-              link: '/numeric-title/1-file'
-            },
-            {
-              text: '10 File',
-              link: '/numeric-title/10-file'
-            },
-            {
-              text: '100 File',
-              link: '/numeric-title/100-file'
-            },
-            {
-              text: '11 File',
-              link: '/numeric-title/11-file'
-            },
-            {
-              text: '2 File',
-              link: '/numeric-title/2-file'
-            },
-            {
-              text: '3 Afile',
-              link: '/numeric-title/3-afile'
-            },
-            {
-              text: '3 Bfile',
-              link: '/numeric-title/3-bfile'
+              text: 'Folder2',
+              link: '/folder-2/folder2'
             }
           ]
+        },
+        {
+          text: 'Test',
+          link: '/test'
         }
       ]
     );
@@ -3522,18 +1438,18 @@ describe('VitePress Sidebar Test', () => {
     assert.deepEqual(
       generateSidebar([
         {
-          documentRootPath: TEST_DIR_BASE,
+          documentRootPath: `${TEST_DIR_BASE}/general`,
           resolvePath: '/'
         },
         {
-          documentRootPath: TEST_DIR_BASE,
-          scanStartPath: 'recursive',
-          resolvePath: '/recursive/'
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'folder',
+          resolvePath: '/folder/'
         },
         {
-          documentRootPath: TEST_DIR_BASE,
-          scanStartPath: 'folder-with-index/2-a',
-          resolvePath: '/folder-with-index/2-a'
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'folder-2',
+          resolvePath: '/folder-2'
         }
       ]),
       {
@@ -3541,267 +1457,84 @@ describe('VitePress Sidebar Test', () => {
           base: '/',
           items: [
             {
-              text: 'folder-with-index',
-              items: [
-                {
-                  text: '1-a',
-                  items: []
-                },
-                {
-                  text: '10-a',
-                  items: []
-                },
-                {
-                  text: '2-a',
-                  items: []
-                }
-              ]
+              text: 'a',
+              link: 'a'
             },
             {
-              text: 'folder-with-same-name-file',
-              items: [
-                {
-                  text: 'folder-with-same-name-file',
-                  link: 'folder-with-same-name-file/folder-with-same-name-file'
-                }
-              ]
+              text: 'b',
+              link: 'b'
             },
             {
-              text: 'folder-with-special-char-file',
-              items: [
-                {
-                  text: 'hypen-doc',
-                  link: 'folder-with-special-char-file/hypen-doc'
-                },
-                {
-                  text: 'special@#$characters',
-                  link: 'folder-with-special-char-file/special@#$characters'
-                },
-                {
-                  text: 'underscore_doc',
-                  link: 'folder-with-special-char-file/underscore_doc'
-                }
-              ]
+              text: 'c',
+              link: 'c'
             },
             {
-              text: 'frontmatter-basic',
+              text: 'folder',
               items: [
                 {
-                  text: 'a',
-                  link: 'frontmatter-basic/a'
+                  text: 'folder-test-2',
+                  link: 'folder/folder-test-2'
                 },
                 {
-                  text: 'b',
-                  link: 'frontmatter-basic/b'
+                  text: 'folder-test',
+                  link: 'folder/folder-test'
                 },
                 {
-                  text: 'c',
-                  link: 'frontmatter-basic/c'
-                },
-                {
-                  text: 'd',
-                  link: 'frontmatter-basic/d'
-                }
-              ]
-            },
-            {
-              text: 'numeric-prefix',
-              items: [
-                {
-                  text: '1-1-1-one-file',
-                  link: 'numeric-prefix/1-1-1-one-file'
-                },
-                {
-                  text: '1-folder',
+                  text: 'subFolder',
                   items: [
                     {
-                      text: '11-file',
-                      link: 'numeric-prefix/1-folder/11-file'
-                    }
-                  ]
-                },
-                {
-                  text: '1-one-file',
-                  link: 'numeric-prefix/1-one-file'
-                },
-                {
-                  text: '1-three-file',
-                  link: 'numeric-prefix/1-three-file'
-                },
-                {
-                  text: '1.1.1-four-file',
-                  link: 'numeric-prefix/1.1.1-four-file'
-                },
-                {
-                  text: '2-two-file',
-                  link: 'numeric-prefix/2-two-file'
-                }
-              ]
-            },
-            {
-              text: 'numeric-title',
-              items: [
-                {
-                  text: '0-file',
-                  link: 'numeric-title/0-file'
-                },
-                {
-                  text: '1-file',
-                  link: 'numeric-title/1-file'
-                },
-                {
-                  text: '10-file',
-                  link: 'numeric-title/10-file'
-                },
-                {
-                  text: '100-file',
-                  link: 'numeric-title/100-file'
-                },
-                {
-                  text: '11-file',
-                  link: 'numeric-title/11-file'
-                },
-                {
-                  text: '2-file',
-                  link: 'numeric-title/2-file'
-                },
-                {
-                  text: '3-afile',
-                  link: 'numeric-title/3-afile'
-                },
-                {
-                  text: '3-bfile',
-                  link: 'numeric-title/3-bfile'
-                }
-              ]
-            },
-            {
-              text: 'recursive',
-              items: [
-                {
-                  text: 'folderA',
-                  items: [
-                    {
-                      text: 'a',
-                      link: 'recursive/folderA/a'
-                    },
-                    {
-                      text: 'folderAA',
-                      items: [
-                        {
-                          text: 'aa',
-                          link: 'recursive/folderA/folderAA/aa'
-                        },
-                        {
-                          text: 'folderAAA',
-                          items: [
-                            {
-                              text: 'folderAAAA',
-                              items: [
-                                {
-                                  text: 'folderAAAAA',
-                                  items: [
-                                    {
-                                      text: 'aaaaa',
-                                      link: 'recursive/folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                    }
-                                  ]
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  text: 'folderB',
-                  items: [
-                    {
-                      text: 'folderBB',
-                      items: [
-                        {
-                          text: 'folderBBB',
-                          items: [
-                            {
-                              text: 'bbb',
-                              link: 'recursive/folderB/folderBB/folderBBB/bbb'
-                            }
-                          ]
-                        }
-                      ]
+                      text: 'sub-folder-test',
+                      link: 'folder/subFolder/sub-folder-test'
                     }
                   ]
                 }
               ]
+            },
+            {
+              text: 'folder-2',
+              items: [
+                {
+                  text: 'folder2',
+                  link: 'folder-2/folder2'
+                }
+              ]
+            },
+            {
+              text: 'test',
+              link: 'test'
             }
           ]
         },
-        '/recursive/': {
-          base: '/recursive/',
+        '/folder/': {
+          base: '/folder/',
           items: [
             {
-              text: 'folderA',
-              items: [
-                {
-                  text: 'a',
-                  link: 'folderA/a'
-                },
-                {
-                  text: 'folderAA',
-                  items: [
-                    {
-                      text: 'aa',
-                      link: 'folderA/folderAA/aa'
-                    },
-                    {
-                      text: 'folderAAA',
-                      items: [
-                        {
-                          text: 'folderAAAA',
-                          items: [
-                            {
-                              text: 'folderAAAAA',
-                              items: [
-                                {
-                                  text: 'aaaaa',
-                                  link: 'folderA/folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              text: 'folder-test-2',
+              link: 'folder-test-2'
             },
             {
-              text: 'folderB',
+              text: 'folder-test',
+              link: 'folder-test'
+            },
+            {
+              text: 'subFolder',
               items: [
                 {
-                  text: 'folderBB',
-                  items: [
-                    {
-                      text: 'folderBBB',
-                      items: [
-                        {
-                          text: 'bbb',
-                          link: 'folderB/folderBB/folderBBB/bbb'
-                        }
-                      ]
-                    }
-                  ]
+                  text: 'sub-folder-test',
+                  link: 'subFolder/sub-folder-test'
                 }
               ]
             }
           ]
         },
-        '/folder-with-index/2-a': {
-          base: '/folder-with-index/2-a',
-          items: []
+        '/folder-2': {
+          base: '/folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: 'folder2'
+            }
+          ]
         }
       }
     );
@@ -3813,123 +1546,18 @@ describe('VitePress Sidebar Test', () => {
     assert.deepEqual(
       generateSidebar([
         {
-          documentRootPath: TEST_DIR_BASE,
-          scanStartPath: 'recursive/folderA',
-          resolvePath: '/recursive/folderA'
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'folder/subFolder',
+          resolvePath: '/folder'
         }
       ]),
       {
-        '/recursive/folderA': {
-          base: '/recursive/folderA',
+        '/folder': {
+          base: '/folder',
           items: [
             {
-              text: 'a',
-              link: 'a'
-            },
-            {
-              text: 'folderAA',
-              items: [
-                {
-                  text: 'aa',
-                  link: 'folderAA/aa'
-                },
-                {
-                  text: 'folderAAA',
-                  items: [
-                    {
-                      text: 'folderAAAA',
-                      items: [
-                        {
-                          text: 'folderAAAAA',
-                          items: [
-                            {
-                              text: 'aaaaa',
-                              link: 'folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
-    );
-
-    done();
-  });
-
-  it('Multiple Sidebars (C)', (done) => {
-    assert.deepEqual(
-      generateSidebar([
-        {
-          documentRootPath: '/',
-          resolvePath: '/abc/',
-          scanStartPath: `${TEST_DIR_BASE}/recursive/folderA`
-        },
-        {
-          documentRootPath: TEST_DIR_BASE,
-          resolvePath: '/test/',
-          scanStartPath: 'recursive/folderB'
-        }
-      ]),
-      {
-        '/abc/': {
-          base: '/abc/',
-          items: [
-            {
-              text: 'a',
-              link: 'a'
-            },
-            {
-              text: 'folderAA',
-              items: [
-                {
-                  text: 'aa',
-                  link: 'folderAA/aa'
-                },
-                {
-                  text: 'folderAAA',
-                  items: [
-                    {
-                      text: 'folderAAAA',
-                      items: [
-                        {
-                          text: 'folderAAAAA',
-                          items: [
-                            {
-                              text: 'aaaaa',
-                              link: 'folderAA/folderAAA/folderAAAA/folderAAAAA/aaaaa'
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        '/test/': {
-          base: '/test/',
-          items: [
-            {
-              text: 'folderBB',
-              items: [
-                {
-                  text: 'folderBBB',
-                  items: [
-                    {
-                      text: 'bbb',
-                      link: 'folderBB/folderBBB/bbb'
-                    }
-                  ]
-                }
-              ]
+              text: 'sub-folder-test',
+              link: 'sub-folder-test'
             }
           ]
         }
