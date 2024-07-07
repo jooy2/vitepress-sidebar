@@ -90,6 +90,7 @@ export default {
       // resolvePath: null,
       // useTitleFromFileHeading: true,
       // useTitleFromFrontmatter: true,
+      // frontmatterTitleFieldName: 'title',
       // useFolderTitleFromIndexFile: false,
       // useFolderLinkFromIndexFile: false,
       // hyphenToSpace: true,

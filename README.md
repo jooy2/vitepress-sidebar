@@ -24,7 +24,15 @@ Installing and using the package and defining all the utility methods can be fou
 
 ## Contribute
 
-You can report issues on [GitHub Issue Tracker](https://github.com/jooy2/vitepress-sidebar/issues). You can also request a pull to fix bugs and add frequently used features.
+You can report issues on [GitHub Issue Tracker](https://github.com/jooy2/vitepress-sidebar/issues).
+
+You can also request a pull to fix bugs and add frequently used features. To contribute to a project, follow these steps
+
+1. Clone the project.
+2. Create changes (features, bugfixes) in a new branch.
+3. Write a test (`test/specs/apis.spec.ts`) if a new option has been added.
+4. Create a documentation (`docs/`) if a new option is added.
+5. Request a pull request. Include any changes or considerations in the description for a quick code review.
 
 ## License
 
