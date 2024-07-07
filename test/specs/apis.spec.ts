@@ -1,179 +1,10 @@
 import assert from 'assert';
-import { generateSidebar } from '../dist';
+import { generateSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
 
-describe('VitePress Sidebar Test', () => {
-  it('No configurations (A)', (done) => {
-    assert.deepStrictEqual(
-      generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/general`
-      }),
-      [
-        {
-          text: 'a',
-          link: '/a'
-        },
-        {
-          text: 'b',
-          link: '/b'
-        },
-        {
-          text: 'c',
-          link: '/c'
-        },
-        {
-          text: 'folder',
-          items: [
-            {
-              text: 'folder-test-2',
-              link: '/folder/folder-test-2'
-            },
-            {
-              text: 'folder-test',
-              link: '/folder/folder-test'
-            },
-            {
-              text: 'subFolder',
-              items: [
-                {
-                  text: 'sub-folder-test',
-                  link: '/folder/subFolder/sub-folder-test'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          text: 'folder-2',
-          items: [
-            {
-              text: 'folder2',
-              link: '/folder-2/folder2'
-            }
-          ]
-        },
-        {
-          text: 'test',
-          link: '/test'
-        }
-      ]
-    );
-
-    done();
-  });
-
-  it('With complex configurations (A)', (done) => {
-    assert.deepEqual(
-      generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/general`,
-        collapsed: false,
-        hyphenToSpace: true,
-        underscoreToSpace: true,
-        includeRootIndexFile: true,
-        useTitleFromFrontmatter: true,
-        excludeFiles: ['a.md', 'c.md'],
-        excludeFolders: ['folder-2']
-      }),
-      [
-        {
-          text: 'b',
-          link: '/b'
-        },
-        {
-          text: 'folder',
-          items: [
-            {
-              text: 'folder test 2',
-              link: '/folder/folder-test-2'
-            },
-            {
-              text: 'folder test',
-              link: '/folder/folder-test'
-            },
-            {
-              text: 'subFolder',
-              items: [
-                {
-                  text: 'sub folder test',
-                  link: '/folder/subFolder/sub-folder-test'
-                }
-              ],
-              collapsed: false
-            }
-          ],
-          collapsed: false
-        },
-        {
-          text: 'test',
-          link: '/test'
-        }
-      ]
-    );
-
-    done();
-  });
-
-  it('With complex configurations (B)', (done) => {
-    assert.deepEqual(
-      generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/general`,
-        includeEmptyFolder: true,
-        includeDotFiles: true,
-        excludeFiles: [],
-        excludeFolders: ['subFolder'],
-        hyphenToSpace: true,
-        underscoreToSpace: true,
-        capitalizeFirst: true,
-        useTitleFromFrontmatter: true,
-        useTitleFromFileHeading: true
-      }),
-      [
-        {
-          text: 'A',
-          link: '/a'
-        },
-        {
-          text: 'B',
-          link: '/b'
-        },
-        {
-          text: 'C',
-          link: '/c'
-        },
-        {
-          text: 'Folder',
-          items: [
-            {
-              text: 'Folder test 2',
-              link: '/folder/folder-test-2'
-            },
-            {
-              text: 'FolderTestFile',
-              link: '/folder/folder-test'
-            }
-          ]
-        },
-        {
-          text: 'Folder 2',
-          items: [
-            {
-              text: 'Folder2 File',
-              link: '/folder-2/folder2'
-            }
-          ]
-        },
-        {
-          text: 'TestFile',
-          link: '/test'
-        }
-      ]
-    );
-
-    done();
-  });
-
-  it('Option: documentRootPath', (done) => {
+describe('Test: APIs', () => {
+  it('API: documentRootPath', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general/folder/subFolder`
@@ -189,7 +20,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: useTitleFromFileHeading', (done) => {
+  it('API: useTitleFromFileHeading', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -249,7 +80,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: useTitleFromFrontmatter', (done) => {
+  it('API: useTitleFromFrontmatter', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -279,7 +110,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: frontmatterTitleFieldName', (done) => {
+  it('API: frontmatterTitleFieldName', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-custom-title-field`,
@@ -302,7 +133,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: convertSameNameSubFileToGroupIndexPage (A)', (done) => {
+  it('API: convertSameNameSubFileToGroupIndexPage (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
@@ -319,7 +150,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: convertSameNameSubFileToGroupIndexPage (B)', (done) => {
+  it('API: convertSameNameSubFileToGroupIndexPage (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
@@ -338,7 +169,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: convertSameNameSubFileToGroupIndexPage (C)', (done) => {
+  it('API: convertSameNameSubFileToGroupIndexPage (C)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
@@ -358,7 +189,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: useFolderTitleFromIndexFile', (done) => {
+  it('API: useFolderTitleFromIndexFile', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -384,7 +215,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: useFolderLinkFromIndexFile', (done) => {
+  it('API: useFolderLinkFromIndexFile', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -412,7 +243,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: collapsed', (done) => {
+  it('API: collapsed', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -475,7 +306,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: collapseDepth', (done) => {
+  it('API: collapseDepth', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -538,7 +369,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: manualSortFileNameByPriority', (done) => {
+  it('API: manualSortFileNameByPriority', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -567,7 +398,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: capitalizeFirst', (done) => {
+  it('API: capitalizeFirst', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -627,7 +458,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: includeEmptyFolder', (done) => {
+  it('API: includeEmptyFolder', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -691,7 +522,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: excludeFiles', (done) => {
+  it('API: excludeFiles', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/numeric-title`,
@@ -723,7 +554,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: excludeFilesByFrontmatterFieldName', (done) => {
+  it('API: excludeFilesByFrontmatterFieldName', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -744,7 +575,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: excludeFolders', (done) => {
+  it('API: excludeFolders', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -773,7 +604,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: includeDotFiles', (done) => {
+  it('API: includeDotFiles', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -846,7 +677,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: includeFolderIndexFile', (done) => {
+  it('API: includeFolderIndexFile', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -886,7 +717,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: removePrefixAfterOrdering', (done) => {
+  it('API: removePrefixAfterOrdering', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
@@ -929,7 +760,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: sortMenusByName', (done) => {
+  it('API: sortMenusByName', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -989,7 +820,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: sortMenusByFileDatePrefix (A)', (done) => {
+  it('API: sortMenusByFileDatePrefix (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/title-with-date-header`,
@@ -1036,7 +867,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: sortMenusByFileDatePrefix (B)', (done) => {
+  it('API: sortMenusByFileDatePrefix (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/title-with-date-header`,
@@ -1085,7 +916,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: sortMenusByFrontmatterOrder', (done) => {
+  it('API: sortMenusByFrontmatterOrder', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -1114,7 +945,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: rootGroup related configurations (A)', (done) => {
+  it('API: rootGroup related configurations (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1183,7 +1014,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: rootGroup related configurations (B)', (done) => {
+  it('API: rootGroup related configurations (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1250,7 +1081,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: keepMarkdownSyntaxFromTitle', (done) => {
+  it('API: keepMarkdownSyntaxFromTitle', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/special-markdown`,
@@ -1268,7 +1099,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: sortMenusOrderNumericallyFromTitle', (done) => {
+  it('API: sortMenusOrderNumericallyFromTitle', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/numeric-title`,
@@ -1313,7 +1144,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: sortMenusOrderNumericallyFromLink', (done) => {
+  it('API: sortMenusOrderNumericallyFromLink', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -1344,7 +1175,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: capitalizeEachWords', (done) => {
+  it('API: capitalizeEachWords', (done) => {
     assert.deepEqual(
       generateSidebar({
         hyphenToSpace: true,
@@ -1405,7 +1236,7 @@ describe('VitePress Sidebar Test', () => {
     done();
   });
 
-  it('Option: sortMenusByFrontmatterDate', (done) => {
+  it('API: sortMenusByFrontmatterDate', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -1429,139 +1260,6 @@ describe('VitePress Sidebar Test', () => {
           link: '/d'
         }
       ]
-    );
-
-    done();
-  });
-
-  it('Multiple Sidebars (A)', (done) => {
-    assert.deepEqual(
-      generateSidebar([
-        {
-          documentRootPath: `${TEST_DIR_BASE}/general`,
-          resolvePath: '/'
-        },
-        {
-          documentRootPath: `${TEST_DIR_BASE}/general`,
-          scanStartPath: 'folder',
-          resolvePath: '/folder/'
-        },
-        {
-          documentRootPath: `${TEST_DIR_BASE}/general`,
-          scanStartPath: 'folder-2',
-          resolvePath: '/folder-2'
-        }
-      ]),
-      {
-        '/': {
-          base: '/',
-          items: [
-            {
-              text: 'a',
-              link: 'a'
-            },
-            {
-              text: 'b',
-              link: 'b'
-            },
-            {
-              text: 'c',
-              link: 'c'
-            },
-            {
-              text: 'folder',
-              items: [
-                {
-                  text: 'folder-test-2',
-                  link: 'folder/folder-test-2'
-                },
-                {
-                  text: 'folder-test',
-                  link: 'folder/folder-test'
-                },
-                {
-                  text: 'subFolder',
-                  items: [
-                    {
-                      text: 'sub-folder-test',
-                      link: 'folder/subFolder/sub-folder-test'
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              text: 'folder-2',
-              items: [
-                {
-                  text: 'folder2',
-                  link: 'folder-2/folder2'
-                }
-              ]
-            },
-            {
-              text: 'test',
-              link: 'test'
-            }
-          ]
-        },
-        '/folder/': {
-          base: '/folder/',
-          items: [
-            {
-              text: 'folder-test-2',
-              link: 'folder-test-2'
-            },
-            {
-              text: 'folder-test',
-              link: 'folder-test'
-            },
-            {
-              text: 'subFolder',
-              items: [
-                {
-                  text: 'sub-folder-test',
-                  link: 'subFolder/sub-folder-test'
-                }
-              ]
-            }
-          ]
-        },
-        '/folder-2': {
-          base: '/folder-2',
-          items: [
-            {
-              text: 'folder2',
-              link: 'folder2'
-            }
-          ]
-        }
-      }
-    );
-
-    done();
-  });
-
-  it('Multiple Sidebars (B)', (done) => {
-    assert.deepEqual(
-      generateSidebar([
-        {
-          documentRootPath: `${TEST_DIR_BASE}/general`,
-          scanStartPath: 'folder/subFolder',
-          resolvePath: '/folder'
-        }
-      ]),
-      {
-        '/folder': {
-          base: '/folder',
-          items: [
-            {
-              text: 'sub-folder-test',
-              link: 'sub-folder-test'
-            }
-          ]
-        }
-      }
     );
 
     done();

@@ -22,7 +22,7 @@
   },
   "overrides": [
     {
-      "files": ["test/*.spec.ts"],
+      "files": ["test/specs/*.spec.ts"],
       "rules": {
         "import/extensions": 0,
         "no-undef": 0
