@@ -2,7 +2,7 @@ import { generateSidebar } from '../../dist';
 import { description, repository, homepage } from '../../package.json';
 import { defineConfig } from 'vitepress';
 
-// Ref: https://vitepress.vuejs.org/config/introduction
+// Ref: https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'VitePress Sidebar',
   description,
