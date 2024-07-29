@@ -375,7 +375,7 @@ export default class VitePressSidebar {
             if (options.scanStartPath) {
               childItemPathDisplay = childItemPathDisplay.replace(
                 new RegExp(`^${options.scanStartPath}`, 'g'),
-                ''
+                options.resolvePath ?? ''
               );
             }
 
