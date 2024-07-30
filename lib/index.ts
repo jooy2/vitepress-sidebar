@@ -121,6 +121,10 @@ export default class VitePressSidebar {
     let enableDebugPrint = false;
     let optionItems: (Options | undefined)[];
 
+    if (arguments.length > 1) {
+      throw new Error(`You must pass 1 argument, see the documentation for details.`);
+    }
+
     if (options === undefined) {
       optionItems = [{}];
     } else {
