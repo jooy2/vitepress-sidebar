@@ -23,7 +23,7 @@ export default defineConfig({
     sidebar: generateSidebar({
       debugPrint: true,
       documentRootPath: 'docs',
-      manualSortFileNameByPriority: ['guide', 'advanced-usage'],
+      manualSortFileNameByPriority: ['introduction.md', 'guide', 'advanced-usage'],
       excludeFiles: ['changelog.md'],
       collapsed: false,
       capitalizeFirst: true,
