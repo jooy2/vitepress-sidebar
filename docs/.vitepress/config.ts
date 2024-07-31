@@ -13,6 +13,7 @@ export default defineConfig({
     ['link', { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/logo-16.png' }],
     ['link', { rel: 'shortcut icon', href: '/favicon.ico' }]
   ],
+  lastUpdated: true,
   sitemap: {
     hostname: homepage
   },
