@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.24.1 (2024-07-31)
+
+- If a link exists in the directory, it will appear in the menu regardless of the option
+- Fix do not include `index` link when `index.md` file is shown (#147)
+- More precise argument checking
+
 ## 1.24.0 (2024-07-06)
 
 - Add `frontmatterTitleFieldName` option. When used with `useTitleFromFrontmatter`, the `text` field of sidebar will extract from the value of `frontmatterTitleFieldName` instead of default `title` field if it exists. (@liudonghua123)
