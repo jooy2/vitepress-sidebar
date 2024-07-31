@@ -141,8 +141,9 @@ describe('Test: APIs', () => {
       }),
       [
         {
-          text: 'folder-with-same-name-file',
-          link: '/folder-with-same-name-file'
+          text: 'folder-name',
+          link: '/folder-name/folder-name',
+          items: []
         }
       ]
     );
@@ -160,8 +161,9 @@ describe('Test: APIs', () => {
       }),
       [
         {
-          text: 'Folder With Same Name File',
-          link: '/folder-with-same-name-file'
+          text: 'Folder Text',
+          link: '/folder-name/folder-name',
+          items: []
         }
       ]
     );
@@ -176,14 +178,33 @@ describe('Test: APIs', () => {
         useTitleFromFileHeading: true,
         useTitleFromFrontmatter: true,
         convertSameNameSubFileToGroupIndexPage: true,
-        folderLinkNotIncludesFileName: true
+        folderLinkNotIncludesFileName: true,
+        includeRootIndexFile: true
       }),
       [
         {
-          text: 'Folder With Same Name File',
-          link: '/folder-with-same-name-file'
+          text: 'Folder Text',
+          link: '/folder-name',
+          items: []
+        },
+        {
+          text: 'Root Index File',
+          link: '/'
         }
       ]
+    );
+
+    done();
+  });
+
+  it('API: convertSameNameSubFileToGroupIndexPage (D)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
+        convertSameNameSubFileToGroupIndexPage: true,
+        includeEmptyFolder: false
+      }),
+      []
     );
 
     done();
@@ -689,7 +710,7 @@ describe('Test: APIs', () => {
           items: [
             {
               text: 'index',
-              link: '/1-a/index'
+              link: '/1-a/'
             }
           ]
         },
@@ -698,7 +719,7 @@ describe('Test: APIs', () => {
           items: [
             {
               text: 'index',
-              link: '/10-a/index'
+              link: '/10-a/'
             }
           ]
         },
@@ -707,7 +728,7 @@ describe('Test: APIs', () => {
           items: [
             {
               text: 'index',
-              link: '/2-a/index'
+              link: '/2-a/'
             }
           ]
         }
