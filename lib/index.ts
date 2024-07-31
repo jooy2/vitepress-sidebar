@@ -475,6 +475,7 @@ export default class VitePressSidebar {
           }
 
           if (
+            (withDirectoryLink && options.includeEmptyFolder !== false) ||
             options.includeEmptyFolder ||
             directorySidebarItems.length > 0 ||
             isNotEmptyDirectory
