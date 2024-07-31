@@ -1,6 +1,6 @@
 # 🔌 VitePress Sidebar
 
-[![awesome-vitepress](https://awesome.re/mentioned-badge.svg)](https://github.com/logicspark/awesome-vitepress-v1) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jooy2/vitepress-sidebar/blob/master/LICENSE) ![Programming Language Usage](https://img.shields.io/github/languages/top/jooy2/vitepress-sidebar) ![Commit Count](https://img.shields.io/github/commit-activity/y/jooy2/vitepress-sidebar) [![npm downloads](https://img.shields.io/npm/dm/vitepress-sidebar.svg)](https://www.npmjs.com/package/vitepress-sidebar) [![npm latest package](https://img.shields.io/npm/v/vitepress-sidebar/latest.svg)](https://www.npmjs.com/package/vitepress-sidebar) ![github repo size](https://img.shields.io/github/repo-size/jooy2/vitepress-sidebar) [![Followers](https://img.shields.io/github/followers/jooy2?style=social)](https://github.com/jooy2) ![Stars](https://img.shields.io/github/stars/jooy2/vitepress-sidebar?style=social)
+[![awesome-vitepress](https://awesome.re/mentioned-badge.svg)](https://github.com/logicspark/awesome-vitepress-v1) [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/jooy2/vitepress-sidebar/blob/master/LICENSE) ![Programming Language Usage](https://img.shields.io/github/languages/top/jooy2/vitepress-sidebar) ![Commit Count](https://img.shields.io/github/commit-activity/y/jooy2/vitepress-sidebar) [![npm downloads](https://img.shields.io/npm/dm/vitepress-sidebar.svg)](https://www.npmjs.com/package/vitepress-sidebar) [![npm latest package](https://img.shields.io/npm/v/vitepress-sidebar/latest.svg)](https://www.npmjs.com/package/vitepress-sidebar) ![npm bundle size](https://img.shields.io/bundlephobia/min/vitepress-sidebar) [![Followers](https://img.shields.io/github/followers/jooy2?style=social)](https://github.com/jooy2) ![Stars](https://img.shields.io/github/stars/jooy2/vitepress-sidebar?style=social)
 
 **VitePress Sidebar** is a plugin for **[VitePress](https://vitepress.dev)** that automatically configures and manages the sidebar of your page with simple settings.
 
@@ -10,11 +10,64 @@
 - ⚡️ [Multiple Sidebars](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) support
 - ⚡️ [Frontmatter](https://vitepress.dev/guide/frontmatter) support
 - ⚡️ [TypeScript](https://www.typescriptlang.org) support
-- ⚡️ Customize menus for sorting, special character conversion, file and folder filters, and more
+- ⚡️ Customize menus for sorting, special character conversion, file and folder filters, and more!
 
 ## [Documentation (Getting Started & All option lists)](https://vitepress-sidebar.jooy2.com/guide/getting-started)
 
 Installing and using the package and defining all the utility methods can be found on the documentation page below: https://vitepress-sidebar.jooy2.com/guide/getting-started
+
+```javascript
+import { generateSidebar } from 'vitepress-sidebar';
+
+export default {
+  themeConfig: {
+    sidebar: generateSidebar({
+      /*
+       * For detailed instructions, see the links below:
+       * https://vitepress-sidebar.jooy2.com/guide/api
+       */
+      // documentRootPath: '/',
+      // scanStartPath: null,
+      // resolvePath: null,
+      // useTitleFromFileHeading: true,
+      // useTitleFromFrontmatter: true,
+      // frontmatterTitleFieldName: 'title',
+      // useFolderTitleFromIndexFile: false,
+      // useFolderLinkFromIndexFile: false,
+      // hyphenToSpace: true,
+      // underscoreToSpace: true,
+      // capitalizeFirst: false,
+      // capitalizeEachWords: false,
+      // collapsed: true,
+      // collapseDepth: 2,
+      // sortMenusByName: false,
+      // sortMenusByFrontmatterOrder: false,
+      // sortMenusByFrontmatterDate: false,
+      // sortMenusOrderByDescending: false,
+      // sortMenusOrderNumericallyFromTitle: false,
+      // sortMenusOrderNumericallyFromLink: false,
+      // frontmatterOrderDefaultValue: 0,
+      // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
+      // removePrefixAfterOrdering: false,
+      // prefixSeparator: '.',
+      // excludeFiles: ['first.md', 'secret.md'],
+      // excludeFilesByFrontmatterFieldName: 'exclude',
+      // excludeFolders: ['secret-folder'],
+      // includeDotFiles: false,
+      // includeRootIndexFile: false,
+      // includeFolderIndexFile: false,
+      // includeEmptyFolder: false,
+      // rootGroupText: 'Contents',
+      // rootGroupLink: 'https://github.com/jooy2',
+      // rootGroupCollapsed: false,
+      // convertSameNameSubFileToGroupIndexPage: false,
+      // folderLinkNotIncludesFileName: false,
+      // keepMarkdownSyntaxFromTitle: false,
+      // debugPrint: false,
+    })
+  }
+};
+```
 
 ## Real-world Uses
 
