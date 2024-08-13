@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.24.2 (2024-08-13)
+
+- Fix index link is blank in multiple sidebars (#167)
+
 ## 1.24.1 (2024-07-31)
 
 - If a link exists in the directory, it will appear in the menu regardless of the option

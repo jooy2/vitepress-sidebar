@@ -385,7 +385,11 @@ export default class VitePressSidebar {
               );
             }
 
-            childItemPathDisplay = childItemPathDisplay.replace(/^\//g, '');
+            childItemPathDisplay = childItemPathDisplay.replace(/^\/(?!$)/g, '');
+
+            if (childItemPathDisplay === '/') {
+              childItemPathDisplay = 'index.md';
+            }
           } else if (!childItemPathDisplay.startsWith('/')) {
             childItemPathDisplay = `/${childItemPathDisplay}`;
           }

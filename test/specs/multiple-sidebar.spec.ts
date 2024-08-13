@@ -136,4 +136,65 @@ describe('Test: multiple sidebars', () => {
 
     done();
   });
+
+  it('Multiple Sidebars (C)', (done) => {
+    assert.deepEqual(
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'folder',
+          resolvePath: '/folder/',
+          includeRootIndexFile: true,
+          includeFolderIndexFile: true
+        },
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'folder-2',
+          resolvePath: '/folder-2/',
+          includeRootIndexFile: true,
+          includeFolderIndexFile: true,
+          useFolderLinkFromIndexFile: true
+        }
+      ]),
+      {
+        '/folder/': {
+          base: '/folder/',
+          items: [
+            {
+              text: 'folder-test-2',
+              link: 'folder-test-2'
+            },
+            {
+              text: 'folder-test',
+              link: 'folder-test'
+            },
+            {
+              text: 'subFolder',
+              items: [
+                {
+                  text: 'sub-folder-test',
+                  link: 'subFolder/sub-folder-test'
+                }
+              ]
+            }
+          ]
+        },
+        '/folder-2/': {
+          base: '/folder-2/',
+          items: [
+            {
+              text: 'folder2',
+              link: 'folder2'
+            },
+            {
+              text: 'index',
+              link: 'index.md'
+            }
+          ]
+        }
+      }
+    );
+
+    done();
+  });
 });
