@@ -447,7 +447,7 @@ export default class VitePressSidebar {
               );
 
               if (options.folderLinkNotIncludesFileName) {
-                withDirectoryLink = childItemPathDisplay;
+                withDirectoryLink = childItemPathDisplay + '/';
               } else {
                 withDirectoryLink = findItem.link;
               }
