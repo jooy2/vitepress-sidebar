@@ -224,6 +224,10 @@ Sets the default value for the `order` property of the frontmatter when not set.
 
 If the `collapsed` option is not specified(`null` or `undefined`), group collapse/expand is not used and all menus are displayed at once. If `false`, the menu is created with all groups expanded. If `true`, the menu is created with all groups collapsed.
 
+(Even if the value is `true`, the menu may be expanded if it is located in a document within a collapsed group.)
+
+![Collapsed Example](/doc-collapsed-example.png)
+
 ## `collapseDepth`
 
 - Type: `number`
