@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.25.0 (2024-)
+## 1.25.0 (2024-08-22)
 
 - Add `basePath` option
 - Fix incorrect directory path when using `rewrite` and `convertSameNameSubFileToGroupIndexPage` option. (#146)
