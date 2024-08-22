@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.25.0 (2024-)
+
+- Add `basePath` option
+- Fix incorrect directory path when using `rewrite` and `convertSameNameSubFileToGroupIndexPage` option. (#146)
+
 ## 1.24.2 (2024-08-13)
 
 - Fix index link is blank in multiple sidebars (#167)

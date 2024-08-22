@@ -13,7 +13,7 @@ This page describes all the options in the VitePress Sidebar.
 | [documentRootPath](#documentrootpath) | [collapsed](#collapsed)                   |
 | [scanStartPath](#scanstartpath)       | [collapseDepth](#collapsedepth)           |
 | [resolvePath](#resolvepath)           | [rootGroupText](#rootgrouptext)           |
-|                                       | [rootGroupLink](#rootgrouplink)           |
+| [basePath](#basepath)                 | [rootGroupLink](#rootgrouplink)           |
 |                                       | [rootGroupCollapsed](#rootgroupcollapsed) |
 
 | Getting Menu Title | Getting Menu Link |
@@ -79,6 +79,15 @@ For example, if the root path is `/docs` and the document to be scanned is `/doc
 
 - `documentRootPath`: `/docs`,
 - `scanStartPath`: `sub-dir/scan-me` (Do not include the path to `documentRootPath`.)
+
+## `basePath`
+
+- Type: `string|null`
+- Default: `null`
+
+This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
+
+This option can be utilized if the path has changed due to VitePress's rewrite option. It replaces the base path in VitePress. If this value does not exist, it will use the value from `resolvePath` instead.
 
 ## `resolvePath`
 
@@ -391,12 +400,44 @@ This option only applies to top-level item. For general item collapsibility, see
 
 If this value is `true`, then if a subfile with the same name as the folder exists, a link will be created in the folder to navigate to that file, and the file will not be displayed in the child item.
 
+For example, if you have a folder that looks like this:
+
+```
+docs/
+├─ guide/
+│  ├─ api/
+│  │  └─ api.md
+│  ├─ one.md
+│  └─ two.md
+└─ config/
+   └─ index.md
+```
+
+A link is added to the `api` folder, and the `api` page in the `api` folder is not included in the menu listing. Clicking the link in the folder displays the file in `api/api.md`.
+
 ## `folderLinkNotIncludesFileName`
 
 - Type: `boolean`
 - Default: `false`
 
-If this value is `true`, when establishing a folder link, ignore the existence of child items and specify the link only as a folder path. This option is not commonly used and is utilized for rewrite rules. This option may need to be used in conjunction with other options where folder links are created.
+This option is only used in special cases: when you have a rewrite rule and a subfile with the same folder name exists, use it in parallel with the `convertSameNameSubFileToGroupIndexPage` option.
+
+If this value is `true`, when establishing a folder link, ignore the existence of child items and specify the link only as a folder path.
+
+For example, if you have a folder that looks like this:
+
+```
+docs/
+├─ guide/
+│  ├─ api/
+│  │  └─ api.md
+│  ├─ one.md
+│  └─ two.md
+└─ config/
+   └─ index.md
+```
+
+With the `convertSameNameSubFileToGroupIndexPage` option, clicking on the guide/api folder menu will take you to `guide/api/api`, but if you use the `folderLinkNotIncludesFileName` option with it, the link will be `guide/api/`.
 
 ## `keepMarkdownSyntaxFromTitle`
 

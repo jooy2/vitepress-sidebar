@@ -6,6 +6,7 @@ declare interface Options {
   documentRootPath?: string;
   scanStartPath?: string;
   resolvePath?: string;
+  basePath?: string;
   collapsed?: boolean | null | undefined;
   collapseDepth?: number;
   hyphenToSpace?: boolean;
@@ -286,7 +287,7 @@ export default class VitePressSidebar {
       }
 
       sidebar[optionItem.resolvePath || '/'] = {
-        base: optionItem.resolvePath || '/',
+        base: optionItem.basePath || optionItem.resolvePath || '/',
         items:
           sidebarResult?.items ||
           (optionItem.rootGroupText ||
@@ -447,7 +448,7 @@ export default class VitePressSidebar {
               );
 
               if (options.folderLinkNotIncludesFileName) {
-                withDirectoryLink = childItemPathDisplay + '/';
+                withDirectoryLink = `${childItemPathDisplay}/`;
               } else {
                 withDirectoryLink = findItem.link;
               }

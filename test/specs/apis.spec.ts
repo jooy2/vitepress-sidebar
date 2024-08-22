@@ -184,7 +184,7 @@ describe('Test: APIs', () => {
       [
         {
           text: 'Folder Text',
-          link: '/folder-name',
+          link: '/folder-name/',
           items: []
         },
         {
