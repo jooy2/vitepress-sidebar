@@ -2,7 +2,7 @@ import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 import matter from 'gray-matter';
 
-declare interface Options {
+export declare interface VitePressSidebarOptions {
   documentRootPath?: string;
   scanStartPath?: string;
   resolvePath?: string;
@@ -116,11 +116,11 @@ export type Sidebar = SidebarItem[] | SidebarMulti;
  * */
 
 export default class VitePressSidebar {
-  static generateSidebar(options?: Options | Options[]): Sidebar {
+  static generateSidebar(options?: VitePressSidebarOptions | VitePressSidebarOptions[]): Sidebar {
     const sidebar: Sidebar = {};
     const isMultipleSidebars = Array.isArray(options);
     let enableDebugPrint = false;
-    let optionItems: (Options | undefined)[];
+    let optionItems: (VitePressSidebarOptions | undefined)[];
 
     if (arguments.length > 1) {
       throw new Error(`You must pass 1 argument, see the documentation for details.`);
@@ -342,7 +342,7 @@ export default class VitePressSidebar {
     currentDir: string,
     displayDir: string,
     parentName: string | null,
-    options: Options
+    options: VitePressSidebarOptions
   ): SidebarListItem {
     let directoryFiles: string[] = readdirSync(currentDir);
 
@@ -678,7 +678,7 @@ export default class VitePressSidebar {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  private static formatTitle(options: Options, title: string): string {
+  private static formatTitle(options: VitePressSidebarOptions, title: string): string {
     let result = title;
 
     if (options.hyphenToSpace) {
@@ -707,7 +707,7 @@ export default class VitePressSidebar {
   private static getTitleFromMd(
     fileName: string,
     filePath: string,
-    options: Options,
+    options: VitePressSidebarOptions,
     isDirectory = false
   ): string {
     if (isDirectory) {
@@ -860,7 +860,7 @@ export default class VitePressSidebar {
 
   private static removePrefixFromTitleAndLink(
     sidebarList: SidebarListItem,
-    options: Options
+    options: VitePressSidebarOptions
   ): SidebarListItem {
     const sidebarListLength = sidebarList.length;
 

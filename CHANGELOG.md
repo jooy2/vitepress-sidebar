@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.25.1 (2024-)
+
+- Support for specifying sidebar option types for TypeScript
+
 ## 1.25.0 (2024-08-22)
 
 - Add `basePath` option
