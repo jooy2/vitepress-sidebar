@@ -28,6 +28,7 @@ export default {
        */
       // documentRootPath: '/',
       // scanStartPath: null,
+      // basePath: null,
       // resolvePath: null,
       // useTitleFromFileHeading: true,
       // useTitleFromFrontmatter: true,

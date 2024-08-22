@@ -80,6 +80,17 @@ For example, if the root path is `/docs` and the document to be scanned is `/doc
 - `documentRootPath`: `/docs`,
 - `scanStartPath`: `sub-dir/scan-me` (Do not include the path to `documentRootPath`.)
 
+## `resolvePath`
+
+- Type: `string|null`
+- Default: `null`
+
+This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
+
+Enter the path to the section to display a different sidebar for each path. The path must contain `/` before it. Options without this value will be set to the root section (`/`).
+
+e.g. `/`, `/path/sub-path`, `/guide/`...
+
 ## `basePath`
 
 - Type: `string|null`
@@ -88,17 +99,6 @@ For example, if the root path is `/docs` and the document to be scanned is `/doc
 This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
 
 This option can be utilized if the path has changed due to VitePress's rewrite option. It replaces the base path in VitePress. If this value does not exist, it will use the value from `resolvePath` instead.
-
-## `resolvePath`
-
-- Type: `string|null`
-- Default: `null`
-
-This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
-
-Enter the path to the section to display a different sidebar for each path. The path must contain `/` before and after it. Options without this value will be set to the root section (`/`).
-
-e.g. `/`, `/path/sub-path`, `/guide/`...
 
 ## `useTitleFromFileHeading`
 

@@ -197,4 +197,30 @@ describe('Test: multiple sidebars', () => {
 
     done();
   });
+
+  it('Multiple Sidebars (D)', (done) => {
+    assert.deepEqual(
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'folder/subFolder',
+          basePath: 'page',
+          resolvePath: 'folder'
+        }
+      ]),
+      {
+        folder: {
+          base: 'page',
+          items: [
+            {
+              text: 'sub-folder-test',
+              link: 'sub-folder-test'
+            }
+          ]
+        }
+      }
+    );
+
+    done();
+  });
 });
