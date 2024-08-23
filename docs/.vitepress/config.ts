@@ -127,7 +127,7 @@ export default defineConfig({
           },
           {
             text: '변경사항',
-            link: 'changelog'
+            link: '/ko/changelog'
           }
         ],
         editLink: {
