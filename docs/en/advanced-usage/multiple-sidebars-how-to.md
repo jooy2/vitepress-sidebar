@@ -32,8 +32,8 @@ To implement this in `vitepress-sidebar`, you need to approach it differently fr
 Use the `generateSidebar` function as before, but pass an array. The array will contain at least one option from `vitepress-sidebar`. The values in the array can be as many URLs as you want to specify. Of course, you can also configure them with different settings.
 
 ```javascript
+// Must pass array arguments!!!!
 generateSidebar([
-  // <------ Must pass array arguments!!!!
   {
     documentRootPath: 'docs',
     scanStartPath: 'guide',

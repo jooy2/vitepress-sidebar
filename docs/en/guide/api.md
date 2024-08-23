@@ -71,7 +71,7 @@ This is the path where the `.vitepress` directory is located, and if the folder 
 - Type: `string|null`
 - Default: `null`
 
-This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
+This option is used to configure multiple sidebars. You can learn more on the **[Multiple sidebars](/advanced-usage/multiple-sidebars-how-to)** page.
 
 The path to the root directory to scan for document lists. Files in the path set in `documentRootPath` outside the path set in `scanStartPath` will not be scanned. It is recommended that you also set `documentRootPath` if you specify `scanStartPath` because the parent path set in `documentRootPath` should appear in the `link`.
 
@@ -85,7 +85,7 @@ For example, if the root path is `/docs` and the document to be scanned is `/doc
 - Type: `string|null`
 - Default: `null`
 
-This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
+This option is used to configure multiple sidebars. You can learn more on the **[Multiple sidebars](/advanced-usage/multiple-sidebars-how-to)** page.
 
 Enter the path to the section to display a different sidebar for each path. The path must contain `/` before it. Options without this value will be set to the root section (`/`).
 
@@ -96,7 +96,7 @@ e.g. `/`, `/path/sub-path`, `/guide/`...
 - Type: `string|null`
 - Default: `null`
 
-This option is used to configure Multiple Sidebars. See the `Multiple Sidebars How-to` section.
+This option is used to configure multiple sidebars. You can learn more on the **[Multiple sidebars](/advanced-usage/multiple-sidebars-how-to)** page.
 
 This option can be utilized if the path has changed due to VitePress's rewrite option. It replaces the base path in VitePress. If this value does not exist, it will use the value from `resolvePath` instead.
 
@@ -118,16 +118,22 @@ If the value is `true`, display the title based on the value of `title` in `Fron
 
 The `Frontmatter` should be located at the top of the document, and should look like this (Space is required between the `title:` value and the title.)
 
+```markdown
+---
+title: Hello World
+---
+```
+
 ## `frontmatterTitleFieldName`
 
 - Type: `string`
 - Default: `title`
 
-Display the title based on the value of this option in `Frontmatter` in the file. If the specified value is not exists in `Frontmatter`, then the default `title` will used as fallback.
+Displays the menu title based on the key name in Frontmatter specified in the file. If the specified value does not exist in Frontmatter, the default `title` will be used as a fallback.
 
 ```markdown
 ---
-title: This is frontmatter title value.
+name: This is frontmatter title value.
 ---
 ```
 
@@ -345,7 +351,7 @@ If the value is `true`, also include the folder path `index.md` file in the side
 
 Removes a specific prefix from each menu title from the menu items that appear after everything is done. This is ideal if you want to sort by the number in the filename without using frontmatter's sorting, and you don't want that number to be visible in the menu.
 
-For example, if `prefixSeparator` is the default (`.`), the following menus will be renamed as follows
+For example, if `prefixSeparator` is the default (`.`), the following menus will be renamed as follows:
 
 - File name: `1.hello` -> Menu name: `hello`
 - File name: `1.1.hello` -> Menu name: `1.hello`

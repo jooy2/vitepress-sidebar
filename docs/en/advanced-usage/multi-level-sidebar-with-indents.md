@@ -1,6 +1,6 @@
 # Multi-level-sidebar with indents
 
-In a multi-level sidebar, the menu is displayed with indentation for each tier. However, VitePress starts indenting from the second tier by default. For example
+In a multi-level sidebar, the menu is displayed with indentation for each tier. However, VitePress starts indenting from the second tier by default. For example:
 
 ![Multi level docs before](/doc-multi-level-docs-before.png)
 
