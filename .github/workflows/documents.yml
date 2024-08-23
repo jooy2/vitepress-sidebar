@@ -40,7 +40,9 @@ jobs:
 
       # copy changelog.md file
       - name: Copy CHANGELOG.md file
-        run: cp CHANGELOG.md ./docs/en/changelog.md ./docs/ko/changelog.md
+        run: |
+          cp CHANGELOG.md ./docs/en/changelog.md
+          cp CHANGELOG.md ./docs/ko/changelog.md
 
       # install dependencies if the cache did not hit
       - name: Install dependencies
