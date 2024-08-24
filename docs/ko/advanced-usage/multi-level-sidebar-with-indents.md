@@ -48,4 +48,4 @@ export default DefaultTheme;
 
 ![Multi level docs before](/doc-multi-level-docs-after.png)
 
-여기에서 보이는 수직 divider는 CSS로만 생성된 것으로, `indicator`라는 CSS 클래스가 있는 `div`로 생성되어야 하므로 향후 동적 페이지를 작성할 때 수직 divider가 선택되지 않을 수 있다는 점에 유의해야 합니다.
+여기에서 보이는 세로선은 CSS로만 생성된 것으로, `indicator`라는 CSS 클래스가 있는 `div`로 생성되어야 하므로 향후 동적 페이지를 작성할 때 세로선이 선택되지 않을 수 있다는 점에 유의해야 합니다.
