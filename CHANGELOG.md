@@ -2,6 +2,7 @@
 
 ## 1.25.1 (2024-)
 
+- **BREAKING CHANGES**: The `Options` type for TypeScript has been renamed to `VitePressSidebarOptions`.
 - Support for specifying sidebar option types for TypeScript
 - Korean documentation support
 
