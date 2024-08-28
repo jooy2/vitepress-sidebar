@@ -2,7 +2,7 @@
 layout: home
 
 title: VitePress Sidebar
-titleTemplate: A VitePress auto sidebar plugin that automatically creates a simple configuration
+titleTemplate: Powerful auto sidebar generator
 
 hero:
   name: VitePress Sidebar
