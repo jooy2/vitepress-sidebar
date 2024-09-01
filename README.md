@@ -12,9 +12,9 @@
 - ⚡️ [TypeScript](https://www.typescriptlang.org) support
 - ⚡️ Customize menus for sorting, special character conversion, file and folder filters, and more!
 
-## [Documentation (Getting Started & All option lists)](https://vitepress-sidebar.jooy2.com/guide/getting-started)
+## [Documentation (Getting Started & All option lists)](https://vitepress-sidebar.cdget.com/guide/getting-started)
 
-Installing and using the package and defining all the utility methods can be found on the documentation page below: https://vitepress-sidebar.jooy2.com/guide/getting-started
+Installing and using the package and defining all the utility methods can be found on the documentation page below: https://vitepress-sidebar.cdget.com/guide/getting-started
 
 ```javascript
 import { generateSidebar } from 'vitepress-sidebar';
@@ -24,7 +24,7 @@ export default {
     sidebar: generateSidebar({
       /*
        * For detailed instructions, see the links below:
-       * https://vitepress-sidebar.jooy2.com/guide/api
+       * https://vitepress-sidebar.cdget.com/guide/api
        */
       // documentRootPath: '/',
       // scanStartPath: null,
@@ -90,4 +90,4 @@ You can also request a pull to fix bugs and add frequently used features. To con
 
 ## License
 
-Copyright © 2022-2024 [Jooy2](https://jooy2.com) <[jooy2.contact@gmail.com](mailto:jooy2.contact@gmail.com)> Released under the MIT license.
+Copyright © 2022-2024 [CDGet](https://cdget.com) <[jooy2.contact@gmail.com](mailto:jooy2.contact@gmail.com)> Released under the MIT license.

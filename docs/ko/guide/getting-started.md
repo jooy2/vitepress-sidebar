@@ -81,7 +81,7 @@ export default {
     sidebar: generateSidebar({
       /*
        * For detailed instructions, see the links below:
-       * https://vitepress-sidebar.jooy2.com/ko/guide/api
+       * https://vitepress-sidebar.cdget.com/ko/guide/api
        */
       // documentRootPath: '/',
       // scanStartPath: null,
