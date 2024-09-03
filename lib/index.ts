@@ -430,7 +430,16 @@ export default class VitePressSidebar {
               options
             ) || [];
 
-          let newDirectoryText = VitePressSidebar.getTitleFromMd(x, childItemPath, options, true);
+          let isTitleReceivedFromFileContent = false;
+          let newDirectoryText = VitePressSidebar.getTitleFromMd(
+            x,
+            childItemPath,
+            options,
+            true,
+            () => {
+              isTitleReceivedFromFileContent = true;
+            }
+          );
           let newDirectoryPagePath = childItemPath;
           let withDirectoryLink;
           let isNotEmptyDirectory = false;
@@ -444,9 +453,12 @@ export default class VitePressSidebar {
             newDirectoryPagePath = resolve(childItemPath, `${findSameNameSubFile.text}.md`);
             newDirectoryText = VitePressSidebar.getTitleFromMd(
               x,
-              options.useFolderTitleFromIndexFile ? indexFilePath : newDirectoryPagePath,
+              newDirectoryPagePath,
               options,
-              false
+              false,
+              () => {
+                isTitleReceivedFromFileContent = true;
+              }
             );
 
             if (options.folderLinkNotIncludesFileName) {
@@ -474,13 +486,14 @@ export default class VitePressSidebar {
               withDirectoryLink = `${childItemPathDisplay}/index.md`;
             }
 
-            if (options.useFolderTitleFromIndexFile) {
+            if (options.useFolderTitleFromIndexFile && !isTitleReceivedFromFileContent) {
               isNotEmptyDirectory = true;
               newDirectoryPagePath = indexFilePath;
               newDirectoryText = VitePressSidebar.getTitleFromMd(
                 'index',
                 newDirectoryPagePath,
-                options
+                options,
+                false
               );
             }
           }
@@ -537,7 +550,7 @@ export default class VitePressSidebar {
           ) {
             childItemText = childItemTextWithoutExt;
           } else {
-            childItemText = VitePressSidebar.getTitleFromMd(x, childItemPath, options);
+            childItemText = VitePressSidebar.getTitleFromMd(x, childItemPath, options, false);
           }
 
           return {
@@ -714,7 +727,8 @@ export default class VitePressSidebar {
     fileName: string,
     filePath: string,
     options: VitePressSidebarOptions,
-    isDirectory = false
+    isDirectory: boolean,
+    callbackTitleReceived?: () => void
   ): string {
     if (isDirectory) {
       return VitePressSidebar.formatTitle(options, fileName);
@@ -736,6 +750,7 @@ export default class VitePressSidebar {
         );
       }
       if (value) {
+        callbackTitleReceived?.();
         return VitePressSidebar.formatTitle(options, value);
       }
     }
@@ -770,6 +785,7 @@ export default class VitePressSidebar {
               str = str.replace(/`{1,3}([^`]+?)`{1,3}/g, '$1');
             }
 
+            callbackTitleReceived?.();
             return VitePressSidebar.formatTitle(options, str);
           }
         }

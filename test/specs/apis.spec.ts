@@ -221,7 +221,7 @@ describe('Test: APIs', () => {
       }),
       [
         {
-          text: 'Index File',
+          text: 'Folder Text',
           link: '/folder-name/folder-name',
           items: []
         }

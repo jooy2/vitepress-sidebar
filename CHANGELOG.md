@@ -1,9 +1,15 @@
 # Changelog
 
+## 1.25.3 (2024-09-03)
+
+- If `convertSameNameSubFileToGroupIndexPage` and `useFolderTitleFromIndexFile` options are defined together, try with title from index file when title is not fetched (#170)
+
 ## 1.25.2 (2024-09-03)
 
+This version may cause unintended behavior. Please ignore this version.
+
 - Fix `convertSameNameSubFileToGroupIndexPage` to get the name normally if subfile doesn't exist when set
-- Use the title of the index file if `convertSameNameSubFileToGroupIndexPage` and `useFolderTitleFromIndexFile` are defined together (#170)
+- ~~Use the title of the index file if `convertSameNameSubFileToGroupIndexPage` and `useFolderTitleFromIndexFile` are defined together (#170)~~
 
 ## 1.25.1 (2024-09-03)
 
