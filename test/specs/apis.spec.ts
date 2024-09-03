@@ -1228,7 +1228,7 @@ describe('Test: APIs', () => {
               link: '/folder/folder-test'
             },
             {
-              text: 'Subfolder',
+              text: 'SubFolder',
               items: [
                 {
                   text: 'Sub Folder Test',

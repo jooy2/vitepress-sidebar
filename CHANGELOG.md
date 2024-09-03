@@ -3,6 +3,7 @@
 ## 1.25.1 (2024-)
 
 - **BREAKING CHANGES**: The `Options` type for TypeScript has been renamed to `VitePressSidebarOptions`.
+- Fix to avoid converting non-first letter items to lowercase when using `capitalizeEachWords`
 - Support for specifying sidebar option types for TypeScript
 - Korean documentation support
 

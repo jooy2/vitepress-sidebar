@@ -690,7 +690,7 @@ export default class VitePressSidebar {
     }
 
     if (options.capitalizeEachWords) {
-      const splitStr = result.trim().toLowerCase().split(' ');
+      const splitStr = result.trim().split(' ');
 
       for (let i = 0; i < splitStr.length; i += 1) {
         splitStr[i] = VitePressSidebar.capitalizeFirst(splitStr[i]);
