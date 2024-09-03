@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.25.2 (2024-09-03)
+
+- Fix `convertSameNameSubFileToGroupIndexPage` to get the name normally if subfile doesn't exist when set
+- Use the title of the index file if `convertSameNameSubFileToGroupIndexPage` and `useFolderTitleFromIndexFile` are defined together (#170)
+
 ## 1.25.1 (2024-09-03)
 
 - **BREAKING CHANGES**: The `Options` type for TypeScript has been renamed to `VitePressSidebarOptions`.

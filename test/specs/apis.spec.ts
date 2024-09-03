@@ -210,6 +210,27 @@ describe('Test: APIs', () => {
     done();
   });
 
+  it('API: convertSameNameSubFileToGroupIndexPage (E)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
+        useTitleFromFileHeading: true,
+        useTitleFromFrontmatter: true,
+        convertSameNameSubFileToGroupIndexPage: true,
+        useFolderTitleFromIndexFile: true
+      }),
+      [
+        {
+          text: 'Index File',
+          link: '/folder-name/folder-name',
+          items: []
+        }
+      ]
+    );
+
+    done();
+  });
+
   it('API: useFolderTitleFromIndexFile', (done) => {
     assert.deepEqual(
       generateSidebar({

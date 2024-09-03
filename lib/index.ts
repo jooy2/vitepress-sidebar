@@ -435,47 +435,53 @@ export default class VitePressSidebar {
           let withDirectoryLink;
           let isNotEmptyDirectory = false;
 
-          if (options.convertSameNameSubFileToGroupIndexPage) {
-            const findItem = directorySidebarItems.find((y: SidebarListItem) => y.text === x);
+          const indexFilePath = `${childItemPath}/index.md`;
+          const findSameNameSubFile = directorySidebarItems.find(
+            (y: SidebarListItem) => y.text === x
+          );
 
-            if (findItem) {
-              newDirectoryPagePath = resolve(childItemPath, `${findItem.text}.md`);
-              newDirectoryText = VitePressSidebar.getTitleFromMd(
-                x,
-                newDirectoryPagePath,
-                options,
-                false
-              );
+          if (options.convertSameNameSubFileToGroupIndexPage && findSameNameSubFile) {
+            newDirectoryPagePath = resolve(childItemPath, `${findSameNameSubFile.text}.md`);
+            newDirectoryText = VitePressSidebar.getTitleFromMd(
+              x,
+              options.useFolderTitleFromIndexFile ? indexFilePath : newDirectoryPagePath,
+              options,
+              false
+            );
 
-              if (options.folderLinkNotIncludesFileName) {
-                withDirectoryLink = `${childItemPathDisplay}/`;
-              } else {
-                withDirectoryLink = findItem.link;
-              }
-
-              directorySidebarItems = directorySidebarItems.filter(
-                (y: SidebarListItem) => y.text !== x
-              );
+            if (options.folderLinkNotIncludesFileName) {
+              withDirectoryLink = `${childItemPathDisplay}/`;
+            } else {
+              withDirectoryLink = findSameNameSubFile.link;
             }
-          } else {
-            // If an index.md file exists in a folder subfile,
-            // replace the name or link of the folder with what is set in index.md.
-            // The index.md file can still be displayed if the value of `includeFolderIndexFile` is `true`.
-            newDirectoryPagePath = `${childItemPath}/index.md`;
 
-            if (existsSync(newDirectoryPagePath)) {
+            directorySidebarItems = directorySidebarItems.filter(
+              (y: SidebarListItem) => y.text !== x
+            );
+          }
+
+          // If an index.md file exists in a folder subfile,
+          // replace the name or link of the folder with what is set in index.md.
+          // The index.md file can still be displayed if the value of `includeFolderIndexFile` is `true`.
+          if (existsSync(indexFilePath)) {
+            if (options.includeFolderIndexFile) {
               isNotEmptyDirectory = true;
+            }
 
-              if (options.useFolderTitleFromIndexFile) {
-                newDirectoryText = VitePressSidebar.getTitleFromMd(
-                  'index',
-                  newDirectoryPagePath,
-                  options
-                );
-              }
-              if (options.useFolderLinkFromIndexFile) {
-                withDirectoryLink = `${childItemPathDisplay}/index.md`;
-              }
+            if (options.useFolderLinkFromIndexFile) {
+              isNotEmptyDirectory = true;
+              newDirectoryPagePath = indexFilePath;
+              withDirectoryLink = `${childItemPathDisplay}/index.md`;
+            }
+
+            if (options.useFolderTitleFromIndexFile) {
+              isNotEmptyDirectory = true;
+              newDirectoryPagePath = indexFilePath;
+              newDirectoryText = VitePressSidebar.getTitleFromMd(
+                'index',
+                newDirectoryPagePath,
+                options
+              );
             }
           }
 
