@@ -43,6 +43,7 @@ jobs:
         run: |
           cp CHANGELOG.md ./docs/en/changelog.md
           cp CHANGELOG.md ./docs/ko/changelog.md
+          cp CHANGELOG.md ./docs/zhHans/changelog.md
 
       # install dependencies if the cache did not hit
       - name: Install dependencies

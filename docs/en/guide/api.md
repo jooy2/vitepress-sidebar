@@ -196,7 +196,7 @@ Sorts the menu items by the `order` property of the frontmatter. For each folder
 - Type: `boolean`
 - Default: `false`
 
-Sorts the menu items by the `date` property of the frontmatter. It also sorts the `date` property values in ascending order by oldest date (or descending order if the ``option is`true`) The date format must match `YYYY-MM-DD` or the JavaScript Date data type.
+Sorts the menu items by the `date` property of the frontmatter. It also sorts the `date` property values in ascending order by oldest date (or descending order if the `sortMenusOrderByDescending` option is `true`) The date format must match `YYYY-MM-DD` or the JavaScript Date data type.
 
 ## `sortMenusOrderByDescending`
 

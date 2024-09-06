@@ -196,7 +196,7 @@ name: 이 것은 Frontmatter의 제목값입니다.
 - Type: `boolean`
 - Default: `false`
 
-앞부분의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. 또한 `date` 속성 값을 가장 오래된 날짜 순으로 오름차순으로 정렬합니다(`옵션`이 `true`인 경우 내림차순). 날짜 형식은 `YYYY-MM-DD` 또는 JavaScript 날짜 데이터 유형과 일치해야 합니다.
+앞부분의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. 또한 `date` 속성 값을 가장 오래된 날짜 순으로 오름차순으로 정렬합니다(`sortMenusOrderByDescending` 옵션이 `true`인 경우 내림차순). 날짜 형식은 `YYYY-MM-DD` 또는 JavaScript 날짜 데이터 유형과 일치해야 합니다.
 
 ## `sortMenusOrderByDescending`
 

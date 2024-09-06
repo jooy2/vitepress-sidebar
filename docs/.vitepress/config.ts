@@ -14,14 +14,15 @@ const commonSidebarConfig: VitePressSidebarOptions = {
   capitalizeFirst: true,
   useTitleFromFileHeading: true,
   useTitleFromFrontmatter: true,
-  convertSameNameSubFileToGroupIndexPage: true,
+  useFolderTitleFromIndexFile: true,
   frontmatterOrderDefaultValue: 9, // For 'CHANGELOG.md'
   sortMenusByFrontmatterOrder: true
 };
 
 const defineSupportLocales = [
   { label: defaultLocale, translateLocale: defaultLocale },
-  { label: 'ko', translateLocale: 'ko' }
+  { label: 'ko', translateLocale: 'ko' },
+  { label: 'zhHans', translateLocale: 'zhHans' }
 ];
 
 // Ref: https://vitepress.dev/reference/site-config
@@ -45,7 +46,7 @@ export default defineConfig({
   themeConfig: {
     logo: { src: '/logo-32.png', width: 24, height: 24 },
     sidebar: generateSidebar([
-      ...[defaultLocale, 'ko'].map((lang) => {
+      ...[defaultLocale, 'ko', 'zhHans'].map((lang) => {
         return {
           ...commonSidebarConfig,
           documentRootPath: `/docs/${lang}`,
@@ -74,15 +75,19 @@ export default defineConfig({
     editLinkPattern: editLinkPattern,
     label: {
       en: 'English',
-      ko: '한국어'
+      ko: '한국어',
+      zhHans: '简体中文'
     },
     lang: {
       en: 'en-US',
-      ko: 'ko-KR'
+      ko: 'ko-KR',
+      zhHans: 'zh-CN'
     },
     description: {
       en: 'VitePress Sidebar is a VitePress plugin that automatically generates sidebar menus with one setup and no hassle. Save time by easily creating taxonomies for tons of articles.',
-      ko: 'VitePress Sidebar는 번거로운 작업 없이 한번의 설정만으로 사이드바 메뉴를 자동으로 생성하는 VitePress 플러그인입니다. 수많은 문서에 대한 분류를 손쉽게 만들어 시간을 절약하세요.'
+      ko: 'VitePress Sidebar는 번거로운 작업 없이 한번의 설정만으로 사이드바 메뉴를 자동으로 생성하는 VitePress 플러그인입니다. 수많은 문서에 대한 분류를 손쉽게 만들어 시간을 절약하세요.',
+      zhHans:
+        'VitePress Sidebar是一款VitePress插件,只需一次设置即可自动生成侧边栏菜单,无需任何麻烦。轻松为大量文章创建分类,节省时间。'
     },
     themeConfig: {
       en: {
@@ -114,6 +119,22 @@ export default defineConfig({
           {
             text: '변경사항',
             link: '/ko/changelog'
+          }
+        ]
+      },
+      zhHans: {
+        nav: [
+          {
+            text: '安装',
+            link: '/zhHans/guide/getting-started'
+          },
+          {
+            text: 'API',
+            link: '/zhHans/guide/api'
+          },
+          {
+            text: '变化',
+            link: '/zhHans/changelog'
           }
         ]
       }
