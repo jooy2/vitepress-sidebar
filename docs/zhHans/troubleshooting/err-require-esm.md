@@ -16,7 +16,7 @@ title: 'CommonJS: ERR_REQUIRE_ESM'
 
 ### 解决方案 B
 
-在`package.json`文件中，添加`"type"："模块"`行。这可能需要将项目转换为 ESM 项目。
+在`package.json`文件中，添加`"type"："module"`行。这可能需要将项目转换为 ESM 项目。
 
 ```json5
 {

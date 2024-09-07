@@ -10,7 +10,7 @@ order: 1
 
 首先，在使用本模块之前，您可能需要预先配置 **[VitePress](https://vitepress.dev)**。
 
-我们建议使用 **Node.js 18.x** 或更高版本。**VitePress Sidebar**是用`ESM`编写的。要在 "CommonJS" 中使用它，[请参见此处的说明](/troubleshooting/err-require-esm)。
+我们建议使用 **Node.js 18.x** 或更高版本。**VitePress Sidebar**是用`ESM`编写的。要在 "CommonJS" 中使用它，[请参见此处的说明](/zhHans/troubleshooting/err-require-esm)。
 
 您需要使用 [NPM](https://www.npmjs.com/package/vitepress-sidebar) 或任何其他 Node 模块包管理器安装该模块。该软件包应安装在 `devDependencies` 中，因为它仅在开发人员环境中使用。使用下面的命令：
 
@@ -80,8 +80,8 @@ export default {
   themeConfig: {
     sidebar: generateSidebar({
       /*
-       * For detailed instructions, see the links below:
-       * https://vitepress-sidebar.cdget.com/guide/api
+       * 有关详细说明，请参阅下面的链接：
+       * https://vitepress-sidebar.cdget.com/zhHans/guide/api
        */
       // documentRootPath: '/',
       // scanStartPath: null,
