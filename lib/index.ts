@@ -697,30 +697,68 @@ export default class VitePressSidebar {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  private static formatTitle(options: VitePressSidebarOptions, title: string): string {
-    let result = title;
+  private static formatTitle(
+    options: VitePressSidebarOptions,
+    title: string,
+    fromTitleHeading = false
+  ): string {
+    const htmlTags: string[] = [];
+    const h1Headers: string[] = [];
+    const htmlPlaceholder = '\u0001';
+    const h1Placeholder = '\u0002';
+    let text = title;
 
+    // Replace HTML tags and Markdown h1 headers with placeholders
+    text = text.replace(/<[^>]*>/g, (match) => {
+      htmlTags.push(match);
+      return htmlPlaceholder;
+    });
+    text = text.replace(/^(#+.*)$/gm, (match) => {
+      h1Headers.push(match);
+      return h1Placeholder;
+    });
+
+    // Remove certain Markdown format
+    if (fromTitleHeading && !options.keepMarkdownSyntaxFromTitle) {
+      text = text.replace(/\*{1,2}([^*]+?)\*{1,2}/g, '$1');
+      text = text.replace(/_{1,2}([^_]+?)_{1,2}/g, '$1');
+      text = text.replace(/~{1,2}([^~]+?)~{1,2}/g, '$1');
+      text = text.replace(/`{1,3}([^`]+?)`{1,3}/g, '$1');
+    }
+
+    // Replace text [START]
     if (options.hyphenToSpace) {
-      result = result.replace(/-/g, ' ');
+      text = text.replace(/-/g, ' ');
     }
-
     if (options.underscoreToSpace) {
-      result = result.replace(/_/g, ' ');
+      text = text.replace(/_/g, ' ');
     }
-
     if (options.capitalizeEachWords) {
-      const splitStr = result.trim().split(' ');
+      const splitStr = text.trim().split(' ');
 
       for (let i = 0; i < splitStr.length; i += 1) {
         splitStr[i] = VitePressSidebar.capitalizeFirst(splitStr[i]);
       }
 
-      result = splitStr.join(' ');
+      text = splitStr.join(' ');
     } else if (options.capitalizeFirst) {
-      result = VitePressSidebar.capitalizeFirst(result);
+      text = VitePressSidebar.capitalizeFirst(text);
     }
+    // Replace text [END]
 
-    return result;
+    // Restore Markdown headers and HTML tags
+    let h1Index = -1;
+    let htmlIndex = -1;
+    text = text.replace(new RegExp(h1Placeholder, 'g'), () => {
+      h1Index += 1;
+      return h1Headers[h1Index];
+    });
+    text = text.replace(new RegExp(htmlPlaceholder, 'g'), () => {
+      htmlIndex += 1;
+      return htmlTags[htmlIndex];
+    });
+
+    return text;
   }
 
   private static getTitleFromMd(
@@ -777,16 +815,8 @@ export default class VitePressSidebar {
                   : '';
             }
 
-            // Remove certain Markdown format
-            if (!options.keepMarkdownSyntaxFromTitle) {
-              str = str.replace(/\*{1,2}([^*]+?)\*{1,2}/g, '$1');
-              str = str.replace(/_{1,2}([^_]+?)_{1,2}/g, '$1');
-              str = str.replace(/~{1,2}([^~]+?)~{1,2}/g, '$1');
-              str = str.replace(/`{1,3}([^`]+?)`{1,3}/g, '$1');
-            }
-
             callbackTitleReceived?.();
-            return VitePressSidebar.formatTitle(options, str);
+            return VitePressSidebar.formatTitle(options, str, true);
           }
         }
       } catch {

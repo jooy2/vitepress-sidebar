@@ -440,66 +440,6 @@ describe('Test: APIs', () => {
     done();
   });
 
-  it('API: capitalizeFirst', (done) => {
-    assert.deepEqual(
-      generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/general`,
-        capitalizeFirst: true
-      }),
-      [
-        {
-          text: 'A',
-          link: '/a'
-        },
-        {
-          text: 'B',
-          link: '/b'
-        },
-        {
-          text: 'C',
-          link: '/c'
-        },
-        {
-          text: 'Folder',
-          items: [
-            {
-              text: 'Folder-test-2',
-              link: '/folder/folder-test-2'
-            },
-            {
-              text: 'Folder-test',
-              link: '/folder/folder-test'
-            },
-            {
-              text: 'SubFolder',
-              items: [
-                {
-                  text: 'Sub-folder-test',
-                  link: '/folder/subFolder/sub-folder-test'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          text: 'Folder-2',
-          items: [
-            {
-              text: 'Folder2',
-              link: '/folder-2/folder2'
-            }
-          ]
-        },
-        {
-          text: 'Test',
-          link: '/test'
-        }
-      ]
-    );
-
-    done();
-  });
-
   it('API: includeEmptyFolder', (done) => {
     assert.deepEqual(
       generateSidebar({
@@ -1210,6 +1150,153 @@ describe('Test: APIs', () => {
           link: '/10-a/index.md',
           text: 'Ten',
           items: []
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('API: hyphenToSpace', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/format-title`,
+        useTitleFromFileHeading: true,
+        useTitleFromFrontmatter: true,
+        hyphenToSpace: true
+      }),
+      [
+        {
+          text: '<b>html format title</b>link title',
+          link: '/test'
+        },
+        {
+          text: '~~hello world_1~~ hello world_2 <b class="hello-world_3">hello world_4</b>',
+          link: '/test2'
+        },
+        {
+          text: '<h1 class="test-class_1" style="font-size: 10px; font-weight: bold">abc def_g</h1>',
+          link: '/test3'
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('API: underscoreToSpace', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/format-title`,
+        useTitleFromFileHeading: true,
+        useTitleFromFrontmatter: true,
+        underscoreToSpace: true
+      }),
+      [
+        {
+          text: '<b>html-format-title</b>link-title',
+          link: '/test'
+        },
+        {
+          text: '~~hello-world 1~~ hello-world 2 <b class="hello-world_3">hello-world 4</b>',
+          link: '/test2'
+        },
+        {
+          text: '<h1 class="test-class_1" style="font-size: 10px; font-weight: bold">abc-def g</h1>',
+          link: '/test3'
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('API: capitalizeFirst (A)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        capitalizeFirst: true
+      }),
+      [
+        {
+          text: 'A',
+          link: '/a'
+        },
+        {
+          text: 'B',
+          link: '/b'
+        },
+        {
+          text: 'C',
+          link: '/c'
+        },
+        {
+          text: 'Folder',
+          items: [
+            {
+              text: 'Folder-test-2',
+              link: '/folder/folder-test-2'
+            },
+            {
+              text: 'Folder-test',
+              link: '/folder/folder-test'
+            },
+            {
+              text: 'SubFolder',
+              items: [
+                {
+                  text: 'Sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          text: 'Folder-2',
+          items: [
+            {
+              text: 'Folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'Test',
+          link: '/test'
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('API: capitalizeFirst (B)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/format-folder`,
+        useTitleFromFileHeading: true,
+        useTitleFromFrontmatter: true,
+        capitalizeFirst: true
+      }),
+      [
+        {
+          items: [
+            {
+              link: '/folder text hello/file',
+              text: 'Hello'
+            }
+          ],
+          text: 'Folder text hello'
+        },
+        {
+          items: [
+            {
+              link: '/folder-text_sample/file',
+              text: 'Hello'
+            }
+          ],
+          text: 'Folder-text_sample'
         }
       ]
     );
