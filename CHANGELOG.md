@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.25.4 (2024-09-16)
+
+- Fix performing formatting on attribute text in some Markdown syntax or HTML tags (#176)
+
 ## 1.25.3 (2024-09-03)
 
 - If `convertSameNameSubFileToGroupIndexPage` and `useFolderTitleFromIndexFile` options are defined together, try with title from index file when title is not fetched (#170)
