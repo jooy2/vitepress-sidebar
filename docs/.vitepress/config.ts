@@ -73,16 +73,6 @@ export default defineConfig({
     defineLocales: defineSupportLocales,
     rootLocale: defaultLocale,
     editLinkPattern: editLinkPattern,
-    label: {
-      en: 'English',
-      ko: '한국어',
-      zhHans: '简体中文'
-    },
-    lang: {
-      en: 'en-US',
-      ko: 'ko-KR',
-      zhHans: 'zh-CN'
-    },
     description: {
       en: 'VitePress Sidebar is a VitePress plugin that automatically generates sidebar menus with one setup and no hassle. Save time by easily creating taxonomies for tons of articles.',
       ko: 'VitePress Sidebar는 번거로운 작업 없이 한번의 설정만으로 사이드바 메뉴를 자동으로 생성하는 VitePress 플러그인입니다. 수많은 문서에 대한 분류를 손쉽게 만들어 시간을 절약하세요.',
