@@ -1398,7 +1398,7 @@ describe('Test: APIs', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
-        excludePattern: ['/**/*-test.md', 'b.md', '.dot-directory']
+        excludePattern: ['**/*-test.md', 'b.md', '.dot-directory']
       }),
       [
         {
