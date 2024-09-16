@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 import matter from 'gray-matter';
+import { globSync } from 'glob';
 
 export declare interface VitePressSidebarOptions {
   documentRootPath?: string;
@@ -33,9 +34,8 @@ export declare interface VitePressSidebarOptions {
   keepMarkdownSyntaxFromTitle?: boolean;
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
-  excludeFiles?: string[];
+  excludePattern?: string[];
   excludeFilesByFrontmatterFieldName?: string;
-  excludeFolders?: string[];
   removePrefixAfterOrdering?: boolean;
   prefixSeparator?: string | RegExp;
   rootGroupText?: string;
@@ -75,6 +75,14 @@ export declare interface VitePressSidebarOptions {
    * @deprecated
    */
   useIndexFileForFolderMenuInfo?: boolean;
+  /**
+   * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
+   */
+  excludeFiles?: string[];
+  /**
+   * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
+   */
+  excludeFolders?: string[];
 }
 
 declare interface SidebarListItem {
@@ -344,6 +352,12 @@ export default class VitePressSidebar {
     parentName: string | null,
     options: VitePressSidebarOptions
   ): SidebarListItem {
+    const filesByGlobPattern: string[] = globSync('**', {
+      cwd: currentDir,
+      maxDepth: 1,
+      ignore: options.excludePattern || [],
+      dot: true
+    });
     let directoryFiles: string[] = readdirSync(currentDir);
 
     if (options.manualSortFileNameByPriority!.length > 0) {
@@ -413,6 +427,10 @@ export default class VitePressSidebar {
         }
 
         if (!options.includeDotFiles && /^\./.test(x)) {
+          return null;
+        }
+
+        if (!filesByGlobPattern.includes(x)) {
           return null;
         }
 
@@ -508,7 +526,9 @@ export default class VitePressSidebar {
               text: newDirectoryText,
               ...(withDirectoryLink ? { link: withDirectoryLink } : {}),
               items: directorySidebarItems,
-              ...(options.collapsed === null || options.collapsed === undefined
+              ...(options.collapsed === null ||
+              options.collapsed === undefined ||
+              directorySidebarItems.length < 1
                 ? {}
                 : { collapsed: depth >= options.collapseDepth! && options.collapsed }),
               ...(options.sortMenusByFrontmatterOrder

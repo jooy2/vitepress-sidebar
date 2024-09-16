@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.26.0 (2024-09-16)
+
+- **BREAKING CHANGES**: The `excludeFiles` and `excludeFolders` options have been deprecated; use the `excludePattern` option instead, which corresponds to both custom files and folders with a glob pattern. Both options will be removed in the next major version.
+- Add `excludePattern` option (Specify the files/folders to exclude with the glob file pattern) (#145)
+
 ## 1.25.4 (2024-09-16)
 
 - Fix performing formatting on attribute text in some Markdown syntax or HTML tags (#176)

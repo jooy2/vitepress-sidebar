@@ -1393,4 +1393,73 @@ describe('Test: APIs', () => {
 
     done();
   });
+
+  it('API: excludePattern (A)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        excludePattern: ['/**/*-test.md', 'b.md', '.dot-directory']
+      }),
+      [
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'folder',
+          items: [
+            {
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
+            }
+          ]
+        },
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'test',
+          link: '/test'
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('API: excludePattern (B)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        excludePattern: ['folder', 'a.md', '[b|c].md']
+      }),
+      [
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'test',
+          link: '/test'
+        }
+      ]
+    );
+
+    done();
+  });
 });

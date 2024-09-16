@@ -25,13 +25,14 @@ This page describes all the options in the VitePress Sidebar.
 
 | Include/Exclude | Styling Menu Title |
 | --- | --- |
-| [excludeFiles](#excludefiles) | [hyphenToSpace](#hyphentospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [excludeFolders](#excludefolders) | [capitalizeFirst](#capitalizefirst) |
-| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+| [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
+| [excludeFiles](#excludefiles) | [underscoreToSpace](#underscoretospace) |
+| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [capitalizeFirst](#capitalizefirst) |
+| [excludeFolders](#excludefolders) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeDotFiles](#includedotfiles) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) |  |
 
 | Sorting | Misc |
 | --- | --- |
@@ -278,10 +279,21 @@ If the value is `true`, the first letter of the menu name is forced to uppercase
 
 If the value is `true`, Capitalize all first letters of words separated by spaces. This option is also affected when the menu name is imported via a MarkDown heading or frontmatter.
 
-## `excludeFiles`
+## `excludePattern`
 
 - Type: `Array<string>`
 - Default: `[]`
+
+[glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) Exclude files or folders based on an array of file pattern strings.
+
+For example, the value might look like this: `['abc/', 'def.md', 'ghi/file-**']` This would exclude the `abc` directory and subdirectories in all paths, the `def.md` file, and files starting with `file-` in the `ghi` path, respectively, and these files and folders would be excluded from the menu.
+
+## `excludeFiles` (deprecated)
+
+- Type: `Array<string>`
+- Default: `[]`
+
+### This option is deprecated and will be removed in the next major version. Use the `excludePattern` option instead.
 
 Files that correspond to an array of file names (including extensions) are not shown in the list.
 
@@ -309,10 +321,12 @@ Content
 
 Depending on the value of this option, you can use other names like `draft`, `hide`, etc. instead of `exclude`.
 
-## `excludeFolders`
+## `excludeFolders` (deprecated)
 
 - Type: `Array<string>`
 - Default: `[]`
+
+### This option is deprecated and will be removed in the next major version. Use the `excludePattern` option instead.
 
 Folders that correspond to an array of folder names are not shown in the list, and any sub-items within a folder are also not shown.
 

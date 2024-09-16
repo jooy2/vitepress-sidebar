@@ -25,13 +25,14 @@ order: 2
 
 | 包括/排除 | 菜单标题样式 |
 | --- | --- |
-| [excludeFiles](#excludefiles) | [hyphenToSpace](#hyphentospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [excludeFolders](#excludefolders) | [capitalizeFirst](#capitalizefirst) |
-| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+| [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
+| [excludeFiles](#excludefiles) | [underscoreToSpace](#underscoretospace) |
+| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [capitalizeFirst](#capitalizefirst) |
+| [excludeFolders](#excludefolders) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeDotFiles](#includedotfiles) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) |  |
 
 | 分类 | 杂项 |
 | --- | --- |
@@ -278,10 +279,21 @@ name: This is frontmatter title value.
 
 如果值为 `true`，则单词的所有首字母大写，并用空格分隔。通过 Markdown 标题或 frontmatter 导入菜单名称时，该选项也会受到影响。
 
-## `excludeFiles`
+## `excludePattern`
 
 - Type: `Array<string>`
 - Default: `[]`
+
+[glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) 根据文件模式字符串数组排除文件或文件夹。
+
+例如，该值可能如下所示`['abc/', 'def.md', 'ghi/file-**']`这将分别排除所有路径中的`abc`目录和子目录、`def.md`文件以及`ghi`路径中以`file-`开头的文件，这些文件和文件夹将被排除在菜单之外。
+
+## `excludeFiles` (deprecated)
+
+- Type: `Array<string>`
+- Default: `[]`
+
+### 该选项已被弃用，将在下一个主要版本中删除。请使用 `excludePattern` 选项。
 
 与文件名(包括扩展名)相对应的文件不会显示在列表中。
 
@@ -309,10 +321,12 @@ Content
 
 根据选项的值,您可以使用其他名称,如`draft`、`hide`等,来代替`exclude`。
 
-## `excludeFolders`
+## `excludeFolders` (deprecated)
 
 - Type: `Array<string>`
 - Default: `[]`
+
+### 该选项已被弃用，将在下一个主要版本中删除。请使用 `excludePattern` 选项。
 
 列表中不显示与文件夹名称相对应的文件夹,也不显示文件夹中的任何子项。
 

@@ -25,13 +25,14 @@ order: 2
 
 | 포함 및 제외 | 메뉴 제목 스타일링 |
 | --- | --- |
-| [excludeFiles](#excludefiles) | [hyphenToSpace](#hyphentospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [excludeFolders](#excludefolders) | [capitalizeFirst](#capitalizefirst) |
-| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+| [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
+| [excludeFiles](#excludefiles) | [underscoreToSpace](#underscoretospace) |
+| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [capitalizeFirst](#capitalizefirst) |
+| [excludeFolders](#excludefolders) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeDotFiles](#includedotfiles) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) |  |
 
 | 정렬 | 기타 |
 | --- | --- |
@@ -278,10 +279,21 @@ name: 이 것은 Frontmatter의 제목값입니다.
 
 값이 `true`이면 공백으로 구분된 단어의 첫 글자를 모두 대문자로 표시합니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 앞부분을 통해 가져올 때도 영향을 받습니다.
 
-## `excludeFiles`
+## `excludePattern`
 
 - Type: `Array<string>`
 - Default: `[]`
+
+[glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) 파일 패턴 문자열로 구성된 배열에 따라 파일이나 폴더를 제외합니다.
+
+예를 들어 값은 다음과 같을 수 있습니다: `['abc/', 'def.md', 'ghi/file-**']` 이는 각각 모든 경로에 포함된 `abc` 디렉토리와 하위 항목, `def.md` 파일, `ghi` 경로에 있는 `file-`로 시작하는 파일이 해당되며 이 파일과 폴더들은 메뉴에서 제외됩니다.
+
+## `excludeFiles` (deprecated)
+
+- Type: `Array<string>`
+- Default: `[]`
+
+### 이 옵션은 폐기되었으며 다음 메이저 버전에서 제거됩니다. `excludePattern` 옵션을 대신 사용하세요.
 
 파일 이름 배열(확장자 포함)에 해당하는 파일은 목록에 표시되지 않습니다.
 
@@ -309,7 +321,9 @@ Content
 
 이 옵션의 값에 따라 `exclude` 대신 `draft`, `hide` 등과 같은 다른 이름을 사용할 수 있습니다.
 
-## `excludeFolders`
+## `excludeFolders` (deprecated)
+
+### 이 옵션은 폐기되었으며 다음 메이저 버전에서 제거됩니다. `excludePattern` 옵션을 대신 사용하세요.
 
 - Type: `Array<string>`
 - Default: `[]`
