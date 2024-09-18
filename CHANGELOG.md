@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.26.1 (2024-09-18)
+
+- Fix failed to install node.js 18 (#180)
+
 ## 1.26.0 (2024-09-16)
 
 - **BREAKING CHANGES**: The `excludeFiles` and `excludeFolders` options have been deprecated; use the `excludePattern` option instead, which corresponds to both custom files and folders with a glob pattern. Both options will be removed in the next major version.
