@@ -79,7 +79,7 @@
     "vitepress-i18n": "^1.0.6"
   },
   "dependencies": {
-    "glob": "^11.0.0",
+    "glob": "10.4.5",
     "gray-matter": "^4.0.3"
   }
 }
