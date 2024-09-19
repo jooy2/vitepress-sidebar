@@ -31,6 +31,7 @@ export declare interface VitePressSidebarOptions {
   sortMenusOrderByDescending?: boolean;
   sortMenusOrderNumericallyFromTitle?: boolean;
   sortMenusOrderNumericallyFromLink?: boolean;
+  sortFolderTo?: null | undefined | 'top' | 'bottom';
   keepMarkdownSyntaxFromTitle?: boolean;
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
@@ -652,6 +653,10 @@ export default class VitePressSidebar {
       });
     }
 
+    if (options.sortFolderTo) {
+      sidebarItems = VitePressSidebar.sortByFileTypes(sidebarItems, options.sortFolderTo);
+    }
+
     return sidebarItems;
   }
 
@@ -849,6 +854,26 @@ export default class VitePressSidebar {
     return VitePressSidebar.formatTitle(options, fileName.replace(/\.md$/, ''));
   }
 
+  private static sortByFileTypes(
+    arrItems: SidebarListItem,
+    sortFolderTo: 'top' | 'bottom'
+  ): object[] {
+    for (let i = 0; i < arrItems.length; i += 1) {
+      if (arrItems[i].items && arrItems[i].items.length) {
+        arrItems[i].items = VitePressSidebar.sortByFileTypes(arrItems[i].items, sortFolderTo);
+      }
+    }
+
+    const itemFolders = arrItems.filter((item: SidebarItem) => Object.hasOwn(item, 'items'));
+    const itemFiles = arrItems.filter((item: SidebarItem) => !Object.hasOwn(item, 'items'));
+
+    if (sortFolderTo === 'top') {
+      return [...itemFolders, ...itemFiles];
+    }
+
+    return [...itemFiles, ...itemFolders];
+  }
+
   private static sortByObjectKey(options: SortByObjectKeyOptions): object[] {
     for (let i = 0; i < options.arr.length; i += 1) {
       if (options.arr[i].items && options.arr[i].items.length) {
@@ -863,23 +888,20 @@ export default class VitePressSidebar {
       numeric: options.numerically,
       sensitivity: 'base'
     });
+    let result;
 
     if (options.dateSortFromFrontmatter) {
-      const result = options.arr.sort(
+      result = options.arr.sort(
         (a: any, b: any) => new Date(a[options.key]).valueOf() - new Date(b[options.key]).valueOf()
       );
 
       if (options.desc) {
-        return result.reverse();
+        result = result.reverse();
       }
-
-      return result;
-    }
-
-    if (options.dateSortFromTextWithPrefix) {
+    } else if (options.dateSortFromTextWithPrefix) {
       const dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}/g;
 
-      const result = options.arr.sort((a: any, b: any) => {
+      result = options.arr.sort((a: any, b: any) => {
         const aDate = a[options.key].split(dateRegex)?.[0];
         const bDate = b[options.key].split(dateRegex)?.[0];
 
@@ -887,17 +909,17 @@ export default class VitePressSidebar {
       });
 
       if (options.desc) {
-        return result.reverse();
+        result = result.reverse();
       }
+    } else {
+      result = options.arr.sort((a: any, b: any) => {
+        const compareResult = basicCollator.compare(a[options.key], b[options.key]);
 
-      return result;
+        return options.desc ? -compareResult : compareResult;
+      });
     }
 
-    return options.arr.sort((a: any, b: any) => {
-      const compareResult = basicCollator.compare(a[options.key], b[options.key]);
-
-      return options.desc ? -compareResult : compareResult;
-    });
+    return result;
   }
 
   private static deepDeleteKey(obj: SidebarListItem, key: string): void {

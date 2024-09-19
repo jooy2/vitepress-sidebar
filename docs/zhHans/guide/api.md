@@ -37,6 +37,7 @@ order: 2
 | 分类 | 杂项 |
 | --- | --- |
 | [manualSortFileNameByPriority](#manualsortfilenamebypriority) | [debugPrint](#debugprint) |
+| [sortFolderTo](#sortfolderto) |  |
 | [sortMenusByName](#sortmenusbyname) |  |
 | [sortMenusByFileDatePrefix](#sortmenusbyfiledateprefix) |  |
 | [sortMenusByFrontmatterOrder](#sortmenusbyfrontmatterorder) |  |
@@ -166,6 +167,13 @@ name: This is frontmatter title value.
 - Default: `[]`
 
 按文件名（包括扩展名）数组的顺序排序。如果数组中没有与文件名匹配的值，排序优先级将被退回。这适用于文件和目录，同样的排列规则也适用于子目录。
+
+## `sortFolderTo`
+
+- Type: `undefined | 'top' | 'bottom'`
+- Default: `undefined`
+
+完成所有排序后，文件夹和文件将被分批放置。如果值为 `top`，则所有文件夹都放在文件上方；如果为 `bottom`，则放在文件下方。子文件夹中的项目也会一起排序。
 
 ## `sortMenusByName`
 

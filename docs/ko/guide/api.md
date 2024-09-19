@@ -37,6 +37,7 @@ order: 2
 | 정렬 | 기타 |
 | --- | --- |
 | [manualSortFileNameByPriority](#manualsortfilenamebypriority) | [debugPrint](#debugprint) |
+| [sortFolderTo](#sortfolderto) |  |
 | [sortMenusByName](#sortmenusbyname) |  |
 | [sortMenusByFileDatePrefix](#sortmenusbyfiledateprefix) |  |
 | [sortMenusByFrontmatterOrder](#sortmenusbyfrontmatterorder) |  |
@@ -166,6 +167,13 @@ name: 이 것은 Frontmatter의 제목값입니다.
 - Default: `[]`
 
 파일 이름(확장자 포함) 배열을 순서대로 정렬합니다. 배열에 파일 이름과 일치하는 값이 없으면 정렬 우선순위가 반송됩니다. 이는 파일과 디렉터리 모두에 적용되며 하위 디렉터리에도 동일한 정렬 규칙이 적용됩니다.
+
+## `sortFolderTo`
+
+- Type: `undefined | 'top' | 'bottom'`
+- Default: `undefined`
+
+모든 정렬이 완료된 후 폴더와 파일을 묶어서 배치합니다. 값이 `top`이면 모든 폴더가 파일 보다 위쪽에 배치되며, `bottom`이면 파일 보다 아래쪽에 배치됩니다. 하위 폴더의 항목도 함께 정렬됩니다.
 
 ## `sortMenusByName`
 

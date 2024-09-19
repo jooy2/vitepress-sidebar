@@ -1182,6 +1182,129 @@ describe('Test: APIs', () => {
     done();
   });
 
+  it('API: sortFolderTo (A)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        sortMenusByName: true,
+        sortMenusOrderByDescending: true,
+        sortFolderTo: 'top'
+      }),
+      [
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'folder',
+          items: [
+            {
+              text: 'subFolder',
+              items: [
+                {
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
+                }
+              ]
+            },
+            {
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
+            },
+            {
+              text: 'folder-test',
+              link: '/folder/folder-test'
+            }
+          ]
+        },
+        {
+          text: 'test',
+          link: '/test'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'a',
+          link: '/a'
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('API: sortFolderTo (B)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        sortMenusByName: true,
+        sortFolderTo: 'bottom'
+      }),
+      [
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'test',
+          link: '/test'
+        },
+        {
+          text: 'folder',
+          items: [
+            {
+              text: 'folder-test',
+              link: '/folder/folder-test'
+            },
+            {
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
+            },
+            {
+              text: 'subFolder',
+              items: [
+                {
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        }
+      ]
+    );
+
+    done();
+  });
+
   it('API: hyphenToSpace', (done) => {
     assert.deepEqual(
       generateSidebar({

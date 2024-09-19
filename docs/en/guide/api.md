@@ -37,6 +37,7 @@ This page describes all the options in the VitePress Sidebar.
 | Sorting | Misc |
 | --- | --- |
 | [manualSortFileNameByPriority](#manualsortfilenamebypriority) | [debugPrint](#debugprint) |
+| [sortFolderTo](#sortfolderto) |  |
 | [sortMenusByName](#sortmenusbyname) |  |
 | [sortMenusByFileDatePrefix](#sortmenusbyfiledateprefix) |  |
 | [sortMenusByFrontmatterOrder](#sortmenusbyfrontmatterorder) |  |
@@ -166,6 +167,13 @@ The `index.md` file is hidden from the sidebar menu, but the index file can be s
 - Default: `[]`
 
 Sort by an array of file names (including extensions) in order. If there is no value in the array that matches the filename, the sort priority is sent back. This applies to both files and directories, and the same arrangement rules apply to subdirectories as well.
+
+## `sortFolderTo`
+
+- Type: `undefined | 'top' | 'bottom'`
+- Default: `undefined`
+
+After all the sorting is done, folders and files are placed in batches. If the value is `top`, all folders are placed above the files, and if `bottom`, they are placed below the files. Items in subfolders are also sorted together.
 
 ## `sortMenusByName`
 

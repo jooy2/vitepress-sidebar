@@ -104,6 +104,7 @@ export default {
       // sortMenusOrderByDescending: false,
       // sortMenusOrderNumericallyFromTitle: false,
       // sortMenusOrderNumericallyFromLink: false,
+      // sortFolderTo: null,
       // frontmatterOrderDefaultValue: 0,
       // manualSortFileNameByPriority: ['first.md', 'second', 'third.md'],
       // removePrefixAfterOrdering: false,
