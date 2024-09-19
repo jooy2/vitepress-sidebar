@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.26.2 (2024-09-18)
+## 1.26.3 (2024-09-19)
+
+- Do not create an empty items array
+
+## 1.26.2 (2024-09-19)
 
 - Fix sorting by name to be case-insensitive (#177)
 

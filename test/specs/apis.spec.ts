@@ -142,8 +142,7 @@ describe('Test: APIs', () => {
       [
         {
           text: 'folder-name',
-          link: '/folder-name/folder-name',
-          items: []
+          link: '/folder-name/folder-name'
         }
       ]
     );
@@ -162,8 +161,7 @@ describe('Test: APIs', () => {
       [
         {
           text: 'Folder Text',
-          link: '/folder-name/folder-name',
-          items: []
+          link: '/folder-name/folder-name'
         }
       ]
     );
@@ -184,8 +182,7 @@ describe('Test: APIs', () => {
       [
         {
           text: 'Folder Text',
-          link: '/folder-name/',
-          items: []
+          link: '/folder-name/'
         },
         {
           text: 'Root Index File',
@@ -222,8 +219,7 @@ describe('Test: APIs', () => {
       [
         {
           text: 'Folder Text',
-          link: '/folder-name/folder-name',
-          items: []
+          link: '/folder-name/folder-name'
         }
       ]
     );
@@ -240,16 +236,13 @@ describe('Test: APIs', () => {
       }),
       [
         {
-          text: 'One',
-          items: []
+          text: 'One'
         },
         {
-          text: 'Ten',
-          items: []
+          text: 'Ten'
         },
         {
-          text: 'Two',
-          items: []
+          text: 'Two'
         }
       ]
     );
@@ -266,18 +259,15 @@ describe('Test: APIs', () => {
       [
         {
           text: '1-a',
-          link: '/1-a/index.md',
-          items: []
+          link: '/1-a/index.md'
         },
         {
           text: '10-a',
-          link: '/10-a/index.md',
-          items: []
+          link: '/10-a/index.md'
         },
         {
           text: '2-a',
-          link: '/2-a/index.md',
-          items: []
+          link: '/2-a/index.md'
         }
       ]
     );
@@ -474,8 +464,7 @@ describe('Test: APIs', () => {
               text: 'subFolder',
               items: [
                 {
-                  text: 'empty',
-                  items: []
+                  text: 'empty'
                 },
                 {
                   text: 'sub-folder-test',
@@ -806,7 +795,6 @@ describe('Test: APIs', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/sort-by-name`,
-        debugPrint: true,
         useTitleFromFrontmatter: true,
         hyphenToSpace: true,
         sortMenusByName: true
@@ -1178,18 +1166,15 @@ describe('Test: APIs', () => {
       [
         {
           link: '/1-a/index.md',
-          text: 'One',
-          items: []
+          text: 'One'
         },
         {
           link: '/2-a/index.md',
-          text: 'Two',
-          items: []
+          text: 'Two'
         },
         {
           link: '/10-a/index.md',
-          text: 'Ten',
-          items: []
+          text: 'Ten'
         }
       ]
     );

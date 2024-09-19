@@ -525,7 +525,7 @@ export default class VitePressSidebar {
             return {
               text: newDirectoryText,
               ...(withDirectoryLink ? { link: withDirectoryLink } : {}),
-              items: directorySidebarItems,
+              ...(directorySidebarItems.length > 0 ? { items: directorySidebarItems } : {}),
               ...(options.collapsed === null ||
               options.collapsed === undefined ||
               directorySidebarItems.length < 1
