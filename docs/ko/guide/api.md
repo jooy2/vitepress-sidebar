@@ -190,14 +190,14 @@ name: 이 것은 Frontmatter의 제목값입니다.
 - Type: `boolean`
 - Default: `false`
 
-앞부분의 `order` 속성을 기준으로 메뉴 항목을 정렬합니다. 각 폴더에 대해 `order` 속성의 값(숫자)을 오름차순으로 정렬하거나, `sortMenusOrderByDescending` 옵션이 `true`인 경우 내림차순으로 정렬합니다. `order` 값이 숫자가 아니거나 존재하지 않는 경우 `order`는 `0`으로 판단됩니다.
+Frontmatter의 `order` 속성을 기준으로 메뉴 항목을 정렬합니다. 각 폴더에 대해 `order` 속성의 값(숫자)을 오름차순으로 정렬하거나, `sortMenusOrderByDescending` 옵션이 `true`인 경우 내림차순으로 정렬합니다. `order` 값이 숫자가 아니거나 존재하지 않는 경우 `order`는 `0`으로 판단됩니다.
 
 ## `sortMenusByFrontmatterDate`
 
 - Type: `boolean`
 - Default: `false`
 
-앞부분의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. 또한 `date` 속성 값을 가장 오래된 날짜 순으로 오름차순으로 정렬합니다(`sortMenusOrderByDescending` 옵션이 `true`인 경우 내림차순). 날짜 형식은 `YYYY-MM-DD` 또는 JavaScript 날짜 데이터 유형과 일치해야 합니다.
+Frontmatter의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. 또한 `date` 속성 값을 가장 오래된 날짜 순으로 오름차순으로 정렬합니다(`sortMenusOrderByDescending` 옵션이 `true`인 경우 내림차순). 날짜 형식은 `YYYY-MM-DD` 또는 JavaScript 날짜 데이터 유형과 일치해야 합니다.
 
 ## `sortMenusOrderByDescending`
 
@@ -231,7 +231,7 @@ name: 이 것은 Frontmatter의 제목값입니다.
 - Type: `number`
 - Default: `0`
 
-설정되지 않은 경우 앞부분의 `order` 속성에 대한 기본값을 설정합니다. 이 옵션은 `sortMenusByFrontmatterOrder`가 `true`인 경우에만 활성화됩니다.
+설정되지 않은 경우 Frontmatter의 `order` 속성에 대한 기본값을 설정합니다. 이 옵션은 `sortMenusByFrontmatterOrder`가 `true`인 경우에만 활성화됩니다.
 
 ## `collapsed`
 
@@ -256,21 +256,21 @@ name: 이 것은 Frontmatter의 제목값입니다.
 - Type: `boolean`
 - Default: `false`
 
-값이 `true`이면 파일 이름에 포함된 `-` 기호가 공백으로 변환되어 제목으로 표시됩니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 앞부분을 통해 가져올 때도 영향을 받습니다.
+값이 `true`이면 파일 이름에 포함된 `-` 기호가 공백으로 변환되어 제목으로 표시됩니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 Frontmatter을 통해 가져올 때도 영향을 받습니다.
 
 ## `underscoreToSpace`
 
 - Type: `boolean`
 - Default: `false`
 
-값이 `true`이면 파일 이름에 포함된 `_` 기호가 공백으로 변환되어 제목으로 표시됩니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 앞부분을 통해 가져올 때도 영향을 받습니다.
+값이 `true`이면 파일 이름에 포함된 `_` 기호가 공백으로 변환되어 제목으로 표시됩니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 Frontmatter을 통해 가져올 때도 영향을 받습니다.
 
 ## `capitalizeFirst`
 
 - Type: `boolean`
 - Default: `false`
 
-값이 `true`이면 메뉴 이름의 첫 글자가 강제로 대문자로 바뀝니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 앞부분을 통해 가져올 때도 영향을 받습니다.
+값이 `true`이면 메뉴 이름의 첫 글자가 강제로 대문자로 바뀝니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 Frontmatter을 통해 가져올 때도 영향을 받습니다.
 
 ## `capitalizeEachWords`
 
@@ -304,7 +304,7 @@ name: 이 것은 Frontmatter의 제목값입니다.
 - Type: `string|null`
 - Default: `null`
 
-지정된 앞부분 필드 이름의 값이 `true`로 설정된 문서는 메뉴에서 제외됩니다.
+지정된 Frontmatter 필드 이름의 값이 `true`로 설정된 문서는 메뉴에서 제외됩니다.
 
 옵션이 지정되지 않았거나 옵션 값이 정의되지 않은 경우 무시됩니다.
 
@@ -365,7 +365,7 @@ Content
 - Type: `boolean`
 - Default: `false`
 
-모든 작업이 완료된 후에 표시되는 메뉴 항목에서 각 메뉴 제목의 특정 접두사를 제거합니다. 이 옵션은 앞부분의 정렬을 사용하지 않고 파일 이름의 숫자를 기준으로 정렬하고 메뉴에 해당 숫자를 표시하지 않으려는 경우에 이상적입니다.
+모든 작업이 완료된 후에 표시되는 메뉴 항목에서 각 메뉴 제목의 특정 접두사를 제거합니다. 이 옵션은 Frontmatter의 정렬을 사용하지 않고 파일 이름의 숫자를 기준으로 정렬하고 메뉴에 해당 숫자를 표시하지 않으려는 경우에 이상적입니다.
 
 예를 들어 `prefixSeparator`가 기본값(`.`)인 경우 다음 메뉴의 이름이 다음과 같이 변경됩니다:
 
