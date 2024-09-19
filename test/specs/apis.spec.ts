@@ -742,7 +742,7 @@ describe('Test: APIs', () => {
     done();
   });
 
-  it('API: sortMenusByName', (done) => {
+  it('API: sortMenusByName (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -795,6 +795,46 @@ describe('Test: APIs', () => {
         {
           text: 'test',
           link: '/test'
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('API: sortMenusByName (B)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/sort-by-name`,
+        debugPrint: true,
+        useTitleFromFrontmatter: true,
+        hyphenToSpace: true,
+        sortMenusByName: true
+      }),
+      [
+        {
+          text: 'aaa',
+          link: '/aaa'
+        },
+        {
+          text: 'aab',
+          link: '/aab'
+        },
+        {
+          text: 'BBB',
+          link: '/bbb'
+        },
+        {
+          text: 'bcc',
+          link: '/bcc'
+        },
+        {
+          text: 'bdd',
+          link: '/bdd'
+        },
+        {
+          text: 'ccc',
+          link: '/ccc'
         }
       ]
     );

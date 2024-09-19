@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.26.2 (2024-09-18)
+
+- Fix sorting by name to be case-insensitive (#177)
+
 ## 1.26.1 (2024-09-18)
 
 - Fix failed to install node.js 18 (#180)

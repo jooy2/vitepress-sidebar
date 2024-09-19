@@ -857,19 +857,10 @@ export default class VitePressSidebar {
       }
     }
 
-    if (options.numerically) {
-      const collator = new Intl.Collator([], { numeric: true });
-
-      const result = options.arr.sort((a: any, b: any) =>
-        collator.compare(a[options.key], b[options.key])
-      );
-
-      if (options.desc) {
-        return result.reverse();
-      }
-
-      return result;
-    }
+    const basicCollator = new Intl.Collator([], {
+      numeric: options.numerically,
+      sensitivity: 'base'
+    });
 
     if (options.dateSortFromFrontmatter) {
       const result = options.arr.sort(
@@ -901,16 +892,9 @@ export default class VitePressSidebar {
     }
 
     return options.arr.sort((a: any, b: any) => {
-      if (!options.desc) {
-        if (a[options.key] < b[options.key]) return -1;
-        if (a[options.key] > b[options.key]) return 1;
+      const compareResult = basicCollator.compare(a[options.key], b[options.key]);
 
-        return 0;
-      }
-      if (a[options.key] > b[options.key]) return -1;
-      if (a[options.key] < b[options.key]) return 1;
-
-      return 0;
+      return options.desc ? -compareResult : compareResult;
     });
   }
 
