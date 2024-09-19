@@ -277,7 +277,9 @@ name: 이 것은 Frontmatter의 제목값입니다.
 - Type: `boolean`
 - Default: `false`
 
-값이 `true`이면 공백으로 구분된 단어의 첫 글자를 모두 대문자로 표시합니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 앞부분을 통해 가져올 때도 영향을 받습니다.
+값이 `true`이면 특수문자로 구분된 단어의 첫 글자를 모두 대문자로 표시합니다. 이 옵션은 메뉴 이름을 마크다운 머리글 또는 Frontmatter을 통해 가져올 때도 영향을 받습니다.
+
+예를 들어, `abc def ghi`와 `abc-def ghi`는 각각 `Abc Def Ghi`와 `Abc-Def Ghi`로 변경됩니다.
 
 ## `excludePattern`
 

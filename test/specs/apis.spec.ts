@@ -1329,7 +1329,7 @@ describe('Test: APIs', () => {
     done();
   });
 
-  it('API: capitalizeEachWords', (done) => {
+  it('API: capitalizeEachWords (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
         hyphenToSpace: true,
@@ -1383,6 +1383,28 @@ describe('Test: APIs', () => {
         {
           text: 'Test',
           link: '/test'
+        }
+      ]
+    );
+
+    done();
+  });
+
+  it('API: capitalizeEachWords (B)', (done) => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/capitalize`,
+        useTitleFromFileHeading: true,
+        capitalizeEachWords: true
+      }),
+      [
+        {
+          text: '1-Abc-Def',
+          link: '/1-abc-def'
+        },
+        {
+          text: 'A Hello World Abc-Def',
+          link: '/2'
         }
       ]
     );

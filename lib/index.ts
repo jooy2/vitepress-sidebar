@@ -754,13 +754,15 @@ export default class VitePressSidebar {
       text = text.replace(/_/g, ' ');
     }
     if (options.capitalizeEachWords) {
-      const splitStr = text.trim().split(' ');
+      let lastChar = '';
 
-      for (let i = 0; i < splitStr.length; i += 1) {
-        splitStr[i] = VitePressSidebar.capitalizeFirst(splitStr[i]);
+      for (let i = 0; i < text.length; i += 1) {
+        if ((i === 0 || !/[a-zA-Z]/.test(lastChar)) && /[a-z]/.test(text[i])) {
+          text = text.slice(0, i) + text[i].toUpperCase() + text.slice(i + 1);
+        }
+
+        lastChar = text[i];
       }
-
-      text = splitStr.join(' ');
     } else if (options.capitalizeFirst) {
       text = VitePressSidebar.capitalizeFirst(text);
     }

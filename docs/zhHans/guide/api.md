@@ -277,7 +277,9 @@ name: This is frontmatter title value.
 - Type: `boolean`
 - Default: `false`
 
-如果值为 `true`，则单词的所有首字母大写，并用空格分隔。通过 Markdown 标题或 frontmatter 导入菜单名称时，该选项也会受到影响。
+如果值为 `true`，将大写由特殊字符分隔的单词的所有首字母。当菜单名称通过 markdown 标头或 Frontmatter 导入时，该选项也会受到影响。
+
+例如，`abc def ghi`和`abc-def ghi`将分别变为`Abc Def Ghi`和`Abc-Def Ghi`。
 
 ## `excludePattern`
 

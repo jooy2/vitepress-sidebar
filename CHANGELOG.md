@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.26.3 (2024-09-19)
+## 1.27.0 (2024-09-19)
 
 - Do not create an empty items array
+- Now `capitalizeEachWords` separates them into words based on all special characters
 
 ## 1.26.2 (2024-09-19)
 

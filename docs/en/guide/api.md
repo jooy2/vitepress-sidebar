@@ -277,7 +277,9 @@ If the value is `true`, the first letter of the menu name is forced to uppercase
 - Type: `boolean`
 - Default: `false`
 
-If the value is `true`, Capitalize all first letters of words separated by spaces. This option is also affected when the menu name is imported via a MarkDown heading or frontmatter.
+If the value is `true`, will capitalize all first letters of words separated by special characters. This option is also affected when menu names are imported via markdown headers or Frontmatter.
+
+For example, `abc def ghi` and `abc-def ghi` change to `Abc Def Ghi` and `Abc-Def Ghi`, respectively.
 
 ## `excludePattern`
 
