@@ -26,9 +26,9 @@ order: 2
 | 包括/排除 | 菜单标题样式 |
 | --- | --- |
 | [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
-| [excludeFiles](#excludefiles) | [underscoreToSpace](#underscoretospace) |
+| [excludeFiles](#excludefiles-deprecated) | [underscoreToSpace](#underscoretospace) |
 | [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [capitalizeFirst](#capitalizefirst) |
-| [excludeFolders](#excludefolders) | [capitalizeEachWords](#capitalizeeachwords) |
+| [excludeFolders](#excludefolders-deprecated) | [capitalizeEachWords](#capitalizeeachwords) |
 | [includeDotFiles](#includedotfiles) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
 | [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
 | [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |

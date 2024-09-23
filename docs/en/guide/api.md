@@ -26,9 +26,9 @@ This page describes all the options in the VitePress Sidebar.
 | Include/Exclude | Styling Menu Title |
 | --- | --- |
 | [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
-| [excludeFiles](#excludefiles) | [underscoreToSpace](#underscoretospace) |
+| [excludeFiles](#excludefiles-deprecated) | [underscoreToSpace](#underscoretospace) |
 | [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [capitalizeFirst](#capitalizefirst) |
-| [excludeFolders](#excludefolders) | [capitalizeEachWords](#capitalizeeachwords) |
+| [excludeFolders](#excludefolders-deprecated) | [capitalizeEachWords](#capitalizeeachwords) |
 | [includeDotFiles](#includedotfiles) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
 | [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
 | [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
