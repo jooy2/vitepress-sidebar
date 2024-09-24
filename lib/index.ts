@@ -892,7 +892,8 @@ export default class VitePressSidebar {
 
     if (options.dateSortFromFrontmatter) {
       result = options.arr.sort(
-        (a: any, b: any) => new Date(a[options.key]).valueOf() - new Date(b[options.key]).valueOf()
+        (a: SidebarListItem, b: SidebarListItem) =>
+          new Date(a[options.key]).valueOf() - new Date(b[options.key]).valueOf()
       );
 
       if (options.desc) {
@@ -901,7 +902,7 @@ export default class VitePressSidebar {
     } else if (options.dateSortFromTextWithPrefix) {
       const dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}/g;
 
-      result = options.arr.sort((a: any, b: any) => {
+      result = options.arr.sort((a: SidebarListItem, b: SidebarListItem) => {
         const aDate = a[options.key].split(dateRegex)?.[0];
         const bDate = b[options.key].split(dateRegex)?.[0];
 
@@ -912,7 +913,7 @@ export default class VitePressSidebar {
         result = result.reverse();
       }
     } else {
-      result = options.arr.sort((a: any, b: any) => {
+      result = options.arr.sort((a: SidebarListItem, b: SidebarListItem) => {
         const compareResult = basicCollator.compare(a[options.key], b[options.key]);
 
         return options.desc ? -compareResult : compareResult;
