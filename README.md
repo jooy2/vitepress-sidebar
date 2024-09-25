@@ -6,7 +6,7 @@
 
 - ⚡️ Optimized for the latest version of **VitePress**
 - ⚡️ Easy to use, lots of options to customize to your liking
-- ⚡️ Lightweight bundle file size, zero dependencies
+- ⚡️ Lightweight bundle file size
 - ⚡️ [Multiple Sidebars](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) support
 - ⚡️ [Frontmatter](https://vitepress.dev/guide/frontmatter) support
 - ⚡️ [TypeScript](https://www.typescriptlang.org) support
