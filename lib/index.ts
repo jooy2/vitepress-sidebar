@@ -618,7 +618,8 @@ export default class VitePressSidebar {
       sidebarItems = VitePressSidebar.sortByObjectKey({
         arr: sidebarItems,
         key: 'order',
-        desc: options.sortMenusOrderByDescending
+        desc: options.sortMenusOrderByDescending,
+        numerically: true
       });
 
       VitePressSidebar.deepDeleteKey(sidebarItems, 'order');
