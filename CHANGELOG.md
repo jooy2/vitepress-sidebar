@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.27.1 (2024-09-26)
+
+- Fix `sortMenusByFrontmatterOrder` not been sorted in numerical order but in string order (@Cryolitia)
+
 ## 1.27.0 (2024-09-19)
 
 - Add `sortFolderTo` option (#173)
