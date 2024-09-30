@@ -467,7 +467,7 @@ docs/
    └─ index.md
 ```
 
-`convertSameNameSubFileToGroupIndexPage` 옵션을 사용하면 `guide/api` 폴더 메뉴를 클릭하면 `guide/api/`로 이동하지만 `folderLinkNotIncludesFileName` 옵션을 함께 사용하면 `guide/api/`로 링크가 연결됩니다.
+`convertSameNameSubFileToGroupIndexPage` 옵션을 사용하면 `guide/api` 폴더 메뉴를 클릭하면 `guide/api/api`로 이동하지만 `folderLinkNotIncludesFileName` 옵션을 함께 사용하면 `guide/api/`로 링크가 연결됩니다.
 
 ## `keepMarkdownSyntaxFromTitle`
 
