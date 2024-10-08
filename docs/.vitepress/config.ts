@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress';
 import { generateI18nLocale, generateI18nSearch } from 'vitepress-i18n';
 
 const defaultLocale: string = 'en';
-const editLinkPattern = 'https://github.com/jooy2/vitepress-sidebar/edit/master/docs/:path';
+const editLinkPattern = `${repository.url}/edit/master/docs/:path`;
 
 const commonSidebarConfig: VitePressSidebarOptions = {
   debugPrint: true,
