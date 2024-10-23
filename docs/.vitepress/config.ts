@@ -28,9 +28,6 @@ const defineSupportLocales = [
 // Ref: https://vitepress.dev/reference/site-config
 const vitePressConfig: UserConfig = {
   title: 'VitePress Sidebar',
-  ...generateI18n({
-
-  }),
   lastUpdated: true,
   outDir: '../docs-dist',
   cleanUrls: true,
