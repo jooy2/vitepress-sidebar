@@ -36,33 +36,35 @@ First, import `vitepress-sidebar` in one of the two ways below.
 ### 1. Using named-import
 
 ```javascript
+// `.vitepress/config.js`
 import { generateSidebar } from 'vitepress-sidebar';
 
 const vitepressSidebarOptions = {
   /* Options... */
 };
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: generateSidebar(vitepressSidebarOptions)
   }
-};
+});
 ```
 
 ### 2. Using default-import
 
 ```javascript
+// `.vitepress/config.js`
 import VitePressSidebar from 'vitepress-sidebar';
 
 const vitepressSidebarOptions = {
   /* Options... */
 };
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: VitePressSidebar.generateSidebar(vitepressSidebarOptions)
   }
-};
+});
 ```
 
 Use the `generateSidebar` method in the `themeConfig.sidebar` property of the `.vitepress/config.js` file, which is VitePress's configuration file. VitePress's configuration file might have a different filename or extension depending on your project's settings.
@@ -76,7 +78,7 @@ For more information about the configuration of `generateSidebar`, see **[API](/
 ```javascript
 import { generateSidebar } from 'vitepress-sidebar';
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: generateSidebar({
       /*
@@ -123,7 +125,7 @@ export default {
       // debugPrint: false,
     })
   }
-};
+});
 ```
 
 ## Example output

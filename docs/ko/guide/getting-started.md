@@ -36,33 +36,35 @@ VitePress Sidebar의 `generateSidebar` 메서드를 사용하여 사이드바를
 ### 1. named-import 사용
 
 ```javascript
+// `.vitepress/config.js`
 import { generateSidebar } from 'vitepress-sidebar';
 
 const vitepressSidebarOptions = {
   /* Options... */
 };
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: generateSidebar(vitepressSidebarOptions)
   }
-};
+});
 ```
 
 ### 2. default-import 사용
 
 ```javascript
+// `.vitepress/config.js`
 import VitePressSidebar from 'vitepress-sidebar';
 
 const vitepressSidebarOptions = {
   /* Options... */
 };
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: VitePressSidebar.generateSidebar(vitepressSidebarOptions)
   }
-};
+});
 ```
 
 VitePress의 구성 파일인 `.vitepress/config.js` 파일의 `themeConfig.sidebar` 속성에서 `generateSidebar` 메서드를 사용합니다. VitePress의 구성 파일은 프로젝트 설정에 따라 파일 이름이나 확장자가 다를 수 있습니다.
@@ -76,7 +78,7 @@ VitePress의 구성 파일인 `.vitepress/config.js` 파일의 `themeConfig.side
 ```javascript
 import { generateSidebar } from 'vitepress-sidebar';
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: generateSidebar({
       /*
@@ -123,7 +125,7 @@ export default {
       // debugPrint: false,
     })
   }
-};
+});
 ```
 
 ## 출력 예시

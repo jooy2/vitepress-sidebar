@@ -1,6 +1,6 @@
 import { generateSidebar, VitePressSidebarOptions } from '../../dist';
 import { repository, homepage } from '../../package.json';
-import { defineConfig } from 'vitepress';
+import { defineConfig, UserConfig } from 'vitepress';
 import { generateI18nLocale, generateI18nSearch } from 'vitepress-i18n';
 
 const defaultLocale: string = 'en';
@@ -26,8 +26,11 @@ const defineSupportLocales = [
 ];
 
 // Ref: https://vitepress.dev/reference/site-config
-export default defineConfig({
+const vitePressConfig: UserConfig = {
   title: 'VitePress Sidebar',
+  ...generateI18n({
+
+  }),
   lastUpdated: true,
   outDir: '../docs-dist',
   cleanUrls: true,
@@ -130,4 +133,8 @@ export default defineConfig({
       }
     }
   })
-});
+};
+
+console.dir(vitePressConfig, { depth: null });
+
+export default defineConfig(vitePressConfig);

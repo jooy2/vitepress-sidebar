@@ -36,33 +36,35 @@ $ pnpm i -D vitepress-sidebar
 ### 1. 使用命名导入
 
 ```javascript
+// `.vitepress/config.js`
 import { generateSidebar } from 'vitepress-sidebar';
 
 const vitepressSidebarOptions = {
   /* Options... */
 };
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: generateSidebar(vitepressSidebarOptions)
   }
-};
+});
 ```
 
 ### 2. 使用默认导入
 
 ```javascript
+// `.vitepress/config.js`
 import VitePressSidebar from 'vitepress-sidebar';
 
 const vitepressSidebarOptions = {
   /* Options... */
 };
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: VitePressSidebar.generateSidebar(vitepressSidebarOptions)
   }
-};
+});
 ```
 
 使用`.vitepress/config.js`文件中`themeConfig.sidebar`属性中的`generateSidebar`方法，该文件是VitePress的配置文件。VitePress 的配置文件可能有不同的文件名或扩展名，这取决于您的项目设置。
@@ -76,7 +78,7 @@ export default {
 ```javascript
 import { generateSidebar } from 'vitepress-sidebar';
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: generateSidebar({
       /*
@@ -123,7 +125,7 @@ export default {
       // debugPrint: false,
     })
   }
-};
+});
 ```
 
 ## 输出示例

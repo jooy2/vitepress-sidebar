@@ -19,7 +19,7 @@ Installing and using the package and defining all the utility methods can be fou
 ```javascript
 import { generateSidebar } from 'vitepress-sidebar';
 
-export default {
+export default defineConfig({
   themeConfig: {
     sidebar: generateSidebar({
       /*
@@ -66,7 +66,7 @@ export default {
       // debugPrint: false,
     })
   }
-};
+});
 ```
 
 ## Real-world Uses
