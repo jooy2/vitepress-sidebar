@@ -13,8 +13,8 @@ hero:
       text: 시작하기
       link: /ko/guide/getting-started
     - theme: alt
-      text: API
-      link: /ko/guide/api
+      text: 옵션
+      link: /ko/guide/options
     - theme: alt
       text: GitHub
       link: https://github.com/jooy2/vitepress-sidebar

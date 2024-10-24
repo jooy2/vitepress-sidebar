@@ -71,7 +71,7 @@ Use the `generateSidebar` method in the `themeConfig.sidebar` property of the `.
 
 To test how this will output, try building VitePress with the `debugPrint` option set to `true`. You should see the output in the console.
 
-For more information about the configuration of `generateSidebar`, see **[API](/guide/api)** section below.
+For more information about the configuration of `generateSidebar`, see **[Options](/guide/options)** section below.
 
 ## Code Example
 
@@ -83,7 +83,7 @@ export default defineConfig({
     sidebar: generateSidebar({
       /*
        * For detailed instructions, see the links below:
-       * https://vitepress-sidebar.cdget.com/guide/api
+       * https://vitepress-sidebar.cdget.com/guide/options
        */
       // documentRootPath: '/',
       // scanStartPath: null,

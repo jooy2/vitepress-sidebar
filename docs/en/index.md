@@ -13,8 +13,8 @@ hero:
       text: Getting Started
       link: /guide/getting-started
     - theme: alt
-      text: API
-      link: /guide/api
+      text: Options
+      link: /guide/options
     - theme: alt
       text: GitHub
       link: https://github.com/jooy2/vitepress-sidebar

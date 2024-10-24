@@ -2,7 +2,7 @@
 order: 2
 ---
 
-# API
+# Sidebar Options
 
 This page describes all the options in the VitePress Sidebar.
 

@@ -101,7 +101,7 @@ generateSidebar([
 
 以下选项可用于多个侧边栏:`scanStartPath`、`basePath`和`resolvePath`。每个选项都是可选的,但应根据具体情况正确使用。
 
-下文将对每个选项进行说明。但我们建议您首先参考[API](/zhHans/guide/api)页面上对每个选项的描述。
+下文将对每个选项进行说明。但我们建议您首先参考[选项](/zhHans/guide/options)页面上对每个选项的描述。
 
 以下描述基于以下示例：
 

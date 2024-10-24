@@ -101,7 +101,7 @@ Here's an example of the output from the above setup:
 
 The following options are available in Multiple sidebars: `scanStartPath`, `basePath`, and `resolvePath`. Each option is optional, but should be able to be used correctly depending on the situation.
 
-Each option is described below. However, we recommend that you first refer to the descriptions of each option on the [API](/guide/api) page.
+Each option is described below. However, we recommend that you first refer to the descriptions of each option on the [Options](/guide/options) page.
 
 The descriptions below are based on the following examples:
 

@@ -71,7 +71,7 @@ VitePress의 구성 파일인 `.vitepress/config.js` 파일의 `themeConfig.side
 
 이것이 어떻게 출력되는지 테스트하려면 `debugPrint` 옵션을 `true`로 설정하여 VitePress를 빌드해 보세요. 콘솔에 출력이 표시될 것입니다.
 
-`generateSidebar`의 설정에 대한 자세한 내용은 아래 **[API](/ko/guide/api)** 섹션을 참조하세요.
+`generateSidebar`의 설정에 대한 자세한 내용은 아래 **[옵션](/ko/guide/options)** 섹션을 참조하세요.
 
 ## 코드 예시
 
@@ -83,7 +83,7 @@ export default defineConfig({
     sidebar: generateSidebar({
       /*
        * For detailed instructions, see the links below:
-       * https://vitepress-sidebar.cdget.com/ko/guide/api
+       * https://vitepress-sidebar.cdget.com/ko/guide/options
        */
       // documentRootPath: '/',
       // scanStartPath: null,

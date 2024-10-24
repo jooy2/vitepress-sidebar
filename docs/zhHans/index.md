@@ -13,8 +13,8 @@ hero:
       text: 入门
       link: /zhHans/guide/getting-started
     - theme: alt
-      text: API
-      link: /zhHans/guide/api
+      text: 选项
+      link: /zhHans/guide/options
     - theme: alt
       text: GitHub
       link: https://github.com/jooy2/vitepress-sidebar

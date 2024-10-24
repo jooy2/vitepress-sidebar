@@ -71,7 +71,7 @@ export default defineConfig({
 
 要测试输出结果如何，请尝试在将 `debugPrint` 选项设置为 `true`的情况下构建 VitePress。你应该能在控制台中看到输出结果。
 
-有关`generateSidebar`配置的更多信息,请参阅下面的 **[API](/zhHans/guide/api)** 部分。
+有关`generateSidebar`配置的更多信息,请参阅下面的 **[选项](/zhHans/guide/options)** 部分。
 
 ## 代码示例
 
@@ -83,7 +83,7 @@ export default defineConfig({
     sidebar: generateSidebar({
       /*
        * 有关详细说明，请参阅下面的链接：
-       * https://vitepress-sidebar.cdget.com/zhHans/guide/api
+       * https://vitepress-sidebar.cdget.com/zhHans/guide/options
        */
       // documentRootPath: '/',
       // scanStartPath: null,
