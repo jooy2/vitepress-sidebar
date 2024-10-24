@@ -20,17 +20,10 @@ const commonSidebarConfig: VitePressSidebarOptions = {
   sortMenusByFrontmatterOrder: true
 };
 
-const defineSupportLocales = [
-  { label: defaultLocale, translateLocale: defaultLocale },
-  { label: 'ko', translateLocale: 'ko' },
-  { label: 'zhHans', translateLocale: 'zhHans' }
-];
-
 const vitePressI18nConfig: VitePressI18nOptions = {
+  locales: [defaultLocale, 'ko', 'zhHans'],
   debugPrint: true,
-  defineLocales: defineSupportLocales,
   rootLocale: defaultLocale,
-  editLinkPattern: editLinkPattern,
   searchProvider: 'local',
   description: {
     en: 'VitePress Sidebar is a VitePress plugin that automatically generates sidebar menus with one setup and no hassle. Save time by easily creating taxonomies for tons of articles.',
@@ -110,6 +103,9 @@ const vitePressConfig: UserConfig = {
   },
   themeConfig: {
     logo: { src: '/logo-32.png', width: 24, height: 24 },
+    editLink: {
+      pattern: editLinkPattern
+    },
     sidebar: generateSidebar([
       ...[defaultLocale, 'ko', 'zhHans'].map((lang) => {
         return {
@@ -130,7 +126,5 @@ const vitePressConfig: UserConfig = {
     }
   }
 };
-
-console.dir(vitePressConfig, { depth: null });
 
 export default defineConfig(withI18n(vitePressConfig, vitePressI18nConfig));
