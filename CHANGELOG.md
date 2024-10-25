@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.28.0 (2024-10-25)
+
+- Not using numbers as separators in `capitalizeEachWords` (#185)
+
 ## 1.27.1 (2024-09-26)
 
 - Fix `sortMenusByFrontmatterOrder` not been sorted in numerical order but in string order (@Cryolitia)

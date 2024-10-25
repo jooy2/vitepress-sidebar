@@ -763,7 +763,7 @@ export default class VitePressSidebar {
       let lastChar = '';
 
       for (let i = 0; i < text.length; i += 1) {
-        if ((i === 0 || !/[a-zA-Z]/.test(lastChar)) && /[a-z]/.test(text[i])) {
+        if ((i === 0 || !/[a-zA-Z0-9]/.test(lastChar)) && /[a-z]/.test(text[i])) {
           text = text.slice(0, i) + text[i].toUpperCase() + text.slice(i + 1);
         }
 

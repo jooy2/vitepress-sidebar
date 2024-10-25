@@ -1528,6 +1528,10 @@ describe('Test: APIs', () => {
         {
           text: 'A Hello World Abc-Def',
           link: '/2'
+        },
+        {
+          text: 'Abc1def2g',
+          link: '/abc1def2g'
         }
       ]
     );
