@@ -20,8 +20,8 @@ export declare interface VitePressSidebarOptions {
   useTitleFromFrontmatter?: boolean;
   useFolderTitleFromIndexFile?: boolean;
   useFolderLinkFromIndexFile?: boolean;
+  useFolderLinkFromSameNameSubFile?: boolean;
   includeDotFiles?: boolean;
-  convertSameNameSubFileToGroupIndexPage?: boolean;
   folderLinkNotIncludesFileName?: boolean;
   includeEmptyFolder?: boolean;
   sortMenusByName?: boolean;
@@ -84,6 +84,10 @@ export declare interface VitePressSidebarOptions {
    * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
    */
   excludeFolders?: string[];
+  /**
+   * @deprecated use `useFolderLinkFromSameNameSubFile` instead. This option will be removed in a future version.
+   */
+  convertSameNameSubFileToGroupIndexPage?: boolean;
 }
 
 declare interface SidebarListItem {
@@ -468,7 +472,11 @@ export default class VitePressSidebar {
             (y: SidebarListItem) => y.text === x
           );
 
-          if (options.convertSameNameSubFileToGroupIndexPage && findSameNameSubFile) {
+          if (
+            (options.useFolderLinkFromSameNameSubFile ||
+              options.convertSameNameSubFileToGroupIndexPage) &&
+            findSameNameSubFile
+          ) {
             newDirectoryPagePath = resolve(childItemPath, `${findSameNameSubFile.text}.md`);
             newDirectoryText = VitePressSidebar.getTitleFromMd(
               x,
@@ -566,7 +574,8 @@ export default class VitePressSidebar {
           const childItemTextWithoutExt = x.replace(/\.md$/, '');
 
           if (
-            options.convertSameNameSubFileToGroupIndexPage &&
+            (options.useFolderLinkFromSameNameSubFile ||
+              options.convertSameNameSubFileToGroupIndexPage) &&
             parentName === childItemTextWithoutExt
           ) {
             childItemText = childItemTextWithoutExt;

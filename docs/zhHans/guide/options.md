@@ -18,7 +18,7 @@ order: 2
 
 | 获取菜单标题 | 获取菜单链接 |
 | --- | --- |
-| [useTitleFromFileHeading](#usetitlefromfileheading) | [convertSameNameSubFileToGroupIndexPage](#convertsamenamesubfiletogroupindexpage) |
+| [useTitleFromFileHeading](#usetitlefromfileheading) | [useFolderLinkFromSameNameSubFile](#usefolderlinkfromsamenamesubfile) |
 | [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
 | [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
 | [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
@@ -423,7 +423,7 @@ rootGroup 指定整个菜单组,而与目录结构无关。这将使用一个菜
 
 此选项仅适用于顶层项目。有关一般项目的折叠性，请参阅 `collapsed` 选项。
 
-## `convertSameNameSubFileToGroupIndexPage`
+## `useFolderLinkFromSameNameSubFile`
 
 - Type: `boolean`
 - Default: `false`
@@ -450,7 +450,7 @@ docs/
 - Type: `boolean`
 - Default: `false`
 
-此选项仅在特殊情况下使用：当您有重写规则并且存在具有相同文件夹名称的子文件时，请将其与 `convertSameNameSubFileToGroupIndexPage` 选项并行使用。
+此选项仅在特殊情况下使用：当您有重写规则并且存在具有相同文件夹名称的子文件时，请将其与 `useFolderLinkFromSameNameSubFile` 选项并行使用。
 
 如果此值为 `true`，则在建立文件夹链接时，忽略子项的存在，并仅将链接指定为文件夹路径。
 
@@ -467,7 +467,7 @@ docs/
    └─ index.md
 ```
 
-使用 `convertSameNameSubFileToGroupIndexPage` 选项，单击 guide/api 文件夹菜单将带您进入 `guide/api/api`，但如果您使用 `folderLinkNotIncludesFileName` 选项，则链接将为 `guide/api/`。
+使用 `useFolderLinkFromSameNameSubFile` 选项，单击 guide/api 文件夹菜单将带您进入 `guide/api/api`，但如果您使用 `folderLinkNotIncludesFileName` 选项，则链接将为 `guide/api/`。
 
 ## `keepMarkdownSyntaxFromTitle`
 

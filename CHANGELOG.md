@@ -3,6 +3,7 @@
 ## 1.28.0 (2024-10-25)
 
 - Not using numbers as separators in `capitalizeEachWords` (#185)
+- **BREAKING CHANGES**: `convertSameNameSubFileToGroupIndexPage` option was renamed to `useFolderLinkFromSameNameSubFile` (#184)
 
 ## 1.27.1 (2024-09-26)
 

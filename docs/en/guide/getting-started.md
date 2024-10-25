@@ -119,7 +119,7 @@ export default defineConfig({
       // rootGroupText: 'Contents',
       // rootGroupLink: 'https://github.com/jooy2',
       // rootGroupCollapsed: false,
-      // convertSameNameSubFileToGroupIndexPage: false,
+      // useFolderLinkFromSameNameSubFile: false,
       // folderLinkNotIncludesFileName: false,
       // keepMarkdownSyntaxFromTitle: false,
       // debugPrint: false,

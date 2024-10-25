@@ -18,7 +18,7 @@ order: 2
 
 | 메뉴 제목 | 메뉴 링크 |
 | --- | --- |
-| [useTitleFromFileHeading](#usetitlefromfileheading) | [convertSameNameSubFileToGroupIndexPage](#convertsamenamesubfiletogroupindexpage) |
+| [useTitleFromFileHeading](#usetitlefromfileheading) | [useFolderLinkFromSameNameSubFile](#usefolderlinkfromsamenamesubfile) |
 | [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
 | [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
 | [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
@@ -423,7 +423,7 @@ Content
 
 이 옵션은 최상위 항목에만 적용됩니다. 일반적인 항목 축소 여부는 `collapsed` 옵션을 참조하세요.
 
-## `convertSameNameSubFileToGroupIndexPage`
+## `useFolderLinkFromSameNameSubFile`
 
 - Type: `boolean`
 - Default: `false`
@@ -450,7 +450,7 @@ docs/
 - Type: `boolean`
 - Default: `false`
 
-이 옵션은 특별한 경우에만 사용됩니다. 다시 쓰기 규칙이 있고 폴더 이름이 같은 하위 파일이 있는 경우 `convertSameNameSubFileToGroupIndexPage` 옵션과 병렬로 사용합니다.
+이 옵션은 특별한 경우에만 사용됩니다. 다시 쓰기 규칙이 있고 폴더 이름이 같은 하위 파일이 있는 경우 `useFolderLinkFromSameNameSubFile` 옵션과 병렬로 사용합니다.
 
 이 값이 `true`인 경우 폴더 링크를 설정할 때 하위 항목의 존재를 무시하고 링크를 폴더 경로로만 지정합니다.
 
@@ -467,7 +467,7 @@ docs/
    └─ index.md
 ```
 
-`convertSameNameSubFileToGroupIndexPage` 옵션을 사용하면 `guide/api` 폴더 메뉴를 클릭하면 `guide/api/api`로 이동하지만 `folderLinkNotIncludesFileName` 옵션을 함께 사용하면 `guide/api/`로 링크가 연결됩니다.
+`useFolderLinkFromSameNameSubFile` 옵션을 사용하면 `guide/api` 폴더 메뉴를 클릭하면 `guide/api/api`로 이동하지만 `folderLinkNotIncludesFileName` 옵션을 함께 사용하면 `guide/api/`로 링크가 연결됩니다.
 
 ## `keepMarkdownSyntaxFromTitle`
 

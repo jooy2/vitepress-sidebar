@@ -18,7 +18,7 @@ This page describes all the options in the VitePress Sidebar.
 
 | Getting Menu Title | Getting Menu Link |
 | --- | --- |
-| [useTitleFromFileHeading](#usetitlefromfileheading) | [convertSameNameSubFileToGroupIndexPage](#convertsamenamesubfiletogroupindexpage) |
+| [useTitleFromFileHeading](#usetitlefromfileheading) | [useFolderLinkFromSameNameSubFile](#usefolderlinkfromsamenamesubfile) |
 | [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
 | [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
 | [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
@@ -423,7 +423,7 @@ For more information about rootGroup, see the `rootGroupText` option description
 
 This option only applies to top-level item. For general item collapsibility, see the `collapsed` option.
 
-## `convertSameNameSubFileToGroupIndexPage`
+## `useFolderLinkFromSameNameSubFile`
 
 - Type: `boolean`
 - Default: `false`
@@ -450,7 +450,7 @@ A link is added to the `api` folder, and the `api` page in the `api` folder is n
 - Type: `boolean`
 - Default: `false`
 
-This option is only used in special cases: when you have a rewrite rule and a subfile with the same folder name exists, use it in parallel with the `convertSameNameSubFileToGroupIndexPage` option.
+This option is only used in special cases: when you have a rewrite rule and a subfile with the same folder name exists, use it in parallel with the `useFolderLinkFromSameNameSubFile` option.
 
 If this value is `true`, when establishing a folder link, ignore the existence of child items and specify the link only as a folder path.
 
@@ -467,7 +467,7 @@ docs/
    └─ index.md
 ```
 
-With the `convertSameNameSubFileToGroupIndexPage` option, clicking on the guide/api folder menu will take you to `guide/api/api`, but if you use the `folderLinkNotIncludesFileName` option with it, the link will be `guide/api/`.
+With the `useFolderLinkFromSameNameSubFile` option, clicking on the guide/api folder menu will take you to `guide/api/api`, but if you use the `folderLinkNotIncludesFileName` option with it, the link will be `guide/api/`.
 
 ## `keepMarkdownSyntaxFromTitle`
 

@@ -133,11 +133,11 @@ describe('Test: APIs', () => {
     done();
   });
 
-  it('API: convertSameNameSubFileToGroupIndexPage (A)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (A)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
-        convertSameNameSubFileToGroupIndexPage: true
+        useFolderLinkFromSameNameSubFile: true
       }),
       [
         {
@@ -150,13 +150,13 @@ describe('Test: APIs', () => {
     done();
   });
 
-  it('API: convertSameNameSubFileToGroupIndexPage (B)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (B)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
         useTitleFromFileHeading: true,
         useTitleFromFrontmatter: true,
-        convertSameNameSubFileToGroupIndexPage: true
+        useFolderLinkFromSameNameSubFile: true
       }),
       [
         {
@@ -169,13 +169,13 @@ describe('Test: APIs', () => {
     done();
   });
 
-  it('API: convertSameNameSubFileToGroupIndexPage (C)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (C)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
         useTitleFromFileHeading: true,
         useTitleFromFrontmatter: true,
-        convertSameNameSubFileToGroupIndexPage: true,
+        useFolderLinkFromSameNameSubFile: true,
         folderLinkNotIncludesFileName: true,
         includeRootIndexFile: true
       }),
@@ -194,11 +194,11 @@ describe('Test: APIs', () => {
     done();
   });
 
-  it('API: convertSameNameSubFileToGroupIndexPage (D)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (D)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
-        convertSameNameSubFileToGroupIndexPage: true,
+        useFolderLinkFromSameNameSubFile: true,
         includeEmptyFolder: false
       }),
       []
@@ -207,13 +207,13 @@ describe('Test: APIs', () => {
     done();
   });
 
-  it('API: convertSameNameSubFileToGroupIndexPage (E)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (E)', (done) => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
         useTitleFromFileHeading: true,
         useTitleFromFrontmatter: true,
-        convertSameNameSubFileToGroupIndexPage: true,
+        useFolderLinkFromSameNameSubFile: true,
         useFolderTitleFromIndexFile: true
       }),
       [
