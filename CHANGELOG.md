@@ -4,6 +4,7 @@
 
 - Not using numbers as separators in `capitalizeEachWords` (#185)
 - **BREAKING CHANGES**: `convertSameNameSubFileToGroupIndexPage` option was renamed to `useFolderLinkFromSameNameSubFile` (#184)
+- **BREAKING CHANGES**: Some deprecated options have been removed entirely: `excludeFilesByFrontmatter`, `sortMenusOrderNumerically`, `sortByFileName`, `root`, `includeEmptyGroup`, `withIndex`, `useFolderLinkAsIndexPage`, `useIndexFileForFolderMenuInfo`. See the documentation page and the `CHANGELOG.md` file for replacement options.
 
 ## 1.27.1 (2024-09-26)
 

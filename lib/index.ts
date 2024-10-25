@@ -45,38 +45,6 @@ export declare interface VitePressSidebarOptions {
   frontmatterOrderDefaultValue?: number;
   frontmatterTitleFieldName?: string;
   /**
-   * @deprecated
-   */
-  excludeFilesByFrontmatter?: boolean;
-  /**
-   * @deprecated
-   */
-  sortMenusOrderNumerically?: boolean;
-  /**
-   * @deprecated
-   */
-  sortByFileName?: string[];
-  /**
-   * @deprecated
-   */
-  root?: string;
-  /**
-   * @deprecated
-   */
-  includeEmptyGroup?: boolean;
-  /**
-   * @deprecated
-   */
-  withIndex?: boolean;
-  /**
-   * @deprecated
-   */
-  useFolderLinkAsIndexPage?: boolean;
-  /**
-   * @deprecated
-   */
-  useIndexFileForFolderMenuInfo?: boolean;
-  /**
    * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
    */
   excludeFiles?: string[];
@@ -149,59 +117,6 @@ export default class VitePressSidebar {
       const optionItem = optionItems[i]!;
 
       // Exceptions for changed option names
-      if (optionItem.root) {
-        throw new Error(VitePressSidebar.generateDeprecateMessage('root', 'documentRootPath'));
-      }
-      if (optionItem.withIndex) {
-        throw new Error(
-          VitePressSidebar.generateDeprecateMessage('withIndex', 'includeRootIndexFile')
-        );
-      }
-      if (optionItem.includeEmptyGroup) {
-        throw new Error(
-          VitePressSidebar.generateDeprecateMessage('includeEmptyGroup', 'includeEmptyFolder')
-        );
-      }
-      if (optionItem.sortByFileName) {
-        throw new Error(
-          VitePressSidebar.generateDeprecateMessage(
-            'sortByFileName',
-            'manualSortFileNameByPriority'
-          )
-        );
-      }
-      if (optionItem.useFolderLinkAsIndexPage) {
-        throw new Error(
-          VitePressSidebar.generateDeprecateMessage(
-            'useFolderLinkAsIndexPage',
-            'useIndexFileForFolderMenuInfo'
-          )
-        );
-      }
-      if (optionItem.excludeFilesByFrontmatter) {
-        throw new Error(
-          VitePressSidebar.generateDeprecateMessage(
-            'excludeFilesByFrontmatter',
-            'excludeFilesByFrontmatterFieldName'
-          )
-        );
-      }
-      if (optionItem.useIndexFileForFolderMenuInfo) {
-        throw new Error(
-          VitePressSidebar.generateDeprecateMessage(
-            'useIndexFileForFolderMenuInfo',
-            'useFolderTitleFromIndexFile` and `useFolderLinkFromIndexFile'
-          )
-        );
-      }
-      if (optionItem.sortMenusOrderNumerically) {
-        throw new Error(
-          VitePressSidebar.generateDeprecateMessage(
-            'sortMenusOrderNumerically',
-            'sortMenusOrderNumericallyFromTitle` and `sortMenusOrderNumericallyFromLink'
-          )
-        );
-      }
       if (
         VitePressSidebar.isTrueMinimumNumberOfTimes(
           [
