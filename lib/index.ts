@@ -257,10 +257,6 @@ export default class VitePressSidebar {
     return sidebarResult;
   }
 
-  private static generateDeprecateMessage(original: string, renameTo: string): string {
-    return `The \`${original}\` option was renamed to \`${renameTo}\`.`;
-  }
-
   private static generateNotTogetherMessage(options: string[]): string {
     return `These options cannot be used together: ${options.join(', ')}`;
   }
