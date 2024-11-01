@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.29.0 (2024--)
+## 1.29.0 (2024-11-01)
 
 - Introduces the `withSidebar` function. It can be used instead of `generateSidebar` and can be declared at the `defineConfig` level instead of the `themeConfig.sidebar` level. You can still use `generateSidebar` going forward, but we recommend using `withSidebar` for easier setup.
 
