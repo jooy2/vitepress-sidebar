@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { generateSidebar } from '../../dist';
+import { generateSidebar, withSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
 
@@ -168,6 +168,93 @@ describe('Test: base test', () => {
           link: '/test'
         }
       ]
+    );
+
+    done();
+  });
+
+  it('withSidebar: basic', (done) => {
+    assert.deepStrictEqual(
+      withSidebar(
+        {
+          title: 'VitePress Sidebar',
+          themeConfig: {
+            sidebar: [
+              {
+                text: 'Not used',
+                link: '/'
+              }
+            ],
+            logo: { src: '/logo.png' },
+            footer: {
+              message: 'Footer'
+            }
+          }
+        },
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general`
+        }
+      ),
+      {
+        title: 'VitePress Sidebar',
+        themeConfig: {
+          sidebar: [
+            {
+              text: 'a',
+              link: '/a'
+            },
+            {
+              text: 'b',
+              link: '/b'
+            },
+            {
+              text: 'c',
+              link: '/c'
+            },
+            {
+              text: 'folder',
+              items: [
+                {
+                  text: 'folder-test-2',
+                  link: '/folder/folder-test-2'
+                },
+                {
+                  text: 'folder-test',
+                  link: '/folder/folder-test'
+                },
+                {
+                  text: 'subFolder',
+                  items: [
+                    {
+                      text: 'sub-folder-test',
+                      link: '/folder/subFolder/sub-folder-test'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              text: 'folder-2',
+              items: [
+                {
+                  text: 'folder2',
+                  link: '/folder-2/folder2'
+                }
+              ]
+            },
+            {
+              text: 'test',
+              link: '/test'
+            }
+          ],
+          logo: {
+            src: '/logo.png'
+          },
+          footer: {
+            message: 'Footer'
+          }
+        }
+      }
     );
 
     done();

@@ -135,11 +135,18 @@ VitePress 页面上的各种界面（布局）文本可提供特定语言的 `lo
 $ npm i -D vitepress-i18n
 ```
 
-在 `defineConfig` 中，将其设置为.
+在 `defineConfig` 中，将其设置为:
 
 ```javascript
+import { withSidebar } from 'vitepress-sidebar';
+import { withI18n } from 'vitepress-i18n';
+
 const vitePressConfig = {
   // VitePress config
+};
+
+const vitePressSidebarConfig = {
+  // VitePress Sidebar config
 };
 
 const vitePressI18nConfig = {
@@ -148,7 +155,9 @@ const vitePressI18nConfig = {
   searchProvider: 'local' // enable search with auto translation
 };
 
-export default defineConfig(withI18n(vitePressConfig, vitePressI18nConfig));
+export default defineConfig(
+  withSidebar(withI18n(vitePressConfig, vitePressI18nConfig), vitePressSidebarConfig)
+);
 ```
 
 现在，您可以将界面翻译工作交给模块来完成！当然，您也可以自定义详细文本。

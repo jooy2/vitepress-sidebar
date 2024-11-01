@@ -25,51 +25,118 @@ $ yarn add -D vitepress-sidebar
 $ pnpm i -D vitepress-sidebar
 ```
 
-## How to Use
+## How it works
 
-You can automatically generate a sidebar using the `generateSidebar` method of VitePress Sidebar.
+VitePress Sidebar scans your folders and markdown files hierarchically based on the folder path (`documentRootPath`) you specify in your project's folders.
 
-It scans the folder against the given root path (`documentRootPath`), finds the markdown files before they were built by VitePress, and returns a menu generated based on the folder tree structure.
+It will then exclude, sort, and format certain files based on your settings to read the titles of the sidebar menus, and finally output the settings data according to the sidebar specs required by VitePress.
 
-First, import `vitepress-sidebar` in one of the two ways below.
+As a result, VitePress's `config.js` file should look something like this
 
-### 1. Using named-import
+```javascript
+export default {
+  themeConfig: {
+    sidebar: [
+      // VitePress Sidebar's output
+      {
+        text: 'Guide',
+        items: [
+          { text: 'Introduction', link: '/introduction' },
+          { text: 'Getting Started', link: '/getting-started' }
+        ]
+      }
+    ]
+  }
+};
+```
+
+This eliminates the need for manual creation for each menu in the `sidebar`.
+
+## How to use
+
+VitePress Sidebar can automatically generate sidebars with two functions: `withSidebar` and `generateSidebar`. They have the same behavior, but where to use the functions is different. In general, we recommend using `withSidebar`.
+
+To import the modules you installed into your code, open VitePress's `config.js` file. Note that this file is located in the `.vitepress` directory and may have a different extension depending on your project.
+
+File and use `vitepress-sidebar` in one of the two ways below:
+
+### 1. Using `withSidebar` (recommended)
+
+The `withSidebar` is used at the `defineConfig` level. Note that the configuration object from VitePress should be placed in the first parameter and the options from the VitePress Sidebar in the second parameter.
+
+VitePress Sidebar will override any additional options required by the existing options in VitePress. Any manual `sidebar` options you may have set previously will be overridden by the new options.
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  // VitePress's options here...
+  title: 'VitePress Sidebar',
+  themeConfig: {
+    // ...
+  }
+};
+
+const vitePressSidebarOptions = {
+  // VitePress Sidebar's options here...
+  documentRootPath: '/',
+  collapsed: false,
+  capitalizeFirst: true
+};
+
+export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOptions));
+```
+
+### 2. Using `generateSidebar`
+
+`generateSidebar` is available at the `themeConfig.sidebar` level. This can be used when code separation is needed for more detailed `themeConfig` settings.
 
 ```javascript
 // `.vitepress/config.js`
 import { generateSidebar } from 'vitepress-sidebar';
 
-const vitepressSidebarOptions = {
-  /* Options... */
-};
-
 export default defineConfig({
   themeConfig: {
-    sidebar: generateSidebar(vitepressSidebarOptions)
+    sidebar: generateSidebar({
+      // VitePress Sidebar's options here...
+    })
   }
 });
 ```
 
-### 2. Using default-import
+To scan your project's documents, VitePress Sidebar needs to know the correct location by specifying the working path with the `documentRootPath` option. The default is `/`, but if your VitePress project is located in a separate folder, such as `docs`, depending on your project, you will need to specify the path yourself.
+
+Based on the project root path, the path in `documentRootPath` will write the path where the `.vitePress` folder is located.
+
+```text
+/
+├─ package.json
+├─ src/
+├─ docs/        <--------------- `documentRootPath` ('/docs')
+│  ├─ .vitepress/
+│  ├─ another-directory/
+│  ├─ hello.md
+│  └─ index.md
+└─ ...
+```
+
+If your project is structured like the one above, you'll need to set it up like this:
 
 ```javascript
 // `.vitepress/config.js`
-import VitePressSidebar from 'vitepress-sidebar';
+import { withSidebar } from 'vitepress-sidebar';
 
-const vitepressSidebarOptions = {
-  /* Options... */
+const vitePressOptions = {};
+
+const vitePressSidebarOptions = {
+  documentRootPath: '/docs'
 };
 
-export default defineConfig({
-  themeConfig: {
-    sidebar: VitePressSidebar.generateSidebar(vitepressSidebarOptions)
-  }
-});
+export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOptions));
 ```
 
-Use the `generateSidebar` method in the `themeConfig.sidebar` property of the `.vitepress/config.js` file, which is VitePress's configuration file. VitePress's configuration file might have a different filename or extension depending on your project's settings.
-
-To test how this will output, try building VitePress with the `debugPrint` option set to `true`. You should see the output in the console.
+To test how the sidebar results are printed, try building VitePress with the `debugPrint` option set to `true`. You should see the output in the console.
 
 For more information about the configuration of `generateSidebar`, see **[Options](/guide/options)** section below.
 

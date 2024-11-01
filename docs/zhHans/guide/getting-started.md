@@ -25,51 +25,118 @@ $ yarn add -D vitepress-sidebar
 $ pnpm i -D vitepress-sidebar
 ```
 
+## 工作原理
+
+VitePress Sidebar 会根据您在项目文件夹中指定的文件夹路径（`documentRootPath`），分层扫描您的文件夹和标记文件。
+
+然后，它会根据您的设置对某些文件进行排除、排序和格式化，读取侧边栏菜单的标题，最后根据 VitePress 要求的侧边栏规范输出设置数据。
+
+因此，VitePress 的 `config.js` 文件应如下所示
+
+```javascript
+export default {
+  themeConfig: {
+    sidebar: [
+      // VitePress Sidebar 的输出
+      {
+        text: 'Guide',
+        items: [
+          { text: 'Introduction', link: '/introduction' },
+          { text: 'Getting Started', link: '/getting-started' }
+        ]
+      }
+    ]
+  }
+};
+```
+
+这样就无需在 “边栏 ”中手动创建每个菜单。
+
 ## 如何使用
 
-您可以使用 VitePress Sidebar 的 `generateSidebar` 方法自动生成侧边栏。
+VitePress Sidebar 可通过两个函数自动生成侧边栏：`withSidebar` 和 `generateSidebar`。它们的行为相同，但在何处使用这两个函数却不同。一般来说，我们建议使用`withSidebar`。
 
-该方法会根据给定的根路径（`documentRootPath`）扫描文件夹，在 VitePress 构建之前找到标记文件，并返回根据文件夹树结构生成的菜单。
+要将安装的模块导入代码，请打开VitePress的`config.js`文件。请注意，该文件位于`.vitepress`目录下，扩展名可能有所不同，具体取决于您的项目。
 
-首先，用以下两种方法之一导入 `vitepress-sidebar` 。
+文件，并以以下两种方式之一使用 `vitepress-sidebar`.
 
-### 1. 使用命名导入
+### 1. 使用 `withSidebar`（推荐）
+
+`withSidebar` 用于 `defineConfig` 级别。请注意，VitePress 的配置对象应放在第一个参数中，VitePress 侧边栏的选项应放在第二个参数中。
+
+VitePress 侧边栏将覆盖 VitePress 中现有选项所需的任何附加选项。 您已手动设置的任何 `sidebar` 选项都将被新选项覆盖。
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  // VitePress's options here...
+  title: 'VitePress Sidebar',
+  themeConfig: {
+    // ...
+  }
+};
+
+const vitePressSidebarOptions = {
+  // VitePress Sidebar's options here...
+  documentRootPath: '/',
+  collapsed: false,
+  capitalizeFirst: true
+};
+
+export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOptions));
+```
+
+### 2. 使用 `generateSidebar`
+
+`generateSidebar` 在`themeConfig.sidebar`级别可用。当需要对更详细的 `themeConfig` 设置进行代码分离时，可以使用此功能。
 
 ```javascript
 // `.vitepress/config.js`
 import { generateSidebar } from 'vitepress-sidebar';
 
-const vitepressSidebarOptions = {
-  /* Options... */
-};
-
 export default defineConfig({
   themeConfig: {
-    sidebar: generateSidebar(vitepressSidebarOptions)
+    sidebar: generateSidebar({
+      // VitePress Sidebar's options here...
+    })
   }
 });
 ```
 
-### 2. 使用默认导入
+要扫描您的项目文档，VitePress Sidebar需要通过 `documentRootPath` 选项指定工作路径来了解正确的位置。默认是`/`，但如果你的VitePress项目位于一个单独的文件夹中，如`docs`，根据你的项目，你将需要自己指定路径。
+
+根据项目根路径，`documentRootPath` 中的路径将写入 `.vitePress` 文件夹所在的路径。
+
+```text
+/
+├─ package.json
+├─ src/
+├─ docs/        <--------------- `documentRootPath` ('/docs')
+│  ├─ .vitepress/
+│  ├─ another-directory/
+│  ├─ hello.md
+│  └─ index.md
+└─ ...
+```
+
+如果您的项目结构如上，则需要这样设置:
 
 ```javascript
 // `.vitepress/config.js`
-import VitePressSidebar from 'vitepress-sidebar';
+import { withSidebar } from 'vitepress-sidebar';
 
-const vitepressSidebarOptions = {
-  /* Options... */
+const vitePressOptions = {};
+
+const vitePressSidebarOptions = {
+  documentRootPath: '/docs'
 };
 
-export default defineConfig({
-  themeConfig: {
-    sidebar: VitePressSidebar.generateSidebar(vitepressSidebarOptions)
-  }
-});
+export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOptions));
 ```
 
-使用`.vitepress/config.js`文件中`themeConfig.sidebar`属性中的`generateSidebar`方法，该文件是VitePress的配置文件。VitePress 的配置文件可能有不同的文件名或扩展名，这取决于您的项目设置。
-
-要测试输出结果如何，请尝试在将 `debugPrint` 选项设置为 `true`的情况下构建 VitePress。你应该能在控制台中看到输出结果。
+要测试侧边栏结果如何打印，请在构建 VitePress 时将 `debugPrint` 选项设置为 `true`。你应该能在控制台中看到输出结果。
 
 有关`generateSidebar`配置的更多信息,请参阅下面的 **[选项](/zhHans/guide/options)** 部分。
 

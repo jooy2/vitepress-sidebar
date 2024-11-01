@@ -135,11 +135,18 @@ Install the VitePress I18n module with the command below:
 $ npm i -D vitepress-i18n
 ```
 
-And in `defineConfig`, set the following
+And in `defineConfig`, set the following:
 
 ```javascript
+import { withSidebar } from 'vitepress-sidebar';
+import { withI18n } from 'vitepress-i18n';
+
 const vitePressConfig = {
   // VitePress config
+};
+
+const vitePressSidebarConfig = {
+  // VitePress Sidebar config
 };
 
 const vitePressI18nConfig = {
@@ -148,7 +155,9 @@ const vitePressI18nConfig = {
   searchProvider: 'local' // enable search with auto translation
 };
 
-export default defineConfig(withI18n(vitePressConfig, vitePressI18nConfig));
+export default defineConfig(
+  withSidebar(withI18n(vitePressConfig, vitePressI18nConfig), vitePressSidebarConfig)
+);
 ```
 
 Now leave the interface translation to the module! Of course, you can customize the detailed text as well.

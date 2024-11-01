@@ -135,11 +135,18 @@ VitePress Sidebar의 패밀리 플러그인인 [VitePress I18n](https://vitepres
 $ npm i -D vitepress-i18n
 ```
 
-그리고 `defineConfig`에 다음과 같이 설정합니다.
+그리고 `defineConfig`에 다음과 같이 설정합니다:
 
 ```javascript
+import { withSidebar } from 'vitepress-sidebar';
+import { withI18n } from 'vitepress-i18n';
+
 const vitePressConfig = {
   // VitePress config
+};
+
+const vitePressSidebarConfig = {
+  // VitePress Sidebar config
 };
 
 const vitePressI18nConfig = {
@@ -148,7 +155,9 @@ const vitePressI18nConfig = {
   searchProvider: 'local' // enable search with auto translation
 };
 
-export default defineConfig(withI18n(vitePressConfig, vitePressI18nConfig));
+export default defineConfig(
+  withSidebar(withI18n(vitePressConfig, vitePressI18nConfig), vitePressSidebarConfig)
+);
 ```
 
 이제 인터페이스 번역은 모듈에게 맡기세요! 물론 세부적인 텍스트도 커스터마이징 할 수 있습니다.

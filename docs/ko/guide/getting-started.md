@@ -15,61 +15,128 @@ Node.js 버전은 18.x 이상을 사용하는 것이 좋습니다. **VitePress S
 [NPM](https://www.npmjs.com/package/vitepress-sidebar) 또는 다른 노드 모듈 패키지 관리자를 사용하여 모듈을 설치할 수 있습니다. 이 패키지는 개발자 환경에서만 사용되므로 `devDependencies`에 설치해야 합니다. 아래 명령어로 설치하세요:
 
 ```shell
-# via npm
+# `npm`으로 설치
 $ npm i -D vitepress-sidebar
 
-# via yarn
+# `yarn`으로 설치
 $ yarn add -D vitepress-sidebar
 
-# via pnpm
+# `pnpm`으로 설치
 $ pnpm i -D vitepress-sidebar
 ```
 
+## 동작 과정
+
+VitePress Sidebar는 귀하의 프로젝트의 폴더에서 지정한 폴더 경로(`documentRootPath`)를 기준으로 폴더와 마크다운 파일을 계층별로 스캔합니다.
+
+이후 설정에 따라 특정 파일을 제외, 정렬, 포맷팅하여 사이드바 메뉴의 제목을 읽어온 후 VitePress에서 요구하는 사이드바 스펙에 따라 설정 데이터를 최종적으로 출력하게 됩니다.
+
+결과적으로는 VitePress의 `config.js` 파일은 다음과 같이 변환 될 것입니다.
+
+```javascript
+export default {
+  themeConfig: {
+    sidebar: [
+      // VitePress Sidebar의 출력 결과
+      {
+        text: 'Guide',
+        items: [
+          { text: 'Introduction', link: '/introduction' },
+          { text: 'Getting Started', link: '/getting-started' }
+        ]
+      }
+    ]
+  }
+};
+```
+
+이로 인해 `sidebar`의 각 메뉴에 대한 수동 작성이 필요하지 않습니다.
+
 ## 사용 방법
 
-VitePress Sidebar의 `generateSidebar` 메서드를 사용하여 사이드바를 자동으로 생성할 수 있습니다.
+VitePress Sidebar는 `withSidebar`와 `generateSidebar` 두가지 함수로 사이드 바를 자동으로 생성할 수 있습니다. 이 둘의 동작은 같지만 함수를 사용하는 위치가 다릅니다. 일반적으로는 `withSidebar`를 사용하는 것을 권장합니다.
 
-지정된 루트 경로(`documentRootPath`)에 대해 폴더를 검색하고 VitePress에서 마크다운 파일을 작성하기 전에 찾은 다음 폴더 트리 구조에 따라 생성된 메뉴를 반환합니다.
+설치한 모듈을 코드에 가져오려면 VitePress의 `config.js` 파일을 엽니다. 이 파일은 `.vitepress` 디렉토리에 위치하며 프로젝트에 따라 다른 확장자의 이름일 수 있으니 유의하시기 바랍니다.
 
-먼저 아래 두 가지 방법 중 하나로 `vitepress-sidebar`를 import합니다.
+파일을 열고 아래 두가지 방법 중 하나를 사용하여 `vitepress-sidebar`를 사용할 수 있습니다:
 
-### 1. named-import 사용
+### 1. `withSidebar` 사용 (권장)
+
+`withSidebar`는 `defineConfig`레벨에서 사용합니다. 이 때 주의할 점은 VitePress의 설정 객체가 첫번째 파라미터에, 이후 VitePress Sidebar의 옵션이 두번째 파라미터에 위치해야 합니다.
+
+VitePress Sidebar는 기존 VitePress의 옵션에 필요한 추가 옵션을 오버라이딩 할 것입니다. 기존에 설정한 수동 `sidebar` 옵션은 새 옵션에 의해 무시됩니다.
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  // VitePress의 옵션
+  title: 'VitePress Sidebar',
+  themeConfig: {
+    // ...
+  }
+};
+
+const vitePressSidebarOptions = {
+  // VitePress Sidebar의 옵션
+  documentRootPath: '/',
+  collapsed: false,
+  capitalizeFirst: true
+};
+
+export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOptions));
+```
+
+### 2. `generateSidebar` 사용
+
+`generateSidebar`는 `themeConfig.sidebar` 레벨에서 사용할 수 있습니다. 이는 좀 더 세부적인 `themeConfig` 설정을 위해 코드 분리가 필요할 때 사용할 수 있습니다.
 
 ```javascript
 // `.vitepress/config.js`
 import { generateSidebar } from 'vitepress-sidebar';
 
-const vitepressSidebarOptions = {
-  /* Options... */
-};
-
 export default defineConfig({
   themeConfig: {
-    sidebar: generateSidebar(vitepressSidebarOptions)
+    sidebar: generateSidebar({
+      // VitePress Sidebar의 옵션
+    })
   }
 });
 ```
 
-### 2. default-import 사용
+VitePress Sidebar는 프로젝트의 문서를 스캔하기 위해 `documentRootPath` 옵션으로 작업 경로를 지정하여 올바른 위치를 알려주어야 합니다. 기본값은 `/`이지만 프로젝트에 따라 `docs`와 같이 별도의 폴더에 VitePress 프로젝트가 위치하는 경우에는 직접 경로를 지정해야 합니다.
+
+프로젝트 루트 경로를 기준으로, `documentRootPath`의 경로는 `.vitePress` 폴더가 위치한 경로를 작성합니다.
+
+```text
+/
+├─ package.json
+├─ src/
+├─ docs/        <--------------- `documentRootPath` ('/docs')
+│  ├─ .vitepress/
+│  ├─ another-directory/
+│  ├─ hello.md
+│  └─ index.md
+└─ ...
+```
+
+위와 같은 구조의 프로젝트인 경우 아래와 같이 설정해야 합니다:
 
 ```javascript
 // `.vitepress/config.js`
-import VitePressSidebar from 'vitepress-sidebar';
+import { withSidebar } from 'vitepress-sidebar';
 
-const vitepressSidebarOptions = {
-  /* Options... */
+const vitePressOptions = {};
+
+const vitePressSidebarOptions = {
+  documentRootPath: '/docs'
 };
 
-export default defineConfig({
-  themeConfig: {
-    sidebar: VitePressSidebar.generateSidebar(vitepressSidebarOptions)
-  }
-});
+export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOptions));
 ```
 
-VitePress의 구성 파일인 `.vitepress/config.js` 파일의 `themeConfig.sidebar` 속성에서 `generateSidebar` 메서드를 사용합니다. VitePress의 구성 파일은 프로젝트 설정에 따라 파일 이름이나 확장자가 다를 수 있습니다.
-
-이것이 어떻게 출력되는지 테스트하려면 `debugPrint` 옵션을 `true`로 설정하여 VitePress를 빌드해 보세요. 콘솔에 출력이 표시될 것입니다.
+사이드바 결과가 어떻게 출력되는지 테스트하려면 `debugPrint` 옵션을 `true`로 설정하여 VitePress를 빌드해 보세요. 콘솔에 출력이 표시될 것입니다.
 
 `generateSidebar`의 설정에 대한 자세한 내용은 아래 **[옵션](/ko/guide/options)** 섹션을 참조하세요.
 

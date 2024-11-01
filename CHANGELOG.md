@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.29.0 (2024--)
+
+- Introduces the `withSidebar` function. It can be used instead of `generateSidebar` and can be declared at the `defineConfig` level instead of the `themeConfig.sidebar` level. You can still use `generateSidebar` going forward, but we recommend using `withSidebar` for easier setup.
+
 ## 1.28.0 (2024-10-25)
 
 - Not using numbers as separators in `capitalizeEachWords` (#185)

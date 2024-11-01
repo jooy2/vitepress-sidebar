@@ -1,3 +1,4 @@
+import type { UserConfig } from 'vitepress';
 import { readFileSync, readdirSync, statSync, existsSync } from 'fs';
 import { join, resolve } from 'path';
 import matter from 'gray-matter';
@@ -45,6 +46,10 @@ export declare interface VitePressSidebarOptions {
   frontmatterOrderDefaultValue?: number;
   frontmatterTitleFieldName?: string;
   /**
+   * @private This option is only used internally. Use the `debugPrint` option instead.
+   */
+  debugPrintFromWithSidebar?: boolean;
+  /**
    * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
    */
   excludeFiles?: string[];
@@ -72,6 +77,8 @@ declare interface SortByObjectKeyOptions {
   dateSortFromTextWithPrefix?: boolean;
 }
 
+declare type AnyValueObject = { [key: string]: any };
+
 /*
  * Types from: `vitepress/types/default-theme.d.ts`
  */
@@ -97,6 +104,49 @@ export type Sidebar = SidebarItem[] | SidebarMulti;
  * */
 
 export default class VitePressSidebar {
+  static withSidebar(
+    vitePressOptions: UserConfig,
+    sidebarOptions?: VitePressSidebarOptions | VitePressSidebarOptions[]
+  ): Partial<UserConfig> {
+    let optionItems: (VitePressSidebarOptions | undefined)[];
+
+    if (sidebarOptions === undefined) {
+      optionItems = [{}];
+    } else {
+      optionItems = Array.isArray(sidebarOptions) ? sidebarOptions : [sidebarOptions];
+    }
+
+    let enableDebugPrint = false;
+
+    optionItems.forEach((optionItem) => {
+      if (optionItem?.debugPrint && !enableDebugPrint) {
+        enableDebugPrint = true;
+        optionItem.debugPrint = false;
+      }
+    });
+
+    const sidebarResult: Partial<UserConfig> = {
+      themeConfig: {
+        sidebar: VitePressSidebar.generateSidebar(sidebarOptions)
+      }
+    };
+
+    if (vitePressOptions?.themeConfig?.sidebar) {
+      vitePressOptions.themeConfig.sidebar = {};
+    }
+
+    const result: Partial<UserConfig> = VitePressSidebar.objMergeNewKey(
+      vitePressOptions,
+      sidebarResult
+    ) as UserConfig;
+
+    if (enableDebugPrint) {
+      VitePressSidebar.debugPrint(sidebarOptions, result);
+    }
+
+    return result;
+  }
+
   static generateSidebar(options?: VitePressSidebarOptions | VitePressSidebarOptions[]): Sidebar {
     const sidebar: Sidebar = {};
     const isMultipleSidebars = Array.isArray(options);
@@ -247,11 +297,7 @@ export default class VitePressSidebar {
     }
 
     if (enableDebugPrint) {
-      process.stdout.write(
-        `\n${'='.repeat(50)}\n${JSON.stringify(optionItems, null, 2)}\n${'-'.repeat(
-          50
-        )}\n${JSON.stringify(sidebarResult, null, 2)}\n${'='.repeat(50)}\n\n`
-      );
+      VitePressSidebar.debugPrint(optionItems, sidebarResult);
     }
 
     return sidebarResult;
@@ -906,8 +952,54 @@ export default class VitePressSidebar {
 
     return trueCount >= minimumCount;
   }
+
+  private static isObject(data: any): boolean {
+    return data !== null && data !== undefined && Object.getPrototypeOf(data) === Object.prototype;
+  }
+
+  private static objMergeNewKey(obj: AnyValueObject, obj2: AnyValueObject): AnyValueObject | null {
+    if (!obj || typeof obj !== 'object' || !obj2 || typeof obj2 !== 'object') {
+      return null;
+    }
+
+    const merged: AnyValueObject = { ...obj };
+
+    Object.keys(obj2).forEach((key: string) => {
+      const data = obj2[key];
+
+      if (Object.hasOwn(merged, key)) {
+        if (Array.isArray(merged[key]) && Array.isArray(data)) {
+          if (merged[key].length === data.length) {
+            for (let i = 0; i < merged[key].length; i += 1) {
+              const update = data[i];
+
+              if (VitePressSidebar.isObject(update)) {
+                merged[key][i] = VitePressSidebar.objMergeNewKey(merged[key][i], update);
+              }
+            }
+          }
+        } else if (VitePressSidebar.isObject(merged[key]) && VitePressSidebar.isObject(data)) {
+          merged[key] = VitePressSidebar.objMergeNewKey(merged[key], data);
+        } else {
+          merged[key] = data;
+        }
+      } else {
+        merged[key] = data;
+      }
+    });
+
+    return merged;
+  }
+
+  static debugPrint(optionItems?: AnyValueObject, sidebarResult?: AnyValueObject): void {
+    process.stdout.write(
+      `\n${'='.repeat(50)}\n${JSON.stringify(optionItems, null, 2)}\n${'-'.repeat(
+        50
+      )}\n${JSON.stringify(sidebarResult, null, 2)}\n${'='.repeat(50)}\n\n`
+    );
+  }
 }
 
 export { VitePressSidebar };
 
-export const { generateSidebar } = VitePressSidebar;
+export const { withSidebar, generateSidebar } = VitePressSidebar;
