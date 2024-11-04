@@ -12,7 +12,7 @@ https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars
 
 먼저, 다음과 같이 `docs`라는 루트 프로젝트와 `guide` 및 `config`라는 하위 디렉터리가 있다고 가정해 보겠습니다:
 
-```
+```text
 docs/
 ├─ guide/
 │  ├─ index.md
@@ -29,26 +29,32 @@ URL이 `/guide` 페이지에 있는 경우 사용자는 메뉴에 `guide`의 하
 
 이를 `vitepress-sidebar`에서 구현하려면 기존 설정과 다르게 접근해야 합니다.
 
-이전과 같이 `generateSidebar` 함수를 사용하되 배열을 전달합니다. 배열에는 `vitepress-sidebar`의 옵션이 하나 이상 포함됩니다. 배열의 값은 원하는 만큼의 URL을 지정할 수 있습니다. 물론 다른 설정으로 구성할 수도 있습니다.
+이전과 같이 `withSidebar` 함수를 사용하되 배열을 전달합니다. 배열에는 `vitepress-sidebar`의 옵션이 하나 이상 포함됩니다. 배열의 값은 원하는 만큼의 URL을 지정할 수 있습니다. 물론 다른 설정으로 구성할 수도 있습니다.
 
 ```javascript
 // 배열 인수를 전달해야 함!!!!
-generateSidebar([
-  {
-    documentRootPath: 'docs',
-    scanStartPath: 'guide',
-    basePath: '/guide/',
-    resolvePath: '/guide/',
-    useTitleFromFileHeading: true,
-    excludeFiles: ['do-not-include.md']
-  },
-  {
-    documentRootPath: 'docs',
-    scanStartPath: 'config',
-    resolvePath: '/config/',
-    useTitleFromFrontmatter: true
-  }
-]);
+const vitePressConfigs = {
+  /* ... */
+};
+
+export default defineConfig(
+  withSidebar(vitePressConfigs, [
+    {
+      documentRootPath: 'docs',
+      scanStartPath: 'guide',
+      basePath: '/guide/',
+      resolvePath: '/guide/',
+      useTitleFromFileHeading: true,
+      excludeFiles: ['do-not-include.md']
+    },
+    {
+      documentRootPath: 'docs',
+      scanStartPath: 'config',
+      resolvePath: '/config/',
+      useTitleFromFrontmatter: true
+    }
+  ])
+);
 ```
 
 이러한 옵션의 값은 다음과 같이 결과에 사용됩니다:
@@ -143,20 +149,21 @@ VitePress에서 `base` 경로의 값을 대체합니다. 이 값을 지정하지
 예를 들어 다음과 같은 재작성 규칙이 있다고 가정해 보겠습니다:
 
 ```javascript
-export default defineConfig({
+const vitePressConfigs = {
   rewrites: {
     'guide/:page': 'help/:page'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide',
-        resolvePath: '/guide/'
-      }
-    ])
   }
-});
+};
+
+const vitePressSidebarConfigs = [
+  {
+    documentRootPath: 'docs',
+    scanStartPath: 'guide',
+    resolvePath: '/guide/'
+  }
+];
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 `guide/one.md` 문서가 `help/one` 경로에 표시됩니다. 그러나 이렇게 하면 사이드바가 경로인 `help/one`을 그대로 찾으려고 하기 때문에 메뉴가 표시되지 않습니다.
@@ -164,28 +171,29 @@ export default defineConfig({
 이 문제를 해결하려면 `basePath`의 경로를 `help`로 변경하세요:
 
 ```javascript
-export default defineConfig({
+const vitePressConfigs = {
   rewrites: {
     'guide/:page': 'help/:page'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide',
-        basePath: 'help', // <---------------------- 이 라인을 추가합니다.
-        resolvePath: '/guide/'
-      }
-    ])
   }
-});
+};
+
+const vitePressSidebarConfigs = [
+  {
+    documentRootPath: 'docs',
+    scanStartPath: 'guide',
+    basePath: 'help', // <---------------------- 이 라인을 추가합니다.
+    resolvePath: '/guide/'
+  }
+];
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 ## 복잡한 경로 및 URI가 있는 메뉴 표시하기
 
 위의 예는 일반적으로 경로가 단계로 정의된 경우이지만, 단계가 깊은 폴더를 표시하려는 경우, 특히 URI가 더 짧거나 실제 폴더 경로와 다른 규칙을 사용하는 경우에는 추가 방법을 사용해야 합니다. 예를 들어 다음과 같은 폴더 구조가 있습니다:
 
-```
+```text
 docs/
 ├─ guide/
 │  ├─ api/
@@ -202,7 +210,7 @@ docs/
 이번에는 `/api`라는 한 단계 URI에 도달했을 때 `docs/guide/api`의 메뉴를 표시하고 싶습니다. 예상되는 메뉴는 `api-one.md`와 `api-two.md`만 표시하는 것입니다.
 
 ```javascript
-generateSidebar([
+withSidebar([
   {
     documentRootPath: 'docs',
     scanStartPath: 'guide/api',
@@ -217,25 +225,24 @@ generateSidebar([
 
 https://vitepress.dev/guide/routing#route-rewrites
 
-위의 예에 따라 `themeConfig` 외부에 있어야 하는 **VitePress** 설정 파일인 `config.js` 파일에서 `rewrites` 옵션을 추가합니다:
+위의 예에 따라 `defineConfig`의 VitePress 설정에 `rewrites` 옵션을 추가합니다:
 
 ```javascript
-export default defineConfig({
-  /* [START] 여기부터 */
+const vitePressConfigs = {
+  /* [START] Add This */
   rewrites: {
     'guide/api/:page': 'api/:page'
-  },
-  /* [END] 여기까지 */
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide/api',
-        resolvePath: '/api/'
-      }
-    ])
   }
-});
+  /* [END] Add This */
+};
+
+const vitePressSidebarConfigs = {
+  documentRootPath: 'docs',
+  scanStartPath: 'guide/api',
+  resolvePath: '/api/'
+};
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 이제 URI 경로가 `/api`로 시작하면 `docs/guide/api`의 하위 메뉴가 표시됩니다!

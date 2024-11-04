@@ -10,7 +10,7 @@ VitePress 支持多语言文档。如果您将翻译好的标记文件放在每�
 
 VitePress 页面上的各种界面（布局）文本可提供特定语言的 `locales` 翻译。例如:
 
-```shell
+```text
 "locales": {
   "root": {
     "lang": "en-US",
@@ -67,7 +67,7 @@ VitePress 页面上的各种界面（布局）文本可提供特定语言的 `lo
 
 对于搜索功能中出现的文本，需要在 `defineConfig` 中的 `themeConfig.search` 选项中进行设置，例如:
 
-```shell
+```text
 "themeConfig": {
   "search": {
     "provider": "local",
@@ -187,31 +187,32 @@ export default defineConfig(
 
 下面举例说明如何做到这一点:
 
-```shell
+```javascript
 const rootLocale = 'en'
 const supportedLocales = [rootLocale, 'ko', 'zhHans'];
 
-const commonSidebarConfig = {
+const vitePressConfigs = {
+  rewrites: {
+    'en/:rest*': ':rest*'
+  }
+}
+
+const commonSidebarConfigs = {
   // Sidebar common configurations
 }
 
-export default defineConfig({
-  rewrites: {
-    'en/:rest*': ':rest*'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
+const vitePressSidebarConfigs = [
       ...supportedLocales.map((lang) => {
         return {
-          ...commonSidebarConfig,
+          ...commonSidebarConfigs,
           ...(rootLocale === lang ? {} : { basePath: `/${lang}/` }), // If using `rewrites` option
           documentRootPath: `/docs/${lang}`,
           resolvePath: rootLocale === lang ? '/' : `/${lang}/`,
         };
       })
-    ]),
-  }
-})
+    ]
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs)
 ```
 
 首先，`rewrites` 允许您在使用英语作为根语言（`en` 目录）时抑制 URI 路径中的 `/en/`（这是可选的）。

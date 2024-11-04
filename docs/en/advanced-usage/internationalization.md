@@ -10,7 +10,7 @@ First, VitePress allows you to translate various layout interface elements. By l
 
 Various interface (layout) texts on a VitePress page can provide language-specific translations for `locales`. For example
 
-```shell
+```text
 "locales": {
   "root": {
     "lang": "en-US",
@@ -67,7 +67,7 @@ To learn more about translating layouts, see the following articles: https://vit
 
 For the text that appears in the search function, you need to set it in the `themeConfig.search` option in `defineConfig`, for example
 
-```shell
+```text
 "themeConfig": {
   "search": {
     "provider": "local",
@@ -187,31 +187,32 @@ In the example, `abc.md` is the same document translated into each language. If 
 
 Here's an example of how to accomplish this:
 
-```shell
+```javascript
 const rootLocale = 'en'
 const supportedLocales = [rootLocale, 'ko', 'zhHans'];
 
-const commonSidebarConfig = {
+const vitePressConfigs = {
+  rewrites: {
+    'en/:rest*': ':rest*'
+  }
+}
+
+const commonSidebarConfigs = {
   // Sidebar common configurations
 }
 
-export default defineConfig({
-  rewrites: {
-    'en/:rest*': ':rest*'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
-      ...supportedLocales.map((lang) => {
-        return {
-          ...commonSidebarConfig,
-          ...(rootLocale === lang ? {} : { basePath: `/${lang}/` }), // If using `rewrites` option
-          documentRootPath: `/docs/${lang}`,
-          resolvePath: rootLocale === lang ? '/' : `/${lang}/`,
-        };
-      })
-    ]),
-  }
-})
+const vitePressSidebarConfigs = [
+  ...supportedLocales.map((lang) => {
+    return {
+      ...commonSidebarConfigs,
+      ...(rootLocale === lang ? {} : { basePath: `/${lang}/` }), // If using `rewrites` option
+      documentRootPath: `/docs/${lang}`,
+      resolvePath: rootLocale === lang ? '/' : `/${lang}/`,
+    };
+  })
+]
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs)
 ```
 
 First, `rewrites` allows you to suppress `/en/` in the URI path when you are using English as the root language (the `en` directory). (This is optional.)

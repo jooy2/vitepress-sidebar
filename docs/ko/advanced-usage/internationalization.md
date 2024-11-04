@@ -10,7 +10,7 @@ VitePress에서는 다국어 문서를 지원합니다. 번역된 마크다운 �
 
 VitePress 페이지에 있는 각종 인터페이스(레이아웃) 텍스트는 `locales`에 언어별로 번역된 텍스트를 제공할 수 있습니다. 예를 들면 다음과 같습니다:
 
-```shell
+```text
 "locales": {
   "root": {
     "lang": "en-US",
@@ -67,7 +67,7 @@ VitePress 페이지에 있는 각종 인터페이스(레이아웃) 텍스트는 
 
 검색 기능에 표시되는 텍스트의 경우 `defineConfig`의 `themeConfig.search` 옵션에서 설정해야 합니다. 예를 들면 다음과 같습니다:
 
-```shell
+```text
 "themeConfig": {
   "search": {
     "provider": "local",
@@ -187,31 +187,32 @@ VitePress에서 언어별로 사이드바를 다르게 표시할 수 있습니�
 
 이를 달성하는 예시는 다음과 같습니다:
 
-```shell
+```javascript
 const rootLocale = 'en'
 const supportedLocales = [rootLocale, 'ko', 'zhHans'];
 
-const commonSidebarConfig = {
+const vitePressConfigs = {
+  rewrites: {
+    'en/:rest*': ':rest*'
+  }
+}
+
+const commonSidebarConfigs = {
   // Sidebar common configurations
 }
 
-export default defineConfig({
-  rewrites: {
-    'en/:rest*': ':rest*'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
-      ...supportedLocales.map((lang) => {
-        return {
-          ...commonSidebarConfig,
-          ...(rootLocale === lang ? {} : { basePath: `/${lang}/` }), // If using `rewrites` option
-          documentRootPath: `/docs/${lang}`,
-          resolvePath: rootLocale === lang ? '/' : `/${lang}/`,
-        };
-      })
-    ]),
-  }
-})
+const vitePressSidebarConfigs = [
+  ...supportedLocales.map((lang) => {
+    return {
+      ...commonSidebarConfigs,
+      ...(rootLocale === lang ? {} : { basePath: `/${lang}/` }), // If using `rewrites` option
+      documentRootPath: `/docs/${lang}`,
+      resolvePath: rootLocale === lang ? '/' : `/${lang}/`,
+    };
+  })
+]
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs)
 ```
 
 먼저 `rewrites`는 root 언어인 영어(`en` 디렉토리)를 사용 중일 때, URI 경로에 `/en/`을 표시하지 않게 해줍니다. (이는 선택사항입니다.)

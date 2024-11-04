@@ -117,7 +117,6 @@ const vitePressConfig: UserConfig = {
     editLink: {
       pattern: editLinkPattern
     },
-    // sidebar: generateSidebar(vitePressSidebarConfig),
     socialLinks: [
       { icon: 'npm', link: 'https://www.npmjs.com/package/vitepress-sidebar' },
       { icon: 'github', link: repository.url.replace('.git', '') }

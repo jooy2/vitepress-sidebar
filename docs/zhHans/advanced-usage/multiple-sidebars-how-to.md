@@ -12,7 +12,7 @@ https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars
 
 首先，假设你有一个名为 `docs` 的根项目，其中有名为 `guide` 和 `config` 的子目录，就像这样：
 
-```
+```text
 docs/
 ├─ guide/
 │  ├─ index.md
@@ -29,26 +29,32 @@ docs/
 
 要在 `vitepress-sidebar` 中实现此功能,您需要采用与现有设置不同的方法。
 
-像以前一样使用`generateSidebar`函数,但传递一个数组。该数组至少包含一个来自`vitepress-sidebar`的选项。数组中的值可以是任意数量的URL。当然,您也可以使用不同的设置进行配置。
+像以前一样使用`withSidebar`函数,但传递一个数组。该数组至少包含一个来自`vitepress-sidebar`的选项。数组中的值可以是任意数量的URL。当然,您也可以使用不同的设置进行配置。
 
 ```javascript
 // 必须传递数组参数!!!!
-generateSidebar([
-  {
-    documentRootPath: 'docs',
-    scanStartPath: 'guide',
-    basePath: '/guide/',
-    resolvePath: '/guide/',
-    useTitleFromFileHeading: true,
-    excludeFiles: ['do-not-include.md']
-  },
-  {
-    documentRootPath: 'docs',
-    scanStartPath: 'config',
-    resolvePath: '/config/',
-    useTitleFromFrontmatter: true
-  }
-]);
+const vitePressConfigs = {
+  /* ... */
+};
+
+export default defineConfig(
+  withSidebar(vitePressConfigs, [
+    {
+      documentRootPath: 'docs',
+      scanStartPath: 'guide',
+      basePath: '/guide/',
+      resolvePath: '/guide/',
+      useTitleFromFileHeading: true,
+      excludeFiles: ['do-not-include.md']
+    },
+    {
+      documentRootPath: 'docs',
+      scanStartPath: 'config',
+      resolvePath: '/config/',
+      useTitleFromFrontmatter: true
+    }
+  ])
+);
 ```
 
 这些选项的值在结果中的使用情况如下：
@@ -143,20 +149,21 @@ VitePress使用此选项在遇到特定URI时显示相关菜单。例如,如果�
 例如,假设您有一个重写规则,如下所示:
 
 ```javascript
-export default defineConfig({
+const vitePressConfigs = {
   rewrites: {
     'guide/:page': 'help/:page'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide',
-        resolvePath: '/guide/'
-      }
-    ])
   }
-});
+};
+
+const vitePressSidebarConfigs = [
+  {
+    documentRootPath: 'docs',
+    scanStartPath: 'guide',
+    resolvePath: '/guide/'
+  }
+];
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 `guide/one.md` 文档显示在 `help/one` 的路径中。但是,如果您这样做,侧边栏将不会显示菜单,因为它会尝试找到 `help/one`,而这是路径本身。
@@ -164,28 +171,29 @@ export default defineConfig({
 要解决这个问题,请将`basePath`中的路径改为`help`:
 
 ```javascript
-export default defineConfig({
+const vitePressConfigs = {
   rewrites: {
     'guide/:page': 'help/:page'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide',
-        basePath: 'help', // <---------------------- Add this
-        resolvePath: '/guide/'
-      }
-    ])
   }
-});
+};
+
+const vitePressSidebarConfigs = [
+  {
+    documentRootPath: 'docs',
+    scanStartPath: 'guide',
+    basePath: 'help', // <---------------------- 添加这一行
+    resolvePath: '/guide/'
+  }
+];
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 ## 显示带有复杂路径和 URI 的菜单
 
 上面的例子通常是在路径按步骤定义的情况下，但当你想显示按步骤深入的文件夹时，特别是当 URI 较短或使用与实际文件夹路径不同的约定时，你需要使用额外的方法。例如，你有一个这样的文件夹结构：
 
-```
+```text
 docs/
 ├─ guide/
 │  ├─ api/
@@ -202,7 +210,7 @@ docs/
 这次,我们希望当到达单级 URI `/api` 时,在 `docs/guide/api` 中显示菜单。预期的菜单仅显示 `api-one.md` 和 `api-two.md`。
 
 ```javascript
-generateSidebar([
+withSidebar([
   {
     documentRootPath: 'docs',
     scanStartPath: 'guide/api',
@@ -217,25 +225,24 @@ generateSidebar([
 
 https://vitepress.dev/guide/routing#route-rewrites
 
-按照上面的示例,我们将把“重写`rewrites`**VitePress的**`config.js`文件中,该文件应位于`themeConfig`之外:
+按照上面的示例，在 `defineConfig` 中的 VitePress 设置中添加 `rewrites` 选项:
 
 ```javascript
-export default defineConfig({
+const vitePressConfigs = {
   /* [START] Add This */
   rewrites: {
     'guide/api/:page': 'api/:page'
-  },
-  /* [END] Add This */
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide/api',
-        resolvePath: '/api/'
-      }
-    ])
   }
-});
+  /* [END] Add This */
+};
+
+const vitePressSidebarConfigs = {
+  documentRootPath: 'docs',
+  scanStartPath: 'guide/api',
+  resolvePath: '/api/'
+};
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 现在，当 URI 路径以 `/api` 开头时，将显示 `docs/guide/api` 的子菜单！

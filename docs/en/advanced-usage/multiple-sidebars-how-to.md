@@ -12,7 +12,7 @@ https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars
 
 First, let's assume you have a root project called `docs` with subdirectories called `guide` and `config`, like this:
 
-```
+```text
 docs/
 ├─ guide/
 │  ├─ index.md
@@ -29,26 +29,32 @@ When the URL is located on a `/guide` page, the user wants the menu to show only
 
 To implement this in `vitepress-sidebar`, you need to approach it differently from the existing setup.
 
-Use the `generateSidebar` function as before, but pass an array. The array will contain at least one option from `vitepress-sidebar`. The values in the array can be as many URLs as you want to specify. Of course, you can also configure them with different settings.
+Use the `withSidebar` function as before, but pass an array. The array will contain at least one option from `vitepress-sidebar`. The values in the array can be as many URLs as you want to specify. Of course, you can also configure them with different settings.
 
 ```javascript
 // Must pass array arguments!!!!
-generateSidebar([
-  {
-    documentRootPath: 'docs',
-    scanStartPath: 'guide',
-    basePath: '/guide/',
-    resolvePath: '/guide/',
-    useTitleFromFileHeading: true,
-    excludeFiles: ['do-not-include.md']
-  },
-  {
-    documentRootPath: 'docs',
-    scanStartPath: 'config',
-    resolvePath: '/config/',
-    useTitleFromFrontmatter: true
-  }
-]);
+const vitePressConfigs = {
+  /* ... */
+};
+
+export default defineConfig(
+  withSidebar(vitePressConfigs, [
+    {
+      documentRootPath: 'docs',
+      scanStartPath: 'guide',
+      basePath: '/guide/',
+      resolvePath: '/guide/',
+      useTitleFromFileHeading: true,
+      excludeFiles: ['do-not-include.md']
+    },
+    {
+      documentRootPath: 'docs',
+      scanStartPath: 'config',
+      resolvePath: '/config/',
+      useTitleFromFrontmatter: true
+    }
+  ])
+);
 ```
 
 The values of these options are used in the results as follows:
@@ -143,20 +149,21 @@ If the actual path to the directory is different from the path structure in the 
 For example, suppose you have a rewrite rule that looks like this:
 
 ```javascript
-export default defineConfig({
+const vitePressConfigs = {
   rewrites: {
     'guide/:page': 'help/:page'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide',
-        resolvePath: '/guide/'
-      }
-    ])
   }
-});
+};
+
+const vitePressSidebarConfigs = [
+  {
+    documentRootPath: 'docs',
+    scanStartPath: 'guide',
+    resolvePath: '/guide/'
+  }
+];
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 The `guide/one.md` document is displayed in the path to `help/one`. However, if you do this, the sidebar will not display the menu because it will try to find `help/one`, which is the path as it is.
@@ -164,28 +171,29 @@ The `guide/one.md` document is displayed in the path to `help/one`. However, if 
 To fix this, change the path in `basePath` to `help`:
 
 ```javascript
-export default defineConfig({
+const vitePressConfigs = {
   rewrites: {
     'guide/:page': 'help/:page'
-  },
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide',
-        basePath: 'help', // <---------------------- Add this
-        resolvePath: '/guide/'
-      }
-    ])
   }
-});
+};
+
+const vitePressSidebarConfigs = [
+  {
+    documentRootPath: 'docs',
+    scanStartPath: 'guide',
+    basePath: 'help', // <---------------------- Add this
+    resolvePath: '/guide/'
+  }
+];
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 ## Displaying menus with complex paths and URIs
 
 The above example is typically when the path is defined in steps, but when you want to show folders that are deep in steps, especially when the URI is shorter or uses different conventions than the actual folder path, you need to use additional methods. For example, you have a folder structure like this:
 
-```
+```text
 docs/
 ├─ guide/
 │  ├─ api/
@@ -202,7 +210,7 @@ docs/
 This time, we want to show the menu in `docs/guide/api` when we reach the one-level URI `/api`. The expected menu is to show only `api-one.md` and `api-two.md`.
 
 ```javascript
-generateSidebar([
+withSidebar([
   {
     documentRootPath: 'docs',
     scanStartPath: 'guide/api',
@@ -217,25 +225,24 @@ To solve this, you need to use **VitePress'** Routing feature in parallel, see t
 
 https://vitepress.dev/guide/routing#route-rewrites
 
-Following the example above, we'll add the `rewrites` option to **VitePress'** `config.js` file, which should be located outside the `themeConfig`:
+Add the `rewrites` option to the VitePress settings in `defineConfig` following the example above:
 
 ```javascript
-export default defineConfig({
+const vitePressConfigs = {
   /* [START] Add This */
   rewrites: {
     'guide/api/:page': 'api/:page'
-  },
-  /* [END] Add This */
-  themeConfig: {
-    sidebar: generateSidebar([
-      {
-        documentRootPath: 'docs',
-        scanStartPath: 'guide/api',
-        resolvePath: '/api/'
-      }
-    ])
   }
-});
+  /* [END] Add This */
+};
+
+const vitePressSidebarConfigs = {
+  documentRootPath: 'docs',
+  scanStartPath: 'guide/api',
+  resolvePath: '/api/'
+};
+
+export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfigs));
 ```
 
 Now this will show a submenu of `docs/guide/api` when the URI path starts with `/api`!
