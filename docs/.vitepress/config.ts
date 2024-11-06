@@ -5,6 +5,7 @@ import { withI18n } from 'vitepress-i18n';
 import { VitePressI18nOptions } from 'vitepress-i18n/dist/types';
 
 const defaultLocale: string = 'en';
+const supportLocales: string[] = [defaultLocale, 'ko', 'zhHans'];
 const editLinkPattern = `${repository.url}/edit/master/docs/:path`;
 
 const commonSidebarConfig: VitePressSidebarOptions = {
@@ -21,7 +22,7 @@ const commonSidebarConfig: VitePressSidebarOptions = {
 };
 
 const vitePressSidebarConfig = [
-  ...[defaultLocale, 'ko', 'zhHans'].map((lang) => {
+  ...supportLocales.map((lang) => {
     return {
       ...commonSidebarConfig,
       documentRootPath: `/docs/${lang}`,
@@ -32,7 +33,7 @@ const vitePressSidebarConfig = [
 ];
 
 const vitePressI18nConfig: VitePressI18nOptions = {
-  locales: [defaultLocale, 'ko', 'zhHans'],
+  locales: supportLocales,
   debugPrint: true,
   rootLocale: defaultLocale,
   searchProvider: 'local',
