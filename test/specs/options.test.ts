@@ -1,10 +1,11 @@
 import assert from 'assert';
+import { describe, it } from 'node:test';
 import { generateSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
 
 describe('Test: APIs', () => {
-  it('API: documentRootPath', (done) => {
+  it('API: documentRootPath', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general/folder/subFolder`
@@ -16,11 +17,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: useTitleFromFileHeading', (done) => {
+  it('API: useTitleFromFileHeading', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -76,11 +75,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: useTitleFromFrontmatter', (done) => {
+  it('API: useTitleFromFrontmatter', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -106,11 +103,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: frontmatterTitleFieldName', (done) => {
+  it('API: frontmatterTitleFieldName', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-custom-title-field`,
@@ -129,11 +124,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: useFolderLinkFromSameNameSubFile (A)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
@@ -146,11 +139,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: useFolderLinkFromSameNameSubFile (B)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
@@ -165,11 +156,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: useFolderLinkFromSameNameSubFile (C)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (C)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
@@ -190,11 +179,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: useFolderLinkFromSameNameSubFile (D)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (D)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
@@ -203,11 +190,9 @@ describe('Test: APIs', () => {
       }),
       []
     );
-
-    done();
   });
 
-  it('API: useFolderLinkFromSameNameSubFile (E)', (done) => {
+  it('API: useFolderLinkFromSameNameSubFile (E)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
@@ -223,11 +208,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: useFolderTitleFromIndexFile', (done) => {
+  it('API: useFolderTitleFromIndexFile', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -246,11 +229,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: useFolderLinkFromIndexFile', (done) => {
+  it('API: useFolderLinkFromIndexFile', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -271,11 +252,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: collapsed', (done) => {
+  it('API: collapsed', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -334,11 +313,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: collapseDepth', (done) => {
+  it('API: collapseDepth', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -397,11 +374,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: manualSortFileNameByPriority', (done) => {
+  it('API: manualSortFileNameByPriority', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -426,11 +401,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: includeEmptyFolder', (done) => {
+  it('API: includeEmptyFolder', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -489,11 +462,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: excludeFiles', (done) => {
+  it('API: excludeFiles', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/numeric-title`,
@@ -521,11 +492,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: excludeFilesByFrontmatterFieldName', (done) => {
+  it('API: excludeFilesByFrontmatterFieldName', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -542,11 +511,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: excludeFolders', (done) => {
+  it('API: excludeFolders', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -571,11 +538,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: includeDotFiles', (done) => {
+  it('API: includeDotFiles', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -644,11 +609,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: includeFolderIndexFile', (done) => {
+  it('API: includeFolderIndexFile', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -684,11 +647,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: removePrefixAfterOrdering', (done) => {
+  it('API: removePrefixAfterOrdering', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
@@ -727,11 +688,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortMenusByName (A)', (done) => {
+  it('API: sortMenusByName (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -787,11 +746,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortMenusByName (B)', (done) => {
+  it('API: sortMenusByName (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/sort-by-name`,
@@ -826,11 +783,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortMenusByFileDatePrefix (A)', (done) => {
+  it('API: sortMenusByFileDatePrefix (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/title-with-date-header`,
@@ -873,11 +828,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortMenusByFileDatePrefix (B)', (done) => {
+  it('API: sortMenusByFileDatePrefix (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/title-with-date-header`,
@@ -922,11 +875,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortMenusByFrontmatterOrder', (done) => {
+  it('API: sortMenusByFrontmatterOrder', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -951,11 +902,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: rootGroup related configurations (A)', (done) => {
+  it('API: rootGroup related configurations (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1020,11 +969,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: rootGroup related configurations (B)', (done) => {
+  it('API: rootGroup related configurations (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1087,11 +1034,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: keepMarkdownSyntaxFromTitle', (done) => {
+  it('API: keepMarkdownSyntaxFromTitle', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/special-markdown`,
@@ -1105,11 +1050,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortMenusOrderNumericallyFromTitle', (done) => {
+  it('API: sortMenusOrderNumericallyFromTitle', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/numeric-title`,
@@ -1150,11 +1093,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortMenusOrderNumericallyFromLink', (done) => {
+  it('API: sortMenusOrderNumericallyFromLink', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -1178,11 +1119,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortFolderTo (A)', (done) => {
+  it('API: sortFolderTo (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1240,11 +1179,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortFolderTo (B)', (done) => {
+  it('API: sortFolderTo (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1301,11 +1238,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: hyphenToSpace', (done) => {
+  it('API: hyphenToSpace', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/format-title`,
@@ -1328,11 +1263,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: underscoreToSpace', (done) => {
+  it('API: underscoreToSpace', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/format-title`,
@@ -1355,11 +1288,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: capitalizeFirst (A)', (done) => {
+  it('API: capitalizeFirst (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1415,11 +1346,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: capitalizeFirst (B)', (done) => {
+  it('API: capitalizeFirst (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/format-folder`,
@@ -1448,11 +1377,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: capitalizeEachWords (A)', (done) => {
+  it('API: capitalizeEachWords (A)', () => {
     assert.deepEqual(
       generateSidebar({
         hyphenToSpace: true,
@@ -1509,11 +1436,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: capitalizeEachWords (B)', (done) => {
+  it('API: capitalizeEachWords (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/capitalize`,
@@ -1535,11 +1460,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: sortMenusByFrontmatterDate', (done) => {
+  it('API: sortMenusByFrontmatterDate', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -1564,11 +1487,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: excludePattern (A)', (done) => {
+  it('API: excludePattern (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1607,11 +1528,9 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('API: excludePattern (B)', (done) => {
+  it('API: excludePattern (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -1633,7 +1552,5 @@ describe('Test: APIs', () => {
         }
       ]
     );
-
-    done();
   });
 });

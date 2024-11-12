@@ -23,9 +23,10 @@
   },
   "overrides": [
     {
-      "files": ["test/specs/*.spec.ts"],
+      "files": ["test/specs/*.test.ts"],
       "rules": {
         "import/extensions": 0,
+        "import/no-unresolved": 0,
         "no-undef": 0
       }
     }

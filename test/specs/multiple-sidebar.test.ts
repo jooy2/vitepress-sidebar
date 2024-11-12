@@ -1,10 +1,11 @@
 import assert from 'assert';
+import { describe, it } from 'node:test';
 import { generateSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
 
 describe('Test: multiple sidebars', () => {
-  it('Multiple Sidebars (A)', (done) => {
+  it('Multiple Sidebars (A)', () => {
     assert.deepEqual(
       generateSidebar([
         {
@@ -108,11 +109,9 @@ describe('Test: multiple sidebars', () => {
         }
       }
     );
-
-    done();
   });
 
-  it('Multiple Sidebars (B)', (done) => {
+  it('Multiple Sidebars (B)', () => {
     assert.deepEqual(
       generateSidebar([
         {
@@ -133,11 +132,9 @@ describe('Test: multiple sidebars', () => {
         }
       }
     );
-
-    done();
   });
 
-  it('Multiple Sidebars (C)', (done) => {
+  it('Multiple Sidebars (C)', () => {
     assert.deepEqual(
       generateSidebar([
         {
@@ -194,11 +191,9 @@ describe('Test: multiple sidebars', () => {
         }
       }
     );
-
-    done();
   });
 
-  it('Multiple Sidebars (D)', (done) => {
+  it('Multiple Sidebars (D)', () => {
     assert.deepEqual(
       generateSidebar([
         {
@@ -220,7 +215,5 @@ describe('Test: multiple sidebars', () => {
         }
       }
     );
-
-    done();
   });
 });

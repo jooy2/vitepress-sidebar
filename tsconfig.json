@@ -14,6 +14,6 @@
     "strict": true,
     "newLine": "lf"
   },
-  "include": ["lib/**/*.ts", "lib/**/*.d.ts", "test/**/*.spec.ts", "docs/.vitepress/config.ts"],
+  "include": ["lib/**/*.ts", "lib/**/*.d.ts", "test/**/*.test.ts", "docs/.vitepress/config.ts"],
   "exclude": ["node_modules"]
 }

@@ -107,7 +107,7 @@ You can also request a pull to fix bugs and add frequently used features. To con
 
 1. Clone the project.
 2. Create changes (features, bugfixes) in a new branch.
-3. Write a test (`test/specs/options.spec.ts`) if a new option has been added.
+3. Write a test (`test/specs/options.test.ts`) if a new option has been added.
 4. Create a documentation (`docs/`) if a new option is added.
 5. Request a pull request. Include any changes or considerations in the description for a quick code review.
 

@@ -1,10 +1,11 @@
 import assert from 'assert';
+import { describe, it } from 'node:test';
 import { generateSidebar, withSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
 
 describe('Test: base test', () => {
-  it('Without configurations', (done) => {
+  it('Without configurations', () => {
     assert.deepStrictEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`
@@ -59,11 +60,9 @@ describe('Test: base test', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('With complex configurations (A)', (done) => {
+  it('With complex configurations (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -110,11 +109,9 @@ describe('Test: base test', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('With complex configurations (B)', (done) => {
+  it('With complex configurations (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
@@ -169,11 +166,9 @@ describe('Test: base test', () => {
         }
       ]
     );
-
-    done();
   });
 
-  it('withSidebar: basic', (done) => {
+  it('withSidebar: basic', () => {
     assert.deepStrictEqual(
       withSidebar(
         {
@@ -256,7 +251,5 @@ describe('Test: base test', () => {
         }
       }
     );
-
-    done();
   });
 });
