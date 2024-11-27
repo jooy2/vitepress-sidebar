@@ -138,7 +138,7 @@ export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOption
 
 사이드바 결과가 어떻게 출력되는지 테스트하려면 `debugPrint` 옵션을 `true`로 설정하여 VitePress를 빌드해 보세요. 콘솔에 출력이 표시될 것입니다.
 
-`generateSidebar`의 설정에 대한 자세한 내용은 아래 **[옵션](/ko/guide/options)** 섹션을 참조하세요.
+VitePress Sidebar의 설정에 대한 자세한 내용은 아래 **[옵션](/ko/guide/options)** 섹션을 참조하세요.
 
 ## 코드 예시
 

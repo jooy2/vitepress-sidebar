@@ -138,7 +138,7 @@ export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOption
 
 To test how the sidebar results are printed, try building VitePress with the `debugPrint` option set to `true`. You should see the output in the console.
 
-For more information about the configuration of `generateSidebar`, see **[Options](/guide/options)** section below.
+For more information about the configuration of VitePress Sidebar, see **[Options](/guide/options)** section below.
 
 ## Code Example
 
