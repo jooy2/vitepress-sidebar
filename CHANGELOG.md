@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.30.0 (2024-12-06)
+
+- **BREAKING CHANGES**: The type declarations have been separated into a separate file, which you may need to import from the 'vitepress-sidebar/types' file. In general, to use a type, use it like this: `import type { VitePressSidebarOptions } from 'vitepress-sidebar/types'`
+- **BREAKING CHANGES**: The functions in the source file have now been split into multiple files. If you imported the module as follows, you will need to modify your code. (`import VitePressSidebar from 'vitepress-sidebar'` -> `import * as VitePressSidebar from 'vitepress-sidebar'`) You can ignore this if you've used something like `import { withSidebar } from 'vitepress-sidebar'` or `import { generateSidebar } from 'vitepress-sidebar'`, unless it's a special case.
+- Fix issues with invalid build files
+
 ## 1.29.1 (2024-12-06)
 
 - Removes the top-level path from the link path only at the first depth. (#186)
