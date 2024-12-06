@@ -347,10 +347,12 @@ export default class VitePressSidebar {
           .replace(/(index)?\.md$/, '');
 
         if (options.documentRootPath && childItemPathDisplay.startsWith(options.documentRootPath)) {
-          childItemPathDisplay = childItemPathDisplay.replace(
-            new RegExp(`^${options.documentRootPath}`, 'g'),
-            ''
-          );
+          if (depth === 1) {
+            childItemPathDisplay = childItemPathDisplay.replace(
+              new RegExp(`^${options.documentRootPath}`, 'g'),
+              ''
+            );
+          }
 
           if (options.scanStartPath || options.resolvePath) {
             childItemPathDisplay = childItemPathDisplay.replace(/^\//g, '');
