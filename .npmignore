@@ -17,12 +17,12 @@ CODE_OF_CONDUCT.md
 
 # For development
 .git*
-.terserrc
 .eslintignore
 .eslintrc.json
 .prettierignore
 .prettierrc
 .editorconfig
 .mocharc.json
+terser.config.json
 tsconfig.json
 tsconfig.prod.json
