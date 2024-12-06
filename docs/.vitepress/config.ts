@@ -11,7 +11,7 @@ const editLinkPattern = `${repository.url}/edit/master/docs/:path`;
 const commonSidebarConfig: VitePressSidebarOptions = {
   debugPrint: true,
   manualSortFileNameByPriority: ['introduction.md', 'guide', 'advanced-usage'],
-  excludeFiles: ['changelog.md'],
+  excludePattern: ['changelog.md'],
   collapsed: false,
   capitalizeFirst: true,
   useTitleFromFileHeading: true,
