@@ -14,7 +14,16 @@ NOTE: This version is broken. Please use `1.30.2` or later.
 
 NOTE: This version is broken. Please use `1.30.2` or later.
 
-- **BREAKING CHANGES**: The type declarations have been separated into a separate file, which you may need to import from the 'vitepress-sidebar/types' file. In general, to use a type, use it like this: `import type { VitePressSidebarOptions } from 'vitepress-sidebar/types'`
+- **BREAKING CHANGES**: The type declarations have been separated into a separate file, which you may need to import from the 'vitepress-sidebar/types' file. In general, to use a type, use it like this: `import type { VitePressSidebarOptions } from 'vitepress-sidebar/types'`. You may also need to change the value of `moduleResolution` in the `tsconfig.json` file to: `nodenext` or `node16` or `Bundler`
+
+```typescript
+// Before
+import { withSidebar, VitePressSidebarOptions } from 'vitepress-sidebar';
+// After
+import { withSidebar } from 'vitepress-sidebar';
+import type { VitePressSidebarOptions } from 'vitepress-sidebar/types';
+```
+
 - **BREAKING CHANGES**: The functions in the source file have now been split into multiple files. If you imported the module as follows, you will need to modify your code. (`import VitePressSidebar from 'vitepress-sidebar'` -> `import * as VitePressSidebar from 'vitepress-sidebar'`) You can ignore this if you've used something like `import { withSidebar } from 'vitepress-sidebar'` or `import { generateSidebar } from 'vitepress-sidebar'`, unless it's a special case.
 - Fix issues with invalid build files
 
