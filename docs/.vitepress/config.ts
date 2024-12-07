@@ -2,7 +2,7 @@ import { withSidebar } from '../../dist/index.js';
 import packageJson from '../../package.json' with { type: 'json' };
 import { defineConfig, UserConfig } from 'vitepress';
 import { withI18n } from 'vitepress-i18n';
-import { VitePressI18nOptions } from 'vitepress-i18n/types';
+import type { VitePressI18nOptions } from 'vitepress-i18n/types';
 import type { VitePressSidebarOptions } from '../../dist/types.js';
 
 const defaultLocale: string = 'en';
