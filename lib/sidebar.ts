@@ -2,8 +2,8 @@ import type { UserConfig } from 'vitepress';
 import { join, resolve } from 'path';
 import { globSync } from 'glob';
 import { existsSync, readdirSync, statSync } from 'fs';
-import { isTrueMinimumNumberOfTimes, objMergeNewKey } from './util';
-import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types';
+import { isTrueMinimumNumberOfTimes, objMergeNewKey } from './util.js';
+import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
 import {
   debugPrint,
   deepDeleteKey,
@@ -15,7 +15,7 @@ import {
   removePrefixFromTitleAndLink,
   sortByFileTypes,
   sortByObjectKey
-} from './helper';
+} from './helper.js';
 
 function generateSidebarItem(
   depth: number,

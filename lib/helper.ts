@@ -8,8 +8,8 @@ import type {
   SidebarListItem,
   SortByObjectKeyOptions,
   VitePressSidebarOptions
-} from './types';
-import { capitalizeFirst } from './util';
+} from './types.ts';
+import { capitalizeFirst } from './util.js';
 
 export function generateNotTogetherMessage(options: string[]): string {
   return `These options cannot be used together: ${options.join(', ')}`;
