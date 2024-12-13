@@ -1,12 +1,12 @@
-name: "Feature request"
+name: 'Feature request'
 description: Report a feature request in this project.
-labels: ["enhancement"]
+labels: ['enhancement']
 body:
   - type: markdown
     attributes:
       value: |
         Before creating an issue, please read the following:
-  
+
         - Search to see if the same issue already exists, and keep the title concise and accurate so that it's easy for others to understand and search for.
         - Please create a separate issue for each type of issue.
         - Please be as detailed as possible and write in English so that we can handle your issue quickly.

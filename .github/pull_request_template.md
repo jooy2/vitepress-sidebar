@@ -2,9 +2,9 @@
 Thank you for contributing to the project. Your contribution will be reviewed and approved after appropriate review.
 
 Please read the caveats below to ensure a fast merge.
---> 
+-->
 
-## Pull request checklist 
+## Pull request checklist
 
 You should familiarize yourself with the files `README.md`, `CONTRIBUTING.md`, and `CODE_OF_CONDUCT.md` in the root of your project.
 
@@ -22,4 +22,3 @@ Below is a template for describing this PR. It's not required, so please delete 
 ### Why did you make the change?
 
 ### How does this work?
-

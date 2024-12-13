@@ -1,12 +1,12 @@
-name: "Bug report"
+name: 'Bug report'
 description: Report a bug in this project.
-labels: ["bug"]
+labels: ['bug']
 body:
   - type: markdown
     attributes:
       value: |
         Before creating an issue, please read the following:
-  
+
         - Read the `README.md` file on the project page or the documentation file and compare your code to the intent of the project.
         - Search to see if the same issue already exists, and keep the title concise and accurate so that it's easy for others to understand and search for.
         - Please create a separate issue for each type of issue.
