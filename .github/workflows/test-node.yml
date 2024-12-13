@@ -2,7 +2,7 @@ name: test-nodejs
 
 on:
   pull_request:
-    branches: [master]
+    branches: [main]
   # trigger deployment on every push to main branch
   push:
     paths:

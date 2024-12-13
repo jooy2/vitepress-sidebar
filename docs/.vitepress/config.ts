@@ -7,7 +7,7 @@ import type { VitePressSidebarOptions } from '../../dist/types.js';
 
 const defaultLocale: string = 'en';
 const supportLocales: string[] = [defaultLocale, 'ko', 'zhHans'];
-const editLinkPattern = `${packageJson.repository.url}/edit/master/docs/:path`;
+const editLinkPattern = `${packageJson.repository.url}/edit/main/docs/:path`;
 
 const commonSidebarConfig: VitePressSidebarOptions = {
   debugPrint: true,
