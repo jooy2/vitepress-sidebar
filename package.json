@@ -4,7 +4,7 @@
   "description": "A VitePress auto sidebar plugin that automatically creates a simple configuration.",
   "type": "module",
   "types": "dist/index.d.ts",
-  "author": "jooy2 <jooy2.contact@gmail.com>",
+  "author": "CDGet <jooy2.contact@gmail.com>",
   "license": "MIT",
   "homepage": "https://vitepress-sidebar.cdget.com",
   "repository": {
