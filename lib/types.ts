@@ -40,10 +40,6 @@ export declare interface VitePressSidebarOptions {
   frontmatterOrderDefaultValue?: number;
   frontmatterTitleFieldName?: string;
   /**
-   * @private This option is only used internally. Use the `debugPrint` option instead.
-   */
-  debugPrintFromWithSidebar?: boolean;
-  /**
    * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
    */
   excludeFiles?: string[];
