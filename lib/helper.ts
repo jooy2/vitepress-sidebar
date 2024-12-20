@@ -2,6 +2,7 @@
 // Defaults to defaultValue
 import { readFileSync } from 'fs';
 import matter from 'gray-matter';
+import { capitalizeFirst } from 'qsu';
 import type {
   AnyValueObject,
   SidebarItem,
@@ -9,7 +10,6 @@ import type {
   SortByObjectKeyOptions,
   VitePressSidebarOptions
 } from './types.ts';
-import { capitalizeFirst } from './util.js';
 
 export function generateNotTogetherMessage(options: string[]): string {
   return `These options cannot be used together: ${options.join(', ')}`;

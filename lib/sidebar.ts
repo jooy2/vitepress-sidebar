@@ -2,7 +2,7 @@ import type { UserConfig } from 'vitepress';
 import { join, resolve } from 'path';
 import { globSync } from 'glob';
 import { existsSync, readdirSync, statSync } from 'fs';
-import { isTrueMinimumNumberOfTimes, objMergeNewKey } from './util.js';
+import { isTrueMinimumNumberOfTimes, objMergeNewKey } from 'qsu';
 import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
 import {
   debugPrint,
