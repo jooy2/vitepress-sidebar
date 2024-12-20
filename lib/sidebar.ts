@@ -487,8 +487,48 @@ export function withSidebar(
   });
 
   const sidebarResult: Partial<UserConfig> = {
-    themeConfig: {
+    /* themeConfig: {
       sidebar: generateSidebar(sidebarOptions)
+    }, */
+    /*
+      //
+      // TODO:
+      // Need to fix below command line throws:
+      //
+      // [vitepress] MiniSearch: duplicate ID /advanced-usage/multi-level-sidebar-with-indents#multi-level-sidebar-with-indents
+      // [vitepress] server restart failed
+     */
+    vite: {
+      plugins: [
+        {
+          name: 'vitepress-sidebar',
+          configureServer({ watcher, restart }): void {
+            const fsWatcher = watcher.add('*.md');
+
+            fsWatcher.on('all', async (event, path) => {
+              if (event !== 'change') {
+                console.log(`${event} ${path}`);
+
+                try {
+                  await restart();
+                  console.log('Refresh sidebar...');
+                } catch {
+                  console.log(`Failed to refresh sidebar! ${event} ${path}`);
+                }
+              }
+            });
+          },
+          config(config: any): UserConfig {
+            const { themeConfig } = config.vitepress.site;
+
+            themeConfig.sidebar = generateSidebar(sidebarOptions);
+
+            console.log(config.vitepress);
+
+            return config;
+          }
+        }
+      ]
     }
   };
 
@@ -496,7 +536,9 @@ export function withSidebar(
     vitePressOptions.themeConfig.sidebar = {};
   }
 
-  const result: Partial<UserConfig> = objMergeNewKey(vitePressOptions, sidebarResult) as UserConfig;
+  const result: Partial<UserConfig> = objMergeNewKey(vitePressOptions, sidebarResult, {
+    arrayAction: 'append'
+  }) as UserConfig;
 
   if (enableDebugPrint) {
     debugPrint(sidebarOptions, result);
