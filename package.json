@@ -87,6 +87,7 @@
   },
   "dependencies": {
     "glob": "10.4.5",
-    "gray-matter": "4.0.3"
+    "gray-matter": "4.0.3",
+    "qsu": "^1.6.4"
   }
 }
