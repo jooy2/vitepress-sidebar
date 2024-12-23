@@ -223,11 +223,10 @@ export default defineConfig(
 
 ```text
 {
-  documentRootPath: 'example',
-  scanStartPath: 'javascript',
+  documentRootPath: 'javascript',
   useTitleFromFileHeading: true,
   hyphenToSpace: true,
-  excludeFolders: ['vitepress-how-to']
+  excludePattern: ['vitepress-how-to']
 }
 
 /*
