@@ -26,13 +26,12 @@ order: 2
 | 포함 및 제외 | 메뉴 제목 스타일링 |
 | --- | --- |
 | [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
-| [excludeFiles](#excludefiles-deprecated) | [underscoreToSpace](#underscoretospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [capitalizeFirst](#capitalizefirst) |
-| [excludeFolders](#excludefolders-deprecated) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeDotFiles](#includedotfiles) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) |  |
+| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
+| [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+|  | [prefixSeparator](#prefixseparator) |
 
 | 정렬 | 기타 |
 | --- | --- |
@@ -298,15 +297,6 @@ Frontmatter의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. �
 
 예를 들어 값은 다음과 같을 수 있습니다: `['abc/', 'def.md', 'ghi/file-**']` 이는 각각 모든 경로에 포함된 `abc` 디렉토리와 하위 항목, `def.md` 파일, `ghi` 경로에 있는 `file-`로 시작하는 파일이 해당되며 이 파일과 폴더들은 메뉴에서 제외됩니다.
 
-## `excludeFiles` (deprecated)
-
-- Type: `Array<string>`
-- Default: `[]`
-
-### 이 옵션은 폐기되었으며 다음 메이저 버전에서 제거됩니다. `excludePattern` 옵션을 대신 사용하세요.
-
-파일 이름 배열(확장자 포함)에 해당하는 파일은 목록에 표시되지 않습니다.
-
 ## `excludeFilesByFrontmatterFieldName`
 
 - Type: `string|null`
@@ -330,15 +320,6 @@ Content
 ```
 
 이 옵션의 값에 따라 `exclude` 대신 `draft`, `hide` 등과 같은 다른 이름을 사용할 수 있습니다.
-
-## `excludeFolders` (deprecated)
-
-### 이 옵션은 폐기되었으며 다음 메이저 버전에서 제거됩니다. `excludePattern` 옵션을 대신 사용하세요.
-
-- Type: `Array<string>`
-- Default: `[]`
-
-폴더 이름의 배열에 해당하는 폴더는 목록에 표시되지 않으며, 폴더 내의 하위 항목도 표시되지 않습니다.
 
 ## `includeDotFiles`
 

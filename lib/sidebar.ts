@@ -109,10 +109,6 @@ function generateSidebarItem(
       }
 
       if (statSync(childItemPath).isDirectory()) {
-        if (options.excludeFolders?.includes(x)) {
-          return null;
-        }
-
         let directorySidebarItems =
           generateSidebarItem(depth + 1, childItemPath, childItemPathDisplay, x, options) || [];
 
@@ -206,10 +202,7 @@ function generateSidebarItem(
       }
 
       if (childItemPath.endsWith('.md')) {
-        if (
-          options.excludeFiles?.includes(x) ||
-          getExcludeFromFrontmatter(childItemPath, options.excludeFilesByFrontmatterFieldName)
-        ) {
+        if (getExcludeFromFrontmatter(childItemPath, options.excludeFilesByFrontmatterFieldName)) {
           return null;
         }
 
@@ -381,6 +374,11 @@ export function generateSidebar(
     if (optionItem.removePrefixAfterOrdering && !optionItem.prefixSeparator) {
       throw new Error(`'prefixSeparator' should not use empty string`);
     }
+    if (optionItem.excludeFiles || optionItem.excludeFolders) {
+      throw new Error(
+        `'excludeFiles' and 'excludeFolders' options have been removed; use the 'excludePattern' option instead.`
+      );
+    }
 
     if (optionItem.debugPrint && !enableDebugPrint) {
       enableDebugPrint = true;
@@ -402,8 +400,6 @@ export function generateSidebar(
 
     optionItem.collapseDepth = optionItem?.collapseDepth ?? 1;
     optionItem.manualSortFileNameByPriority = optionItem?.manualSortFileNameByPriority ?? [];
-    optionItem.excludeFiles = optionItem?.excludeFiles ?? [];
-    optionItem.excludeFolders = optionItem?.excludeFolders ?? [];
     optionItem.frontmatterOrderDefaultValue = optionItem?.frontmatterOrderDefaultValue ?? 0;
 
     let scanPath = optionItem.documentRootPath;

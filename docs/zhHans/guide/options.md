@@ -26,13 +26,12 @@ order: 2
 | 包括/排除 | 菜单标题样式 |
 | --- | --- |
 | [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
-| [excludeFiles](#excludefiles-deprecated) | [underscoreToSpace](#underscoretospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [capitalizeFirst](#capitalizefirst) |
-| [excludeFolders](#excludefolders-deprecated) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeDotFiles](#includedotfiles) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) |  |
+| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
+| [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+|  | [prefixSeparator](#prefixseparator) |
 
 | 分类 | 杂项 |
 | --- | --- |
@@ -298,15 +297,6 @@ name: This is frontmatter title value.
 
 例如，该值可能如下所示`['abc/', 'def.md', 'ghi/file-**']`这将分别排除所有路径中的`abc`目录和子目录、`def.md`文件以及`ghi`路径中以`file-`开头的文件，这些文件和文件夹将被排除在菜单之外。
 
-## `excludeFiles` (deprecated)
-
-- Type: `Array<string>`
-- Default: `[]`
-
-### 该选项已被弃用，将在下一个主要版本中删除。请使用 `excludePattern` 选项。
-
-与文件名(包括扩展名)相对应的文件不会显示在列表中。
-
 ## `excludeFilesByFrontmatterFieldName`
 
 - Type: `string|null`
@@ -330,15 +320,6 @@ Content
 ```
 
 根据选项的值,您可以使用其他名称,如`draft`、`hide`等,来代替`exclude`。
-
-## `excludeFolders` (deprecated)
-
-- Type: `Array<string>`
-- Default: `[]`
-
-### 该选项已被弃用，将在下一个主要版本中删除。请使用 `excludePattern` 选项。
-
-列表中不显示与文件夹名称相对应的文件夹,也不显示文件夹中的任何子项。
 
 ## `includeDotFiles`
 

@@ -26,13 +26,12 @@ This page describes all the options in the VitePress Sidebar.
 | Include/Exclude | Styling Menu Title |
 | --- | --- |
 | [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
-| [excludeFiles](#excludefiles-deprecated) | [underscoreToSpace](#underscoretospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [capitalizeFirst](#capitalizefirst) |
-| [excludeFolders](#excludefolders-deprecated) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeDotFiles](#includedotfiles) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) |  |
+| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
+| [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+|  | [prefixSeparator](#prefixseparator) |
 
 | Sorting | Misc |
 | --- | --- |
@@ -298,15 +297,6 @@ For example, `abc def ghi` and `abc-def ghi` change to `Abc Def Ghi` and `Abc-De
 
 For example, the value might look like this: `['abc/', 'def.md', 'ghi/file-**']` This would exclude the `abc` directory and subdirectories in all paths, the `def.md` file, and files starting with `file-` in the `ghi` path, respectively, and these files and folders would be excluded from the menu.
 
-## `excludeFiles` (deprecated)
-
-- Type: `Array<string>`
-- Default: `[]`
-
-### This option is deprecated and will be removed in the next major version. Use the `excludePattern` option instead.
-
-Files that correspond to an array of file names (including extensions) are not shown in the list.
-
 ## `excludeFilesByFrontmatterFieldName`
 
 - Type: `string|null`
@@ -330,15 +320,6 @@ Content
 ```
 
 Depending on the value of this option, you can use other names like `draft`, `hide`, etc. instead of `exclude`.
-
-## `excludeFolders` (deprecated)
-
-- Type: `Array<string>`
-- Default: `[]`
-
-### This option is deprecated and will be removed in the next major version. Use the `excludePattern` option instead.
-
-Folders that correspond to an array of folder names are not shown in the list, and any sub-items within a folder are also not shown.
 
 ## `includeDotFiles`
 

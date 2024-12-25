@@ -71,8 +71,7 @@ describe('Test: base test', () => {
         underscoreToSpace: true,
         includeRootIndexFile: true,
         useTitleFromFrontmatter: true,
-        excludeFiles: ['a.md', 'c.md'],
-        excludeFolders: ['folder-2']
+        excludePattern: ['a.md', 'c.md', 'folder-2/']
       }),
       [
         {
@@ -117,8 +116,7 @@ describe('Test: base test', () => {
         documentRootPath: `${TEST_DIR_BASE}/general`,
         includeEmptyFolder: true,
         includeDotFiles: true,
-        excludeFiles: [],
-        excludeFolders: ['subFolder'],
+        excludePattern: ['subFolder/'],
         hyphenToSpace: true,
         underscoreToSpace: true,
         capitalizeFirst: true,

@@ -44,8 +44,7 @@ export default defineConfig(
       scanStartPath: 'guide',
       basePath: '/guide/',
       resolvePath: '/guide/',
-      useTitleFromFileHeading: true,
-      excludeFiles: ['do-not-include.md']
+      useTitleFromFileHeading: true
     },
     {
       documentRootPath: 'docs',

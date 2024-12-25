@@ -464,36 +464,6 @@ describe('Test: APIs', () => {
     );
   });
 
-  it('API: excludeFiles', () => {
-    assert.deepEqual(
-      generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/numeric-title`,
-        excludeFiles: [
-          '0-file.md',
-          'not-exist-file.md',
-          '3-afile.md',
-          '3-bfile.md',
-          '11-file.md',
-          '100-file.md'
-        ]
-      }),
-      [
-        {
-          text: '1-file',
-          link: '/1-file'
-        },
-        {
-          text: '10-file',
-          link: '/10-file'
-        },
-        {
-          text: '2-file',
-          link: '/2-file'
-        }
-      ]
-    );
-  });
-
   it('API: excludeFilesByFrontmatterFieldName', () => {
     assert.deepEqual(
       generateSidebar({
@@ -508,33 +478,6 @@ describe('Test: APIs', () => {
         {
           text: 'c',
           link: '/c'
-        }
-      ]
-    );
-  });
-
-  it('API: excludeFolders', () => {
-    assert.deepEqual(
-      generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/general`,
-        excludeFolders: ['folder', 'folder-2']
-      }),
-      [
-        {
-          text: 'a',
-          link: '/a'
-        },
-        {
-          text: 'b',
-          link: '/b'
-        },
-        {
-          text: 'c',
-          link: '/c'
-        },
-        {
-          text: 'test',
-          link: '/test'
         }
       ]
     );
