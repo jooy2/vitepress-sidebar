@@ -820,7 +820,7 @@ describe('Test: APIs', () => {
     );
   });
 
-  it('API: sortMenusByFrontmatterOrder', () => {
+  it('API: sortMenusByFrontmatterOrder (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
@@ -842,6 +842,37 @@ describe('Test: APIs', () => {
         {
           text: 'a',
           link: '/a'
+        }
+      ]
+    );
+  });
+
+  it('API: sortMenusByFrontmatterOrder (B)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-order-with-decimal`,
+        sortMenusByFrontmatterOrder: true
+      }),
+      [
+        {
+          text: 'd',
+          link: '/d'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'e',
+          link: '/e'
         }
       ]
     );

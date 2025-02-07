@@ -46,7 +46,7 @@ export function getValueFromFrontmatter<T>(filePath: string, key: string, defaul
 }
 
 export function getOrderFromFrontmatter(filePath: string, defaultOrder: number): number {
-  return parseInt(getValueFromFrontmatter<string>(filePath, 'order', defaultOrder.toString()), 10);
+  return parseFloat(getValueFromFrontmatter<string>(filePath, 'order', defaultOrder.toString()));
 }
 
 export function getDateFromFrontmatter(filePath: string): string {

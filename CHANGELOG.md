@@ -3,6 +3,7 @@
 ## 1.31.0 (--)
 
 - **BREAKING CHANGES**: The `excludeFiles` and `excludeFolders` options have now been completely removed and replaced with `excludePattern`.
+- Handling decimals in frontmatter order sorting (#197)
 
 ## 1.30.2 (2024-12-07)
 
