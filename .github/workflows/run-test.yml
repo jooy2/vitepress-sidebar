@@ -1,24 +1,24 @@
-name: test-nodejs
+name: run-test
 
 on:
   pull_request:
     branches: [main]
-  # trigger deployment on every push to main branch
   push:
     paths:
-      - '**'
-      - '!LICENSE'
-      - '!*.md'
-      - '!.github/**'
-      - '!.vscode/**'
-      - '!docs/**'
+      - **
+      - !LICENSE
+      - !*.md
+      - !.github/**
+      - !.vscode/**
+      - !docs/**
+      - .github/workflows/run-test.yml
   # trigger deployment manually
   workflow_dispatch:
 
 jobs:
-  test-nodejs:
+  build-and-run-test:
     runs-on: ${{ matrix.os }}
-    name: Test NodeJS ${{ matrix.node_version }} on ${{ matrix.os }}
+    name: Test module from Node.js ${{ matrix.node_version }} on ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -33,7 +33,6 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          # choose node.js version to use
           node-version: ${{ matrix.node_version }}
           cache: npm
           cache-dependency-path: '**/package-lock.json'
