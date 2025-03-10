@@ -166,6 +166,33 @@ describe('Test: base test', () => {
     );
   });
 
+  it('API: With complex configurations (C)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/number-title-and-filename`,
+        excludePattern: ['index.md'],
+        capitalizeFirst: true,
+        collapsed: true,
+        sortMenusOrderNumericallyFromTitle: true,
+        useFolderTitleFromIndexFile: true,
+        useFolderLinkFromSameNameSubFile: true,
+        useTitleFromFileHeading: true,
+        useTitleFromFrontmatter: true,
+        hyphenToSpace: true
+      }),
+      [
+        {
+          link: '/1-introduction',
+          text: '1. Introduction'
+        },
+        {
+          link: '/2-how-to-use',
+          text: '2. How to use'
+        }
+      ]
+    );
+  });
+
   it('withSidebar: basic', () => {
     assert.deepStrictEqual(
       withSidebar(
