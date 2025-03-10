@@ -5,13 +5,13 @@ on:
     branches: [main]
   push:
     paths:
-      - **
-      - !LICENSE
-      - !*.md
-      - !.github/**
-      - !.vscode/**
-      - !docs/**
-      - .github/workflows/run-test.yml
+      - '**'
+      - '!LICENSE'
+      - '!*.md'
+      - '!.github/**'
+      - '!.vscode/**'
+      - '!docs/**'
+      - '.github/workflows/run-test.yml'
   # trigger deployment manually
   workflow_dispatch:
 
