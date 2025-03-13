@@ -52,9 +52,14 @@ function generateSidebarItem(
   let sidebarItems: SidebarListItem = directoryFiles
     .map((x: string) => {
       const childItemPath = resolve(currentDir, x);
-      let childItemPathDisplay = `${displayDir}/${x}`
-        .replace(/\/{2}/, '/')
-        .replace(/(index)?\.md$/, '');
+
+      let childItemPathDisplay = `${displayDir}/${x}`.replace(/\/{2}/, '/');
+
+      if (childItemPathDisplay.endsWith('/index.md')) {
+        childItemPathDisplay = childItemPathDisplay.replace('index.md', '');
+      } else {
+        childItemPathDisplay = childItemPathDisplay.replace(/\.md$/, '');
+      }
 
       if (options.documentRootPath && childItemPathDisplay.startsWith(options.documentRootPath)) {
         if (depth === 1) {
@@ -82,6 +87,10 @@ function generateSidebarItem(
         } else if (!childItemPathDisplay.startsWith('/')) {
           childItemPathDisplay = `/${childItemPathDisplay}`;
         }
+      }
+
+      if (!childItemPathDisplay) {
+        childItemPathDisplay = 'index.md';
       }
 
       if (/\.vitepress/.test(childItemPath)) {

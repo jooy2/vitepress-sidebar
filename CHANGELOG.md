@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.31.1 (2025-03-13)
+
+- Correct link processing for general files containing the index character (#201)
+
 ## 1.31.0 (2025-02-07)
 
 - **BREAKING CHANGES**: The `excludeFiles` and `excludeFolders` options have now been completely removed and replaced with `excludePattern`.

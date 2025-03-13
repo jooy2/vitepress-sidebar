@@ -311,4 +311,34 @@ describe('Test: base test', () => {
       ]
     );
   });
+
+  it('`index.md` file must be used correctly according to the situation.', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/index-files`,
+        useTitleFromFileHeading: true,
+        excludePattern: ['abc']
+      }),
+      [
+        {
+          text: 'a',
+          items: [
+            {
+              text: 'Test Index',
+              link: '/a/testindex'
+            }
+          ]
+        },
+        {
+          text: 'index',
+          items: [
+            {
+              text: 'B',
+              link: '/index/b'
+            }
+          ]
+        }
+      ]
+    );
+  });
 });
