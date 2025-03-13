@@ -2,7 +2,7 @@
 
 ## 1.31.1 (2025-03-13)
 
-- Correct link processing for general files containing the index character (#201)
+- Correct link processing for general files containing the `index` character (#201)
 
 ## 1.31.0 (2025-02-07)
 
