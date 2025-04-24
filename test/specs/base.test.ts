@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { describe, it } from 'node:test';
-import { generateSidebar, withSidebar } from '../../dist';
+import { generateSidebar, withSidebar } from '../../dist/index.js';
 
 const TEST_DIR_BASE = 'test/resources';
 
