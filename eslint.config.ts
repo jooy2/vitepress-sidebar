@@ -3,7 +3,6 @@ import pluginJs from '@eslint/js';
 import pluginTypeScriptESLint from 'typescript-eslint';
 import parserTypeScript from '@typescript-eslint/parser';
 import pluginNode from 'eslint-plugin-n';
-import pluginImport from 'eslint-plugin-import';
 import configPrettier from 'eslint-config-prettier';
 
 import globals from 'globals';
@@ -11,7 +10,6 @@ import globals from 'globals';
 export default pluginTypeScriptESLint.config(
   pluginJs.configs.recommended,
   pluginTypeScriptESLint.configs.recommended,
-  pluginImport.flatConfigs.electron,
   pluginNode.configs['flat/recommended-script'],
   globalIgnores([
     '**/.idea',
