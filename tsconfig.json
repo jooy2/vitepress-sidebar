@@ -2,18 +2,25 @@
   "compilerOptions": {
     "baseUrl": "lib",
     "target": "esnext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "esnext",
+    "moduleResolution": "nodenext",
     "lib": ["esnext"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "skipLibCheck": true,
     "declaration": true,
     "outDir": "./dist",
     "strict": true,
     "newLine": "lf"
   },
-  "include": ["lib/**/*.ts", "lib/**/*.d.ts", "test/**/*.test.ts", "docs/.vitepress/config.ts"],
+  "include": [
+    "lib/**/*.ts",
+    "lib/**/*.d.ts",
+    "test/**/*.test.ts",
+    "docs/.vitepress/config.ts",
+    "eslint.config.ts"
+  ],
   "exclude": ["node_modules"]
 }

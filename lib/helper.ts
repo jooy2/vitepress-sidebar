@@ -39,7 +39,7 @@ export function getValueFromFrontmatter<T>(filePath: string, key: string, defaul
         return JSON.parse(str.replace(`${key}: `, '')) as T;
       }
     }
-  } catch (e) {
+  } catch {
     return defaultValue;
   }
   return defaultValue;
