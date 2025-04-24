@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "lib",
     "target": "esnext",
-    "module": "esnext",
+    "module": "nodenext",
     "moduleResolution": "nodenext",
     "lib": ["esnext"],
     "esModuleInterop": true,
