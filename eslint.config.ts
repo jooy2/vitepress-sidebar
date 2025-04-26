@@ -17,6 +17,7 @@ export default pluginTypeScriptESLint.config(
     '**/node_modules',
     '**/dist',
     '**/docs',
+    '**/docs-dist',
     '**/package-lock.json'
   ]),
   {
