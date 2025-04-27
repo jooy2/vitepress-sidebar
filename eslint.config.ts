@@ -16,7 +16,6 @@ export default pluginTypeScriptESLint.config(
     '**/.vscode',
     '**/node_modules',
     '**/dist',
-    '**/docs',
     '**/docs-dist',
     '**/package-lock.json'
   ]),
