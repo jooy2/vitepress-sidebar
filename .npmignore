@@ -20,7 +20,7 @@ CONTRIBUTING.md
 # For development
 .git*
 .eslintignore
-.eslintrc.json
+eslint.config.ts
 .prettierignore
 .prettierrc
 .editorconfig
