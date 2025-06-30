@@ -156,7 +156,7 @@ export default defineConfig(
   withSidebar(vitePressConfigs, {
     /*
      * 有关详细说明，请参阅下面的链接：
-     * https://vitepress-sidebar.cdget.com/guide/options
+     * https://vitepress-sidebar.cdget.com/zhHans/guide/options
      */
     //
     // ============ [ RESOLVING PATHS ] ============
