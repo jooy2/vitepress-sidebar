@@ -1,4 +1,5 @@
 import type { UserConfig } from 'vitepress';
+import { clientOnly } from 'vitepress';
 import { join, resolve } from 'path';
 import { globSync } from 'glob';
 import { existsSync, readdirSync, statSync } from 'fs';
@@ -493,7 +494,7 @@ export function withSidebar(
 
   const sidebarResult: Partial<UserConfig> = {
     themeConfig: {
-      sidebar: generateSidebar(sidebarOptions)
+      sidebar: clientOnly(generateSidebar(sidebarOptions))
     }
   };
 
