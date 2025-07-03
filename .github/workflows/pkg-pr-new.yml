@@ -1,0 +1,21 @@
+name: Publish any commit to pkg.pr.new
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - run: |
+          corepack enable pnpm
+          corepack use pnpm@latest
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build
+        run: pnpm build
+      - run: pnpm dlx pkg-pr-new publish
