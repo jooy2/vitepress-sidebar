@@ -7,7 +7,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - run: corepack enable
+      - run: |
+          corepack enable pnpm
+          corepack use pnpm@latest
       - uses: actions/setup-node@v4
         with:
           node-version: 24
