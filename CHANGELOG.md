@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.32.1 (2025-07-05)
+
+- Fix Package build
+
 ## 1.32.0 (2025-07-05)
 
 - Add `followSymlinks` option (#209)
