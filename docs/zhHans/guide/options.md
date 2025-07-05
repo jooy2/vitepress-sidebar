@@ -14,7 +14,7 @@ order: 2
 | [scanStartPath](#scanstartpath)       | [collapseDepth](#collapsedepth)           |
 | [resolvePath](#resolvepath)           | [rootGroupText](#rootgrouptext)           |
 | [basePath](#basepath)                 | [rootGroupLink](#rootgrouplink)           |
-|                                       | [rootGroupCollapsed](#rootgroupcollapsed) |
+| [followSymlinks](#followsymlinks)     | [rootGroupCollapsed](#rootgroupcollapsed) |
 
 | 获取菜单标题 | 获取菜单链接 |
 | --- | --- |
@@ -100,6 +100,13 @@ order: 2
 此选项用于配置多个侧边栏。您可以在 **[多个侧边栏](/zhHans/advanced-usage/multiple-sidebars-how-to)** 页面上了解更多信息。
 
 如果路径因VitePress的重写选项而改变,则可以使用此选项。它替换VitePress中的基本路径。如果此值不存在,则将使用来自`resolvePath`的值。
+
+## `followSymLinks`
+
+- Type: `boolean`
+- Default: `false`
+
+如果该值为 `true`，则在扫描目录时，会包含任何已设置符号链接的目录或文件，并将其添加到菜单中。如果符号链接配置不正确或链接设置复杂，请务必小心，因为这可能导致性能低下或无限扫描。
 
 ## `useTitleFromFileHeading`
 

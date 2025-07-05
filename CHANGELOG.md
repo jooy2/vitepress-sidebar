@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.32.0 (2025-07-05)
+
+- Add `followSymlinks` option (#209)
+
 ## 1.31.1 (2025-03-13)
 
 - Correct link processing for general files containing the `index` character (#201)

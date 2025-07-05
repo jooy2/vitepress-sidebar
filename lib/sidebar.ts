@@ -28,7 +28,8 @@ function generateSidebarItem(
     cwd: currentDir,
     maxDepth: 1,
     ignore: options.excludePattern || [],
-    dot: true
+    dot: true,
+    follow: options.followSymlinks ?? false
   });
   let directoryFiles: string[] = readdirSync(currentDir);
 

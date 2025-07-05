@@ -1527,4 +1527,55 @@ describe('Test: APIs', () => {
       ]
     );
   });
+
+  it('API: followSymlinks (A)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/symlinks/scan`,
+        followSymlinks: true
+      }),
+      [
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'c',
+          items: [
+            {
+              text: 'd',
+              link: '/c/d'
+            },
+            {
+              text: 'e',
+              link: '/c/e'
+            }
+          ]
+        }
+      ]
+    );
+  });
+
+  it('API: followSymlinks (B)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/symlinks/scan`,
+        followSymlinks: false
+      }),
+      [
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        }
+      ]
+    );
+  });
 });

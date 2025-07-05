@@ -32,6 +32,7 @@ export declare interface VitePressSidebarOptions {
   manualSortFileNameByPriority?: string[];
   excludePattern?: string[];
   excludeFilesByFrontmatterFieldName?: string;
+  followSymlinks?: boolean;
   removePrefixAfterOrdering?: boolean;
   prefixSeparator?: string | RegExp;
   rootGroupText?: string;

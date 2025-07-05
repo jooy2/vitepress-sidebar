@@ -14,7 +14,7 @@ This page describes all the options in the VitePress Sidebar.
 | [scanStartPath](#scanstartpath)       | [collapseDepth](#collapsedepth)           |
 | [resolvePath](#resolvepath)           | [rootGroupText](#rootgrouptext)           |
 | [basePath](#basepath)                 | [rootGroupLink](#rootgrouplink)           |
-|                                       | [rootGroupCollapsed](#rootgroupcollapsed) |
+| [followSymlinks](#followsymlinks)     | [rootGroupCollapsed](#rootgroupcollapsed) |
 
 | Getting Menu Title | Getting Menu Link |
 | --- | --- |
@@ -100,6 +100,13 @@ e.g. `/`, `/path/sub-path`, `/guide/`...
 This option is used to configure multiple sidebars. You can learn more on the **[Multiple sidebars](/advanced-usage/multiple-sidebars-how-to)** page.
 
 This option can be utilized if the path has changed due to VitePress's rewrite option. It replaces the base path in VitePress. If this value does not exist, it will use the value from `resolvePath` instead.
+
+## `followSymLinks`
+
+- Type: `boolean`
+- Default: `false`
+
+If the value is `true`, when scanning a directories, include any directories or files that have symbolic links set to them and add them to the menu. Be careful if you configure symbolic links incorrectly or have a complex level of links set up, as this can result in poor performance or infinite scans.
 
 ## `useTitleFromFileHeading`
 

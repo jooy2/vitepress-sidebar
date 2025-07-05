@@ -281,7 +281,6 @@ describe('Test: base test', () => {
   it('Contains a path with the same name as `documentRootPath`', () => {
     assert.deepStrictEqual(
       generateSidebar({
-        debugPrint: true,
         documentRootPath: `${TEST_DIR_BASE}/same-name-path`
       }),
       [

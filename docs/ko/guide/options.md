@@ -14,7 +14,7 @@ order: 2
 | [scanStartPath](#scanstartpath)       | [collapseDepth](#collapsedepth)           |
 | [resolvePath](#resolvepath)           | [rootGroupText](#rootgrouptext)           |
 | [basePath](#basepath)                 | [rootGroupLink](#rootgrouplink)           |
-|                                       | [rootGroupCollapsed](#rootgroupcollapsed) |
+| [followSymlinks](#followsymlinks)     | [rootGroupCollapsed](#rootgroupcollapsed) |
 
 | 메뉴 제목 | 메뉴 링크 |
 | --- | --- |
@@ -100,6 +100,13 @@ e.g. `/`, `/path/sub-path`, `/guide/`...
 이 옵션은 다중 사이드바를 구성하는 데 사용됩니다. **[다중 사이드바](/ko/advanced-usage/multiple-sidebars-how-to)** 페이지에서 자세히 알아볼 수 있습니다.
 
 이 옵션은 VitePress의 `rewrites` 옵션으로 인해 경로가 변경된 경우에 사용할 수 있습니다. VitePress의 기본 경로를 대체합니다. 이 값이 존재하지 않으면 `resolvePath`의 값을 대신 사용합니다.
+
+## `followSymLinks`
+
+- Type: `boolean`
+- Default: `false`
+
+값이 `true`이면 폴더를 스캔할 때 심볼릭 링크가 설정된 폴더나 파일을 포함하여 메뉴에 추가합니다. 심볼릭 링크를 잘못 구성하거나 복잡한 수준의 링크가 설정된 경우 성능이 저하되거나 무한 스캔이 발생할 수 있으므로 주의해야 합니다.
 
 ## `useTitleFromFileHeading`
 
