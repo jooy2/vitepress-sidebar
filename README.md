@@ -38,6 +38,7 @@ export default defineConfig(
     // scanStartPath: null,
     // resolvePath: null,
     // basePath: null,
+    // followSymlinks: false,
     //
     // ============ [ GROUPING ] ============
     // collapsed: true,
