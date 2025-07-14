@@ -135,11 +135,7 @@ function generateSidebarItem(
           (y: SidebarListItem) => y.text === x
         );
 
-        if (
-          (options.useFolderLinkFromSameNameSubFile ||
-            options.convertSameNameSubFileToGroupIndexPage) &&
-          findSameNameSubFile
-        ) {
+        if (options.useFolderLinkFromSameNameSubFile && findSameNameSubFile) {
           newDirectoryPagePath = resolve(childItemPath, `${findSameNameSubFile.text}.md`);
           newDirectoryText = getTitleFromMd(x, newDirectoryPagePath, options, false, () => {
             isTitleReceivedFromFileContent = true;
@@ -219,11 +215,7 @@ function generateSidebarItem(
         let childItemText;
         const childItemTextWithoutExt = x.replace(/\.md$/, '');
 
-        if (
-          (options.useFolderLinkFromSameNameSubFile ||
-            options.convertSameNameSubFileToGroupIndexPage) &&
-          parentName === childItemTextWithoutExt
-        ) {
+        if (options.useFolderLinkFromSameNameSubFile && parentName === childItemTextWithoutExt) {
           childItemText = childItemTextWithoutExt;
         } else {
           childItemText = getTitleFromMd(x, childItemPath, options, false);

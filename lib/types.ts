@@ -48,10 +48,6 @@ export declare interface VitePressSidebarOptions {
    * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
    */
   excludeFolders?: string[];
-  /**
-   * @deprecated use `useFolderLinkFromSameNameSubFile` instead. This option will be removed in a future version.
-   */
-  convertSameNameSubFileToGroupIndexPage?: boolean;
 }
 
 export declare interface SidebarListItem {
