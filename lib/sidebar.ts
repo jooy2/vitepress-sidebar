@@ -376,11 +376,6 @@ export function generateSidebar(
     if (optionItem.removePrefixAfterOrdering && !optionItem.prefixSeparator) {
       throw new Error(`'prefixSeparator' should not use empty string`);
     }
-    if (optionItem.excludeFiles || optionItem.excludeFolders) {
-      throw new Error(
-        `'excludeFiles' and 'excludeFolders' options have been removed; use the 'excludePattern' option instead.`
-      );
-    }
 
     if (optionItem.debugPrint && !enableDebugPrint) {
       enableDebugPrint = true;

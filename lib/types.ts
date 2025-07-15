@@ -40,14 +40,6 @@ export declare interface VitePressSidebarOptions {
   rootGroupCollapsed?: boolean | null | undefined;
   frontmatterOrderDefaultValue?: number;
   frontmatterTitleFieldName?: string;
-  /**
-   * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
-   */
-  excludeFiles?: string[];
-  /**
-   * @deprecated use `excludePattern` option instead. This option will be removed in a future version.
-   */
-  excludeFolders?: string[];
 }
 
 export declare interface SidebarListItem {
