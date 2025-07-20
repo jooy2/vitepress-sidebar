@@ -5,8 +5,8 @@
 - ⚡️ 최신 버전의 **VitePress**을 지원합니다.
 - ⚡️ 간편하게 사용하고, 원하는 대로 사용자 지정할 수 있습니다.
 - ⚡️ 가벼운 번들 파일 크기
-- ⚡️ [다중 사이드바](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) 지원
-- ⚡️ [Frontmatter](https://vitepress.dev/guide/frontmatter) 지원
+- ⚡️ [다중 사이드바](https://vitepress.dev/ko/reference/default-theme-sidebar#multiple-sidebars) 지원
+- ⚡️ [Frontmatter](https://vitepress.dev/ko/guide/frontmatter) 지원
 - ⚡️ [TypeScript](https://www.typescriptlang.org) 지원
 - ⚡️ 정렬, 특수 문자 변환, 파일 및 폴더 필터 등을 위한 메뉴를 사용자 지정하세요!
 
