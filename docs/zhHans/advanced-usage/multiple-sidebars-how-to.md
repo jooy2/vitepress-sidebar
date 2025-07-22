@@ -6,7 +6,7 @@
 
 要先了解有关多侧边栏的更多信息，我们建议您查看下面**VitePress 的**官方文档：
 
-https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars
+https://vitepress.dev/zh/reference/default-theme-sidebar#multiple-sidebars
 
 ## 基本用法
 
@@ -222,7 +222,7 @@ withSidebar([
 
 要解决这个问题,您需要同时使用**VitePress的**路由功能,请参阅以下文章以获取说明:
 
-https://vitepress.dev/guide/routing#route-rewrites
+https://vitepress.dev/zh/guide/routing#route-rewrites
 
 按照上面的示例，在 `defineConfig` 中的 VitePress 设置中添加 `rewrites` 选项:
 
