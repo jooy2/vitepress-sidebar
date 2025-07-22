@@ -63,7 +63,7 @@ VitePress 페이지에 있는 각종 인터페이스(레이아웃) 텍스트는 
 
 (`root` 언어는 페이지에서 주 언어를 의미합니다.)
 
-레이아웃 번역을 자세히 알아보려면 다음 문서를 참고하세요: https://vitepress.dev/guide/i18n
+레이아웃 번역을 자세히 알아보려면 다음 문서를 참고하세요: https://vitepress.dev/ko/guide/i18n
 
 검색 기능에 표시되는 텍스트의 경우 `defineConfig`의 `themeConfig.search` 옵션에서 설정해야 합니다. 예를 들면 다음과 같습니다:
 
@@ -127,7 +127,7 @@ VitePress 페이지에 있는 각종 인터페이스(레이아웃) 텍스트는 
 
 ## 페이지 레이아웃 번역 (자동)
 
-VitePress Sidebar의 패밀리 플러그인인 [VitePress I18n](https://vitepress-i18n.cdget.com)을 사용하면 위와 같이 수동으로 번역하는 과정을 자동화할 수 있습니다. 몇가지 간단한 설정만으로 레이아웃 번역에 시간을 투자하지 않아도 됩니다!
+VitePress Sidebar의 패밀리 플러그인인 [VitePress I18n](https://vitepress-i18n.cdget.com/ko/)을 사용하면 위와 같이 수동으로 번역하는 과정을 자동화할 수 있습니다. 몇가지 간단한 설정만으로 레이아웃 번역에 시간을 투자하지 않아도 됩니다!
 
 아래 명령어로 VitePress I18n 모듈을 설치하세요:
 
@@ -162,7 +162,7 @@ export default defineConfig(
 
 이제 인터페이스 번역은 모듈에게 맡기세요! 물론 세부적인 텍스트도 커스터마이징 할 수 있습니다.
 
-자세한 내용은 VitePress I18n의 문서 페이지를 읽어주세요: https://vitepress-i18n.cdget.com/guide/getting-started
+자세한 내용은 VitePress I18n의 문서 페이지를 읽어주세요: https://vitepress-i18n.cdget.com/ko/guide/getting-started
 
 ## 언어별 사이드바 설정
 
