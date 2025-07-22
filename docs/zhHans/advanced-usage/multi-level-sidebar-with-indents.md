@@ -6,7 +6,7 @@
 
 上面,`directory-level-2`是`directory-level-1`的子文件,但看起来处于相同的层级。
 
-这不是VitePress侧边栏的问题,要解决这个问题,您需要通过**[VitePress的自定义CSS](https://vitepress.dev/guide/extending-default-theme#customizing-css)**自定义现有主题的样式。
+这不是VitePress侧边栏的问题,要解决这个问题,您需要通过**[VitePress的自定义CSS](https://vitepress.dev/zh/guide/extending-default-theme#customizing-css)**自定义现有主题的样式。
 
 在`.vitepress`目录下创建一个`theme`目录,以覆盖现有样式所需的样式。然后在`theme`目录下创建一个`index.js`文件(如果您使用的是Typescript,请使用`index.ts`而不是`index.js`)和一个`custom.css`文件。
 
