@@ -6,7 +6,7 @@
 
 위의 `directory-level-2`는 `directory-level-1`의 하위 파일이지만 같은 계층 구조에 있는 것으로 보입니다.
 
-이 문제는 VitePress 사이드바의 문제가 아니므로 이 문제를 해결하려면 **[VitePress의 사용자 정의 CSS](https://vitepress.dev/guide/extending-default-theme#customizing-css)** 기능을 사용하여 기존 테마의 스타일을 사용자 정의해야 합니다.
+이 문제는 VitePress 사이드바의 문제가 아니므로 이 문제를 해결하려면 **[VitePress의 사용자 정의 CSS](https://vitepress.dev/ko/guide/extending-default-theme#customizing-css)** 기능을 사용하여 기존 테마의 스타일을 사용자 정의해야 합니다.
 
 `.vitepress` 디렉토리에 `theme` 디렉토리를 만들어 기존 스타일에 필요한 스타일을 재정의합니다. 그런 다음 `theme` 디렉토리 안에 `index.js` 파일(타입스크립트를 사용하는 경우 `index.js` 대신 `index.ts`를 사용)과 `custom.css` 파일을 만듭니다.
 
