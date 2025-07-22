@@ -1,0 +1,4 @@
+/* .vitepress/theme/custom.css */
+:root {
+  --vp-sidebar-width: 350px;
+}
