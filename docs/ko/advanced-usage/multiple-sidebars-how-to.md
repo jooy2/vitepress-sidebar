@@ -6,7 +6,7 @@
 
 다중 사이드바에 대해 자세히 알아보려면 먼저 아래의 **VitePress** 공식 문서를 살펴보는 것이 좋습니다:
 
-https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars
+https://vitepress.dev/ko/reference/default-theme-sidebar#multiple-sidebars
 
 ## 기본 사용법
 
@@ -222,7 +222,7 @@ withSidebar([
 
 이를 해결하려면 **VitePress**의 라우팅 기능을 병행해서 사용해야 합니다. 관련 내용은 아래 글을 참고하세요:
 
-https://vitepress.dev/guide/routing#route-rewrites
+https://vitepress.dev/ko/guide/routing#route-rewrites
 
 위의 예에 따라 `defineConfig`의 VitePress 설정에 `rewrites` 옵션을 추가합니다:
 

@@ -8,7 +8,7 @@ order: 1
 
 ## 설치
 
-먼저 이 모듈을 사용하기 전에 **[VitePress](https://vitepress.dev)** 모듈을 사전 구성해야 할 수 있습니다.
+먼저 이 모듈을 사용하기 전에 **[VitePress](https://vitepress.dev/ko/)** 모듈을 사전 구성해야 할 수 있습니다.
 
 Node.js 버전은 18.x 이상을 사용하는 것이 좋습니다. **VitePress Sidebar**는 `ESM`으로 작성되었습니다. CommonJS 환경에서 사용하려면 [여기 지침을 참조하세요](/ko/troubleshooting/err-require-esm).
 

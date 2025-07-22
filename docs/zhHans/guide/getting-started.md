@@ -8,7 +8,7 @@ order: 1
 
 ## 安装
 
-首先，在使用本模块之前，您可能需要预先配置 **[VitePress](https://vitepress.dev)**。
+首先，在使用本模块之前，您可能需要预先配置 **[VitePress](https://vitepress.dev/zh/)**。
 
 我们建议使用 **Node.js 18.x** 或更高版本。**VitePress Sidebar**是用`ESM`编写的。要在 "CommonJS" 中使用它，[请参见此处的说明](/zhHans/troubleshooting/err-require-esm)。
 

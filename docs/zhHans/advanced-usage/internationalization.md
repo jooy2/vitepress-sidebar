@@ -63,7 +63,7 @@ VitePress 页面上的各种界面（布局）文本可提供特定语言的 `lo
 
 (`root` "语言指页面上的主要语言）。
 
-要了解有关翻译布局的更多信息，请参阅以下文章: https://vitepress.dev/guide/i18n
+要了解有关翻译布局的更多信息，请参阅以下文章: https://vitepress.dev/zh/guide/i18n
 
 对于搜索功能中出现的文本，需要在 `defineConfig` 中的 `themeConfig.search` 选项中进行设置，例如:
 
