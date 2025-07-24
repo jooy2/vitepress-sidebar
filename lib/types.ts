@@ -30,6 +30,7 @@ export declare interface VitePressSidebarOptions {
   keepMarkdownSyntaxFromTitle?: boolean;
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
+  excludeByFolderDepth?: number;
   excludeByGlobPattern?: string[];
   excludeFilesByFrontmatterFieldName?: string;
   followSymlinks?: boolean;

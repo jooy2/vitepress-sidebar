@@ -1578,4 +1578,73 @@ describe('Test: APIs', () => {
       ]
     );
   });
+
+  it('API: excludeByFolderDepth (A)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/recursive`,
+        excludeByFolderDepth: 3
+      }),
+      [
+        {
+          text: 'folderA',
+          items: [
+            {
+              text: 'a',
+              link: '/folderA/a'
+            }
+          ]
+        }
+      ]
+    );
+  });
+
+  it('API: excludeByFolderDepth (B)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        debugPrint: true,
+        documentRootPath: `${TEST_DIR_BASE}/recursive`,
+        excludeByFolderDepth: 5
+      }),
+      [
+        {
+          text: 'folderA',
+          items: [
+            {
+              text: 'a',
+              link: '/folderA/a'
+            },
+            {
+              text: 'folderAA',
+              items: [
+                {
+                  text: 'aa',
+                  link: '/folderA/folderAA/aa'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          text: 'folderB',
+          items: [
+            {
+              text: 'folderBB',
+              items: [
+                {
+                  text: 'folderBBB',
+                  items: [
+                    {
+                      text: 'bbb',
+                      link: '/folderB/folderBB/folderBBB/bbb'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    );
+  });
 });

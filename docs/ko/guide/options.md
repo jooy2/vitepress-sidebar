@@ -27,11 +27,11 @@ order: 2
 | --- | --- |
 | [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
 | [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-|  | [prefixSeparator](#prefixseparator) |
+| [excludeByFolderDepth](#excludebyfolderdepth) | [capitalizeFirst](#capitalizefirst) |
+| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
 
 | 정렬 | 기타 |
 | --- | --- |
@@ -328,6 +328,28 @@ Content
 
 이 옵션의 값에 따라 `exclude` 대신 `draft`, `hide` 등과 같은 다른 이름을 사용할 수 있습니다.
 
+## `excludeByFolderDepth`
+
+- Type: `number|null`
+- Default: `null`
+
+폴더 스캔 시 지정한 숫자의 깊이에 도달하면 더 이상 하위 폴더와 파일을 스캔하지 않고 메뉴에 표시하지 않습니다. 가장 최상위 단계는 `1`입니다.
+
+예를 들어 아래와 같은 구조에서 옵션 값이 `3`인 경우 세번째 깊이의 메뉴부터 표시되지 않습니다.
+
+```text
+root/  <---------- depth: 1 / scan: yes
+├─ aaa1/  <---------- depth: 1
+│  ├─ bbb/  <---------- depth: 2
+│  │  ├─ b1.md  <---------- depth: 3 / scan: no
+│  │  ├─ ccc/  <---------- depth: 3
+│  │  │  └─ c1.md  <---------- depth: 4 / scan: no
+│  │  └─ b1.md  <---------- depth: 3 / scan: no
+│  └─ a1.md  <---------- depth: 2 / scan: yes
+└─ aaa2/  <---------- depth: 1
+   └─ aaa1.md  <---------- depth: 2 / scan: yes
+```
+
 ## `includeDotFiles`
 
 - Type: `boolean`
@@ -444,7 +466,7 @@ docs/
 
 예를 들어 다음과 같은 폴더가 있는 경우:
 
-```
+```text
 docs/
 ├─ guide/
 │  ├─ api/

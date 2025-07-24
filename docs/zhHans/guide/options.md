@@ -27,11 +27,11 @@ order: 2
 | --- | --- |
 | [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
 | [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-|  | [prefixSeparator](#prefixseparator) |
+| [excludeByFolderDepth](#excludebyfolderdepth) | [capitalizeFirst](#capitalizefirst) |
+| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
 
 | 分类 | 杂项 |
 | --- | --- |
@@ -327,6 +327,28 @@ Content
 ```
 
 根据选项的值,您可以使用其他名称,如`draft`、`hide`等,来代替`exclude`。
+
+## `excludeByFolderDepth`
+
+- Type: `number|null`
+- Default: `null`
+
+扫描文件夹时，当达到指定的深度数时，不再扫描子文件夹和文件，也不会在菜单中显示。最上层为 `1`。
+
+例如，在下面的结构中，如果选项值为 `3`，则菜单将从第三个深度开始被抑制。
+
+```text
+root/  <---------- depth: 1 / scan: yes
+├─ aaa1/  <---------- depth: 1
+│  ├─ bbb/  <---------- depth: 2
+│  │  ├─ b1.md  <---------- depth: 3 / scan: no
+│  │  ├─ ccc/  <---------- depth: 3
+│  │  │  └─ c1.md  <---------- depth: 4 / scan: no
+│  │  └─ b1.md  <---------- depth: 3 / scan: no
+│  └─ a1.md  <---------- depth: 2 / scan: yes
+└─ aaa2/  <---------- depth: 1
+   └─ aaa1.md  <---------- depth: 2 / scan: yes
+```
 
 ## `includeDotFiles`
 

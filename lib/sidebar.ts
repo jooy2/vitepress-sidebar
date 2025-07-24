@@ -24,6 +24,10 @@ function generateSidebarItem(
   parentName: string | null,
   options: VitePressSidebarOptions
 ): SidebarListItem {
+  if (typeof options.excludeByFolderDepth === 'number' && options.excludeByFolderDepth <= depth) {
+    return [];
+  }
+
   const filesByGlobPattern: string[] = globSync('**', {
     cwd: currentDir,
     maxDepth: 1,

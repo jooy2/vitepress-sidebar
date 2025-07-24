@@ -27,11 +27,11 @@ This page describes all the options in the VitePress Sidebar.
 | --- | --- |
 | [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
 | [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-|  | [prefixSeparator](#prefixseparator) |
+| [excludeByFolderDepth](#excludebyfolderdepth) | [capitalizeFirst](#capitalizefirst) |
+| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
+| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
+| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
+| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
 
 | Sorting | Misc |
 | --- | --- |
@@ -327,6 +327,28 @@ Content
 ```
 
 Depending on the value of this option, you can use other names like `draft`, `hide`, etc. instead of `exclude`.
+
+## `excludeByFolderDepth`
+
+- Type: `number|null`
+- Default: `null`
+
+When scanning a folder, when it reaches the specified number of depths, it no longer scans subfolders and files and does not display them in the menu. The topmost level is `1`.
+
+For example, in the structure below, if the option value is `3`, the menu will be suppressed starting at the third depth.
+
+```text
+root/  <---------- depth: 1 / scan: yes
+├─ aaa1/  <---------- depth: 1
+│  ├─ bbb/  <---------- depth: 2
+│  │  ├─ b1.md  <---------- depth: 3 / scan: no
+│  │  ├─ ccc/  <---------- depth: 3
+│  │  │  └─ c1.md  <---------- depth: 4 / scan: no
+│  │  └─ b1.md  <---------- depth: 3 / scan: no
+│  └─ a1.md  <---------- depth: 2 / scan: yes
+└─ aaa2/  <---------- depth: 1
+   └─ aaa1.md  <---------- depth: 2 / scan: yes
+```
 
 ## `includeDotFiles`
 
