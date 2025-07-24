@@ -25,7 +25,7 @@ order: 2
 
 | 包括/排除 | 菜单标题样式 |
 | --- | --- |
-| [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
+| [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
 | [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
 | [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
 | [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
@@ -295,7 +295,7 @@ name: This is frontmatter title value.
 
 例如，`abc def ghi`和`abc-def ghi`将分别变为`Abc Def Ghi`和`Abc-Def Ghi`。
 
-## `excludePattern`
+## `excludeByGlobPattern`
 
 - Type: `Array<string>`
 - Default: `[]`

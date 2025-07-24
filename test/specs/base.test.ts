@@ -71,7 +71,7 @@ describe('Test: base test', () => {
         underscoreToSpace: true,
         includeRootIndexFile: true,
         useTitleFromFrontmatter: true,
-        excludePattern: ['a.md', 'c.md', 'folder-2/']
+        excludeByGlobPattern: ['a.md', 'c.md', 'folder-2/']
       }),
       [
         {
@@ -116,7 +116,7 @@ describe('Test: base test', () => {
         documentRootPath: `${TEST_DIR_BASE}/general`,
         includeEmptyFolder: true,
         includeDotFiles: true,
-        excludePattern: ['subFolder/'],
+        excludeByGlobPattern: ['subFolder/'],
         hyphenToSpace: true,
         underscoreToSpace: true,
         capitalizeFirst: true,
@@ -170,7 +170,7 @@ describe('Test: base test', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/number-title-and-filename`,
-        excludePattern: ['index.md'],
+        excludeByGlobPattern: ['index.md'],
         capitalizeFirst: true,
         collapsed: true,
         sortMenusOrderNumericallyFromTitle: true,
@@ -316,7 +316,7 @@ describe('Test: base test', () => {
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/index-files`,
         useTitleFromFileHeading: true,
-        excludePattern: ['abc']
+        excludeByGlobPattern: ['abc']
       }),
       [
         {

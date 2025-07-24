@@ -12,7 +12,7 @@ const editLinkPattern = `${packageJson.repository.url}/edit/main/docs/:path`;
 const commonSidebarConfig: VitePressSidebarOptions = {
   debugPrint: true,
   manualSortFileNameByPriority: ['introduction.md', 'guide', 'advanced-usage'],
-  excludePattern: ['changelog.md'],
+  excludeByGlobPattern: ['changelog.md'],
   collapsed: false,
   capitalizeFirst: true,
   useTitleFromFileHeading: true,

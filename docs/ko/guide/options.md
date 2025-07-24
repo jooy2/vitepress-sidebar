@@ -25,7 +25,7 @@ order: 2
 
 | 포함 및 제외 | 메뉴 제목 스타일링 |
 | --- | --- |
-| [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
+| [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
 | [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
 | [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
 | [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
@@ -295,7 +295,7 @@ Frontmatter의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. �
 
 예를 들어, `abc def ghi`와 `abc-def ghi`는 각각 `Abc Def Ghi`와 `Abc-Def Ghi`로 변경됩니다.
 
-## `excludePattern`
+## `excludeByGlobPattern`
 
 - Type: `Array<string>`
 - Default: `[]`

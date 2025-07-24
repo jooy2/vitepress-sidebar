@@ -186,7 +186,7 @@ export default defineConfig(
     // folderLinkNotIncludesFileName: false,
     //
     // ============ [ INCLUDE / EXCLUDE ] ============
-    // excludePattern: ['README.md', 'folder/'],
+    // excludeByGlobPattern: ['README.md', 'folder/'],
     // excludeFilesByFrontmatterFieldName: 'exclude',
     // includeDotFiles: false,
     // includeEmptyFolder: false,
@@ -227,7 +227,7 @@ export default defineConfig(
   documentRootPath: 'javascript',
   useTitleFromFileHeading: true,
   hyphenToSpace: true,
-  excludePattern: ['vitepress-how-to']
+  excludeByGlobPattern: ['vitepress-how-to']
 }
 
 /*

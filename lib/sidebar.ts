@@ -27,7 +27,7 @@ function generateSidebarItem(
   const filesByGlobPattern: string[] = globSync('**', {
     cwd: currentDir,
     maxDepth: 1,
-    ignore: options.excludePattern || [],
+    ignore: options.excludeByGlobPattern || options.excludePattern || [],
     dot: true,
     follow: options.followSymlinks ?? false
   });

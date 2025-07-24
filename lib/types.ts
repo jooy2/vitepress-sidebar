@@ -30,7 +30,7 @@ export declare interface VitePressSidebarOptions {
   keepMarkdownSyntaxFromTitle?: boolean;
   debugPrint?: boolean;
   manualSortFileNameByPriority?: string[];
-  excludePattern?: string[];
+  excludeByGlobPattern?: string[];
   excludeFilesByFrontmatterFieldName?: string;
   followSymlinks?: boolean;
   removePrefixAfterOrdering?: boolean;
@@ -40,6 +40,10 @@ export declare interface VitePressSidebarOptions {
   rootGroupCollapsed?: boolean | null | undefined;
   frontmatterOrderDefaultValue?: number;
   frontmatterTitleFieldName?: string;
+  /**
+   * @deprecated `excludePattern` has renamed `excludeByGlobPattern`. This option will be removed in a future version.
+   */
+  excludePattern?: string[];
 }
 
 export declare interface SidebarListItem {

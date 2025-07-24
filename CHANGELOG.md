@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.33.0 (2025--)
+
+- **BREAKING CHANGES**: The `excludePattern` option has been renamed to `excludeByGlobPattern`. The old name is still available, but we plan to remove it in a future major release.
+- Removed references to deprecated options `excludeFiles`, `excludeFolders`, `convertSameNameSubFileToGroupIndexPage`
+
 ## 1.32.1 (2025-07-05)
 
 - Fix Package build

@@ -25,7 +25,7 @@ This page describes all the options in the VitePress Sidebar.
 
 | Include/Exclude | Styling Menu Title |
 | --- | --- |
-| [excludePattern](#excludepattern) | [hyphenToSpace](#hyphentospace) |
+| [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
 | [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
 | [includeDotFiles](#includedotfiles) | [capitalizeFirst](#capitalizefirst) |
 | [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [capitalizeEachWords](#capitalizeeachwords) |
@@ -295,7 +295,7 @@ If the value is `true`, will capitalize all first letters of words separated by 
 
 For example, `abc def ghi` and `abc-def ghi` change to `Abc Def Ghi` and `Abc-Def Ghi`, respectively.
 
-## `excludePattern`
+## `excludeByGlobPattern`
 
 - Type: `Array<string>`
 - Default: `[]`

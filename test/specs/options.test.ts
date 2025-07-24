@@ -1463,11 +1463,11 @@ describe('Test: APIs', () => {
     );
   });
 
-  it('API: excludePattern (A)', () => {
+  it('API: excludeByGlobPattern (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
-        excludePattern: ['**/*-test.md', 'b.md', '.dot-directory']
+        excludeByGlobPattern: ['**/*-test.md', 'b.md', '.dot-directory']
       }),
       [
         {
@@ -1504,11 +1504,11 @@ describe('Test: APIs', () => {
     );
   });
 
-  it('API: excludePattern (B)', () => {
+  it('API: excludeByGlobPattern (B)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/general`,
-        excludePattern: ['folder', 'a.md', '[b|c].md']
+        excludeByGlobPattern: ['folder', 'a.md', '[b|c].md']
       }),
       [
         {

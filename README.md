@@ -60,7 +60,7 @@ export default defineConfig(
     // folderLinkNotIncludesFileName: false,
     //
     // ============ [ INCLUDE / EXCLUDE ] ============
-    // excludePattern: ['README.md', 'folder/'],
+    // excludeByGlobPattern: ['README.md', 'folder/'],
     // excludeFilesByFrontmatterFieldName: 'exclude',
     // includeDotFiles: false,
     // includeEmptyFolder: false,
