@@ -188,6 +188,7 @@ export default defineConfig(
     // ============ [ INCLUDE / EXCLUDE ] ============
     // excludeByGlobPattern: ['README.md', 'folder/'],
     // excludeFilesByFrontmatterFieldName: 'exclude',
+    // excludeByFolderDepth: undefined,
     // includeDotFiles: false,
     // includeEmptyFolder: false,
     // includeRootIndexFile: false,
