@@ -108,3 +108,7 @@ Anyone can contribute to the project by reporting new issues or submitting a pul
 ## License
 
 Please see the [LICENSE](LICENSE) file for more information about project owners, usage rights, and more.
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=jooy2/vitepress-sidebar&type=Date)](https://www.star-history.com/#jooy2/vitepress-sidebar&Date)
