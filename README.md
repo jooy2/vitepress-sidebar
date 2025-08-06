@@ -111,4 +111,10 @@ Please see the [LICENSE](LICENSE) file for more information about project owners
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jooy2/vitepress-sidebar&type=Date)](https://www.star-history.com/#jooy2/vitepress-sidebar&Date)
+<a href="https://www.star-history.com/#jooy2/vitepress-sidebar&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=jooy2/vitepress-sidebar&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=jooy2/vitepress-sidebar&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=jooy2/vitepress-sidebar&type=Date" />
+ </picture>
+</a>
