@@ -17,7 +17,8 @@ export default pluginTypeScriptESLint.config(
     '**/node_modules',
     '**/dist',
     '**/docs-dist',
-    '**/package-lock.json'
+    '**/*-lock.json',
+    '**/*-lock.yaml'
   ]),
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
