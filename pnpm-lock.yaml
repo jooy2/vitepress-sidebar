@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       glob:
-        specifier: 11.0.3
-        version: 11.0.3
+        specifier: 11.1.0
+        version: 11.1.0
       gray-matter:
         specifier: 4.0.3
         version: 4.0.3
@@ -1188,8 +1188,8 @@ packages:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
     engines: {node: '>=10.13.0'}
 
-  glob@11.0.3:
-    resolution: {integrity: sha512-2Nim7dha1KVkaiF4q6Dj+ngPPMdfvLJEOpZk/jKiUAkqKebpGAWQXAq9z1xu9HKu5lWfqw/FASuccEjyznjPaA==}
+  glob@11.1.0:
+    resolution: {integrity: sha512-vuNwKSaKiqm7g0THUBu2x7ckSs3XJLXE+2ssL7/MfTGPLLcrJQ/4Uq1CjPTtO5cCIiRxqvN6Twy1qOwhL0Xjcw==}
     engines: {node: 20 || >=22}
     hasBin: true
 
@@ -1360,8 +1360,8 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
-  minimatch@10.0.3:
-    resolution: {integrity: sha512-IPZ167aShDZZUMdRk66cyQAW3qr0WzbHkPdMYa8bzZhlHhO3jALbKdxcaak7W9FfT2rZNpQuUu4Od7ILEpXSaw==}
+  minimatch@10.1.1:
+    resolution: {integrity: sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==}
     engines: {node: 20 || >=22}
 
   minimatch@3.1.2:
@@ -2835,11 +2835,11 @@ snapshots:
     dependencies:
       is-glob: 4.0.3
 
-  glob@11.0.3:
+  glob@11.1.0:
     dependencies:
       foreground-child: 3.3.1
       jackspeak: 4.1.1
-      minimatch: 10.0.3
+      minimatch: 10.1.1
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 2.0.0
@@ -2998,7 +2998,7 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
-  minimatch@10.0.3:
+  minimatch@10.1.1:
     dependencies:
       '@isaacs/brace-expansion': 5.0.0
 
@@ -3222,7 +3222,7 @@ snapshots:
 
   terser-glob@1.1.0:
     dependencies:
-      glob: 11.0.3
+      glob: 11.1.0
       meow: 13.2.0
       terser: 5.39.0
 
