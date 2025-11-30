@@ -10,7 +10,7 @@ This page walks you through the installation and use of the VitePress Sidebar mo
 
 First, you may need to pre-configure **[VitePress](https://vitepress.dev)** before using this module.
 
-We recommend using **Node.js 18.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](/troubleshooting/err-require-esm).
+We recommend using **Node.js 20.x** or higher. The **VitePress Sidebar** is written in `ESM`. To use it in `CommonJS`, [see instructions here](/troubleshooting/err-require-esm).
 
 You will need to install the module using [NPM](https://www.npmjs.com/package/vitepress-sidebar) or any other Node module package manager. The package should be installed in `devDependencies` as it is only used in the developer environment. Use the command below:
 

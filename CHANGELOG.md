@@ -2,6 +2,7 @@
 
 ## 1.33.1 (2025-11-29)
 
+- **BREAKING CHANGES**: Node.js version 18 is no longer supported. You must install version 20 or higher.
 - Upgrade package dependencies
 
 ## 1.33.0 (2025-07-24)
