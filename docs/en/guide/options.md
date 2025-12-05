@@ -460,7 +460,9 @@ A link is added to the `api` folder, and the `api` page in the `api` folder is n
 - Type: `boolean`
 - Default: `false`
 
-This option is only used in special cases: when you have a rewrite rule and a subfile with the same folder name exists, use it in parallel with the `useFolderLinkFromSameNameSubFile` option.
+This option is only used in special cases: when you have a [rewrite](https://vitepress.dev/guide/routing#route-rewrites) rule and a subfile with the same folder name exists, use it in parallel with the `useFolderLinkFromSameNameSubFile` option.
+
+**Note:** If you enable this option without configuring VitePress rewrites, clicking folder links will result in a 404 error. Make sure to set up the corresponding rewrite rules in your VitePress config.
 
 If this value is `true`, when establishing a folder link, ignore the existence of child items and specify the link only as a folder path.
 
@@ -478,6 +480,27 @@ docs/
 ```
 
 With the `useFolderLinkFromSameNameSubFile` option, clicking on the guide/api folder menu will take you to `guide/api/api`, but if you use the `folderLinkNotIncludesFileName` option with it, the link will be `guide/api/`.
+
+To make this work, you need to configure VitePress rewrites to map the folder path to the actual file. Add the following to your `.vitepress/config.ts`:
+
+```typescript
+export default defineConfig({
+  rewrites: {
+    'guide/api/api.md': 'guide/api/index.md'
+  }
+});
+```
+
+Or use a dynamic rewrite function for multiple folders:
+
+```typescript
+export default defineConfig({
+  rewrites(id) {
+    // Rewrites 'folder/folder.md' to 'folder/index.md'
+    return id.replace(/([^/]+)\/\1\.md$/, '$1/index.md');
+  }
+});
+```
 
 ## `keepMarkdownSyntaxFromTitle`
 

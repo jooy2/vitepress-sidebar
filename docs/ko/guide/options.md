@@ -460,7 +460,9 @@ docs/
 - Type: `boolean`
 - Default: `false`
 
-이 옵션은 특별한 경우에만 사용됩니다. 다시 쓰기 규칙이 있고 폴더 이름이 같은 하위 파일이 있는 경우 `useFolderLinkFromSameNameSubFile` 옵션과 병렬로 사용합니다.
+이 옵션은 특별한 경우에만 사용됩니다. [rewrite](https://vitepress.dev/guide/routing#route-rewrites) 규칙이 있고 폴더 이름이 같은 하위 파일이 있는 경우 `useFolderLinkFromSameNameSubFile` 옵션과 병렬로 사용합니다.
+
+**참고:** VitePress rewrites를 설정하지 않고 이 옵션을 활성화하면 폴더 링크를 클릭할 때 404 오류가 발생합니다. VitePress 설정에서 해당 rewrite 규칙을 반드시 설정하세요.
 
 이 값이 `true`인 경우 폴더 링크를 설정할 때 하위 항목의 존재를 무시하고 링크를 폴더 경로로만 지정합니다.
 
@@ -478,6 +480,27 @@ docs/
 ```
 
 `useFolderLinkFromSameNameSubFile` 옵션을 사용하면 `guide/api` 폴더 메뉴를 클릭하면 `guide/api/api`로 이동하지만 `folderLinkNotIncludesFileName` 옵션을 함께 사용하면 `guide/api/`로 링크가 연결됩니다.
+
+이 기능이 작동하려면 VitePress rewrites를 설정하여 폴더 경로를 실제 파일에 매핑해야 합니다. `.vitepress/config.ts`에 다음을 추가하세요:
+
+```typescript
+export default defineConfig({
+  rewrites: {
+    'guide/api/api.md': 'guide/api/index.md'
+  }
+});
+```
+
+또는 여러 폴더에 대해 동적 rewrite 함수를 사용할 수 있습니다:
+
+```typescript
+export default defineConfig({
+  rewrites(id) {
+    // 'folder/folder.md'를 'folder/index.md'로 다시 작성합니다
+    return id.replace(/([^/]+)\/\1\.md$/, '$1/index.md');
+  }
+});
+```
 
 ## `keepMarkdownSyntaxFromTitle`
 
