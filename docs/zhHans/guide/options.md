@@ -460,7 +460,9 @@ docs/
 - Type: `boolean`
 - Default: `false`
 
-此选项仅在特殊情况下使用：当您有重写规则并且存在具有相同文件夹名称的子文件时，请将其与 `useFolderLinkFromSameNameSubFile` 选项并行使用。
+此选项仅在特殊情况下使用：当您有 [rewrite](https://vitepress.dev/guide/routing#route-rewrites) 规则并且存在具有相同文件夹名称的子文件时，请将其与 `useFolderLinkFromSameNameSubFile` 选项并行使用。
+
+**注意：** 如果您在未配置 VitePress rewrites 的情况下启用此选项，点击文件夹链接将导致 404 错误。请确保在您的 VitePress 配置中设置相应的 rewrite 规则。
 
 如果此值为 `true`，则在建立文件夹链接时，忽略子项的存在，并仅将链接指定为文件夹路径。
 
@@ -478,6 +480,27 @@ docs/
 ```
 
 使用 `useFolderLinkFromSameNameSubFile` 选项，单击 guide/api 文件夹菜单将带您进入 `guide/api/api`，但如果您使用 `folderLinkNotIncludesFileName` 选项，则链接将为 `guide/api/`。
+
+要使此功能正常工作，您需要配置 VitePress rewrites 将文件夹路径映射到实际文件。在您的 `.vitepress/config.ts` 中添加以下内容：
+
+```typescript
+export default defineConfig({
+  rewrites: {
+    'guide/api/api.md': 'guide/api/index.md'
+  }
+});
+```
+
+或者使用动态 rewrite 函数来处理多个文件夹：
+
+```typescript
+export default defineConfig({
+  rewrites(id) {
+    // 将 'folder/folder.md' 重写为 'folder/index.md'
+    return id.replace(/([^/]+)\/\1\.md$/, '$1/index.md');
+  }
+});
+```
 
 ## `keepMarkdownSyntaxFromTitle`
 
