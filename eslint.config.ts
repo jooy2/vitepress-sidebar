@@ -1,4 +1,4 @@
-import { globalIgnores } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import pluginJs from '@eslint/js';
 import pluginTypeScriptESLint from 'typescript-eslint';
 import parserTypeScript from '@typescript-eslint/parser';
@@ -7,7 +7,7 @@ import configPrettier from 'eslint-config-prettier';
 
 import globals from 'globals';
 
-export default pluginTypeScriptESLint.config(
+export default defineConfig(
   pluginJs.configs.recommended,
   pluginTypeScriptESLint.configs.recommended,
   pluginNode.configs['flat/recommended-script'],
@@ -16,6 +16,7 @@ export default pluginTypeScriptESLint.config(
     '**/.vscode',
     '**/node_modules',
     '**/dist',
+    '**/docs/.vitepress/cache',
     '**/docs-dist',
     '**/*-lock.json',
     '**/*-lock.yaml'
