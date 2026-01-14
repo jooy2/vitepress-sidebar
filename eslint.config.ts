@@ -7,7 +7,7 @@ import configPrettier from 'eslint-config-prettier';
 
 import globals from 'globals';
 
-export default defineConfig(
+export default defineConfig([
   pluginJs.configs.recommended,
   pluginTypeScriptESLint.configs.recommended,
   pluginNode.configs['flat/recommended-script'],
@@ -31,7 +31,6 @@ export default defineConfig(
       },
       parserOptions: {
         parser: parserTypeScript,
-        ecmaVersion: 2022,
         requireConfigFile: false
       }
     },
@@ -49,4 +48,4 @@ export default defineConfig(
     }
   },
   configPrettier
-);
+]);
