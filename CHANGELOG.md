@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.33.2 (2026-05-06)
+
+- **BREAKING CHANGES**: Node.js version 20 is no longer supported. You must install version 22 or higher. (Installation is possible in Node.js 20, but compatibility is not guaranteed.)
+- Upgrade package dependencies
+
 ## 1.33.1 (2025-11-29)
 
 - **BREAKING CHANGES**: Node.js version 18 is no longer supported. You must install version 20 or higher.
