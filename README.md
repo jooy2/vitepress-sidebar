@@ -54,6 +54,7 @@ export default defineConfig(
     // useFolderLinkFromIndexFile: false,
     // useFolderTitleFromIndexFile: false,
     // frontmatterTitleFieldName: 'title',
+    // dynamicRouteTitleParam: 'title',
     //
     // ============ [ GETTING MENU LINK ] ============
     // useFolderLinkFromSameNameSubFile: false,
@@ -68,6 +69,7 @@ export default defineConfig(
     // includeEmptyFolder: false,
     // includeRootIndexFile: false,
     // includeFolderIndexFile: false,
+    // includeDynamicRoutes: false,
     //
     // ============ [ STYLING MENU TITLE ] ============
     // hyphenToSpace: false,

@@ -23,6 +23,7 @@ order: 2
 | [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
 | [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
 | [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
+| [dynamicRouteTitleParam](#dynamicroutetitleparam) |  |
 
 | 包括/排除 | 菜单标题样式 |
 | --- | --- |
@@ -33,6 +34,7 @@ order: 2
 | [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
 | [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
 | [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+| [includeDynamicRoutes](#includedynamicroutes) |  |
 
 | 分类 | 杂项 |
 | --- | --- |
@@ -405,6 +407,66 @@ root/  <---------- depth: 1 / scan: yes
 - Default: `false`
 
 如果值为`true`,则还要在侧边栏菜单中包含文件夹路径`index.md`文件。使用`includeRootIndexFile`选项还可以包含根项目的索引文件。(如果文件不存在,则忽略它。)
+
+## `includeDynamicRoutes`
+
+- Type: `boolean`
+- Default: `false`
+
+如果值为`true`,[动态路由](https://vitepress.dev/guide/routing#dynamic-routes)将以其生成的页面显示在侧边栏中,而不是以生成它们的模板文件显示。
+
+假设有以下文档:
+
+```
+docs/
+├─ packages/
+│  ├─ [pkg].md
+│  └─ [pkg].paths.js
+└─ index.md
+```
+
+```js
+// packages/[pkg].paths.js
+export default {
+  paths() {
+    return [{ params: { pkg: 'vitepress' } }, { params: { pkg: 'vitepress-sidebar' } }];
+  }
+};
+```
+
+侧边栏会显示`/packages/vitepress`和`/packages/vitepress-sidebar`,即 VitePress 实际提供的页面。如果没有此选项,则只显示`[pkg]`模板,而它的链接指向不存在的页面。
+
+目录名也可以包含参数。`[category]/[slug].md`模板会为每个`category`值生成一个文件夹,每个文件夹包含该分类的页面。
+
+路由的解析方式与 VitePress 完全相同,即运行`paths`文件,因此`.paths.ts`文件和异步`paths()`函数都可以使用。该过程在单独的进程中进行,约需 0.2 秒,并且只在至少有一个模板的项目中执行。请注意,`paths`文件所做的任何操作(例如调用 API)会在每次生成侧边栏时再执行一次。
+
+::: tip一个模板生成的页面共享同一个文件,因此从该文件读取的内容(例如`useTitleFromFrontmatter`或`sortMenusByFrontmatterOrder`)对所有页面都相同。要为生成的页面指定各自的值,请将其放入参数中:
+
+- 标题:使用 [`dynamicRouteTitleParam`](#dynamicroutetitleparam) 指定的名称
+- `order`:由 [`sortMenusByFrontmatterOrder`](#sortmenusbyfrontmatterorder) 使用
+- `date`:由 [`sortMenusByFrontmatterDate`](#sortmenusbyfrontmatterdate) 使用
+
+模板中写成 <span v-pre>`{{ $params.pkg }}`</span> 的标题也会被替换,因此`useTitleFromFileHeading`和`useTitleFromFrontmatter`可以根据参数为每个页面命名。:::
+
+要排除生成的页面,请使用 [`excludeByGlobPattern`](#excludebyglobpattern) 排除它们所属的模板。
+
+## `dynamicRouteTitleParam`
+
+- Type: `string`
+- Default: `'title'`
+
+保存动态路由生成页面的侧边栏标题的参数名称。仅在与 [`includeDynamicRoutes`](#includedynamicroutes) 一起使用时生效。
+
+```js
+// packages/[pkg].paths.js
+export default {
+  paths() {
+    return [{ params: { pkg: 'vitepress-sidebar', title: 'VitePress Sidebar' } }];
+  }
+};
+```
+
+上述页面显示为`VitePress Sidebar`。参数标题优先于所有其他命名方式,因为它是同一模板生成的各个页面之间唯一可以不同的方式。如果`title`已被用作路由参数,请更改此选项。
 
 ## `removePrefixAfterOrdering`
 

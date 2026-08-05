@@ -37,9 +37,9 @@ Option categories (see the Options page for every option and example):
 
 - Resolving paths: `documentRootPath`, `scanStartPath`, `resolvePath`, `basePath`, `followSymlinks`
 - Grouping: `collapsed`, `collapseDepth`, `collapseFromLevel`, `rootGroupText`, `rootGroupLink`, `rootGroupCollapsed`
-- Getting menu title: `useTitleFromFileHeading`, `useTitleFromFrontmatter`, `useFolderTitleFromIndexFile`, `frontmatterTitleFieldName`
+- Getting menu title: `useTitleFromFileHeading`, `useTitleFromFrontmatter`, `useFolderTitleFromIndexFile`, `frontmatterTitleFieldName`, `dynamicRouteTitleParam`
 - Getting menu link: `useFolderLinkFromSameNameSubFile`, `useFolderLinkFromIndexFile`, `folderLinkNotIncludesFileName`
-- Include / exclude: `excludeByGlobPattern`, `excludeFilesByFrontmatterFieldName`, `excludeByFolderDepth`, `includeDotFiles`, `includeEmptyFolder`, `includeRootIndexFile`, `includeFolderIndexFile`
+- Include / exclude: `excludeByGlobPattern`, `excludeFilesByFrontmatterFieldName`, `excludeByFolderDepth`, `includeDotFiles`, `includeEmptyFolder`, `includeRootIndexFile`, `includeFolderIndexFile`, `includeDynamicRoutes`
 - Styling menu title: `hyphenToSpace`, `underscoreToSpace`, `capitalizeFirst`, `capitalizeEachWords`, `keepMarkdownSyntaxFromTitle`, `removePrefixAfterOrdering`, `prefixSeparator`
 - Sorting: `manualSortFileNameByPriority`, `sortFolderTo`, `sortMenusByName`, `sortMenusByFileDatePrefix`, `sortMenusByFrontmatterOrder`, `frontmatterOrderDefaultValue`, `sortMenusByFileCreateDate`, `sortMenusByFileModifyDate`, `sortMenusByFrontmatterDate`, `sortMenusOrderByDescending`, `sortMenusOrderNumericallyFromTitle`, `sortMenusOrderNumericallyFromLink`
 - Misc: `debugPrint`

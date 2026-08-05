@@ -23,6 +23,7 @@ order: 2
 | [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
 | [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
 | [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
+| [dynamicRouteTitleParam](#dynamicroutetitleparam) |  |
 
 | 포함 및 제외 | 메뉴 제목 스타일링 |
 | --- | --- |
@@ -33,6 +34,7 @@ order: 2
 | [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
 | [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
 | [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
+| [includeDynamicRoutes](#includedynamicroutes) |  |
 
 | 정렬 | 기타 |
 | --- | --- |
@@ -405,6 +407,66 @@ root/  <---------- depth: 1 / scan: yes
 - Default: `false`
 
 값이 `true`인 경우 사이드바 메뉴에 폴더 경로 `index.md` 파일도 포함합니다. 루트 항목의 인덱스 파일도 포함하려면 `includeRootIndexFile` 옵션을 사용합니다. (파일이 존재하지 않으면 무시됩니다.)
+
+## `includeDynamicRoutes`
+
+- Type: `boolean`
+- Default: `false`
+
+값이 `true`인 경우 [동적 라우트](https://vitepress.dev/guide/routing#dynamic-routes)를 템플릿 파일이 아니라 해당 템플릿이 생성하는 페이지들로 사이드바에 표시합니다.
+
+다음과 같은 문서가 있다고 가정합니다.
+
+```
+docs/
+├─ packages/
+│  ├─ [pkg].md
+│  └─ [pkg].paths.js
+└─ index.md
+```
+
+```js
+// packages/[pkg].paths.js
+export default {
+  paths() {
+    return [{ params: { pkg: 'vitepress' } }, { params: { pkg: 'vitepress-sidebar' } }];
+  }
+};
+```
+
+사이드바에는 VitePress가 실제로 제공하는 페이지인 `/packages/vitepress`와 `/packages/vitepress-sidebar`가 표시됩니다. 이 옵션이 없으면 `[pkg]` 템플릿 하나만 표시되며, 그 링크는 존재하지 않는 페이지를 가리킵니다.
+
+디렉터리 이름에도 매개변수를 사용할 수 있습니다. `[category]/[slug].md` 템플릿은 `category` 값마다 하나씩 폴더가 되고, 각 폴더에는 해당 분류의 페이지가 들어갑니다.
+
+라우트는 VitePress와 동일한 방식으로 `paths` 파일을 실행하여 해석하므로 `.paths.ts` 파일과 비동기 `paths()` 함수를 모두 사용할 수 있습니다. 이 작업은 별도의 프로세스에서 약 0.2초 정도 소요되며, 템플릿이 하나 이상 있는 프로젝트에서만 실행됩니다. API 호출과 같이 `paths` 파일이 수행하는 작업은 사이드바를 생성할 때마다 한 번씩 더 실행된다는 점에 유의하세요.
+
+::: tip 템플릿이 생성하는 페이지들은 하나의 파일을 공유하므로, `useTitleFromFrontmatter`나 `sortMenusByFrontmatterOrder`처럼 그 파일에서 읽는 값은 모든 페이지에서 동일합니다. 생성된 페이지마다 다른 값을 주려면 매개변수에 지정합니다.
+
+- 제목: [`dynamicRouteTitleParam`](#dynamicroutetitleparam)이 지정한 이름
+- `order`: [`sortMenusByFrontmatterOrder`](#sortmenusbyfrontmatterorder)에서 사용
+- `date`: [`sortMenusByFrontmatterDate`](#sortmenusbyfrontmatterdate)에서 사용
+
+템플릿에 <span v-pre>`{{ $params.pkg }}`</span> 형태로 작성한 제목도 치환되므로, `useTitleFromFileHeading`과 `useTitleFromFrontmatter`로 각 페이지를 매개변수 값에 따라 명명할 수 있습니다. :::
+
+생성된 페이지를 제외하려면 [`excludeByGlobPattern`](#excludebyglobpattern)으로 해당 템플릿을 제외합니다.
+
+## `dynamicRouteTitleParam`
+
+- Type: `string`
+- Default: `'title'`
+
+동적 라우트가 생성한 페이지의 사이드바 제목을 담는 매개변수의 이름입니다. [`includeDynamicRoutes`](#includedynamicroutes)와 함께 사용할 때만 적용됩니다.
+
+```js
+// packages/[pkg].paths.js
+export default {
+  paths() {
+    return [{ params: { pkg: 'vitepress-sidebar', title: 'VitePress Sidebar' } }];
+  }
+};
+```
+
+위 페이지는 `VitePress Sidebar`로 표시됩니다. 매개변수 제목은 하나의 템플릿에서 생성된 페이지마다 다르게 지정할 수 있는 유일한 방법이므로 다른 모든 제목 지정 방식보다 우선합니다. `title`을 이미 라우트 매개변수로 사용하고 있다면 이 옵션을 변경하세요.
 
 ## `removePrefixAfterOrdering`
 

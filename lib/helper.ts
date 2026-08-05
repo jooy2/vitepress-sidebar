@@ -79,6 +79,29 @@ export function getExcludeFromFrontmatter(
   return getValueFromFrontmatter<boolean>(filePath, excludeFrontmatterFieldName, false);
 }
 
+/**
+ * Matches the expression a dynamic route template uses to print one of its
+ * parameters, such as `{{ $params.pkg }}` or `{{ $params['pkg'] }}`.
+ */
+const ROUTE_PARAM_EXPRESSION_REGEX =
+  /\{\{\s*\$params\s*(?:\.(\w+)|\[\s*['"]([^'"]+)['"]\s*])\s*}}/g;
+
+/**
+ * Substitutes the parameters of a dynamic route into the text of its template.
+ *
+ * A dynamic route template is a single file, so every page it generates shares
+ * one title. VitePress resolves that title in the browser, which the sidebar
+ * cannot do, so the same substitution is applied here to keep each generated
+ * page under its own name.
+ */
+export function resolveParamsInText(text: string, params: { [key: string]: string }): string {
+  return text.replace(ROUTE_PARAM_EXPRESSION_REGEX, (match, dotKey, bracketKey) => {
+    const value = params[dotKey ?? bracketKey];
+
+    return value === undefined || value === null ? match : String(value);
+  });
+}
+
 export function formatTitle(
   options: VitePressSidebarOptions,
   title: string,
@@ -166,10 +189,16 @@ export function getTitleFromMd(
   filePath: string,
   options: VitePressSidebarOptions,
   isDirectory: boolean,
-  callbackTitleReceived?: () => void
+  callbackTitleReceived?: () => void,
+  routeParams?: { [key: string]: string }
 ): string {
+  // Applied before the title is formatted, so that the formatting options act
+  // on the parameter value instead of on the expression that produced it.
+  const applyRouteParams = (text: string): string =>
+    routeParams ? resolveParamsInText(text, routeParams) : text;
+
   if (isDirectory) {
-    return formatTitle(options, fileName);
+    return formatTitle(options, applyRouteParams(fileName));
   }
 
   if (options.useTitleFromFrontmatter) {
@@ -185,7 +214,7 @@ export function getTitleFromMd(
     }
     if (value) {
       callbackTitleReceived?.();
-      return formatTitle(options, value);
+      return formatTitle(options, applyRouteParams(value));
     }
   }
 
@@ -212,7 +241,7 @@ export function getTitleFromMd(
           }
 
           callbackTitleReceived?.();
-          return formatTitle(options, str, true);
+          return formatTitle(options, applyRouteParams(str), true);
         }
       }
     } catch {
@@ -220,7 +249,7 @@ export function getTitleFromMd(
     }
   }
 
-  return formatTitle(options, fileName.replace(/\.md$/, ''));
+  return formatTitle(options, applyRouteParams(fileName.replace(/\.md$/, '')));
 }
 
 // Sorting is applied once per directory while the sidebar is being built, so

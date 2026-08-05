@@ -7,6 +7,7 @@ import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } f
 import {
   debugPrint,
   deepDeleteKey,
+  formatTitle,
   generateNotTogetherMessage,
   getDateFromFile,
   getDateFromFrontmatter,
@@ -24,6 +25,366 @@ import {
   normalizeOptions,
   readConfigFile
 } from './config-file.js';
+import type { DynamicRoute, DynamicRouteNode } from './dynamic-route.js';
+import {
+  buildDynamicRouteTree,
+  getDynamicRouteNode,
+  hasDynamicRouteTemplate,
+  isDynamicRouteName,
+  isDynamicRoutePath,
+  resolveDynamicRoutes
+} from './dynamic-route.js';
+
+function applyManualSort(fileNames: string[], priority: string[]): string[] {
+  if (priority.length < 1) {
+    return fileNames;
+  }
+
+  const needSortItem = fileNames.filter((x) => priority.indexOf(x) !== -1);
+  const remainItem = fileNames.filter((x) => priority.indexOf(x) === -1);
+
+  needSortItem.sort((a, b) => priority.indexOf(a) - priority.indexOf(b));
+
+  return [...needSortItem, ...remainItem];
+}
+
+/**
+ * Turns the name of an item into the link it gets in the sidebar.
+ *
+ * Shared by the items read from disk and by the ones a dynamic route generates,
+ * because a generated page is linked exactly like a file sitting at that path.
+ */
+function resolveDisplayPath(
+  displayDir: string,
+  itemName: string,
+  depth: number,
+  options: VitePressSidebarOptions
+): string {
+  let itemPathDisplay = `${displayDir}/${itemName}`.replace(/\/{2}/, '/');
+
+  if (itemPathDisplay.endsWith('/index.md')) {
+    itemPathDisplay = itemPathDisplay.replace('index.md', '');
+  } else {
+    itemPathDisplay = itemPathDisplay.replace(/\.md$/, '');
+  }
+
+  if (options.documentRootPath && itemPathDisplay.startsWith(options.documentRootPath)) {
+    if (depth === 1) {
+      itemPathDisplay = itemPathDisplay.replace(
+        new RegExp(`^${options.documentRootPath}`, 'g'),
+        ''
+      );
+    }
+
+    if (options.scanStartPath || options.resolvePath) {
+      itemPathDisplay = itemPathDisplay.replace(/^\//g, '');
+
+      if (options.scanStartPath) {
+        itemPathDisplay = itemPathDisplay.replace(new RegExp(`^${options.scanStartPath}`, 'g'), '');
+      }
+
+      itemPathDisplay = itemPathDisplay.replace(/^\/(?!$)/g, '');
+
+      if (itemPathDisplay === '/') {
+        itemPathDisplay = 'index.md';
+      }
+    } else if (!itemPathDisplay.startsWith('/')) {
+      itemPathDisplay = `/${itemPathDisplay}`;
+    }
+  }
+
+  if (!itemPathDisplay) {
+    itemPathDisplay = 'index.md';
+  }
+
+  return itemPathDisplay;
+}
+
+/**
+ * Reads a value the `paths` loader supplied for a generated page.
+ *
+ * A dynamic route template is one file, so anything read from it is identical
+ * for every page it generates. A parameter is the only place where a generated
+ * page can carry a value of its own, which is why it wins over the frontmatter.
+ */
+function getValueFromRouteParams(
+  routeParams: { [key: string]: string } | undefined,
+  key: string
+): string | undefined {
+  const value = routeParams?.[key];
+
+  return value === undefined || value === null || value === '' ? undefined : String(value);
+}
+
+function generateFileItem(
+  fileName: string,
+  filePath: string,
+  filePathDisplay: string,
+  parentName: string | null,
+  options: VitePressSidebarOptions,
+  routeParams?: { [key: string]: string }
+): SidebarListItem | null {
+  if (getExcludeFromFrontmatter(filePath, options.excludeFilesByFrontmatterFieldName)) {
+    return null;
+  }
+
+  const fileNameWithoutExt = fileName.replace(/\.md$/, '');
+  const titleFromParams = getValueFromRouteParams(routeParams, options.dynamicRouteTitleParam!);
+  const orderFromParams = parseFloat(getValueFromRouteParams(routeParams, 'order') ?? '');
+  const dateFromParams = getValueFromRouteParams(routeParams, 'date');
+  let fileItemText;
+
+  if (titleFromParams) {
+    fileItemText = formatTitle(options, titleFromParams);
+  } else if (options.useFolderLinkFromSameNameSubFile && parentName === fileNameWithoutExt) {
+    fileItemText = fileNameWithoutExt;
+  } else {
+    fileItemText = getTitleFromMd(fileName, filePath, options, false, undefined, routeParams);
+  }
+
+  return {
+    text: fileItemText,
+    link: filePathDisplay,
+    ...(options.sortMenusByFrontmatterOrder
+      ? {
+          order: Number.isFinite(orderFromParams)
+            ? orderFromParams
+            : getOrderFromFrontmatter(filePath, options.frontmatterOrderDefaultValue!)
+        }
+      : {}),
+    ...(options.sortMenusByFrontmatterDate
+      ? {
+          date: dateFromParams ?? getDateFromFrontmatter(filePath)
+        }
+      : {}),
+    ...(options.sortMenusByFileCreateDate
+      ? {
+          date: getDateFromFile(filePath)
+        }
+      : {}),
+    ...(options.sortMenusByFileModifyDate
+      ? {
+          date: getDateFromFile(filePath, true)
+        }
+      : {})
+  };
+}
+
+function generateDirectoryItem(
+  depth: number,
+  directoryName: string,
+  directoryPath: string,
+  directoryPathDisplay: string,
+  options: VitePressSidebarOptions,
+  rawOptions: VitePressSidebarOptions,
+  routeNode: DynamicRouteNode | null
+): SidebarListItem | null {
+  // A `sidebar.config.json` inside the folder takes priority over the
+  // inherited options, both for the folder itself and everything below it.
+  const folderConfig = readConfigFile(directoryPath, false);
+  const childRawOptions = folderConfig ? { ...rawOptions, ...folderConfig.options } : rawOptions;
+  const childOptions = folderConfig ? normalizeOptions(childRawOptions) : options;
+  // Describes this folder only, so it is read here instead of being
+  // passed down with the options.
+  const folderMeta = folderConfig?.folder ?? {};
+
+  let directorySidebarItems =
+    generateSidebarItem(
+      depth + 1,
+      directoryPath,
+      directoryPathDisplay,
+      directoryName,
+      childOptions,
+      childRawOptions,
+      routeNode
+    ) || [];
+
+  let isTitleReceivedFromFileContent = false;
+  let newDirectoryText = getTitleFromMd(directoryName, directoryPath, childOptions, true, () => {
+    isTitleReceivedFromFileContent = true;
+  });
+  let newDirectoryPagePath = directoryPath;
+  let withDirectoryLink;
+  let isNotEmptyDirectory = false;
+
+  const indexFilePath = `${directoryPath}/index.md`;
+  const findSameNameSubFile = directorySidebarItems.find(
+    (y: SidebarListItem) => y.text === directoryName
+  );
+
+  if (childOptions.useFolderLinkFromSameNameSubFile && findSameNameSubFile) {
+    newDirectoryPagePath = resolve(directoryPath, `${findSameNameSubFile.text}.md`);
+    newDirectoryText = getTitleFromMd(
+      directoryName,
+      newDirectoryPagePath,
+      childOptions,
+      false,
+      () => {
+        isTitleReceivedFromFileContent = true;
+      }
+    );
+
+    if (childOptions.folderLinkNotIncludesFileName) {
+      withDirectoryLink = `${directoryPathDisplay}/`;
+    } else {
+      withDirectoryLink = findSameNameSubFile.link;
+    }
+
+    directorySidebarItems = directorySidebarItems.filter(
+      (y: SidebarListItem) => y.text !== directoryName
+    );
+  }
+
+  // If an index.md file exists in a folder subfile,
+  // replace the name or link of the folder with what is set in index.md.
+  // The index.md file can still be displayed if the value of `includeFolderIndexFile` is `true`.
+  if (existsSync(indexFilePath)) {
+    if (childOptions.includeFolderIndexFile) {
+      isNotEmptyDirectory = true;
+    }
+
+    if (childOptions.useFolderLinkFromIndexFile) {
+      isNotEmptyDirectory = true;
+      newDirectoryPagePath = indexFilePath;
+      withDirectoryLink = `${directoryPathDisplay}/index.md`;
+    }
+
+    if (childOptions.useFolderTitleFromIndexFile && !isTitleReceivedFromFileContent) {
+      isNotEmptyDirectory = true;
+      newDirectoryPagePath = indexFilePath;
+      newDirectoryText = getTitleFromMd('index', newDirectoryPagePath, childOptions, false);
+    }
+  }
+
+  // `$folder` states what the folder should look like, so it wins over
+  // the folder name and over anything read from `index.md`.
+  newDirectoryText = folderMeta.text ?? newDirectoryText;
+  withDirectoryLink = folderMeta.link ?? withDirectoryLink;
+
+  if (
+    (withDirectoryLink && childOptions.includeEmptyFolder !== false) ||
+    childOptions.includeEmptyFolder ||
+    directorySidebarItems.length > 0 ||
+    isNotEmptyDirectory
+  ) {
+    return {
+      text: newDirectoryText,
+      ...(withDirectoryLink ? { link: withDirectoryLink } : {}),
+      ...(directorySidebarItems.length > 0 ? { items: directorySidebarItems } : {}),
+      ...(childOptions.collapsed === null ||
+      childOptions.collapsed === undefined ||
+      directorySidebarItems.length < 1 ||
+      (typeof childOptions.collapseFromLevel === 'number' && depth < childOptions.collapseFromLevel)
+        ? {}
+        : { collapsed: depth >= childOptions.collapseDepth! && childOptions.collapsed }),
+      ...(options.sortMenusByFrontmatterOrder
+        ? {
+            // Ordering a folder through `$folder` keeps its position
+            // independent of where its `index.md` sits inside it, and
+            // works for a folder that has no `index.md` at all.
+            order:
+              folderMeta.order ??
+              getOrderFromFrontmatter(newDirectoryPagePath, options.frontmatterOrderDefaultValue!)
+          }
+        : {}),
+      ...(options.sortMenusByFrontmatterDate
+        ? {
+            date: getDateFromFrontmatter(directoryPath)
+          }
+        : {}),
+      ...(options.sortMenusByFileCreateDate
+        ? {
+            date: getDateFromFile(directoryPath)
+          }
+        : {}),
+      ...(options.sortMenusByFileModifyDate
+        ? {
+            date: getDateFromFile(directoryPath, true)
+          }
+        : {})
+    };
+  }
+
+  return null;
+}
+
+/**
+ * Builds the items of the pages a dynamic route template generates.
+ *
+ * The items are read from the resolved routes instead of from disk, because the
+ * only thing on disk is the template, and VitePress never serves a page under
+ * the literal path of a template.
+ */
+function generateDynamicRouteItems(
+  depth: number,
+  currentDir: string,
+  displayDir: string,
+  parentName: string | null,
+  options: VitePressSidebarOptions,
+  rawOptions: VitePressSidebarOptions,
+  routeNode: DynamicRouteNode,
+  filesByGlobPattern: string[]
+): SidebarListItem {
+  // A child whose template segment holds no parameter stands for a real
+  // directory, which the scan of this directory already covers.
+  const childNodes = [...routeNode.children.values()].filter((node) =>
+    isDynamicRouteName(node.templateName)
+  );
+
+  if (childNodes.length < 1) {
+    return [];
+  }
+
+  const nodesByName = new Map(childNodes.map((node) => [node.name, node]));
+
+  return applyManualSort([...nodesByName.keys()], options.manualSortFileNameByPriority!)
+    .map((name) => {
+      const node = nodesByName.get(name)!;
+
+      if (depth === 1 && name === 'index.md' && !options.includeRootIndexFile) {
+        return null;
+      }
+
+      if (depth !== 1 && name === 'index.md' && !options.includeFolderIndexFile) {
+        return null;
+      }
+
+      if (!options.includeDotFiles && /^\./.test(name)) {
+        return null;
+      }
+
+      // Excluding a template excludes every page it generates, which is the
+      // only way to exclude them: a generated page has no file to match.
+      if (!filesByGlobPattern.includes(node.templateName)) {
+        return null;
+      }
+
+      const templatePath = resolve(currentDir, node.templateName);
+      const itemPathDisplay = resolveDisplayPath(displayDir, name, depth, options);
+
+      if (node.route) {
+        return generateFileItem(
+          name,
+          templatePath,
+          itemPathDisplay,
+          parentName,
+          options,
+          node.route.params
+        );
+      }
+
+      return generateDirectoryItem(
+        depth,
+        name,
+        templatePath,
+        itemPathDisplay,
+        options,
+        rawOptions,
+        node
+      );
+    })
+    .filter((x) => x !== null);
+}
 
 function generateSidebarItem(
   depth: number,
@@ -31,7 +392,8 @@ function generateSidebarItem(
   displayDir: string,
   parentName: string | null,
   options: VitePressSidebarOptions,
-  rawOptions: VitePressSidebarOptions
+  rawOptions: VitePressSidebarOptions,
+  routeNode: DynamicRouteNode | null = null
 ): SidebarListItem {
   if (typeof options.excludeByFolderDepth === 'number' && options.excludeByFolderDepth <= depth) {
     return [];
@@ -44,68 +406,18 @@ function generateSidebarItem(
     dot: true,
     follow: options.followSymlinks ?? false
   });
-  let directoryFiles: string[] = readdirSync(currentDir);
-
-  if (options.manualSortFileNameByPriority!.length > 0) {
-    const needSortItem = directoryFiles.filter(
-      (x) => options.manualSortFileNameByPriority?.indexOf(x) !== -1
-    );
-    const remainItem = directoryFiles.filter(
-      (x) => options.manualSortFileNameByPriority?.indexOf(x) === -1
-    );
-
-    needSortItem.sort(
-      (a, b) =>
-        options.manualSortFileNameByPriority!.indexOf(a) -
-        options.manualSortFileNameByPriority!.indexOf(b)
-    );
-
-    directoryFiles = [...needSortItem, ...remainItem];
-  }
+  // Below a dynamic route template directory, every page comes from a resolved
+  // route. Reading the directory there would produce items for paths that
+  // VitePress does not serve, so the files on disk are left alone.
+  const isBelowDynamicRouteTemplate = !!routeNode && isDynamicRoutePath(routeNode.templatePath);
+  const directoryFiles: string[] = isBelowDynamicRouteTemplate
+    ? []
+    : applyManualSort(readdirSync(currentDir), options.manualSortFileNameByPriority!);
 
   let sidebarItems: SidebarListItem = directoryFiles
     .map((x: string) => {
       const childItemPath = resolve(currentDir, x);
-
-      let childItemPathDisplay = `${displayDir}/${x}`.replace(/\/{2}/, '/');
-
-      if (childItemPathDisplay.endsWith('/index.md')) {
-        childItemPathDisplay = childItemPathDisplay.replace('index.md', '');
-      } else {
-        childItemPathDisplay = childItemPathDisplay.replace(/\.md$/, '');
-      }
-
-      if (options.documentRootPath && childItemPathDisplay.startsWith(options.documentRootPath)) {
-        if (depth === 1) {
-          childItemPathDisplay = childItemPathDisplay.replace(
-            new RegExp(`^${options.documentRootPath}`, 'g'),
-            ''
-          );
-        }
-
-        if (options.scanStartPath || options.resolvePath) {
-          childItemPathDisplay = childItemPathDisplay.replace(/^\//g, '');
-
-          if (options.scanStartPath) {
-            childItemPathDisplay = childItemPathDisplay.replace(
-              new RegExp(`^${options.scanStartPath}`, 'g'),
-              ''
-            );
-          }
-
-          childItemPathDisplay = childItemPathDisplay.replace(/^\/(?!$)/g, '');
-
-          if (childItemPathDisplay === '/') {
-            childItemPathDisplay = 'index.md';
-          }
-        } else if (!childItemPathDisplay.startsWith('/')) {
-          childItemPathDisplay = `/${childItemPathDisplay}`;
-        }
-      }
-
-      if (!childItemPathDisplay) {
-        childItemPathDisplay = 'index.md';
-      }
+      const childItemPathDisplay = resolveDisplayPath(displayDir, x, depth, options);
 
       if (/\.vitepress/.test(childItemPath)) {
         return null;
@@ -131,177 +443,46 @@ function generateSidebarItem(
         return null;
       }
 
-      if (statSync(childItemPath).isDirectory()) {
-        // A `sidebar.config.json` inside the folder takes priority over the
-        // inherited options, both for the folder itself and everything below it.
-        const folderConfig = readConfigFile(childItemPath, false);
-        const childRawOptions = folderConfig
-          ? { ...rawOptions, ...folderConfig.options }
-          : rawOptions;
-        const childOptions = folderConfig ? normalizeOptions(childRawOptions) : options;
-        // Describes this folder only, so it is read here instead of being
-        // passed down with the options.
-        const folderMeta = folderConfig?.folder ?? {};
-
-        let directorySidebarItems =
-          generateSidebarItem(
-            depth + 1,
-            childItemPath,
-            childItemPathDisplay,
-            x,
-            childOptions,
-            childRawOptions
-          ) || [];
-
-        let isTitleReceivedFromFileContent = false;
-        let newDirectoryText = getTitleFromMd(x, childItemPath, childOptions, true, () => {
-          isTitleReceivedFromFileContent = true;
-        });
-        let newDirectoryPagePath = childItemPath;
-        let withDirectoryLink;
-        let isNotEmptyDirectory = false;
-
-        const indexFilePath = `${childItemPath}/index.md`;
-        const findSameNameSubFile = directorySidebarItems.find(
-          (y: SidebarListItem) => y.text === x
-        );
-
-        if (childOptions.useFolderLinkFromSameNameSubFile && findSameNameSubFile) {
-          newDirectoryPagePath = resolve(childItemPath, `${findSameNameSubFile.text}.md`);
-          newDirectoryText = getTitleFromMd(x, newDirectoryPagePath, childOptions, false, () => {
-            isTitleReceivedFromFileContent = true;
-          });
-
-          if (childOptions.folderLinkNotIncludesFileName) {
-            withDirectoryLink = `${childItemPathDisplay}/`;
-          } else {
-            withDirectoryLink = findSameNameSubFile.link;
-          }
-
-          directorySidebarItems = directorySidebarItems.filter(
-            (y: SidebarListItem) => y.text !== x
-          );
-        }
-
-        // If an index.md file exists in a folder subfile,
-        // replace the name or link of the folder with what is set in index.md.
-        // The index.md file can still be displayed if the value of `includeFolderIndexFile` is `true`.
-        if (existsSync(indexFilePath)) {
-          if (childOptions.includeFolderIndexFile) {
-            isNotEmptyDirectory = true;
-          }
-
-          if (childOptions.useFolderLinkFromIndexFile) {
-            isNotEmptyDirectory = true;
-            newDirectoryPagePath = indexFilePath;
-            withDirectoryLink = `${childItemPathDisplay}/index.md`;
-          }
-
-          if (childOptions.useFolderTitleFromIndexFile && !isTitleReceivedFromFileContent) {
-            isNotEmptyDirectory = true;
-            newDirectoryPagePath = indexFilePath;
-            newDirectoryText = getTitleFromMd('index', newDirectoryPagePath, childOptions, false);
-          }
-        }
-
-        // `$folder` states what the folder should look like, so it wins over
-        // the folder name and over anything read from `index.md`.
-        newDirectoryText = folderMeta.text ?? newDirectoryText;
-        withDirectoryLink = folderMeta.link ?? withDirectoryLink;
-
-        if (
-          (withDirectoryLink && childOptions.includeEmptyFolder !== false) ||
-          childOptions.includeEmptyFolder ||
-          directorySidebarItems.length > 0 ||
-          isNotEmptyDirectory
-        ) {
-          return {
-            text: newDirectoryText,
-            ...(withDirectoryLink ? { link: withDirectoryLink } : {}),
-            ...(directorySidebarItems.length > 0 ? { items: directorySidebarItems } : {}),
-            ...(childOptions.collapsed === null ||
-            childOptions.collapsed === undefined ||
-            directorySidebarItems.length < 1 ||
-            (typeof childOptions.collapseFromLevel === 'number' &&
-              depth < childOptions.collapseFromLevel)
-              ? {}
-              : { collapsed: depth >= childOptions.collapseDepth! && childOptions.collapsed }),
-            ...(options.sortMenusByFrontmatterOrder
-              ? {
-                  // Ordering a folder through `$folder` keeps its position
-                  // independent of where its `index.md` sits inside it, and
-                  // works for a folder that has no `index.md` at all.
-                  order:
-                    folderMeta.order ??
-                    getOrderFromFrontmatter(
-                      newDirectoryPagePath,
-                      options.frontmatterOrderDefaultValue!
-                    )
-                }
-              : {}),
-            ...(options.sortMenusByFrontmatterDate
-              ? {
-                  date: getDateFromFrontmatter(childItemPath)
-                }
-              : {}),
-            ...(options.sortMenusByFileCreateDate
-              ? {
-                  date: getDateFromFile(childItemPath)
-                }
-              : {}),
-            ...(options.sortMenusByFileModifyDate
-              ? {
-                  date: getDateFromFile(childItemPath, true)
-                }
-              : {})
-          };
-        }
-
+      // A template is not a page of its own, and the pages it generates are
+      // added separately, so it never appears under its literal name.
+      if (options.includeDynamicRoutes && isDynamicRouteName(x)) {
         return null;
       }
 
-      if (childItemPath.endsWith('.md')) {
-        if (getExcludeFromFrontmatter(childItemPath, options.excludeFilesByFrontmatterFieldName)) {
-          return null;
-        }
-
-        let childItemText;
-        const childItemTextWithoutExt = x.replace(/\.md$/, '');
-
-        if (options.useFolderLinkFromSameNameSubFile && parentName === childItemTextWithoutExt) {
-          childItemText = childItemTextWithoutExt;
-        } else {
-          childItemText = getTitleFromMd(x, childItemPath, options, false);
-        }
-
-        return {
-          text: childItemText,
-          link: childItemPathDisplay,
-          ...(options.sortMenusByFrontmatterOrder
-            ? {
-                order: getOrderFromFrontmatter(childItemPath, options.frontmatterOrderDefaultValue!)
-              }
-            : {}),
-          ...(options.sortMenusByFrontmatterDate
-            ? {
-                date: getDateFromFrontmatter(childItemPath)
-              }
-            : {}),
-          ...(options.sortMenusByFileCreateDate
-            ? {
-                date: getDateFromFile(childItemPath)
-              }
-            : {}),
-          ...(options.sortMenusByFileModifyDate
-            ? {
-                date: getDateFromFile(childItemPath, true)
-              }
-            : {})
-        };
+      if (statSync(childItemPath).isDirectory()) {
+        return generateDirectoryItem(
+          depth,
+          x,
+          childItemPath,
+          childItemPathDisplay,
+          options,
+          rawOptions,
+          routeNode?.children.get(x) ?? null
+        );
       }
+
+      if (childItemPath.endsWith('.md')) {
+        return generateFileItem(x, childItemPath, childItemPathDisplay, parentName, options);
+      }
+
       return null;
     })
     .filter((x) => x !== null);
+
+  if (routeNode) {
+    sidebarItems = sidebarItems.concat(
+      generateDynamicRouteItems(
+        depth,
+        currentDir,
+        displayDir,
+        parentName,
+        options,
+        rawOptions,
+        routeNode,
+        filesByGlobPattern
+      )
+    );
+  }
 
   if (options.sortMenusByName) {
     sidebarItems = sortByObjectKey({
@@ -392,6 +573,10 @@ export function generateSidebar(
 
   const cwd = process.cwd();
   const resolvedOptionItems: VitePressSidebarOptions[] = [];
+  // Resolving the routes evaluates project code, so it is done once per
+  // document root and shared by every sidebar built from it. The cache lives
+  // for this call only, so a later call always sees the current routes.
+  const dynamicRoutesByRootPath = new Map<string, DynamicRoute[]>();
   // Only a configuration file in the current working directory may declare
   // `documentRootPath`, because the document root decides which of the other
   // configuration files are read.
@@ -508,13 +693,39 @@ export function generateSidebar(
         .replace('/$', '');
     }
 
+    let routeNode: DynamicRouteNode | null = null;
+
+    if (resolvedOptionItem.includeDynamicRoutes) {
+      // A route is relative to the document root even when the scan starts
+      // below it, so the routes are always resolved from the document root and
+      // the tree is walked down to the directory the scan starts from.
+      const documentRootDir = join(cwd, resolvedOptionItem.documentRootPath!);
+      let dynamicRoutes = dynamicRoutesByRootPath.get(documentRootDir);
+
+      if (!dynamicRoutes) {
+        dynamicRoutes = hasDynamicRouteTemplate(documentRootDir)
+          ? resolveDynamicRoutes(documentRootDir)
+          : [];
+
+        dynamicRoutesByRootPath.set(documentRootDir, dynamicRoutes);
+      }
+
+      if (dynamicRoutes.length > 0) {
+        routeNode = getDynamicRouteNode(
+          buildDynamicRouteTree(dynamicRoutes),
+          resolvedOptionItem.scanStartPath ?? ''
+        );
+      }
+    }
+
     let sidebarResult: SidebarListItem = generateSidebarItem(
       1,
       join(cwd, scanPath),
       scanPath,
       null,
       resolvedOptionItem,
-      optionItem
+      optionItem,
+      routeNode
     );
 
     if (resolvedOptionItem.removePrefixAfterOrdering) {

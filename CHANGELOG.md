@@ -4,6 +4,8 @@
 
 - A `sidebar.config.json` file placed in any folder now configures that folder and everything below it. The options it declares take priority over the options passed to `withSidebar` or `generateSidebar`, and `documentRootPath` can be omitted when such a file exists. (#166)
 - The `$folder` key of a `sidebar.config.json` describes the folder it lives in (`order`, `text`, `link`) instead of its contents, and is not inherited by subfolders. A folder can now be ordered, named and linked without an `index.md`, and the position of a folder no longer depends on where its `index.md` sits inside it. (#197)
+- Add `includeDynamicRoutes` option, which shows a [dynamic route](https://vitepress.dev/guide/routing#dynamic-routes) as the pages it generates instead of as the template file it is generated from. A parameter may appear in a folder name as well, and both a `.paths.ts` file and an asynchronous `paths()` function are supported. (#199)
+- Add `dynamicRouteTitleParam` option, which names the route parameter that holds the sidebar title of a generated page. A title written as `{{ $params.name }}` in the template is resolved as well, and the `order` and `date` parameters are read by `sortMenusByFrontmatterOrder` and `sortMenusByFrontmatterDate`.
 - Sorting options are no longer overwritten by the folders above them.
 
 ## 1.36.1 (2026-05-22)

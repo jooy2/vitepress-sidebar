@@ -161,6 +161,7 @@ docs/
 - [rootGroupLink](/zhHans/guide/options#rootgrouplink)
 - [rootGroupCollapsed](/zhHans/guide/options#rootgroupcollapsed)
 - [includeRootIndexFile](/zhHans/guide/options#includerootindexfile)
+- [includeDynamicRoutes](/zhHans/guide/options#includedynamicroutes)
 - [removePrefixAfterOrdering](/zhHans/guide/options#removeprefixafterordering)
 - [debugPrint](/zhHans/guide/options#debugprint)
 

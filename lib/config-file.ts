@@ -103,6 +103,7 @@ const OPTION_SPECS = {
   rootGroupLink: { type: 'string', rootOnly: true },
   rootGroupCollapsed: { type: 'boolean', rootOnly: true },
   includeRootIndexFile: { type: 'boolean', rootOnly: true },
+  includeDynamicRoutes: { type: 'boolean', rootOnly: true },
   removePrefixAfterOrdering: { type: 'boolean', rootOnly: true },
   debugPrint: { type: 'boolean', rootOnly: true },
   collapsed: { type: 'boolean' },
@@ -119,6 +120,7 @@ const OPTION_SPECS = {
   useFolderLinkFromIndexFile: { type: 'boolean' },
   useFolderLinkFromSameNameSubFile: { type: 'boolean' },
   includeDotFiles: { type: 'boolean' },
+  dynamicRouteTitleParam: { type: 'string' },
   folderLinkNotIncludesFileName: { type: 'boolean' },
   includeEmptyFolder: { type: 'boolean' },
   sortMenusByName: { type: 'boolean' },
@@ -444,6 +446,7 @@ export function normalizeOptions(options: VitePressSidebarOptions): VitePressSid
   }
 
   result.collapseDepth = result.collapseDepth ?? 1;
+  result.dynamicRouteTitleParam = result.dynamicRouteTitleParam ?? 'title';
   result.manualSortFileNameByPriority = result.manualSortFileNameByPriority ?? [];
   result.frontmatterOrderDefaultValue = result.frontmatterOrderDefaultValue ?? 0;
 

@@ -62,6 +62,11 @@ export function createSidebarHmrPlugin(
       const isSidebarConfigFile = (file: string): boolean =>
         basename(file) === SIDEBAR_CONFIG_FILE_NAME;
 
+      // The file a dynamic route template takes its pages from. Both its
+      // content and its presence decide which pages exist.
+      const isDynamicRoutePathsFile = (file: string): boolean =>
+        /\.paths\.(?:js|ts|mjs|mts)$/.test(file);
+
       const handler = (file: string): void => {
         // A `sidebar.config.json` may live outside `documentRootPath`, so it is
         // never matched against the watched roots.
@@ -70,7 +75,7 @@ export function createSidebarHmrPlugin(
           return;
         }
 
-        if (!file.endsWith('.md')) {
+        if (!file.endsWith('.md') && !isDynamicRoutePathsFile(file)) {
           return;
         }
 
@@ -82,9 +87,15 @@ export function createSidebarHmrPlugin(
       };
 
       // Editing a Markdown file is handled by VitePress itself, but editing a
-      // configuration file changes the sidebar and needs a full re-evaluation.
+      // configuration file or a `paths` file changes the sidebar and needs a
+      // full re-evaluation.
       const changeHandler = (file: string): void => {
         if (isSidebarConfigFile(file)) {
+          touchConfig();
+          return;
+        }
+
+        if (isDynamicRoutePathsFile(file) && isInsideDocs(file)) {
           touchConfig();
         }
       };

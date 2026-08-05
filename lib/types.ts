@@ -21,6 +21,8 @@ export declare interface VitePressSidebarOptions {
   useFolderLinkFromIndexFile?: boolean;
   useFolderLinkFromSameNameSubFile?: boolean;
   includeDotFiles?: boolean;
+  includeDynamicRoutes?: boolean;
+  dynamicRouteTitleParam?: string;
   folderLinkNotIncludesFileName?: boolean;
   includeEmptyFolder?: boolean;
   sortMenusByName?: boolean;

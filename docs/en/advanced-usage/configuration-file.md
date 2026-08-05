@@ -161,6 +161,7 @@ Some options describe the sidebar as a whole rather than a single folder. They a
 - [rootGroupLink](/guide/options#rootgrouplink)
 - [rootGroupCollapsed](/guide/options#rootgroupcollapsed)
 - [includeRootIndexFile](/guide/options#includerootindexfile)
+- [includeDynamicRoutes](/guide/options#includedynamicroutes)
 - [removePrefixAfterOrdering](/guide/options#removeprefixafterordering)
 - [debugPrint](/guide/options#debugprint)
 
