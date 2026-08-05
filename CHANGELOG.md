@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.37.0 (2026-08-)
+## 1.37.0 (2026-08-05)
 
 - A `sidebar.config.json` file placed in any folder now configures that folder and everything below it. The options it declares take priority over the options passed to `withSidebar` or `generateSidebar`, and `documentRootPath` can be omitted when such a file exists. (#166)
 - The `$folder` key of a `sidebar.config.json` describes the folder it lives in (`order`, `text`, `link`) instead of its contents, and is not inherited by subfolders. A folder can now be ordered, named and linked without an `index.md`, and the position of a folder no longer depends on where its `index.md` sits inside it. (#197)
