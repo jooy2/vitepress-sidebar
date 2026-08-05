@@ -339,12 +339,10 @@ export function removePrefixFromTitleAndLink(
       const key = Object.keys(obj)[j];
 
       if (key === 'text') {
-        if (
-          !(
-            !(options.prefixSeparator instanceof RegExp) &&
-            obj[key].indexOf(options.prefixSeparator) === -1
-          )
-        ) {
+        if (!(
+          !(options.prefixSeparator instanceof RegExp) &&
+          obj[key].indexOf(options.prefixSeparator) === -1
+        )) {
           const splitItem = obj[key].split(options.prefixSeparator);
 
           if (splitItem.length > 1) {

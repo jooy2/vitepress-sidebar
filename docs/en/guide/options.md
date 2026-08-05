@@ -381,6 +381,11 @@ root/  <---------- depth: 1 / scan: yes
    └─ aaa1.md  <---------- depth: 2 / scan: yes
 ```
 
+What stops at the given depth is the scan, not the folder item itself. A folder whose contents are no longer scanned is removed from the menu only because nothing is left to show in it, so it can be kept as a leaf item:
+
+- If `useFolderLinkFromIndexFile` is `true`, a folder that has an `index.md` file remains as a leaf item linked to that file. In the structure above, `bbb/` stays in the menu and links to `bbb/index.md`, while everything inside it stays hidden.
+- If `includeEmptyFolder` is `true`, the folder name remains as a text item with no link, even when there is no `index.md` file.
+
 ## `includeDotFiles`
 
 - Type: `boolean`

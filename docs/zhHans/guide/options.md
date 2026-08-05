@@ -380,6 +380,11 @@ root/  <---------- depth: 1 / scan: yes
    └─ aaa1.md  <---------- depth: 2 / scan: yes
 ```
 
+在指定深度停止的是扫描，而不是文件夹项本身。不再扫描其内容的文件夹之所以从菜单中移除，只是因为其中没有可显示的内容，因此可以将它保留为叶子项：
+
+- 如果 `useFolderLinkFromIndexFile` 为 `true`，含有 `index.md` 文件的文件夹会作为链接到该文件的叶子项保留。在上面的结构中，`bbb/` 会保留在菜单中并链接到 `bbb/index.md`，而其内部的内容仍不会显示。
+- 如果 `includeEmptyFolder` 为 `true`，即使没有 `index.md` 文件，文件夹名称也会作为不带链接的文本项保留。
+
 ## `includeDotFiles`
 
 - Type: `boolean`

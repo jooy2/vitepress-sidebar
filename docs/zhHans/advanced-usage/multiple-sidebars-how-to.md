@@ -33,9 +33,7 @@ docs/
 
 ```javascript
 // 必须传递数组参数!!!!
-const vitePressConfigs = {
-  /* ... */
-};
+const vitePressConfigs = {/* ... */};
 
 export default defineConfig(
   withSidebar(vitePressConfigs, [

@@ -33,9 +33,7 @@ Use the `withSidebar` function as before, but pass an array. The array will cont
 
 ```javascript
 // Must pass array arguments!!!!
-const vitePressConfigs = {
-  /* ... */
-};
+const vitePressConfigs = {/* ... */};
 
 export default defineConfig(
   withSidebar(vitePressConfigs, [

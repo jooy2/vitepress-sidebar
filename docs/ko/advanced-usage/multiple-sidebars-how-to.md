@@ -33,9 +33,7 @@ URL이 `/guide` 페이지에 있는 경우 사용자는 메뉴에 `guide`의 하
 
 ```javascript
 // 배열 인수를 전달해야 함!!!!
-const vitePressConfigs = {
-  /* ... */
-};
+const vitePressConfigs = {/* ... */};
 
 export default defineConfig(
   withSidebar(vitePressConfigs, [

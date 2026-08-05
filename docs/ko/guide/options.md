@@ -380,6 +380,11 @@ root/  <---------- depth: 1 / scan: yes
    └─ aaa1.md  <---------- depth: 2 / scan: yes
 ```
 
+지정한 깊이에서 멈추는 것은 스캔이며, 폴더 항목 자체가 아닙니다. 하위 항목을 더 이상 스캔하지 않는 폴더는 표시할 내용이 남지 않아서 메뉴에서 제거되는 것이므로, 다음과 같이 잎 항목으로 남길 수 있습니다.
+
+- `useFolderLinkFromIndexFile`이 `true`이면 `index.md` 파일이 있는 폴더는 해당 파일로 연결되는 잎 항목으로 남습니다. 위 구조에서는 `bbb/`가 메뉴에 남아 `bbb/index.md`로 연결되며, 그 하위 항목은 계속 표시되지 않습니다.
+- `includeEmptyFolder`가 `true`이면 `index.md` 파일이 없어도 폴더 이름이 링크 없는 텍스트 항목으로 남습니다.
+
 ## `includeDotFiles`
 
 - Type: `boolean`
