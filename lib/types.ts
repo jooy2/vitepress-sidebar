@@ -1,3 +1,6 @@
+// Every option below can also be used in a `sidebar.config.json` file, so
+// adding or removing one here requires updating `OPTION_SPECS` in
+// `config-file.ts`. The compiler reports it when the two go out of sync.
 export declare interface VitePressSidebarOptions {
   documentRootPath?: string;
   scanStartPath?: string;

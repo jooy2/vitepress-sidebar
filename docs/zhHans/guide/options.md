@@ -70,6 +70,8 @@ order: 2
 └─ ...
 ```
 
+当存在 `sidebar.config.json` 文件时，可以省略此选项。详情请参阅**[配置文件](/zhHans/advanced-usage/configuration-file)**页面。
+
 ## `scanStartPath`
 
 - Type: `string|null`

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.37.0 (2026-08-)
+
+- A `sidebar.config.json` file placed in any folder now configures that folder and everything below it. The options it declares take priority over the options passed to `withSidebar` or `generateSidebar`, and `documentRootPath` can be omitted when such a file exists. (#166)
+- Sorting options are no longer overwritten by the folders above them.
+
 ## 1.36.1 (2026-05-22)
 
 - Fixed execution issues in versions `1.35.0` through `1.36.0`

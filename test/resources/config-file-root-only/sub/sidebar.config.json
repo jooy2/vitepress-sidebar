@@ -1,0 +1,9 @@
+{
+  "documentRootPath": "should-be-ignored",
+  "rootGroupText": "Should be ignored",
+  "thisOptionDoesNotExist": true,
+  "collapsed": "yes",
+  "sortFolderTo": "up",
+  "excludeByGlobPattern": "*.md",
+  "underscoreToSpace": true
+}

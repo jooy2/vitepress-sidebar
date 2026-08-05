@@ -70,6 +70,8 @@ order: 2
 └─ ...
 ```
 
+`sidebar.config.json` 파일이 있는 경우 이 옵션은 생략할 수 있습니다. 자세한 내용은 **[설정 파일](/ko/advanced-usage/configuration-file)** 페이지를 참고하세요.
+
 ## `scanStartPath`
 
 - Type: `string|null`

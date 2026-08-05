@@ -1,10 +1,11 @@
 import type { VitePressSidebarOptions } from './types.ts';
-import { join, sep } from 'path';
+import { basename, join, sep } from 'path';
 import { utimesSync } from 'fs';
+import { SIDEBAR_CONFIG_FILE_NAME } from './config-file.js';
 
 interface MinimalViteDevServer {
   watcher: {
-    on(event: 'add' | 'unlink', cb: (path: string) => void): void;
+    on(event: 'add' | 'unlink' | 'change', cb: (path: string) => void): void;
   };
 }
 
@@ -58,7 +59,17 @@ export function createSidebarHmrPlugin(
         }
       };
 
+      const isSidebarConfigFile = (file: string): boolean =>
+        basename(file) === SIDEBAR_CONFIG_FILE_NAME;
+
       const handler = (file: string): void => {
+        // A `sidebar.config.json` may live outside `documentRootPath`, so it is
+        // never matched against the watched roots.
+        if (isSidebarConfigFile(file)) {
+          touchConfig();
+          return;
+        }
+
         if (!file.endsWith('.md')) {
           return;
         }
@@ -70,8 +81,17 @@ export function createSidebarHmrPlugin(
         touchConfig();
       };
 
+      // Editing a Markdown file is handled by VitePress itself, but editing a
+      // configuration file changes the sidebar and needs a full re-evaluation.
+      const changeHandler = (file: string): void => {
+        if (isSidebarConfigFile(file)) {
+          touchConfig();
+        }
+      };
+
       server.watcher.on('add', handler);
       server.watcher.on('unlink', handler);
+      server.watcher.on('change', changeHandler);
     }
   };
 }

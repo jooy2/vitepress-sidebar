@@ -9,6 +9,7 @@ Key facts:
 - Install as a dev dependency: `npm i -D vitepress-sidebar` (also available via yarn/pnpm).
 - Two entry points: `withSidebar(vitePressOptions, sidebarOptions)` used at the `defineConfig` level (recommended, supports hot reload), and `generateSidebar(sidebarOptions)` used at the `themeConfig.sidebar` level.
 - Supports multiple sidebars (pass an array of option objects), frontmatter-driven titles/order/exclusion, internationalization, and fine-grained menu formatting.
+- Options can also be declared in a `sidebar.config.json` file placed in any folder. Such a file configures the folder it lives in and every subfolder below it, and takes priority over the options passed as an argument.
 
 Minimal usage in `.vitepress/config.js`:
 
@@ -50,6 +51,7 @@ Option categories (see the Options page for every option and example):
 
 ## Advanced usage
 
+- [Configuration file](https://vitepress-sidebar.cdget.com/advanced-usage/configuration-file): Put a `sidebar.config.json` in any folder to configure that folder and everything below it, override the options passed as an argument, and omit `documentRootPath`.
 - [Multiple Sidebars How-to](https://vitepress-sidebar.cdget.com/advanced-usage/multiple-sidebars-how-to): Show a different sidebar per URI path by passing an array of option objects with `documentRootPath`, `scanStartPath`, `resolvePath`, and `basePath`.
 - [Internationalization](https://vitepress-sidebar.cdget.com/advanced-usage/internationalization): Generate a sidebar per language directory, with VitePress `locales` and the `vitepress-i18n` plugin.
 - [Multi-level sidebar with indents](https://vitepress-sidebar.cdget.com/advanced-usage/multi-level-sidebar-with-indents): Custom CSS to indent nested sidebar levels correctly in the default theme.

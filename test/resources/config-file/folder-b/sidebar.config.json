@@ -1,0 +1,6 @@
+{
+  "capitalizeFirst": false,
+  "collapsed": false,
+  "sortMenusOrderByDescending": true,
+  "excludeByGlobPattern": ["excluded.md"]
+}

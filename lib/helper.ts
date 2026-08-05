@@ -223,16 +223,14 @@ export function getTitleFromMd(
   return formatTitle(options, fileName.replace(/\.md$/, ''));
 }
 
+// Sorting is applied once per directory while the sidebar is being built, so
+// these helpers only sort the level they are given. Descending into `items`
+// here would re-sort nested folders with the options of their parent and
+// discard the options a folder defines for itself through `sidebar.config.json`.
 export function sortByFileTypes(
   arrItems: SidebarListItem,
   sortFolderTo: 'top' | 'bottom'
 ): object[] {
-  for (let i = 0; i < arrItems.length; i += 1) {
-    if (arrItems[i].items && arrItems[i].items.length) {
-      arrItems[i].items = sortByFileTypes(arrItems[i].items, sortFolderTo);
-    }
-  }
-
   const itemFolders = arrItems.filter((item: SidebarItem) => Object.hasOwn(item, 'items'));
   const itemFiles = arrItems.filter((item: SidebarItem) => !Object.hasOwn(item, 'items'));
 
@@ -244,15 +242,6 @@ export function sortByFileTypes(
 }
 
 export function sortByObjectKey(options: SortByObjectKeyOptions): object[] {
-  for (let i = 0; i < options.arr.length; i += 1) {
-    if (options.arr[i].items && options.arr[i].items.length) {
-      options.arr[i].items = sortByObjectKey({
-        ...options,
-        arr: options.arr[i].items
-      });
-    }
-  }
-
   const basicCollator = new Intl.Collator([], {
     numeric: options.numerically,
     sensitivity: 'base'

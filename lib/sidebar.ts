@@ -18,13 +18,20 @@ import {
   sortByObjectKey
 } from './helper.js';
 import { createSidebarHmrPlugin } from './external.js';
+import {
+  detectDocumentRootPath,
+  mergeConfigFilesInPath,
+  normalizeOptions,
+  readConfigFile
+} from './config-file.js';
 
 function generateSidebarItem(
   depth: number,
   currentDir: string,
   displayDir: string,
   parentName: string | null,
-  options: VitePressSidebarOptions
+  options: VitePressSidebarOptions,
+  rawOptions: VitePressSidebarOptions
 ): SidebarListItem {
   if (typeof options.excludeByFolderDepth === 'number' && options.excludeByFolderDepth <= depth) {
     return [];
@@ -125,11 +132,24 @@ function generateSidebarItem(
       }
 
       if (statSync(childItemPath).isDirectory()) {
+        // A `sidebar.config.json` inside the folder takes priority over the
+        // inherited options, both for the folder itself and everything below it.
+        const folderConfig = readConfigFile(childItemPath, false);
+        const childRawOptions = folderConfig ? { ...rawOptions, ...folderConfig } : rawOptions;
+        const childOptions = folderConfig ? normalizeOptions(childRawOptions) : options;
+
         let directorySidebarItems =
-          generateSidebarItem(depth + 1, childItemPath, childItemPathDisplay, x, options) || [];
+          generateSidebarItem(
+            depth + 1,
+            childItemPath,
+            childItemPathDisplay,
+            x,
+            childOptions,
+            childRawOptions
+          ) || [];
 
         let isTitleReceivedFromFileContent = false;
-        let newDirectoryText = getTitleFromMd(x, childItemPath, options, true, () => {
+        let newDirectoryText = getTitleFromMd(x, childItemPath, childOptions, true, () => {
           isTitleReceivedFromFileContent = true;
         });
         let newDirectoryPagePath = childItemPath;
@@ -141,13 +161,13 @@ function generateSidebarItem(
           (y: SidebarListItem) => y.text === x
         );
 
-        if (options.useFolderLinkFromSameNameSubFile && findSameNameSubFile) {
+        if (childOptions.useFolderLinkFromSameNameSubFile && findSameNameSubFile) {
           newDirectoryPagePath = resolve(childItemPath, `${findSameNameSubFile.text}.md`);
-          newDirectoryText = getTitleFromMd(x, newDirectoryPagePath, options, false, () => {
+          newDirectoryText = getTitleFromMd(x, newDirectoryPagePath, childOptions, false, () => {
             isTitleReceivedFromFileContent = true;
           });
 
-          if (options.folderLinkNotIncludesFileName) {
+          if (childOptions.folderLinkNotIncludesFileName) {
             withDirectoryLink = `${childItemPathDisplay}/`;
           } else {
             withDirectoryLink = findSameNameSubFile.link;
@@ -162,26 +182,26 @@ function generateSidebarItem(
         // replace the name or link of the folder with what is set in index.md.
         // The index.md file can still be displayed if the value of `includeFolderIndexFile` is `true`.
         if (existsSync(indexFilePath)) {
-          if (options.includeFolderIndexFile) {
+          if (childOptions.includeFolderIndexFile) {
             isNotEmptyDirectory = true;
           }
 
-          if (options.useFolderLinkFromIndexFile) {
+          if (childOptions.useFolderLinkFromIndexFile) {
             isNotEmptyDirectory = true;
             newDirectoryPagePath = indexFilePath;
             withDirectoryLink = `${childItemPathDisplay}/index.md`;
           }
 
-          if (options.useFolderTitleFromIndexFile && !isTitleReceivedFromFileContent) {
+          if (childOptions.useFolderTitleFromIndexFile && !isTitleReceivedFromFileContent) {
             isNotEmptyDirectory = true;
             newDirectoryPagePath = indexFilePath;
-            newDirectoryText = getTitleFromMd('index', newDirectoryPagePath, options, false);
+            newDirectoryText = getTitleFromMd('index', newDirectoryPagePath, childOptions, false);
           }
         }
 
         if (
-          (withDirectoryLink && options.includeEmptyFolder !== false) ||
-          options.includeEmptyFolder ||
+          (withDirectoryLink && childOptions.includeEmptyFolder !== false) ||
+          childOptions.includeEmptyFolder ||
           directorySidebarItems.length > 0 ||
           isNotEmptyDirectory
         ) {
@@ -189,12 +209,13 @@ function generateSidebarItem(
             text: newDirectoryText,
             ...(withDirectoryLink ? { link: withDirectoryLink } : {}),
             ...(directorySidebarItems.length > 0 ? { items: directorySidebarItems } : {}),
-            ...(options.collapsed === null ||
-            options.collapsed === undefined ||
+            ...(childOptions.collapsed === null ||
+            childOptions.collapsed === undefined ||
             directorySidebarItems.length < 1 ||
-            (typeof options.collapseFromLevel === 'number' && depth < options.collapseFromLevel)
+            (typeof childOptions.collapseFromLevel === 'number' &&
+              depth < childOptions.collapseFromLevel)
               ? {}
-              : { collapsed: depth >= options.collapseDepth! && options.collapsed }),
+              : { collapsed: depth >= childOptions.collapseDepth! && childOptions.collapsed }),
             ...(options.sortMenusByFrontmatterOrder
               ? {
                   order: getOrderFromFrontmatter(
@@ -354,8 +375,55 @@ export function generateSidebar(
     optionItems = Array.isArray(options) ? options : [options];
   }
 
+  const cwd = process.cwd();
+  const resolvedOptionItems: VitePressSidebarOptions[] = [];
+  // Only a configuration file in the current working directory may declare
+  // `documentRootPath`, because the document root decides which of the other
+  // configuration files are read.
+  const projectRootConfig = readConfigFile(cwd, true);
+  let detectedDocumentRootPath: string | null | undefined;
+
   for (let i = 0; i < optionItems.length; i += 1) {
-    const optionItem = optionItems[i]!;
+    const inlineOptions = optionItems[i]!;
+
+    let documentRootPath = projectRootConfig?.documentRootPath ?? inlineOptions.documentRootPath;
+
+    if (documentRootPath === undefined) {
+      // Without an explicit document root, the location of the configuration
+      // files found in the project defines it.
+      if (detectedDocumentRootPath === undefined) {
+        detectedDocumentRootPath = detectDocumentRootPath(cwd);
+      }
+
+      documentRootPath = detectedDocumentRootPath ?? '/';
+    }
+
+    // Configuration files placed between the working directory and the scan
+    // root are merged from the shallowest to the deepest one, and take priority
+    // over the options passed as an argument.
+    const rootPathConfig = mergeConfigFilesInPath(cwd, documentRootPath, true);
+
+    if (
+      rootPathConfig.documentRootPath !== undefined &&
+      projectRootConfig?.documentRootPath === undefined
+    ) {
+      process.stderr.write(
+        `[vitepress-sidebar] 'documentRootPath' is only read from a configuration file in the current working directory, so it was ignored.\n`
+      );
+    }
+
+    let optionItem: VitePressSidebarOptions = {
+      ...inlineOptions,
+      ...rootPathConfig,
+      documentRootPath
+    };
+
+    if (optionItem.scanStartPath) {
+      optionItem = {
+        ...optionItem,
+        ...mergeConfigFilesInPath(join(cwd, documentRootPath), optionItem.scanStartPath, false)
+      };
+    }
 
     // Exceptions for changed option names
     if (
@@ -412,60 +480,49 @@ export function generateSidebar(
       enableDebugPrint = true;
     }
 
-    optionItem.documentRootPath = optionItem?.documentRootPath ?? '/';
+    const resolvedOptionItem = normalizeOptions(optionItem);
 
-    if (!/^\//.test(optionItem.documentRootPath)) {
-      optionItem.documentRootPath = `/${optionItem.documentRootPath}`;
-    }
+    resolvedOptionItems.push(resolvedOptionItem);
 
-    if (optionItem.collapseDepth) {
-      optionItem.collapsed = true;
-    }
+    let scanPath = resolvedOptionItem.documentRootPath!;
 
-    if (!optionItem.prefixSeparator) {
-      optionItem.prefixSeparator = '.';
-    }
-
-    optionItem.collapseDepth = optionItem?.collapseDepth ?? 1;
-    optionItem.manualSortFileNameByPriority = optionItem?.manualSortFileNameByPriority ?? [];
-    optionItem.frontmatterOrderDefaultValue = optionItem?.frontmatterOrderDefaultValue ?? 0;
-
-    let scanPath = optionItem.documentRootPath;
-
-    if (optionItem.scanStartPath) {
-      scanPath = `${optionItem.documentRootPath}/${optionItem.scanStartPath}`
+    if (resolvedOptionItem.scanStartPath) {
+      scanPath = `${resolvedOptionItem.documentRootPath}/${resolvedOptionItem.scanStartPath}`
         .replace(/\/{2,}/g, '/')
         .replace('/$', '');
     }
 
     let sidebarResult: SidebarListItem = generateSidebarItem(
       1,
-      join(process.cwd(), scanPath),
+      join(cwd, scanPath),
       scanPath,
       null,
+      resolvedOptionItem,
       optionItem
     );
 
-    if (optionItem.removePrefixAfterOrdering) {
-      sidebarResult = removePrefixFromTitleAndLink(sidebarResult, optionItem);
+    if (resolvedOptionItem.removePrefixAfterOrdering) {
+      sidebarResult = removePrefixFromTitleAndLink(sidebarResult, resolvedOptionItem);
     }
 
-    sidebar[optionItem.resolvePath || '/'] = {
-      base: optionItem.basePath || optionItem.resolvePath || '/',
+    sidebar[resolvedOptionItem.resolvePath || '/'] = {
+      base: resolvedOptionItem.basePath || resolvedOptionItem.resolvePath || '/',
       items:
         sidebarResult?.items ||
-        (optionItem.rootGroupText ||
-        optionItem.rootGroupLink ||
-        optionItem.rootGroupCollapsed === true ||
-        optionItem.rootGroupCollapsed === false
+        (resolvedOptionItem.rootGroupText ||
+        resolvedOptionItem.rootGroupLink ||
+        resolvedOptionItem.rootGroupCollapsed === true ||
+        resolvedOptionItem.rootGroupCollapsed === false
           ? [
               {
-                text: optionItem.rootGroupText,
-                ...(optionItem.rootGroupLink ? { link: optionItem.rootGroupLink } : {}),
+                text: resolvedOptionItem.rootGroupText,
+                ...(resolvedOptionItem.rootGroupLink
+                  ? { link: resolvedOptionItem.rootGroupLink }
+                  : {}),
                 items: sidebarResult as SidebarItem[],
-                ...(optionItem.rootGroupCollapsed === null
+                ...(resolvedOptionItem.rootGroupCollapsed === null
                   ? {}
-                  : { collapsed: optionItem.rootGroupCollapsed })
+                  : { collapsed: resolvedOptionItem.rootGroupCollapsed })
               }
             ]
           : (sidebarResult as SidebarItem[]))
@@ -483,7 +540,7 @@ export function generateSidebar(
   }
 
   if (enableDebugPrint) {
-    debugPrint(optionItems, sidebarResult);
+    debugPrint(resolvedOptionItems, sidebarResult);
   }
 
   return sidebarResult;

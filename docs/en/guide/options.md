@@ -71,6 +71,8 @@ This is the path where the `.vitepress` directory is located, and if the folder 
 └─ ...
 ```
 
+This option can be omitted when a `sidebar.config.json` file is present. See the **[Configuration file](/advanced-usage/configuration-file)** page for details.
+
 ## `scanStartPath`
 
 - Type: `string|null`
