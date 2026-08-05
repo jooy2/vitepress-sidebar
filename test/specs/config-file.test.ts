@@ -162,6 +162,65 @@ describe('Test: `sidebar.config.json`', () => {
     );
   });
 
+  it('`$folder` describes the folder itself', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/folder-meta`,
+        sortMenusByFrontmatterOrder: true,
+        includeFolderIndexFile: true
+      }),
+      [
+        {
+          // `$folder.link` points the folder at one of its own files, so no
+          // `index.md` is needed to make the folder clickable
+          text: 'c',
+          link: '/c/c1',
+          items: [
+            {
+              text: 'c1',
+              link: '/c/c1'
+            }
+          ]
+        },
+        {
+          // `"text": 123` and an unknown key are ignored, `order` still applies
+          text: 'd',
+          items: [
+            {
+              text: 'd1',
+              link: '/d/d1'
+            }
+          ]
+        },
+        {
+          // Ordered and named without any `index.md`
+          text: 'B Folder',
+          items: [
+            {
+              text: 'b1',
+              link: '/b/b1'
+            }
+          ]
+        },
+        {
+          // The folder is last, while its `index.md` stays first inside it:
+          // `$folder.order` and the frontmatter `order` no longer share a scale
+          text: 'a',
+          items: [
+            {
+              text: 'index',
+              link: '/a/'
+            },
+            {
+              text: 'about',
+              link: '/a/about'
+            }
+          ]
+        }
+      ]
+    );
+  });
+
   it('`documentRootPath` is detected from the location of the configuration files', () => {
     assert.deepEqual(
       withCwd(`${TEST_DIR_BASE}/infer-root`, () => generateSidebar()),

@@ -53,6 +53,16 @@ export declare interface VitePressSidebarOptions {
   excludePattern?: string[];
 }
 
+// Every key below can be used under the `$folder` key of a
+// `sidebar.config.json`, so adding or removing one here requires updating
+// `FOLDER_META_SPECS` in `config-file.ts`. The compiler reports it when the
+// two go out of sync.
+export declare interface VitePressSidebarFolderMeta {
+  order?: number;
+  text?: string;
+  link?: string;
+}
+
 export declare interface SidebarListItem {
   [key: string]: any;
 }

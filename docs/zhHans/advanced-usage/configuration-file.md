@@ -68,6 +68,51 @@ docs/
 
 请注意，`excludeByGlobPattern` 中的路径是相对于拥有该配置文件的文件夹，而不是 `documentRootPath`。
 
+## 描述文件夹自身
+
+以上所有选项决定的是文件夹**内容**的生成方式。`$folder` 键描述的是显示在侧边栏中的文件夹自身，且只作用于该文件夹。子文件夹不会继承它。
+
+```json
+// docs/guide/sidebar.config.json
+{
+  "collapsed": true,
+
+  "$folder": {
+    "order": 1,
+    "text": "Getting Started",
+    "link": "/guide/install"
+  }
+}
+```
+
+| 键 | 类型 | 说明 |
+| --- | --- | --- |
+| `order` | `number` | 文件夹在同级项中的位置。启用 [sortMenusByFrontmatterOrder](/zhHans/guide/options#sortmenusbyfrontmatterorder) 时读取。 |
+| `text` | `string` | 文件夹的菜单标题。 |
+| `link` | `string` | 文件夹链接到的页面。 |
+
+如果没有 `$folder`，文件夹的名称、链接和顺序只能通过其中的 `index.md` 指定，这会带来两个限制：
+
+- 即使文件夹本身没有要展示的页面，也必须创建 `index.md`。
+- 该 `index.md` 的 `order` **同时**决定文件夹在同级项中的位置和 `index.md` 在文件夹内部的位置，因此两者无法分别设置。
+
+`$folder` 消除了这两个限制：
+
+```text
+docs/
+├─ guide/
+│  ├─ sidebar.config.json     { "$folder": { "order": 1 } }
+│  ├─ index.md                order: 1
+│  └─ install.md              order: 2
+└─ api/
+   ├─ sidebar.config.json     { "$folder": { "order": 2, "text": "API", "link": "/api/reference" } }
+   └─ reference.md
+```
+
+`guide` 排在前面，`api` 排在后面，同时 `guide/index.md` 仍然位于自己文件夹的顶部。`api` 则完全不需要 `index.md` 就能指定顺序、名称和链接。
+
+在 `$folder` 中声明的值始终优先于从文件夹名称或 `index.md` 中获取的值。位于文档根目录或其上层的文件夹不是侧边栏条目，因此该位置的配置文件中的 `$folder` 会被忽略并给出警告。
+
 ## 优先级
 
 选项按以下顺序合并，靠后的会覆盖靠前的：

@@ -1,0 +1,7 @@
+{
+  "$folder": {
+    "order": 2,
+    "text": 123,
+    "thisKeyDoesNotExist": true
+  }
+}

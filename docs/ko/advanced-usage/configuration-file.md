@@ -68,6 +68,51 @@ docs/
 
 `excludeByGlobPattern`의 경로는 `documentRootPath`가 아니라 해당 설정 파일이 있는 폴더를 기준으로 합니다.
 
+## 폴더 자신을 정의하기
+
+지금까지의 옵션은 폴더의 **내용**을 어떻게 생성할지 결정합니다. `$folder` 키는 사이드바에 표시되는 폴더 자신을 정의하며, 해당 폴더 하나에만 적용됩니다. 하위 폴더는 이 값을 상속하지 않습니다.
+
+```json
+// docs/guide/sidebar.config.json
+{
+  "collapsed": true,
+
+  "$folder": {
+    "order": 1,
+    "text": "Getting Started",
+    "link": "/guide/install"
+  }
+}
+```
+
+| 키 | 타입 | 설명 |
+| --- | --- | --- |
+| `order` | `number` | 형제 항목들 사이에서 폴더의 위치. [sortMenusByFrontmatterOrder](/ko/guide/options#sortmenusbyfrontmatterorder)가 켜져 있을 때 읽습니다. |
+| `text` | `string` | 폴더의 메뉴 제목. |
+| `link` | `string` | 폴더가 연결할 페이지. |
+
+`$folder`가 없으면 폴더의 이름과 링크, 순서는 그 안의 `index.md`를 통해서만 지정할 수 있으며, 여기에는 두 가지 제약이 따릅니다:
+
+- 폴더 자체로 보여줄 페이지가 없어도 `index.md`를 만들어야 합니다.
+- 그 `index.md`의 `order`가 형제 항목들 사이의 폴더 위치와 폴더 내부에서의 `index.md` 위치를 **동시에** 결정하므로, 두 값을 따로 정할 수 없습니다.
+
+`$folder`는 두 제약을 모두 없앱니다:
+
+```text
+docs/
+├─ guide/
+│  ├─ sidebar.config.json     { "$folder": { "order": 1 } }
+│  ├─ index.md                order: 1
+│  └─ install.md              order: 2
+└─ api/
+   ├─ sidebar.config.json     { "$folder": { "order": 2, "text": "API", "link": "/api/reference" } }
+   └─ reference.md
+```
+
+`guide`가 먼저, `api`가 그다음에 오면서도 `guide/index.md`는 자기 폴더 안에서 맨 위에 남습니다. `api`는 `index.md` 없이 순서와 이름, 링크가 지정됩니다.
+
+`$folder`에 선언한 값은 폴더 이름이나 `index.md`에서 가져온 값보다 항상 우선합니다. 문서 루트와 같거나 그보다 위에 있는 폴더는 사이드바 항목이 아니므로, 그 위치의 설정 파일에서는 `$folder`가 경고와 함께 무시됩니다.
+
 ## 우선순위
 
 옵션은 다음 순서로 병합되며, 뒤에 있는 항목이 앞의 항목을 덮어씁니다:

@@ -1,7 +1,11 @@
 import { existsSync, readFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { globSync } from 'glob';
-import type { AnyValueObject, VitePressSidebarOptions } from './types.ts';
+import type {
+  AnyValueObject,
+  VitePressSidebarFolderMeta,
+  VitePressSidebarOptions
+} from './types.ts';
 
 /**
  * Name of the per-folder configuration file.
@@ -10,6 +14,15 @@ import type { AnyValueObject, VitePressSidebarOptions } from './types.ts';
  * in the project is picked up without any additional setup.
  */
 export const SIDEBAR_CONFIG_FILE_NAME = 'sidebar.config.json';
+
+/**
+ * Key that holds the description of the folder the configuration file lives in,
+ * as opposed to the options that decide how its contents are generated.
+ *
+ * It is prefixed like `$schema` because it is not an option, and because
+ * everything under it applies to that one folder instead of being inherited.
+ */
+export const FOLDER_META_KEY = '$folder';
 
 // Directories that never hold documents. They are skipped while looking for
 // configuration files across the project.
@@ -130,12 +143,41 @@ const OPTION_SPECS = {
   excludePattern: { type: 'string[]' }
 } satisfies ConfigFileOptionSpecs;
 
+// Kept separate from `ConfigFileOptionSpecs` because folder metadata is never
+// inherited, so `rootOnly` is meaningless for it.
+type FolderMetaSpecs = {
+  [K in keyof VitePressSidebarFolderMeta]-?: {
+    type: OptionValueTypeNameOf<VitePressSidebarFolderMeta[K]>;
+  };
+};
+
+/**
+ * Every key accepted under `$folder`.
+ *
+ * These describe the folder as it appears in the sidebar, which is why they
+ * exist at all: without them a folder can only be named and ordered through the
+ * `index.md` it contains.
+ */
+const FOLDER_META_SPECS = {
+  order: { type: 'number' },
+  text: { type: 'string' },
+  link: { type: 'string' }
+} satisfies FolderMetaSpecs;
+
 function getOptionSpec(key: string): ConfigFileOptionSpec | null {
   if (!Object.hasOwn(OPTION_SPECS, key)) {
     return null;
   }
 
   return OPTION_SPECS[key as keyof typeof OPTION_SPECS];
+}
+
+function getFolderMetaSpec(key: string): ConfigFileOptionSpec | null {
+  if (!Object.hasOwn(FOLDER_META_SPECS, key)) {
+    return null;
+  }
+
+  return FOLDER_META_SPECS[key as keyof typeof FOLDER_META_SPECS];
 }
 
 function isValidOptionValue(value: unknown, spec: ConfigFileOptionSpec): boolean {
@@ -175,6 +217,54 @@ function printWarning(message: string): void {
   process.stderr.write(`[vitepress-sidebar] ${message}\n`);
 }
 
+export interface SidebarConfigFile {
+  /** Options that apply to the folder and to everything below it */
+  options: VitePressSidebarOptions;
+  /** Description of the folder itself, which subfolders never inherit */
+  folder: VitePressSidebarFolderMeta;
+}
+
+/**
+ * Reads the `$folder` object of a configuration file.
+ *
+ * Anything that is not a known key, or that has the wrong type, is dropped with
+ * a warning, exactly like an option.
+ */
+function readFolderMeta(value: unknown, filePath: string): VitePressSidebarFolderMeta {
+  const result: AnyValueObject = {};
+
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    printWarning(`'${FOLDER_META_KEY}' in '${filePath}' must be a JSON object, so it was ignored.`);
+
+    return result;
+  }
+
+  const rawFolderMeta = value as AnyValueObject;
+
+  Object.keys(rawFolderMeta).forEach((key) => {
+    const metaSpec = getFolderMetaSpec(key);
+
+    if (!metaSpec) {
+      printWarning(`Unknown key '${FOLDER_META_KEY}.${key}' in '${filePath}' was ignored.`);
+      return;
+    }
+
+    const metaValue = rawFolderMeta[key];
+
+    // As with an option, `null` leaves the value unset instead of being an error
+    if (metaValue !== null && !isValidOptionValue(metaValue, metaSpec)) {
+      printWarning(
+        `'${FOLDER_META_KEY}.${key}' in '${filePath}' must be ${describeOptionType(metaSpec)}, so it was ignored.`
+      );
+      return;
+    }
+
+    result[key] = metaValue;
+  });
+
+  return result as VitePressSidebarFolderMeta;
+}
+
 /**
  * Reads `sidebar.config.json` from `dirPath`.
  *
@@ -184,7 +274,7 @@ function printWarning(message: string): void {
 export function readConfigFile(
   dirPath: string,
   allowRootOnlyOptions: boolean
-): VitePressSidebarOptions | null {
+): SidebarConfigFile | null {
   const filePath = join(dirPath, SIDEBAR_CONFIG_FILE_NAME);
 
   if (!existsSync(filePath)) {
@@ -205,10 +295,25 @@ export function readConfigFile(
 
   const rawOptions = parsed as AnyValueObject;
   const result: AnyValueObject = {};
+  let folderMeta: VitePressSidebarFolderMeta = {};
 
   Object.keys(rawOptions).forEach((key) => {
     // `$schema` is used by editors for completion and is not an option
     if (key === '$schema') {
+      return;
+    }
+
+    if (key === FOLDER_META_KEY) {
+      // A folder at or above the document root is never rendered as a sidebar
+      // item, so there is nothing for its description to apply to.
+      if (allowRootOnlyOptions) {
+        printWarning(
+          `'${FOLDER_META_KEY}' describes a folder of the sidebar, and '${filePath}' is at or above the document root, so it was ignored.`
+        );
+        return;
+      }
+
+      folderMeta = readFolderMeta(rawOptions[key], filePath);
       return;
     }
 
@@ -240,7 +345,7 @@ export function readConfigFile(
     result[key] = value;
   });
 
-  return result as VitePressSidebarOptions;
+  return { options: result as VitePressSidebarOptions, folder: folderMeta };
 }
 
 /**
@@ -257,12 +362,12 @@ export function mergeConfigFilesInPath(
   let merged: VitePressSidebarOptions = {};
 
   if (includeBaseDir) {
-    merged = { ...merged, ...(readConfigFile(currentDir, true) ?? {}) };
+    merged = { ...merged, ...(readConfigFile(currentDir, true)?.options ?? {}) };
   }
 
   for (let i = 0, len = segments.length; i < len; i += 1) {
     currentDir = join(currentDir, segments[i]);
-    merged = { ...merged, ...(readConfigFile(currentDir, true) ?? {}) };
+    merged = { ...merged, ...(readConfigFile(currentDir, true)?.options ?? {}) };
   }
 
   return merged;

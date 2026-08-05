@@ -68,6 +68,51 @@ The `guide` folder is collapsed and sorted by name, while the `api` folder is ex
 
 Note that paths in `excludeByGlobPattern` are relative to the folder that owns the configuration file, not to `documentRootPath`.
 
+## Describing the folder itself
+
+Everything above decides how the **contents** of a folder are generated. The `$folder` key describes the folder as it appears in the sidebar, and applies to that one folder only. Subfolders never inherit it.
+
+```json
+// docs/guide/sidebar.config.json
+{
+  "collapsed": true,
+
+  "$folder": {
+    "order": 1,
+    "text": "Getting Started",
+    "link": "/guide/install"
+  }
+}
+```
+
+| Key | Type | Description |
+| --- | --- | --- |
+| `order` | `number` | Position of the folder among its siblings. Read when [sortMenusByFrontmatterOrder](/guide/options#sortmenusbyfrontmatterorder) is enabled. |
+| `text` | `string` | Menu title of the folder. |
+| `link` | `string` | Page the folder links to. |
+
+Without `$folder`, a folder can only be named, linked and ordered through the `index.md` it contains, which has two consequences:
+
+- A folder needs an `index.md` even when it has no page of its own to show.
+- The `order` of that `index.md` decides both where the folder sits among its siblings **and** where the `index.md` sits inside the folder, so the two cannot be chosen independently.
+
+`$folder` removes both limits:
+
+```text
+docs/
+├─ guide/
+│  ├─ sidebar.config.json     { "$folder": { "order": 1 } }
+│  ├─ index.md                order: 1
+│  └─ install.md              order: 2
+└─ api/
+   ├─ sidebar.config.json     { "$folder": { "order": 2, "text": "API", "link": "/api/reference" } }
+   └─ reference.md
+```
+
+`guide` comes first and `api` second, while `guide/index.md` stays at the top of its own folder. `api` is ordered, named and linked without holding an `index.md` at all.
+
+A value declared in `$folder` always wins over the one taken from the folder name or from `index.md`. Since a folder at or above the document root is not a sidebar entry, `$folder` is ignored (with a warning) in a configuration file placed there.
+
 ## Priority
 
 Options are merged in the following order, where a later entry overrides an earlier one:

@@ -135,8 +135,13 @@ function generateSidebarItem(
         // A `sidebar.config.json` inside the folder takes priority over the
         // inherited options, both for the folder itself and everything below it.
         const folderConfig = readConfigFile(childItemPath, false);
-        const childRawOptions = folderConfig ? { ...rawOptions, ...folderConfig } : rawOptions;
+        const childRawOptions = folderConfig
+          ? { ...rawOptions, ...folderConfig.options }
+          : rawOptions;
         const childOptions = folderConfig ? normalizeOptions(childRawOptions) : options;
+        // Describes this folder only, so it is read here instead of being
+        // passed down with the options.
+        const folderMeta = folderConfig?.folder ?? {};
 
         let directorySidebarItems =
           generateSidebarItem(
@@ -199,6 +204,11 @@ function generateSidebarItem(
           }
         }
 
+        // `$folder` states what the folder should look like, so it wins over
+        // the folder name and over anything read from `index.md`.
+        newDirectoryText = folderMeta.text ?? newDirectoryText;
+        withDirectoryLink = folderMeta.link ?? withDirectoryLink;
+
         if (
           (withDirectoryLink && childOptions.includeEmptyFolder !== false) ||
           childOptions.includeEmptyFolder ||
@@ -218,10 +228,15 @@ function generateSidebarItem(
               : { collapsed: depth >= childOptions.collapseDepth! && childOptions.collapsed }),
             ...(options.sortMenusByFrontmatterOrder
               ? {
-                  order: getOrderFromFrontmatter(
-                    newDirectoryPagePath,
-                    options.frontmatterOrderDefaultValue!
-                  )
+                  // Ordering a folder through `$folder` keeps its position
+                  // independent of where its `index.md` sits inside it, and
+                  // works for a folder that has no `index.md` at all.
+                  order:
+                    folderMeta.order ??
+                    getOrderFromFrontmatter(
+                      newDirectoryPagePath,
+                      options.frontmatterOrderDefaultValue!
+                    )
                 }
               : {}),
             ...(options.sortMenusByFrontmatterDate
@@ -386,7 +401,8 @@ export function generateSidebar(
   for (let i = 0; i < optionItems.length; i += 1) {
     const inlineOptions = optionItems[i]!;
 
-    let documentRootPath = projectRootConfig?.documentRootPath ?? inlineOptions.documentRootPath;
+    let documentRootPath =
+      projectRootConfig?.options.documentRootPath ?? inlineOptions.documentRootPath;
 
     if (documentRootPath === undefined) {
       // Without an explicit document root, the location of the configuration
@@ -405,7 +421,7 @@ export function generateSidebar(
 
     if (
       rootPathConfig.documentRootPath !== undefined &&
-      projectRootConfig?.documentRootPath === undefined
+      projectRootConfig?.options.documentRootPath === undefined
     ) {
       process.stderr.write(
         `[vitepress-sidebar] 'documentRootPath' is only read from a configuration file in the current working directory, so it was ignored.\n`

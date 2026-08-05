@@ -1,5 +1,8 @@
 {
   "capitalizeFirst": true,
   "rootGroupText": "Root Group",
-  "rootGroupCollapsed": false
+  "rootGroupCollapsed": false,
+  "$folder": {
+    "text": "Should be ignored"
+  }
 }
