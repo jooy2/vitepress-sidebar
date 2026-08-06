@@ -1,6 +1,6 @@
 {
   "name": "vitepress-sidebar",
-  "version": "1.37.0",
+  "version": "1.38.0",
   "description": "A VitePress auto sidebar plugin that automatically creates a simple configuration.",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -81,7 +81,7 @@
     "jiti": "^2.7.0",
     "prettier": "^3.9.6",
     "terser-glob": "^1.2.1",
-    "tsx": "^4.23.6",
+    "tsx": "^4.23.8",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.66.0",
     "vitepress": "^1.6.4",
