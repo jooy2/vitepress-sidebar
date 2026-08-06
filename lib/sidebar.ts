@@ -301,6 +301,15 @@ function generateDirectoryItem(
         ? {
             date: getDateFromFile(directoryPath, true)
           }
+        : {}),
+      // A folder only gets a link when an option asks for one, so sorting by
+      // link alone would leave every link-less folder at one end of the list.
+      // Its path is what a file in that position would be linked by, so it
+      // sorts the folder where the folder name says it belongs.
+      ...(options.sortMenusOrderNumericallyFromLink && !withDirectoryLink
+        ? {
+            sortPath: directoryPathDisplay
+          }
         : {})
     };
   }
@@ -541,9 +550,12 @@ function generateSidebarItem(
     sidebarItems = sortByObjectKey({
       arr: sidebarItems,
       key: 'link',
+      fallbackKey: 'sortPath',
       desc: options.sortMenusOrderByDescending,
       numerically: true
     });
+
+    deepDeleteKey(sidebarItems, 'sortPath');
   }
 
   if (options.sortFolderTo) {

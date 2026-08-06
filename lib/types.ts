@@ -72,6 +72,10 @@ export declare interface SidebarListItem {
 export declare interface SortByObjectKeyOptions {
   arr: SidebarListItem;
   key: string;
+  // Read instead of `key` from an item that does not carry it, so that an item
+  // missing the key is still sorted against the others rather than being
+  // compared as `undefined`.
+  fallbackKey?: string;
   desc?: boolean;
   numerically?: boolean;
   datePrefixSeparator?: string | RegExp;

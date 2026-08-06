@@ -1203,7 +1203,7 @@ describe('Test: APIs', () => {
     );
   });
 
-  it('API: sortMenusOrderNumericallyFromLink', () => {
+  it('API: sortMenusOrderNumericallyFromLink (A)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/folder-with-index`,
@@ -1224,6 +1224,44 @@ describe('Test: APIs', () => {
         {
           link: '/10-a/index.md',
           text: 'Ten'
+        }
+      ]
+    );
+  });
+
+  // A folder without a link is sorted by its own path, so it lands among the
+  // files it sits next to. The titles are deliberately out of alphabetical
+  // order, so sorting them as text would not produce this result.
+  it('API: sortMenusOrderNumericallyFromLink (B)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/mixed-numeric-prefix`,
+        useFolderTitleFromIndexFile: true,
+        sortMenusOrderNumericallyFromLink: true,
+        useTitleFromFileHeading: true
+      }),
+      [
+        {
+          text: 'Zeta',
+          items: [
+            {
+              text: 'Zeta Child',
+              link: '/1-folder/child'
+            }
+          ]
+        },
+        {
+          text: 'Mango',
+          link: '/2-file'
+        },
+        {
+          text: 'Apple',
+          items: [
+            {
+              text: 'Apple Child',
+              link: '/10-folder/child'
+            }
+          ]
         }
       ]
     );

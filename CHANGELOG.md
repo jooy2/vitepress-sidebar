@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.37.1 (2026-08-)
+
+- `sortMenusOrderNumericallyFromLink` now sorts a folder that has no link by its own path, instead of placing every such folder at one end of the list. Folders and files are ordered together by the number in their names even when the titles come from elsewhere, such as with `useFolderTitleFromIndexFile` and `useTitleFromFileHeading`. (#183)
+
 ## 1.37.0 (2026-08-05)
 
 - A `sidebar.config.json` file placed in any folder now configures that folder and everything below it. The options it declares take priority over the options passed to `withSidebar` or `generateSidebar`, and `documentRootPath` can be omitted when such a file exists. (#166)

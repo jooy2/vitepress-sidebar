@@ -260,6 +260,8 @@ It should be used with the `sortMenusOrderByDescending` option if you want a des
 
 If this value is `true`, If a menu name contains a number at the beginning, it is sorted by the lower number, not the name. This option is the same as `sortMenusOrderNumericallyFromTitle`, but sorts by links instead of file titles. Therefore, it cannot be used with the `sortMenusOrderNumericallyFromTitle` option.
 
+A folder that has no link is sorted by its own path, so folders and files are ordered together by the number in their names even when the titles come from somewhere else, such as with the `useFolderTitleFromIndexFile` and `useTitleFromFileHeading` options.
+
 It should be used with the `sortMenusOrderByDescending` option if you want a descending sort.
 
 ## `frontmatterOrderDefaultValue`

@@ -259,6 +259,8 @@ name: This is frontmatter title value.
 
 如果此值为`true`,则如果菜单名称以数字开头,则按数字而不是名称排序。此选项与`sortMenusOrderNumericallyFromTitle`相同,但按链接而不是文件标题排序。因此,它不能与`sortMenusOrderNumericallyFromTitle`选项一起使用。
 
+没有链接的文件夹会按其自身路径排序。因此,即使标题来自其他位置(例如使用`useFolderTitleFromIndexFile`和`useTitleFromFileHeading`选项时),文件夹和文件也会按名称中的数字一起排序。
+
 如果您希望按降序排序,则应与`sortMenusOrderByDescending`选项一起使用。
 
 ## `frontmatterOrderDefaultValue`

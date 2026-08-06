@@ -300,8 +300,11 @@ export function sortByObjectKey(options: SortByObjectKeyOptions): object[] {
       result = result.reverse();
     }
   } else {
+    const valueOf = (item: SidebarListItem) =>
+      item[options.key] ?? (options.fallbackKey ? item[options.fallbackKey] : undefined);
+
     result = options.arr.sort((a: SidebarListItem, b: SidebarListItem) => {
-      const compareResult = basicCollator.compare(a[options.key], b[options.key]);
+      const compareResult = basicCollator.compare(valueOf(a), valueOf(b));
 
       return options.desc ? -compareResult : compareResult;
     });

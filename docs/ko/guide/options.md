@@ -259,6 +259,8 @@ Frontmatter의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. �
 
 이 값이 `true`이면 메뉴 이름 앞에 숫자가 포함된 경우 이름이 아닌 낮은 숫자를 기준으로 정렬됩니다. 이 옵션은 `sortMenusOrderNumericallyFromTitle`과 동일하지만 파일 제목이 아닌 링크를 기준으로 정렬합니다. 따라서 `sortMenusOrderNumericallyFromTitle` 옵션과 함께 사용할 수 없습니다.
 
+링크가 없는 폴더는 폴더 자신의 경로를 기준으로 정렬됩니다. 따라서 `useFolderTitleFromIndexFile`, `useTitleFromFileHeading` 옵션처럼 제목을 다른 곳에서 가져오는 경우에도 폴더와 파일이 이름의 숫자를 기준으로 함께 정렬됩니다.
+
 내림차순 정렬을 원할 경우 `sortMenusOrderByDescending` 옵션과 함께 사용해야 합니다.
 
 ## `frontmatterOrderDefaultValue`
