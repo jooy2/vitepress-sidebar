@@ -1844,4 +1844,164 @@ describe('Test: APIs', () => {
       ]
     );
   });
+
+  it('API: sortMenusByCustomFunction (from frontmatter)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-basic`,
+        sortMenusByCustomFunction: (a, b) => b.frontmatter.order - a.frontmatter.order
+      }),
+      [
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'd',
+          link: '/d'
+        }
+      ]
+    );
+  });
+
+  it('API: sortMenusByCustomFunction (from file name and folder)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        sortMenusByCustomFunction: (a, b) => {
+          if (a.isDirectory !== b.isDirectory) {
+            return a.isDirectory ? -1 : 1;
+          }
+
+          if (a.fileName === b.fileName) {
+            return 0;
+          }
+
+          return a.fileName < b.fileName ? 1 : -1;
+        }
+      }),
+      [
+        {
+          text: 'folder-2',
+          items: [
+            {
+              text: 'folder2',
+              link: '/folder-2/folder2'
+            }
+          ]
+        },
+        {
+          text: 'folder',
+          items: [
+            {
+              text: 'subFolder',
+              items: [
+                {
+                  text: 'sub-folder-test',
+                  link: '/folder/subFolder/sub-folder-test'
+                }
+              ]
+            },
+            {
+              text: 'folder-test',
+              link: '/folder/folder-test'
+            },
+            {
+              text: 'folder-test-2',
+              link: '/folder/folder-test-2'
+            }
+          ]
+        },
+        {
+          text: 'test',
+          link: '/test'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'a',
+          link: '/a'
+        }
+      ]
+    );
+  });
+
+  it('API: sortMenusByCustomFunction (from file modify date)', async () => {
+    const targetDir = `${TEST_DIR_BASE}/modify-date`;
+    const files = ['bbb.md', 'ddd.md', 'aaa.md', 'ccc.md'];
+
+    let minute = 20;
+
+    for (const file of files) {
+      const filePath = joinFilePath(platform() === 'win32', process.cwd(), targetDir, file);
+      const { atime } = await stat(filePath);
+      const newDate = new Date(`2026-02-01T10:${minute}:00`);
+
+      await utimes(filePath, atime, newDate);
+      minute += 1;
+    }
+
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: targetDir,
+        sortMenusByCustomFunction: (a, b) => b.modifyDate - a.modifyDate
+      }),
+      [
+        {
+          text: 'ccc',
+          link: '/ccc'
+        },
+        {
+          text: 'aaa',
+          link: '/aaa'
+        },
+        {
+          text: 'ddd',
+          link: '/ddd'
+        },
+        {
+          text: 'bbb',
+          link: '/bbb'
+        }
+      ]
+    );
+  });
+
+  it('API: sortMenusByCustomFunction (cannot be used with another sorting option)', () => {
+    assert.throws(
+      () =>
+        generateSidebar({
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          sortMenusByCustomFunction: (a, b) => a.fileName.localeCompare(b.fileName),
+          sortMenusByName: true
+        }),
+      /sortMenusByCustomFunction, sortMenusByName/
+    );
+  });
+
+  it('API: sortMenusByCustomFunction (must be a function)', () => {
+    assert.throws(
+      () =>
+        generateSidebar({
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          // @ts-expect-error Passing a value that is not a function is the case under test
+          sortMenusByCustomFunction: 'sortByName'
+        }),
+      /must be a function/
+    );
+  });
 });

@@ -1,15 +1,26 @@
 // Get a single value of type T from Frontmatter
 // Defaults to defaultValue
 import { readFileSync, statSync } from 'fs';
+import { join } from 'path';
 import matter from 'gray-matter';
 import { capitalizeEachWords, capitalizeFirst } from 'qsu';
 import type {
   AnyValueObject,
   SidebarItem,
   SidebarListItem,
+  SidebarSortFunction,
+  SidebarSortItem,
   SortByObjectKeyOptions,
   VitePressSidebarOptions
 } from './types.ts';
+
+/**
+ * Key the sort item of a menu item is carried under while its level is sorted.
+ *
+ * A sidebar item only says how it is displayed, so what a custom sort function
+ * needs is attached under this key and removed once the level is sorted.
+ */
+export const SORT_ITEM_KEY = 'sortItem';
 
 export function generateNotTogetherMessage(options: string[]): string {
   return `These options cannot be used together: ${options.join(', ')}`;
@@ -65,6 +76,20 @@ export function getDateFromFile(filePath: string, modifyDate = false): number {
     return Math.floor(new Date(currentTime).getTime() / 1000);
   } catch {
     return 0;
+  }
+}
+
+/**
+ * Reads the whole frontmatter of a file, instead of a single field of it.
+ *
+ * A custom sort function is given the frontmatter as a whole because the field
+ * it sorts by is one the generator knows nothing about.
+ */
+export function getFrontmatterData(filePath: string): AnyValueObject {
+  try {
+    return matter(readFileSync(filePath, 'utf-8')).data ?? {};
+  } catch {
+    return {};
   }
 }
 
@@ -268,6 +293,75 @@ export function sortByFileTypes(
   }
 
   return [...itemFiles, ...itemFolders];
+}
+
+/**
+ * Describes an item for a custom sort function.
+ *
+ * The file is only read, and its times only looked up, when the sort function
+ * asks for them, so an order decided from the path alone costs nothing beyond
+ * what the scan already did.
+ */
+export function createSortItem(params: {
+  text?: string;
+  link?: string;
+  fileName: string;
+  filePath: string;
+  isDirectory: boolean;
+}): SidebarSortItem {
+  let fileTimes: { createDate: number; modifyDate: number } | undefined;
+  let frontmatter: AnyValueObject | undefined;
+
+  const getFileTimes = (): { createDate: number; modifyDate: number } => {
+    if (!fileTimes) {
+      try {
+        const fileStats = statSync(params.filePath);
+
+        fileTimes = {
+          createDate: fileStats.ctime?.getTime() ?? 0,
+          modifyDate: fileStats.mtime?.getTime() ?? 0
+        };
+      } catch {
+        fileTimes = { createDate: 0, modifyDate: 0 };
+      }
+    }
+
+    return fileTimes;
+  };
+
+  return {
+    ...(params.text === undefined ? {} : { text: params.text }),
+    ...(params.link === undefined ? {} : { link: params.link }),
+    fileName: params.fileName,
+    filePath: params.filePath,
+    isDirectory: params.isDirectory,
+    get createDate() {
+      return getFileTimes().createDate;
+    },
+    get modifyDate() {
+      return getFileTimes().modifyDate;
+    },
+    get frontmatter() {
+      if (!frontmatter) {
+        // A folder holds no content of its own, so its `index.md` describes it
+        // here exactly as it already does for its title and its link.
+        frontmatter = getFrontmatterData(
+          params.isDirectory ? join(params.filePath, 'index.md') : params.filePath
+        );
+      }
+
+      return frontmatter;
+    }
+  };
+}
+
+export function sortByCustomFunction(
+  arrItems: SidebarListItem,
+  sortFunction: SidebarSortFunction
+): object[] {
+  return arrItems.sort((a: SidebarListItem, b: SidebarListItem) =>
+    sortFunction(a[SORT_ITEM_KEY], b[SORT_ITEM_KEY])
+  );
 }
 
 export function sortByObjectKey(options: SortByObjectKeyOptions): object[] {

@@ -77,10 +77,26 @@ interface ConfigFileOptionSpec {
   values?: readonly unknown[];
 }
 
+/**
+ * The options a configuration file is able to express.
+ *
+ * A configuration file holds JSON, so an option whose value is a function has
+ * no representation in one. Such an option is left out here instead of being
+ * given a type it cannot have, and is reported as unknown when a configuration
+ * file names it.
+ */
+type ConfigFileOptionKey = {
+  [K in keyof VitePressSidebarOptions]-?: NonNullable<VitePressSidebarOptions[K]> extends (
+    ...args: any[]
+  ) => any
+    ? never
+    : K;
+}[keyof VitePressSidebarOptions];
+
 // Requiring every key removes the optionality of `VitePressSidebarOptions`, so
 // a missing entry is reported instead of silently allowed.
 type ConfigFileOptionSpecs = {
-  [K in keyof VitePressSidebarOptions]-?: Omit<ConfigFileOptionSpec, 'type' | 'values'> & {
+  [K in ConfigFileOptionKey]-?: Omit<ConfigFileOptionSpec, 'type' | 'values'> & {
     type: OptionValueTypeNameOf<VitePressSidebarOptions[K]>;
     values?: readonly NonNullable<VitePressSidebarOptions[K]>[];
   };

@@ -177,6 +177,8 @@ VitePress Sidebar의 옵션이 아닌 키, 그리고 타입이 맞지 않는 값
 
 `null` 값은 항상 허용되며 해당 옵션을 설정하지 않은 것으로 처리합니다. `$schema` 키도 항상 허용되며 편집기에서 JSON 스키마를 연결할 때 사용할 수 있습니다.
 
+[sortMenusByCustomFunction](/ko/guide/options#sortmenusbycustomfunction)처럼 값이 함수인 옵션은 JSON으로 표현할 수 없으므로 알 수 없는 키로 처리됩니다. 이러한 옵션은 인수로 직접 전달하십시오.
+
 ## 다중 사이드바
 
 설정 파일은 [다중 사이드바](/ko/advanced-usage/multiple-sidebars-how-to)에서도 동작합니다. 배열의 각 항목이 자신의 설정 파일을 각각 확인하며, 사이드바의 스캔이 시작되는 디렉토리에 있는 파일이 해당 사이드바의 루트 설정이 됩니다.

@@ -41,7 +41,7 @@ Option categories (see the Options page for every option and example):
 - Getting menu link: `useFolderLinkFromSameNameSubFile`, `useFolderLinkFromIndexFile`, `folderLinkNotIncludesFileName`
 - Include / exclude: `excludeByGlobPattern`, `excludeFilesByFrontmatterFieldName`, `excludeByFolderDepth`, `includeDotFiles`, `includeEmptyFolder`, `includeRootIndexFile`, `includeFolderIndexFile`, `includeDynamicRoutes`
 - Styling menu title: `hyphenToSpace`, `underscoreToSpace`, `capitalizeFirst`, `capitalizeEachWords`, `keepMarkdownSyntaxFromTitle`, `removePrefixAfterOrdering`, `prefixSeparator`
-- Sorting: `manualSortFileNameByPriority`, `sortFolderTo`, `sortMenusByName`, `sortMenusByFileDatePrefix`, `sortMenusByFrontmatterOrder`, `frontmatterOrderDefaultValue`, `sortMenusByFileCreateDate`, `sortMenusByFileModifyDate`, `sortMenusByFrontmatterDate`, `sortMenusOrderByDescending`, `sortMenusOrderNumericallyFromTitle`, `sortMenusOrderNumericallyFromLink`
+- Sorting: `manualSortFileNameByPriority`, `sortFolderTo`, `sortMenusByName`, `sortMenusByFileDatePrefix`, `sortMenusByFrontmatterOrder`, `frontmatterOrderDefaultValue`, `sortMenusByFileCreateDate`, `sortMenusByFileModifyDate`, `sortMenusByFrontmatterDate`, `sortMenusOrderByDescending`, `sortMenusOrderNumericallyFromTitle`, `sortMenusOrderNumericallyFromLink`, `sortMenusByCustomFunction`
 - Misc: `debugPrint`
 
 ## Docs

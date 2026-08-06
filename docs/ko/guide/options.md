@@ -50,6 +50,7 @@ order: 2
 | [sortMenusOrderByDescending](#sortmenusorderbydescending) |  |
 | [sortMenusOrderNumericallyFromTitle](#sortmenusordernumericallyfromtitle) |  |
 | [sortMenusOrderNumericallyFromLink](#sortmenusordernumericallyfromlink) |  |
+| [sortMenusByCustomFunction](#sortmenusbycustomfunction) |  |
 
 ## `documentRootPath`
 
@@ -262,6 +263,79 @@ Frontmatter의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. �
 링크가 없는 폴더는 폴더 자신의 경로를 기준으로 정렬됩니다. 따라서 `useFolderTitleFromIndexFile`, `useTitleFromFileHeading` 옵션처럼 제목을 다른 곳에서 가져오는 경우에도 폴더와 파일이 이름의 숫자를 기준으로 함께 정렬됩니다.
 
 내림차순 정렬을 원할 경우 `sortMenusOrderByDescending` 옵션과 함께 사용해야 합니다.
+
+## `sortMenusByCustomFunction`
+
+- Type: `(a: SidebarSortItem, b: SidebarSortItem) => number`
+- Default: `undefined`
+
+모든 폴더의 메뉴 항목을 직접 작성한 함수로 정렬합니다. `Array.prototype.sort`에 전달하는 함수와 동일하게 비교할 두 항목을 전달받아 숫자를 반환합니다.
+
+버전 관리 시스템에 기록된 날짜나 직접 정의한 Frontmatter 속성처럼, 다른 옵션이 읽지 않는 값을 기준으로 정렬해야 할 때 사용합니다.
+
+각 항목은 화면에 표시되는 형태뿐만 아니라 해당 항목이 디스크의 어디에서 왔는지도 함께 제공합니다.
+
+| 속성 | 타입 | 설명 |
+| --- | --- | --- |
+| `text` | `string \| undefined` | 항목이 표시되는 텍스트입니다. |
+| `link` | `string \| undefined` | 항목이 가리키는 링크입니다. 링크가 없는 폴더에는 존재하지 않습니다. |
+| `fileName` | `string` | 디스크상의 파일 또는 폴더 이름이며 `.md` 확장자를 포함합니다. |
+| `filePath` | `string` | 디스크상의 파일 또는 폴더의 절대 경로입니다. 동적 라우트로 생성된 페이지는 해당 템플릿의 경로입니다. |
+| `isDirectory` | `boolean` | 항목이 폴더인지 여부입니다. |
+| `createDate` | `number` | 생성 시각(밀리초)이며, 읽을 수 없으면 `0`입니다. |
+| `modifyDate` | `number` | 수정 시각(밀리초)이며, 읽을 수 없으면 `0`입니다. |
+| `frontmatter` | `object` | 파일의 Frontmatter이며, 폴더의 경우 해당 폴더 `index.md`의 Frontmatter입니다. 없으면 빈 객체입니다. |
+
+`createDate`, `modifyDate`, `frontmatter`는 함수가 실제로 접근할 때만 읽습니다. 따라서 경로만으로 순서를 결정하는 함수는 추가 비용이 발생하지 않습니다.
+
+이 옵션은 폴더 전체의 순서를 단독으로 결정하므로 `sortMenusByName`, `sortMenusByFileDatePrefix`, `sortMenusByFrontmatterOrder`, `sortMenusByFrontmatterDate`, `sortMenusByFileCreateDate`, `sortMenusByFileModifyDate`, `sortMenusOrderNumericallyFromTitle`, `sortMenusOrderNumericallyFromLink`, `sortMenusOrderByDescending` 옵션과 함께 사용할 수 없습니다. 내림차순이 필요하다면 `sortMenusOrderByDescending` 대신 함수 내부에서 원하는 방향으로 정렬하십시오.
+
+함수는 JSON으로 표현할 수 없으므로 이 옵션은 [설정 파일](../advanced-usage/configuration-file)에서 사용할 수 없습니다.
+
+아래 예시는 각 파일이 처음 커밋된 날짜를 기준으로 메뉴를 정렬합니다. Git으로 관리되는 프로젝트에서는 이 값이 곧 파일의 생성 날짜입니다. 항목마다 저장소를 조회하므로 결과를 캐시합니다.
+
+```js
+import { execFileSync } from 'child_process';
+import { defineConfig } from 'vitepress';
+import { withSidebar } from 'vitepress-sidebar';
+
+const gitCreateDateCache = new Map();
+
+const getGitCreateDate = (filePath) => {
+  if (!gitCreateDateCache.has(filePath)) {
+    let timestamp = 0;
+
+    try {
+      const output = execFileSync(
+        'git',
+        ['log', '--diff-filter=A', '--format=%at', '-1', '--', filePath],
+        { encoding: 'utf-8' }
+      ).trim();
+
+      timestamp = output ? Number(output) * 1000 : 0;
+    } catch {
+      // 아직 추적되지 않는 파일은 `0`으로 처리합니다
+    }
+
+    gitCreateDateCache.set(filePath, timestamp);
+  }
+
+  return gitCreateDateCache.get(filePath);
+};
+
+export default defineConfig(
+  withSidebar(
+    {
+      // VitePress 옵션...
+    },
+    {
+      documentRootPath: 'docs',
+      sortMenusByCustomFunction: (a, b) =>
+        getGitCreateDate(a.filePath) - getGitCreateDate(b.filePath)
+    }
+  )
+);
+```
 
 ## `frontmatterOrderDefaultValue`
 

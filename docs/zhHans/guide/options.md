@@ -50,6 +50,7 @@ order: 2
 | [sortMenusOrderByDescending](#sortmenusorderbydescending) |  |
 | [sortMenusOrderNumericallyFromTitle](#sortmenusordernumericallyfromtitle) |  |
 | [sortMenusOrderNumericallyFromLink](#sortmenusordernumericallyfromlink) |  |
+| [sortMenusByCustomFunction](#sortmenusbycustomfunction) |  |
 
 ## `documentRootPath`
 
@@ -262,6 +263,79 @@ name: This is frontmatter title value.
 没有链接的文件夹会按其自身路径排序。因此,即使标题来自其他位置(例如使用`useFolderTitleFromIndexFile`和`useTitleFromFileHeading`选项时),文件夹和文件也会按名称中的数字一起排序。
 
 如果您希望按降序排序,则应与`sortMenusOrderByDescending`选项一起使用。
+
+## `sortMenusByCustomFunction`
+
+- Type: `(a: SidebarSortItem, b: SidebarSortItem) => number`
+- Default: `undefined`
+
+使用您自己编写的函数对每个文件夹中的菜单项进行排序。该函数接收待比较的两个项目并返回一个数字,与传递给 `Array.prototype.sort` 的函数完全相同。
+
+当排序依据是其他选项从不读取的内容时使用它,例如保存在版本控制中的日期或您自定义的 frontmatter 属性。
+
+每个项目不仅描述它如何显示,还描述它在磁盘上的来源:
+
+| 属性 | 类型 | 说明 |
+| --- | --- | --- |
+| `text` | `string \| undefined` | 项目显示的文本。 |
+| `link` | `string \| undefined` | 项目指向的链接。没有链接的文件夹不包含此属性。 |
+| `fileName` | `string` | 磁盘上的文件或文件夹名称,包含 `.md` 扩展名。 |
+| `filePath` | `string` | 磁盘上文件或文件夹的绝对路径。对于动态路由生成的页面,则为生成它的模板的路径。 |
+| `isDirectory` | `boolean` | 项目是否为文件夹。 |
+| `createDate` | `number` | 创建时间(毫秒),无法读取时为 `0`。 |
+| `modifyDate` | `number` | 修改时间(毫秒),无法读取时为 `0`。 |
+| `frontmatter` | `object` | 文件的 frontmatter,文件夹则为其 `index.md` 的 frontmatter。不存在时为空对象。 |
+
+`createDate`、`modifyDate` 和 `frontmatter` 仅在函数访问它们时才会读取,因此仅根据路径决定顺序的函数不会产生额外开销。
+
+此选项独自决定整个文件夹的顺序,因此不能与 `sortMenusByName`、`sortMenusByFileDatePrefix`、`sortMenusByFrontmatterOrder`、`sortMenusByFrontmatterDate`、`sortMenusByFileCreateDate`、`sortMenusByFileModifyDate`、`sortMenusOrderNumericallyFromTitle`、`sortMenusOrderNumericallyFromLink` 或 `sortMenusOrderByDescending` 一起使用。如需降序排列,请在函数内部按所需方向排序,而不要使用 `sortMenusOrderByDescending`。
+
+函数无法用 JSON 表示,因此该选项不能在[配置文件](../advanced-usage/configuration-file)中使用。
+
+下面的示例按每个文件首次提交的日期对菜单进行排序,对于使用 Git 管理的项目,该日期即为文件的创建日期。由于每个项目都会查询一次仓库,因此对结果进行了缓存。
+
+```js
+import { execFileSync } from 'child_process';
+import { defineConfig } from 'vitepress';
+import { withSidebar } from 'vitepress-sidebar';
+
+const gitCreateDateCache = new Map();
+
+const getGitCreateDate = (filePath) => {
+  if (!gitCreateDateCache.has(filePath)) {
+    let timestamp = 0;
+
+    try {
+      const output = execFileSync(
+        'git',
+        ['log', '--diff-filter=A', '--format=%at', '-1', '--', filePath],
+        { encoding: 'utf-8' }
+      ).trim();
+
+      timestamp = output ? Number(output) * 1000 : 0;
+    } catch {
+      // 尚未被跟踪的文件回退为 `0`
+    }
+
+    gitCreateDateCache.set(filePath, timestamp);
+  }
+
+  return gitCreateDateCache.get(filePath);
+};
+
+export default defineConfig(
+  withSidebar(
+    {
+      // VitePress 选项...
+    },
+    {
+      documentRootPath: 'docs',
+      sortMenusByCustomFunction: (a, b) =>
+        getGitCreateDate(a.filePath) - getGitCreateDate(b.filePath)
+    }
+  )
+);
+```
 
 ## `frontmatterOrderDefaultValue`
 

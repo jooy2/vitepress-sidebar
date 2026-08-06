@@ -93,6 +93,7 @@ export default defineConfig(
     // sortMenusOrderByDescending: false,
     // sortMenusOrderNumericallyFromTitle: false,
     // sortMenusOrderNumericallyFromLink: false,
+    // sortMenusByCustomFunction: (a, b) => a.fileName.localeCompare(b.fileName),
     //
     // ============ [ MISC ] ============
     // debugPrint: false,

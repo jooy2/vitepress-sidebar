@@ -177,6 +177,8 @@ Any key that is not a VitePress Sidebar option is ignored with a warning as well
 
 A `null` value is always accepted and leaves the option unset. The `$schema` key is always allowed as well, which lets your editor attach a JSON schema.
 
+An option whose value is a function, such as [sortMenusByCustomFunction](/guide/options#sortmenusbycustomfunction), has no representation in JSON and is therefore treated as an unknown key. Pass it as an argument instead.
+
 ## Multiple sidebars
 
 Configuration files work with [multiple sidebars](/advanced-usage/multiple-sidebars-how-to) too. Each entry of the array resolves its own configuration files, and a file placed in the directory a sidebar starts scanning from acts as the root configuration for that sidebar.

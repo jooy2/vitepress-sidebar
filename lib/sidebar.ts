@@ -5,6 +5,7 @@ import { existsSync, readdirSync, statSync } from 'fs';
 import { isTrueMinimumNumberOfTimes, objMergeNewKey } from 'qsu';
 import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
 import {
+  createSortItem,
   debugPrint,
   deepDeleteKey,
   formatTitle,
@@ -15,8 +16,10 @@ import {
   getOrderFromFrontmatter,
   getTitleFromMd,
   removePrefixFromTitleAndLink,
+  sortByCustomFunction,
   sortByFileTypes,
-  sortByObjectKey
+  sortByObjectKey,
+  SORT_ITEM_KEY
 } from './helper.js';
 import { createSidebarHmrPlugin } from './external.js';
 import {
@@ -34,6 +37,20 @@ import {
   isDynamicRoutePath,
   resolveDynamicRoutes
 } from './dynamic-route.js';
+
+// Every option that decides the order of the items of a level, other than the
+// custom sort function itself.
+const SORT_OPTION_NAMES = [
+  'sortMenusByName',
+  'sortMenusByFileDatePrefix',
+  'sortMenusByFrontmatterOrder',
+  'sortMenusByFrontmatterDate',
+  'sortMenusByFileCreateDate',
+  'sortMenusByFileModifyDate',
+  'sortMenusOrderNumericallyFromTitle',
+  'sortMenusOrderNumericallyFromLink',
+  'sortMenusOrderByDescending'
+] as const;
 
 function applyManualSort(fileNames: string[], priority: string[]): string[] {
   if (priority.length < 1) {
@@ -165,6 +182,17 @@ function generateFileItem(
     ...(options.sortMenusByFileModifyDate
       ? {
           date: getDateFromFile(filePath, true)
+        }
+      : {}),
+    ...(options.sortMenusByCustomFunction
+      ? {
+          [SORT_ITEM_KEY]: createSortItem({
+            text: fileItemText,
+            link: filePathDisplay,
+            fileName,
+            filePath,
+            isDirectory: false
+          })
         }
       : {})
   };
@@ -309,6 +337,19 @@ function generateDirectoryItem(
       ...(options.sortMenusOrderNumericallyFromLink && !withDirectoryLink
         ? {
             sortPath: directoryPathDisplay
+          }
+        : {}),
+      // Built from the options of the parent, because this item is sorted
+      // among the items of the folder that holds it.
+      ...(options.sortMenusByCustomFunction
+        ? {
+            [SORT_ITEM_KEY]: createSortItem({
+              text: newDirectoryText,
+              link: withDirectoryLink,
+              fileName: directoryName,
+              filePath: directoryPath,
+              isDirectory: true
+            })
           }
         : {})
     };
@@ -558,6 +599,12 @@ function generateSidebarItem(
     deepDeleteKey(sidebarItems, 'sortPath');
   }
 
+  if (options.sortMenusByCustomFunction) {
+    sidebarItems = sortByCustomFunction(sidebarItems, options.sortMenusByCustomFunction);
+
+    deepDeleteKey(sidebarItems, SORT_ITEM_KEY);
+  }
+
   if (options.sortFolderTo) {
     sidebarItems = sortByFileTypes(sidebarItems, options.sortFolderTo);
   }
@@ -687,6 +734,22 @@ export function generateSidebar(
     }
     if (optionItem.removePrefixAfterOrdering && !optionItem.prefixSeparator) {
       throw new Error(`'prefixSeparator' should not use empty string`);
+    }
+    if (optionItem.sortMenusByCustomFunction) {
+      if (typeof optionItem.sortMenusByCustomFunction !== 'function') {
+        throw new Error(`'sortMenusByCustomFunction' must be a function`);
+      }
+
+      // A custom sort function decides the order of a whole level by itself, so
+      // another sorting option could only run before it and be discarded, or
+      // run after it and discard it.
+      const conflictingOptions = SORT_OPTION_NAMES.filter((name) => optionItem[name]);
+
+      if (conflictingOptions.length > 0) {
+        throw new Error(
+          generateNotTogetherMessage(['sortMenusByCustomFunction', ...conflictingOptions])
+        );
+      }
     }
 
     if (optionItem.debugPrint && !enableDebugPrint) {

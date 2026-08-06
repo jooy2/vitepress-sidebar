@@ -177,6 +177,8 @@ docs/
 
 `null` 值始终被接受，表示未设置该选项。`$schema` 键同样始终被允许，可用于让编辑器关联 JSON 架构。
 
+值为函数的选项（例如 [sortMenusByCustomFunction](/zhHans/guide/options#sortmenusbycustomfunction)）无法用 JSON 表示，因此会被视为未知键。请改为通过参数直接传递。
+
 ## 多侧边栏
 
 配置文件同样适用于[多侧边栏](/zhHans/advanced-usage/multiple-sidebars-how-to)。数组中的每一项都会各自解析自己的配置文件，位于某个侧边栏扫描起始目录中的文件将作为该侧边栏的根配置。
