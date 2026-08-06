@@ -35,6 +35,7 @@ This page describes all the options in the VitePress Sidebar.
 | [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
 | [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
 | [includeDynamicRoutes](#includedynamicroutes) |  |
+| [VitePress `srcExclude`](#vitepress-srcexclude) |  |
 
 | Sorting | Misc |
 | --- | --- |
@@ -410,6 +411,37 @@ For example, `abc def ghi` and `abc-def ghi` change to `Abc Def Ghi` and `Abc-De
 [glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) Exclude files or folders based on an array of file pattern strings.
 
 For example, the value might look like this: `['abc/', 'def.md', 'ghi/file-**']` This would exclude the `abc` directory and subdirectories in all paths, the `def.md` file, and files starting with `file-` in the `ghi` path, respectively, and these files and folders would be excluded from the menu.
+
+Each pattern is matched against every folder that is scanned, so a pattern that describes a path from the document root, such as `abc/def/**`, does not match anything. Use the [`srcExclude`](#vitepress-srcexclude) of VitePress for such a path.
+
+## VitePress `srcExclude`
+
+The [`srcExclude`](https://vitepress.dev/reference/site-config#srcexclude) of your VitePress configuration is honored automatically when the sidebar is generated with `withSidebar`. There is no option to set: a page excluded from the build is never generated, so a menu item for it would link to a page that does not exist.
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  title: 'VitePress Sidebar',
+  // `drafts/private.md` and every `TODO.md` are excluded from the build,
+  // and therefore from the sidebar as well.
+  srcExclude: ['drafts/private.md', '**/TODO.md']
+};
+
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs'
+  })
+);
+```
+
+Note the following:
+
+- A pattern is resolved from `documentRootPath`, exactly like VitePress resolves it from its `srcDir`. It keeps that meaning even when the scan starts below the document root with [`scanStartPath`](#scanstartpath).
+- It is applied in addition to [`excludeByGlobPattern`](#excludebyglobpattern) and the other exclusion options, never instead of them.
+- Excluding a [dynamic route](#includedynamicroutes) template excludes every page it generates.
+- [`generateSidebar`](/guide/getting-started#_2-using-generatesidebar) is not given the VitePress configuration, so it cannot read `srcExclude`. Declare the patterns in `excludeByGlobPattern` when you use it.
 
 ## `excludeFilesByFrontmatterFieldName`
 

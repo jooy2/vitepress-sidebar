@@ -287,6 +287,146 @@ describe('Test: base test', () => {
     });
   });
 
+  it('withSidebar: inherits `srcExclude` from the VitePress configuration', () => {
+    const result = withSidebar(
+      {
+        // `folder/**` is relative to the document root, which is how VitePress
+        // resolves it, and excludes the folder together with everything below
+        // it.
+        srcExclude: ['folder/**', '**/test.md']
+      },
+      {
+        documentRootPath: `${TEST_DIR_BASE}/general`
+      }
+    );
+
+    assert.deepStrictEqual(result.themeConfig?.sidebar, [
+      {
+        text: 'a',
+        link: '/a'
+      },
+      {
+        text: 'b',
+        link: '/b'
+      },
+      {
+        text: 'c',
+        link: '/c'
+      },
+      {
+        text: 'folder-2',
+        items: [
+          {
+            text: 'folder2',
+            link: '/folder-2/folder2'
+          }
+        ]
+      }
+    ]);
+  });
+
+  it('withSidebar: `srcExclude` is applied on top of `excludeByGlobPattern`', () => {
+    const result = withSidebar(
+      {
+        srcExclude: ['**/test.md']
+      },
+      {
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        excludeByGlobPattern: ['folder-2/']
+      }
+    );
+
+    assert.deepStrictEqual(result.themeConfig?.sidebar, [
+      {
+        text: 'a',
+        link: '/a'
+      },
+      {
+        text: 'b',
+        link: '/b'
+      },
+      {
+        text: 'c',
+        link: '/c'
+      },
+      {
+        text: 'folder',
+        items: [
+          {
+            text: 'folder-test-2',
+            link: '/folder/folder-test-2'
+          },
+          {
+            text: 'folder-test',
+            link: '/folder/folder-test'
+          },
+          {
+            text: 'subFolder',
+            items: [
+              {
+                text: 'sub-folder-test',
+                link: '/folder/subFolder/sub-folder-test'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+  });
+
+  it('withSidebar: `srcExclude` stays relative to `documentRootPath` with `scanStartPath`', () => {
+    const result = withSidebar(
+      {
+        srcExclude: ['folder/subFolder/**']
+      },
+      {
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        scanStartPath: 'folder'
+      }
+    );
+
+    assert.deepStrictEqual(result.themeConfig?.sidebar, [
+      {
+        text: 'folder-test-2',
+        link: 'folder-test-2'
+      },
+      {
+        text: 'folder-test',
+        link: 'folder-test'
+      }
+    ]);
+  });
+
+  it('withSidebar: without `srcExclude` nothing is excluded', () => {
+    const result = withSidebar(
+      {},
+      {
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        scanStartPath: 'folder'
+      }
+    );
+
+    assert.deepStrictEqual(result.themeConfig?.sidebar, [
+      {
+        text: 'folder-test-2',
+        link: 'folder-test-2'
+      },
+      {
+        text: 'folder-test',
+        link: 'folder-test'
+      },
+      {
+        text: 'subFolder',
+        items: [
+          {
+            text: 'sub-folder-test',
+            link: 'subFolder/sub-folder-test'
+          }
+        ]
+      }
+    ]);
+  });
+
   it('Contains a path with the same name as `documentRootPath`', () => {
     assert.deepStrictEqual(
       generateSidebar({

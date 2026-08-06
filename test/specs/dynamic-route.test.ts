@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { describe, it } from 'node:test';
-import { generateSidebar } from '../../dist';
+import { generateSidebar, withSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
 const TEST_DIR = `${TEST_DIR_BASE}/dynamic-routes`;
@@ -298,5 +298,48 @@ describe('Test: dynamic routes', () => {
         }
       ]
     );
+  });
+
+  it('includeDynamicRoutes with `srcExclude` of the VitePress configuration', () => {
+    const result = withSidebar(
+      {
+        // Excluding a template from the build excludes every page it
+        // generates, so the folder that only holds it disappears as well.
+        srcExclude: ['packages/**']
+      },
+      {
+        documentRootPath: TEST_DIR,
+        includeDynamicRoutes: true
+      }
+    );
+
+    assert.deepStrictEqual(result.themeConfig?.sidebar, [
+      {
+        text: 'a',
+        link: '/a'
+      },
+      {
+        text: 'news',
+        items: [
+          {
+            text: 'hello',
+            link: '/news/hello'
+          },
+          {
+            text: 'world',
+            link: '/news/world'
+          }
+        ]
+      },
+      {
+        text: 'blog',
+        items: [
+          {
+            text: 'first',
+            link: '/blog/first'
+          }
+        ]
+      }
+    ]);
   });
 });

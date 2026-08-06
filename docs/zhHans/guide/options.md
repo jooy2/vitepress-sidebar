@@ -35,6 +35,7 @@ order: 2
 | [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
 | [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
 | [includeDynamicRoutes](#includedynamicroutes) |  |
+| [VitePress `srcExclude`](#vitepress-srcexclude) |  |
 
 | 分类 | 杂项 |
 | --- | --- |
@@ -409,6 +410,37 @@ export default defineConfig(
 [glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) 根据文件模式字符串数组排除文件或文件夹。
 
 例如，该值可能如下所示`['abc/', 'def.md', 'ghi/file-**']`这将分别排除所有路径中的`abc`目录和子目录、`def.md`文件以及`ghi`路径中以`file-`开头的文件，这些文件和文件夹将被排除在菜单之外。
+
+每个模式都会针对扫描的每个文件夹单独匹配，因此像 `abc/def/**` 这样表示从文档根目录开始的路径的模式不会匹配任何内容。对于这类路径，请使用 VitePress 的 [`srcExclude`](#vitepress-srcexclude)。
+
+## VitePress `srcExclude`
+
+使用 `withSidebar` 生成侧边栏时，会自动应用 VitePress 配置中的 [`srcExclude`](https://vitepress.dev/reference/site-config#srcexclude)。无需设置任何选项：被排除在构建之外的页面不会被生成，因此为其保留的菜单项只会链接到不存在的页面。
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  title: 'VitePress Sidebar',
+  // `drafts/private.md` 和所有 `TODO.md` 都被排除在构建之外，
+  // 因此也会从侧边栏中排除。
+  srcExclude: ['drafts/private.md', '**/TODO.md']
+};
+
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs'
+  })
+);
+```
+
+请注意以下几点：
+
+- 模式以 `documentRootPath` 为基准解析，与 VitePress 以其 `srcDir` 为基准解析的方式相同。即使使用 [`scanStartPath`](#scanstartpath) 从文档根目录以下开始扫描，该基准也保持不变。
+- 它是在 [`excludeByGlobPattern`](#excludebyglobpattern) 等其他排除选项之上附加应用的，而不是取代它们。
+- 排除[动态路由](#includedynamicroutes)模板会同时排除它生成的所有页面。
+- [`generateSidebar`](/zhHans/guide/getting-started) 不会接收 VitePress 配置，因此无法读取 `srcExclude`。使用它时请在 `excludeByGlobPattern` 中直接声明这些模式。
 
 ## `excludeFilesByFrontmatterFieldName`
 

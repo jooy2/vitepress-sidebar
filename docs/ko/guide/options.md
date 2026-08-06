@@ -35,6 +35,7 @@ order: 2
 | [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
 | [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
 | [includeDynamicRoutes](#includedynamicroutes) |  |
+| [VitePress `srcExclude`](#vitepress-srcexclude) |  |
 
 | 정렬 | 기타 |
 | --- | --- |
@@ -409,6 +410,37 @@ export default defineConfig(
 [glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) 파일 패턴 문자열로 구성된 배열에 따라 파일이나 폴더를 제외합니다.
 
 예를 들어 값은 다음과 같을 수 있습니다: `['abc/', 'def.md', 'ghi/file-**']` 이는 각각 모든 경로에 포함된 `abc` 디렉토리와 하위 항목, `def.md` 파일, `ghi` 경로에 있는 `file-`로 시작하는 파일이 해당되며 이 파일과 폴더들은 메뉴에서 제외됩니다.
+
+각 패턴은 스캔하는 모든 폴더를 기준으로 개별 비교되므로, `abc/def/**`와 같이 문서 루트로부터의 경로를 나타내는 패턴은 아무것도 제외하지 못합니다. 이러한 경로에는 VitePress의 [`srcExclude`](#vitepress-srcexclude)를 사용하세요.
+
+## VitePress `srcExclude`
+
+`withSidebar`로 사이드바를 생성하는 경우, VitePress 설정의 [`srcExclude`](https://vitepress.dev/reference/site-config#srcexclude)가 자동으로 함께 적용됩니다. 별도로 설정할 옵션은 없습니다. 빌드에서 제외된 문서는 페이지로 생성되지 않으므로, 해당 메뉴가 남아있으면 존재하지 않는 페이지로 연결되기 때문입니다.
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  title: 'VitePress Sidebar',
+  // `drafts/private.md`와 모든 `TODO.md`가 빌드에서 제외되며,
+  // 사이드바에서도 함께 제외됩니다.
+  srcExclude: ['drafts/private.md', '**/TODO.md']
+};
+
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs'
+  })
+);
+```
+
+다음 사항에 유의하세요:
+
+- 패턴은 VitePress가 `srcDir`을 기준으로 해석하는 것과 동일하게 `documentRootPath`를 기준으로 해석됩니다. [`scanStartPath`](#scanstartpath)로 문서 루트보다 하위에서 스캔을 시작하더라도 이 기준은 그대로 유지됩니다.
+- [`excludeByGlobPattern`](#excludebyglobpattern)을 비롯한 다른 제외 옵션을 대체하지 않고, 그 위에 추가로 적용됩니다.
+- [동적 라우트](#includedynamicroutes) 템플릿을 제외하면 해당 템플릿이 생성하는 모든 페이지가 함께 제외됩니다.
+- [`generateSidebar`](/ko/guide/getting-started)는 VitePress 설정을 전달받지 않으므로 `srcExclude`를 읽을 수 없습니다. 이 경우 `excludeByGlobPattern`에 패턴을 직접 선언하세요.
 
 ## `excludeFilesByFrontmatterFieldName`
 

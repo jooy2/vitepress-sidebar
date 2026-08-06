@@ -66,6 +66,8 @@ VitePress Sidebar는 `withSidebar`와 `generateSidebar` 두가지 함수로 사�
 
 VitePress Sidebar는 기존 VitePress의 옵션에 필요한 추가 옵션을 오버라이딩 할 것입니다. 기존에 설정한 수동 `sidebar` 옵션은 새 옵션에 의해 무시됩니다.
 
+또한 VitePress 설정의 [`srcExclude`](/ko/guide/options#vitepress-srcexclude)를 함께 읽으므로, 빌드에서 제외한 문서는 사이드바에도 표시되지 않으며 같은 경로를 두 번 제외할 필요가 없습니다.
+
 ```javascript
 // `.vitepress/config.js`
 import { withSidebar } from 'vitepress-sidebar';

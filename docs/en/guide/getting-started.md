@@ -66,6 +66,8 @@ The `withSidebar` is used at the `defineConfig` level. Note that the configurati
 
 VitePress Sidebar will override any additional options required by the existing options in VitePress. Any manual `sidebar` options you may have set previously will be overridden by the new options.
 
+It also reads the [`srcExclude`](/guide/options#vitepress-srcexclude) of your VitePress configuration, so a page excluded from the build never appears in the sidebar and does not have to be excluded a second time.
+
 ```javascript
 // `.vitepress/config.js`
 import { withSidebar } from 'vitepress-sidebar';

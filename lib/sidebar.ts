@@ -1,5 +1,5 @@
 import type { UserConfig } from 'vitepress';
-import { join, resolve } from 'path';
+import { join, relative, resolve } from 'path';
 import { globSync } from 'glob';
 import { existsSync, readdirSync, statSync } from 'fs';
 import { isTrueMinimumNumberOfTimes, objMergeNewKey } from 'qsu';
@@ -51,6 +51,56 @@ const SORT_OPTION_NAMES = [
   'sortMenusOrderNumericallyFromLink',
   'sortMenusOrderByDescending'
 ] as const;
+
+/**
+ * The paths that the `srcExclude` of the VitePress configuration matches.
+ *
+ * VitePress never builds a page it excludes, so an item left in the sidebar for
+ * one would link to a page that does not exist. The patterns are resolved once
+ * per document root, because they describe the project as a whole instead of a
+ * single directory, and are matched by path instead of being handed to the
+ * per-directory scan: a pattern such as `guide/private/**` is relative to the
+ * document root and matches nothing when it is applied inside every directory.
+ */
+interface SrcExcludePaths {
+  /** Directory the paths are relative to */
+  rootDir: string;
+  /** Every matched path, relative to `rootDir` and separated by `/` */
+  paths: Set<string>;
+}
+
+function toPosixPath(path: string): string {
+  return path.replace(/\\/g, '/');
+}
+
+function resolveSrcExcludePaths(rootDir: string, patterns?: string[]): SrcExcludePaths | null {
+  if (!patterns || patterns.length < 1) {
+    return null;
+  }
+
+  // A pattern that ends in `/**` matches the directory itself as well, so a
+  // whole excluded folder is dropped instead of being scanned and then found
+  // empty.
+  const matchedPaths = globSync(patterns, {
+    cwd: rootDir,
+    dot: true,
+    follow: false
+  });
+
+  if (matchedPaths.length < 1) {
+    return null;
+  }
+
+  return { rootDir, paths: new Set(matchedPaths.map((x) => toPosixPath(x))) };
+}
+
+function isExcludedBySrcExclude(srcExclude: SrcExcludePaths | null, itemPath: string): boolean {
+  if (!srcExclude) {
+    return false;
+  }
+
+  return srcExclude.paths.has(toPosixPath(relative(srcExclude.rootDir, itemPath)));
+}
 
 function applyManualSort(fileNames: string[], priority: string[]): string[] {
   if (priority.length < 1) {
@@ -205,7 +255,8 @@ function generateDirectoryItem(
   directoryPathDisplay: string,
   options: VitePressSidebarOptions,
   rawOptions: VitePressSidebarOptions,
-  routeNode: DynamicRouteNode | null
+  routeNode: DynamicRouteNode | null,
+  srcExclude: SrcExcludePaths | null
 ): SidebarListItem | null {
   // A `sidebar.config.json` inside the folder takes priority over the
   // inherited options, both for the folder itself and everything below it.
@@ -224,7 +275,8 @@ function generateDirectoryItem(
       directoryName,
       childOptions,
       childRawOptions,
-      routeNode
+      routeNode,
+      srcExclude
     ) || [];
 
   let isTitleReceivedFromFileContent = false;
@@ -373,7 +425,8 @@ function generateDynamicRouteItems(
   options: VitePressSidebarOptions,
   rawOptions: VitePressSidebarOptions,
   routeNode: DynamicRouteNode,
-  filesByGlobPattern: string[]
+  filesByGlobPattern: string[],
+  srcExclude: SrcExcludePaths | null
 ): SidebarListItem {
   // A child whose template segment holds no parameter stands for a real
   // directory, which the scan of this directory already covers.
@@ -410,6 +463,13 @@ function generateDynamicRouteItems(
       }
 
       const templatePath = resolve(currentDir, node.templateName);
+
+      // Excluding the template from the build excludes every page it
+      // generates, because none of them has a file of its own.
+      if (isExcludedBySrcExclude(srcExclude, templatePath)) {
+        return null;
+      }
+
       const itemPathDisplay = resolveDisplayPath(displayDir, name, depth, options);
 
       if (node.route) {
@@ -430,7 +490,8 @@ function generateDynamicRouteItems(
         itemPathDisplay,
         options,
         rawOptions,
-        node
+        node,
+        srcExclude
       );
     })
     .filter((x) => x !== null);
@@ -443,7 +504,8 @@ function generateSidebarItem(
   parentName: string | null,
   options: VitePressSidebarOptions,
   rawOptions: VitePressSidebarOptions,
-  routeNode: DynamicRouteNode | null = null
+  routeNode: DynamicRouteNode | null = null,
+  srcExclude: SrcExcludePaths | null = null
 ): SidebarListItem {
   if (typeof options.excludeByFolderDepth === 'number' && options.excludeByFolderDepth <= depth) {
     return [];
@@ -493,6 +555,13 @@ function generateSidebarItem(
         return null;
       }
 
+      // Applied on top of the exclusion options instead of replacing them, so
+      // that both what VitePress excludes and what the sidebar excludes on its
+      // own are left out.
+      if (isExcludedBySrcExclude(srcExclude, childItemPath)) {
+        return null;
+      }
+
       // A template is not a page of its own, and the pages it generates are
       // added separately, so it never appears under its literal name.
       if (options.includeDynamicRoutes && isDynamicRouteName(x)) {
@@ -507,7 +576,8 @@ function generateSidebarItem(
           childItemPathDisplay,
           options,
           rawOptions,
-          routeNode?.children.get(x) ?? null
+          routeNode?.children.get(x) ?? null,
+          srcExclude
         );
       }
 
@@ -529,7 +599,8 @@ function generateSidebarItem(
         options,
         rawOptions,
         routeNode,
-        filesByGlobPattern
+        filesByGlobPattern,
+        srcExclude
       )
     );
   }
@@ -612,17 +683,22 @@ function generateSidebarItem(
   return sidebarItems;
 }
 
-export function generateSidebar(
-  options?: VitePressSidebarOptions | VitePressSidebarOptions[]
+/**
+ * Builds the sidebar.
+ *
+ * `srcExcludePatterns` holds the `srcExclude` of the VitePress configuration,
+ * which only `withSidebar` is able to read. It is a parameter instead of an
+ * option because it belongs to VitePress rather than to the sidebar, and it is
+ * never something the user of this function sets.
+ */
+function buildSidebar(
+  options?: VitePressSidebarOptions | VitePressSidebarOptions[],
+  srcExcludePatterns?: string[]
 ): Sidebar {
   const sidebar: Sidebar = {};
   const isMultipleSidebars = Array.isArray(options);
   let enableDebugPrint = false;
   let optionItems: (VitePressSidebarOptions | undefined)[];
-
-  if (arguments.length > 1) {
-    throw new Error(`You must pass 1 argument, see the documentation for details.`);
-  }
 
   if (options === undefined) {
     optionItems = [{}];
@@ -636,6 +712,9 @@ export function generateSidebar(
   // document root and shared by every sidebar built from it. The cache lives
   // for this call only, so a later call always sees the current routes.
   const dynamicRoutesByRootPath = new Map<string, DynamicRoute[]>();
+  // Matching `srcExclude` walks the whole document root, so the result is
+  // shared by every sidebar built from the same one.
+  const srcExcludeByRootPath = new Map<string, SrcExcludePaths | null>();
   // Only a configuration file in the current working directory may declare
   // `documentRootPath`, because the document root decides which of the other
   // configuration files are read.
@@ -768,13 +847,24 @@ export function generateSidebar(
         .replace('/$', '');
     }
 
+    const documentRootDir = join(cwd, resolvedOptionItem.documentRootPath!);
+    // A `srcExclude` pattern is relative to the document root even when the
+    // scan starts below it, exactly like it is relative to the `srcDir` of
+    // VitePress.
+    let srcExclude = srcExcludeByRootPath.get(documentRootDir);
+
+    if (srcExclude === undefined) {
+      srcExclude = resolveSrcExcludePaths(documentRootDir, srcExcludePatterns);
+
+      srcExcludeByRootPath.set(documentRootDir, srcExclude);
+    }
+
     let routeNode: DynamicRouteNode | null = null;
 
     if (resolvedOptionItem.includeDynamicRoutes) {
       // A route is relative to the document root even when the scan starts
       // below it, so the routes are always resolved from the document root and
       // the tree is walked down to the directory the scan starts from.
-      const documentRootDir = join(cwd, resolvedOptionItem.documentRootPath!);
       let dynamicRoutes = dynamicRoutesByRootPath.get(documentRootDir);
 
       if (!dynamicRoutes) {
@@ -800,7 +890,8 @@ export function generateSidebar(
       null,
       resolvedOptionItem,
       optionItem,
-      routeNode
+      routeNode,
+      srcExclude
     );
 
     if (resolvedOptionItem.removePrefixAfterOrdering) {
@@ -848,6 +939,18 @@ export function generateSidebar(
   return sidebarResult;
 }
 
+export function generateSidebar(
+  options?: VitePressSidebarOptions | VitePressSidebarOptions[]
+): Sidebar {
+  if (arguments.length > 1) {
+    throw new Error(`You must pass 1 argument, see the documentation for details.`);
+  }
+
+  // Called without the VitePress configuration, so there is no `srcExclude` to
+  // honor. Only `withSidebar` is able to read it.
+  return buildSidebar(options);
+}
+
 export function withSidebar(
   vitePressOptions: UserConfig,
   sidebarOptions?: VitePressSidebarOptions | VitePressSidebarOptions[]
@@ -869,9 +972,12 @@ export function withSidebar(
     }
   });
 
+  // A page excluded by `srcExclude` is never built, so an item generated for it
+  // would link nowhere. The patterns are inherited instead of having to be
+  // repeated in the options of the sidebar, and apply on top of them.
   const sidebarResult: Partial<UserConfig> = {
     themeConfig: {
-      sidebar: generateSidebar(sidebarOptions)
+      sidebar: buildSidebar(sidebarOptions, vitePressOptions?.srcExclude)
     }
   };
 

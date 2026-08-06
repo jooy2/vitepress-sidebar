@@ -66,6 +66,8 @@ VitePress Sidebar 可通过两个函数自动生成侧边栏：`withSidebar` 和
 
 VitePress 侧边栏将覆盖 VitePress 中现有选项所需的任何附加选项。 您已手动设置的任何 `sidebar` 选项都将被新选项覆盖。
 
+它还会读取 VitePress 配置中的 [`srcExclude`](/zhHans/guide/options#vitepress-srcexclude)，因此被排除在构建之外的页面不会出现在侧边栏中，无需再排除一次。
+
 ```javascript
 // `.vitepress/config.js`
 import { withSidebar } from 'vitepress-sidebar';
