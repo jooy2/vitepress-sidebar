@@ -6,52 +6,76 @@ order: 2
 
 本页介绍 VitePress 侧边栏的所有选项。
 
-## @ 快速搜索
+## 概览
 
-| 解决路径问题                          | 分组                                      |
-| ------------------------------------- | ----------------------------------------- |
-| [documentRootPath](#documentrootpath) | [collapsed](#collapsed)                   |
-| [scanStartPath](#scanstartpath)       | [collapseDepth](#collapsedepth)           |
-| [resolvePath](#resolvepath)           | [collapseFromLevel](#collapsefromlevel)   |
-| [basePath](#basepath)                 | [rootGroupText](#rootgrouptext)           |
-| [followSymlinks](#followsymlinks)     | [rootGroupLink](#rootgrouplink)           |
-|                                       | [rootGroupCollapsed](#rootgroupcollapsed) |
+一览所有选项。点击选项名称即可跳转到详细说明。
 
-| 获取菜单标题 | 获取菜单链接 |
-| --- | --- |
-| [useTitleFromFileHeading](#usetitlefromfileheading) | [useFolderLinkFromSameNameSubFile](#usefolderlinkfromsamenamesubfile) |
-| [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
-| [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
-| [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
-| [dynamicRouteTitleParam](#dynamicroutetitleparam) |  |
+<div class="options-overview">
+<table>
+<thead>
+<tr><th>分组</th><th>选项</th><th>类型</th><th>默认值</th><th><code>sidebar<wbr>.config<wbr>.json</code></th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="5">解决路径问题</td><td><a href="#documentrootpath"><code>documentRootPath</code></a></td><td><code>string</code></td><td><code>'/'</code></td><td>⚠️</td></tr>
+<tr><td><a href="#scanstartpath"><code>scanStartPath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#resolvepath"><code>resolvePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#basepath"><code>basePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#followsymlinks"><code>followSymlinks</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="6">分组</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#collapsedepth"><code>collapseDepth</code></a></td><td><code>number</code></td><td><code>1</code></td><td>✅</td></tr>
+<tr><td><a href="#collapsefromlevel"><code>collapseFromLevel</code></a></td><td><code>number</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#rootgrouptext"><code>rootGroupText</code></a></td><td><code>string</code></td><td><code>'Table of Contents'</code></td><td>⚠️</td></tr>
+<tr><td><a href="#rootgrouplink"><code>rootGroupLink</code></a></td><td><code>string</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#rootgroupcollapsed"><code>rootGroupCollapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td rowspan="5">获取菜单标题</td><td><a href="#usetitlefromfileheading"><code>useTitleFromFileHeading</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usetitlefromfrontmatter"><code>useTitleFromFrontmatter</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#frontmattertitlefieldname"><code>frontmatterTitleFieldName</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
+<tr><td><a href="#dynamicroutetitleparam"><code>dynamicRouteTitleParam</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
+<tr><td rowspan="3">获取菜单链接</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#folderlinknotincludesfilename"><code>folderLinkNotIncludesFileName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usefolderlinkfromindexfile"><code>useFolderLinkFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="9">包括/排除</td><td><a href="#excludebyglobpattern"><code>excludeByGlobPattern</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
+<tr><td><a href="#excludefilesbyfrontmatterfieldname"><code>excludeFilesByFrontmatterFieldName</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>✅</td></tr>
+<tr><td><a href="#excludebyfolderdepth"><code>excludeByFolderDepth</code></a></td><td><code>number|null</code></td><td><code>null</code></td><td>✅</td></tr>
+<tr><td><a href="#includedotfiles"><code>includeDotFiles</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includeemptyfolder"><code>includeEmptyFolder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includerootindexfile"><code>includeRootIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#includefolderindexfile"><code>includeFolderIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includedynamicroutes"><code>includeDynamicRoutes</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#vitepress-srcexclude">VitePress <code>srcExclude</code></a></td><td><code>string[]</code></td><td><code>undefined</code></td><td>❌</td></tr>
+<tr><td rowspan="7">菜单标题样式</td><td><a href="#hyphentospace"><code>hyphenToSpace</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#underscoretospace"><code>underscoreToSpace</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#capitalizefirst"><code>capitalizeFirst</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#capitalizeeachwords"><code>capitalizeEachWords</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#keepmarkdownsyntaxfromtitle"><code>keepMarkdownSyntaxFromTitle</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#removeprefixafterordering"><code>removePrefixAfterOrdering</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#prefixseparator"><code>prefixSeparator</code></a></td><td><code>string|RegExp</code></td><td><code>'.'</code></td><td>✅<sup>1</sup></td></tr>
+<tr><td rowspan="13">分类</td><td><a href="#manualsortfilenamebypriority"><code>manualSortFileNameByPriority</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
+<tr><td><a href="#sortfolderto"><code>sortFolderTo</code></a></td><td><code>undefined|'top'|'bottom'</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyname"><code>sortMenusByName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfiledateprefix"><code>sortMenusByFileDatePrefix</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfrontmatterorder"><code>sortMenusByFrontmatterOrder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#frontmatterorderdefaultvalue"><code>frontmatterOrderDefaultValue</code></a></td><td><code>number</code></td><td><code>0</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfilecreatedate"><code>sortMenusByFileCreateDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfilemodifydate"><code>sortMenusByFileModifyDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfrontmatterdate"><code>sortMenusByFrontmatterDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusorderbydescending"><code>sortMenusOrderByDescending</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusordernumericallyfromtitle"><code>sortMenusOrderNumericallyFromTitle</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusordernumericallyfromlink"><code>sortMenusOrderNumericallyFromLink</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbycustomfunction"><code>sortMenusByCustomFunction</code></a></td><td><code>(a: SidebarSortItem, b: SidebarSortItem) =&gt; number</code></td><td><code>undefined</code></td><td>❌</td></tr>
+<tr><td>杂项</td><td><a href="#debugprint"><code>debugPrint</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+</tbody>
+</table>
+</div>
 
-| 包括/排除 | 菜单标题样式 |
-| --- | --- |
-| [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [excludeByFolderDepth](#excludebyfolderdepth) | [capitalizeFirst](#capitalizefirst) |
-| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
-| [includeDynamicRoutes](#includedynamicroutes) |  |
-| [VitePress `srcExclude`](#vitepress-srcexclude) |  |
+**[`sidebar.config.json`](/zhHans/advanced-usage/configuration-file)** — 该选项能否写入配置文件：
 
-| 分类 | 杂项 |
-| --- | --- |
-| [manualSortFileNameByPriority](#manualsortfilenamebypriority) | [debugPrint](#debugprint) |
-| [sortFolderTo](#sortfolderto) |  |
-| [sortMenusByName](#sortmenusbyname) |  |
-| [sortMenusByFileDatePrefix](#sortmenusbyfiledateprefix) |  |
-| [sortMenusByFrontmatterOrder](#sortmenusbyfrontmatterorder) |  |
-| [frontmatterOrderDefaultValue](#frontmatterorderdefaultvalue) |  |
-| [sortMenusByFileCreateDate](#sortmenusbyfilecreatedate) |  |
-| [sortMenusByFileModifyDate](#sortmenusbyfilemodifydate) |  |
-| [sortMenusByFrontmatterDate](#sortmenusbyfrontmatterdate) |  |
-| [sortMenusOrderByDescending](#sortmenusorderbydescending) |  |
-| [sortMenusOrderNumericallyFromTitle](#sortmenusordernumericallyfromtitle) |  |
-| [sortMenusOrderNumericallyFromLink](#sortmenusordernumericallyfromlink) |  |
-| [sortMenusByCustomFunction](#sortmenusbycustomfunction) |  |
+- ✅ 可以在任意文件夹的配置文件中使用。
+- ⚠️ 只能在位于文档根目录及其上层的配置文件中使用。在更深层的文件中会被忽略并给出警告。
+- ❌ 无法在配置文件中使用，必须作为参数传入。
+
+<sup>1</sup> 配置文件是 JSON，因此 `prefixSeparator` 只有作为参数传入时才接受正则表达式。
 
 ## `documentRootPath`
 
@@ -110,7 +134,7 @@ order: 2
 
 如果路径因VitePress的重写选项而改变,则可以使用此选项。它替换VitePress中的基本路径。如果此值不存在,则将使用来自`resolvePath`的值。
 
-## `followSymLinks`
+## `followSymlinks`
 
 - Type: `boolean`
 - Default: `false`
@@ -347,8 +371,8 @@ export default defineConfig(
 
 ## `collapsed`
 
-- Type: `boolean`
-- Default: `false`
+- Type: `boolean|null|undefined`
+- Default: `undefined`
 
 如果未指定`collapsed`选项(`null` 或 `undefined`),则不使用分组折叠/展开,所有菜单将一次性显示。如果为`false`,则创建菜单时所有分组都处于展开状态。如果为`true`,则创建菜单时所有分组都处于折叠状态。
 

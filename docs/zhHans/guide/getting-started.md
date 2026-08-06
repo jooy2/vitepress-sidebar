@@ -144,6 +144,31 @@ export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOption
 
 有关 VitePress Sidebar 配置的更多信息,请参阅下面的 **[选项](/zhHans/guide/options)** 部分。
 
+## 配置文件
+
+选项不一定要作为参数传入。将 `sidebar.config.json` 文件放在文档旁边即可被自动识别，它会应用于该文件所在的文件夹**以及其下的所有子文件夹**，因此文档的各个部分都可以定义各自的规则。
+
+```json
+// docs/sidebar.config.json
+{
+  "collapsed": true,
+  "capitalizeFirst": true,
+  "useTitleFromFileHeading": true
+}
+```
+
+有了上面的文件，VitePress 配置只需要这些：
+
+```javascript
+// docs/.vitepress/config.mjs
+import { defineConfig } from 'vitepress';
+import { withSidebar } from 'vitepress-sidebar';
+
+export default defineConfig(withSidebar({ title: 'My Docs' }));
+```
+
+详情请参阅 **[配置文件](/zhHans/advanced-usage/configuration-file)** 页面。
+
 ## 代码示例
 
 ```javascript
@@ -181,7 +206,6 @@ export default defineConfig(
     // ============ [ GETTING MENU TITLE ] ============
     // useTitleFromFileHeading: false,
     // useTitleFromFrontmatter: false,
-    // useFolderLinkFromIndexFile: false,
     // useFolderTitleFromIndexFile: false,
     // frontmatterTitleFieldName: 'title',
     // dynamicRouteTitleParam: 'title',

@@ -9,6 +9,7 @@
 - ⚡️ Lightweight bundle file size
 - ⚡️ [Multiple Sidebars](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) support
 - ⚡️ [Frontmatter](https://vitepress.dev/guide/frontmatter) support
+- ⚡️ Per-folder [configuration file](https://vitepress-sidebar.cdget.com/advanced-usage/configuration-file) (`sidebar.config.json`) support
 - ⚡️ [TypeScript](https://www.typescriptlang.org) support
 - ⚡️ Customize menus for sorting, special character conversion, file and folder filters, and more!
 
@@ -51,7 +52,6 @@ export default defineConfig(
     // ============ [ GETTING MENU TITLE ] ============
     // useTitleFromFileHeading: false,
     // useTitleFromFrontmatter: false,
-    // useFolderLinkFromIndexFile: false,
     // useFolderTitleFromIndexFile: false,
     // frontmatterTitleFieldName: 'title',
     // dynamicRouteTitleParam: 'title',

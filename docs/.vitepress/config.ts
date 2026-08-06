@@ -116,6 +116,8 @@ const vitePressConfig: UserConfig = {
   },
   themeConfig: {
     logo: { src: '/logo-32.png', width: 24, height: 24 },
+    // Show `h3` headings nested under their `h2` in the right outline
+    outline: { level: [2, 3] },
     editLink: {
       pattern: editLinkPattern
     },

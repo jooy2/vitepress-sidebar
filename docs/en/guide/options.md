@@ -6,53 +6,76 @@ order: 2
 
 This page describes all the options in the VitePress Sidebar.
 
-## @ Quick search
+## Overview
 
-| Resolving Paths                       | Grouping                                  |
-| ------------------------------------- | ----------------------------------------- |
-| [documentRootPath](#documentrootpath) | [collapsed](#collapsed)                   |
-| [scanStartPath](#scanstartpath)       | [collapseDepth](#collapsedepth)           |
-| [resolvePath](#resolvepath)           | [collapseFromLevel](#collapsefromlevel)   |
-| [basePath](#basepath)                 | [rootGroupText](#rootgrouptext)           |
-| [followSymlinks](#followsymlinks)     | [rootGroupLink](#rootgrouplink)           |
-|                                       | [rootGroupCollapsed](#rootgroupcollapsed) |
+Every option at a glance. Click a name to jump to its full description.
 
-| Getting Menu Title | Getting Menu Link |
-| --- | --- |
-| [useTitleFromFileHeading](#usetitlefromfileheading) | [useFolderLinkFromSameNameSubFile](#usefolderlinkfromsamenamesubfile) |
-| [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
-| [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
-| [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
-| [dynamicRouteTitleParam](#dynamicroutetitleparam) |  |
+<div class="options-overview">
+<table>
+<thead>
+<tr><th>Group</th><th>Option</th><th>Type</th><th>Default</th><th><code>sidebar<wbr>.config<wbr>.json</code></th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="5">Resolving Paths</td><td><a href="#documentrootpath"><code>documentRootPath</code></a></td><td><code>string</code></td><td><code>'/'</code></td><td>⚠️</td></tr>
+<tr><td><a href="#scanstartpath"><code>scanStartPath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#resolvepath"><code>resolvePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#basepath"><code>basePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#followsymlinks"><code>followSymlinks</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="6">Grouping</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#collapsedepth"><code>collapseDepth</code></a></td><td><code>number</code></td><td><code>1</code></td><td>✅</td></tr>
+<tr><td><a href="#collapsefromlevel"><code>collapseFromLevel</code></a></td><td><code>number</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#rootgrouptext"><code>rootGroupText</code></a></td><td><code>string</code></td><td><code>'Table of Contents'</code></td><td>⚠️</td></tr>
+<tr><td><a href="#rootgrouplink"><code>rootGroupLink</code></a></td><td><code>string</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#rootgroupcollapsed"><code>rootGroupCollapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td rowspan="5">Getting Menu Title</td><td><a href="#usetitlefromfileheading"><code>useTitleFromFileHeading</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usetitlefromfrontmatter"><code>useTitleFromFrontmatter</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#frontmattertitlefieldname"><code>frontmatterTitleFieldName</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
+<tr><td><a href="#dynamicroutetitleparam"><code>dynamicRouteTitleParam</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
+<tr><td rowspan="3">Getting Menu Link</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#folderlinknotincludesfilename"><code>folderLinkNotIncludesFileName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usefolderlinkfromindexfile"><code>useFolderLinkFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="9">Include/Exclude</td><td><a href="#excludebyglobpattern"><code>excludeByGlobPattern</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
+<tr><td><a href="#excludefilesbyfrontmatterfieldname"><code>excludeFilesByFrontmatterFieldName</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>✅</td></tr>
+<tr><td><a href="#excludebyfolderdepth"><code>excludeByFolderDepth</code></a></td><td><code>number|null</code></td><td><code>null</code></td><td>✅</td></tr>
+<tr><td><a href="#includedotfiles"><code>includeDotFiles</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includeemptyfolder"><code>includeEmptyFolder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includerootindexfile"><code>includeRootIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#includefolderindexfile"><code>includeFolderIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includedynamicroutes"><code>includeDynamicRoutes</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#vitepress-srcexclude">VitePress <code>srcExclude</code></a></td><td><code>string[]</code></td><td><code>undefined</code></td><td>❌</td></tr>
+<tr><td rowspan="7">Styling Menu Title</td><td><a href="#hyphentospace"><code>hyphenToSpace</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#underscoretospace"><code>underscoreToSpace</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#capitalizefirst"><code>capitalizeFirst</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#capitalizeeachwords"><code>capitalizeEachWords</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#keepmarkdownsyntaxfromtitle"><code>keepMarkdownSyntaxFromTitle</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#removeprefixafterordering"><code>removePrefixAfterOrdering</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#prefixseparator"><code>prefixSeparator</code></a></td><td><code>string|RegExp</code></td><td><code>'.'</code></td><td>✅<sup>1</sup></td></tr>
+<tr><td rowspan="13">Sorting</td><td><a href="#manualsortfilenamebypriority"><code>manualSortFileNameByPriority</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
+<tr><td><a href="#sortfolderto"><code>sortFolderTo</code></a></td><td><code>undefined|'top'|'bottom'</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyname"><code>sortMenusByName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfiledateprefix"><code>sortMenusByFileDatePrefix</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfrontmatterorder"><code>sortMenusByFrontmatterOrder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#frontmatterorderdefaultvalue"><code>frontmatterOrderDefaultValue</code></a></td><td><code>number</code></td><td><code>0</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfilecreatedate"><code>sortMenusByFileCreateDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfilemodifydate"><code>sortMenusByFileModifyDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfrontmatterdate"><code>sortMenusByFrontmatterDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusorderbydescending"><code>sortMenusOrderByDescending</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusordernumericallyfromtitle"><code>sortMenusOrderNumericallyFromTitle</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusordernumericallyfromlink"><code>sortMenusOrderNumericallyFromLink</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbycustomfunction"><code>sortMenusByCustomFunction</code></a></td><td><code>(a: SidebarSortItem, b: SidebarSortItem) =&gt; number</code></td><td><code>undefined</code></td><td>❌</td></tr>
+<tr><td>Misc</td><td><a href="#debugprint"><code>debugPrint</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+</tbody>
+</table>
+</div>
 
-| Include/Exclude | Styling Menu Title |
-| --- | --- |
-| [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [excludeByFolderDepth](#excludebyfolderdepth) | [capitalizeFirst](#capitalizefirst) |
-| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
-| [includeDynamicRoutes](#includedynamicroutes) |  |
-| [VitePress `srcExclude`](#vitepress-srcexclude) |  |
+**[`sidebar.config.json`](/advanced-usage/configuration-file)** — whether the option can be declared in a configuration file:
 
-| Sorting | Misc |
-| --- | --- |
-| [manualSortFileNameByPriority](#manualsortfilenamebypriority) | [debugPrint](#debugprint) |
-| [sortFolderTo](#sortfolderto) |  |
-| [sortMenusByName](#sortmenusbyname) |  |
-| [sortMenusByFileDatePrefix](#sortmenusbyfiledateprefix) |  |
-| [sortMenusByFrontmatterOrder](#sortmenusbyfrontmatterorder) |  |
-| [frontmatterOrderDefaultValue](#frontmatterorderdefaultvalue) |  |
-| [frontmatterOrderDefaultValue](#frontmatterorderdefaultvalue) |  |
-| [sortMenusByFileCreateDate](#sortmenusbyfilecreatedate) |  |
-| [sortMenusByFileModifyDate](#sortmenusbyfilemodifydate) |  |
-| [sortMenusByFrontmatterDate](#sortmenusbyfrontmatterdate) |  |
-| [sortMenusOrderByDescending](#sortmenusorderbydescending) |  |
-| [sortMenusOrderNumericallyFromTitle](#sortmenusordernumericallyfromtitle) |  |
-| [sortMenusOrderNumericallyFromLink](#sortmenusordernumericallyfromlink) |  |
-| [sortMenusByCustomFunction](#sortmenusbycustomfunction) |  |
+- ✅ Can be used in a configuration file of any folder.
+- ⚠️ Can only be used in a configuration file at or above the document root. It is ignored, with a warning, in a file below it.
+- ❌ Cannot be used in a configuration file, and has to be passed as an argument.
+
+<sup>1</sup> A configuration file holds JSON, so `prefixSeparator` only accepts a regular expression when it is passed as an argument.
 
 ## `documentRootPath`
 
@@ -111,7 +134,7 @@ This option is used to configure multiple sidebars. You can learn more on the **
 
 This option can be utilized if the path has changed due to VitePress's rewrite option. It replaces the base path in VitePress. If this value does not exist, it will use the value from `resolvePath` instead.
 
-## `followSymLinks`
+## `followSymlinks`
 
 - Type: `boolean`
 - Default: `false`
@@ -348,8 +371,8 @@ Sets the default value for the `order` property of the frontmatter when not set.
 
 ## `collapsed`
 
-- Type: `boolean`
-- Default: `false`
+- Type: `boolean|null|undefined`
+- Default: `undefined`
 
 If the `collapsed` option is not specified(`null` or `undefined`), group collapse/expand is not used and all menus are displayed at once. If `false`, the menu is created with all groups expanded. If `true`, the menu is created with all groups collapsed.
 

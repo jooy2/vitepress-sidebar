@@ -6,52 +6,76 @@ order: 2
 
 이 페이지에서는 VitePress Sidebar의 모든 옵션에 대해 설명합니다.
 
-## @ 빠른 검색
+## 개요
 
-| 경로 해석                             | 그룹핑                                    |
-| ------------------------------------- | ----------------------------------------- |
-| [documentRootPath](#documentrootpath) | [collapsed](#collapsed)                   |
-| [scanStartPath](#scanstartpath)       | [collapseDepth](#collapsedepth)           |
-| [resolvePath](#resolvepath)           | [collapseFromLevel](#collapsefromlevel)   |
-| [basePath](#basepath)                 | [rootGroupText](#rootgrouptext)           |
-| [followSymlinks](#followsymlinks)     | [rootGroupLink](#rootgrouplink)           |
-|                                       | [rootGroupCollapsed](#rootgroupcollapsed) |
+모든 옵션을 한눈에 볼 수 있습니다. 옵션 이름을 클릭하면 자세한 설명으로 이동합니다.
 
-| 메뉴 제목 | 메뉴 링크 |
-| --- | --- |
-| [useTitleFromFileHeading](#usetitlefromfileheading) | [useFolderLinkFromSameNameSubFile](#usefolderlinkfromsamenamesubfile) |
-| [useTitleFromFrontmatter](#usetitlefromfrontmatter) | [folderLinkNotIncludesFileName](#folderlinknotincludesfilename) |
-| [useFolderTitleFromIndexFile](#usefoldertitlefromindexfile) | [useFolderLinkFromIndexFile](#usefolderlinkfromindexfile) |
-| [frontmatterTitleFieldName](#frontmattertitlefieldname) |  |
-| [dynamicRouteTitleParam](#dynamicroutetitleparam) |  |
+<div class="options-overview">
+<table>
+<thead>
+<tr><th>그룹</th><th>옵션</th><th>타입</th><th>기본값</th><th><code>sidebar<wbr>.config<wbr>.json</code></th></tr>
+</thead>
+<tbody>
+<tr><td rowspan="5">경로 해석</td><td><a href="#documentrootpath"><code>documentRootPath</code></a></td><td><code>string</code></td><td><code>'/'</code></td><td>⚠️</td></tr>
+<tr><td><a href="#scanstartpath"><code>scanStartPath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#resolvepath"><code>resolvePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#basepath"><code>basePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#followsymlinks"><code>followSymlinks</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="6">그룹핑</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#collapsedepth"><code>collapseDepth</code></a></td><td><code>number</code></td><td><code>1</code></td><td>✅</td></tr>
+<tr><td><a href="#collapsefromlevel"><code>collapseFromLevel</code></a></td><td><code>number</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#rootgrouptext"><code>rootGroupText</code></a></td><td><code>string</code></td><td><code>'Table of Contents'</code></td><td>⚠️</td></tr>
+<tr><td><a href="#rootgrouplink"><code>rootGroupLink</code></a></td><td><code>string</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#rootgroupcollapsed"><code>rootGroupCollapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td rowspan="5">메뉴 제목</td><td><a href="#usetitlefromfileheading"><code>useTitleFromFileHeading</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usetitlefromfrontmatter"><code>useTitleFromFrontmatter</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#frontmattertitlefieldname"><code>frontmatterTitleFieldName</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
+<tr><td><a href="#dynamicroutetitleparam"><code>dynamicRouteTitleParam</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
+<tr><td rowspan="3">메뉴 링크</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#folderlinknotincludesfilename"><code>folderLinkNotIncludesFileName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#usefolderlinkfromindexfile"><code>useFolderLinkFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="9">포함 및 제외</td><td><a href="#excludebyglobpattern"><code>excludeByGlobPattern</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
+<tr><td><a href="#excludefilesbyfrontmatterfieldname"><code>excludeFilesByFrontmatterFieldName</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>✅</td></tr>
+<tr><td><a href="#excludebyfolderdepth"><code>excludeByFolderDepth</code></a></td><td><code>number|null</code></td><td><code>null</code></td><td>✅</td></tr>
+<tr><td><a href="#includedotfiles"><code>includeDotFiles</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includeemptyfolder"><code>includeEmptyFolder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includerootindexfile"><code>includeRootIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#includefolderindexfile"><code>includeFolderIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#includedynamicroutes"><code>includeDynamicRoutes</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#vitepress-srcexclude">VitePress <code>srcExclude</code></a></td><td><code>string[]</code></td><td><code>undefined</code></td><td>❌</td></tr>
+<tr><td rowspan="7">메뉴 제목 스타일링</td><td><a href="#hyphentospace"><code>hyphenToSpace</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#underscoretospace"><code>underscoreToSpace</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#capitalizefirst"><code>capitalizeFirst</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#capitalizeeachwords"><code>capitalizeEachWords</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#keepmarkdownsyntaxfromtitle"><code>keepMarkdownSyntaxFromTitle</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#removeprefixafterordering"><code>removePrefixAfterOrdering</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+<tr><td><a href="#prefixseparator"><code>prefixSeparator</code></a></td><td><code>string|RegExp</code></td><td><code>'.'</code></td><td>✅<sup>1</sup></td></tr>
+<tr><td rowspan="13">정렬</td><td><a href="#manualsortfilenamebypriority"><code>manualSortFileNameByPriority</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
+<tr><td><a href="#sortfolderto"><code>sortFolderTo</code></a></td><td><code>undefined|'top'|'bottom'</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyname"><code>sortMenusByName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfiledateprefix"><code>sortMenusByFileDatePrefix</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfrontmatterorder"><code>sortMenusByFrontmatterOrder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#frontmatterorderdefaultvalue"><code>frontmatterOrderDefaultValue</code></a></td><td><code>number</code></td><td><code>0</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfilecreatedate"><code>sortMenusByFileCreateDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfilemodifydate"><code>sortMenusByFileModifyDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbyfrontmatterdate"><code>sortMenusByFrontmatterDate</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusorderbydescending"><code>sortMenusOrderByDescending</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusordernumericallyfromtitle"><code>sortMenusOrderNumericallyFromTitle</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusordernumericallyfromlink"><code>sortMenusOrderNumericallyFromLink</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#sortmenusbycustomfunction"><code>sortMenusByCustomFunction</code></a></td><td><code>(a: SidebarSortItem, b: SidebarSortItem) =&gt; number</code></td><td><code>undefined</code></td><td>❌</td></tr>
+<tr><td>기타</td><td><a href="#debugprint"><code>debugPrint</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
+</tbody>
+</table>
+</div>
 
-| 포함 및 제외 | 메뉴 제목 스타일링 |
-| --- | --- |
-| [excludeByGlobPattern](#excludebyglobpattern) | [hyphenToSpace](#hyphentospace) |
-| [excludeFilesByFrontmatterFieldName](#excludefilesbyfrontmatterfieldname) | [underscoreToSpace](#underscoretospace) |
-| [excludeByFolderDepth](#excludebyfolderdepth) | [capitalizeFirst](#capitalizefirst) |
-| [includeDotFiles](#includedotfiles) | [capitalizeEachWords](#capitalizeeachwords) |
-| [includeEmptyFolder](#sortmenusbyfrontmatterdate) | [keepMarkdownSyntaxFromTitle](#keepmarkdownsyntaxfromtitle) |
-| [includeRootIndexFile](#sortmenusbyfrontmatterdate) | [removePrefixAfterOrdering](#removeprefixafterordering) |
-| [includeFolderIndexFile](#sortmenusbyfrontmatterdate) | [prefixSeparator](#prefixseparator) |
-| [includeDynamicRoutes](#includedynamicroutes) |  |
-| [VitePress `srcExclude`](#vitepress-srcexclude) |  |
+**[`sidebar.config.json`](/ko/advanced-usage/configuration-file)** — 해당 옵션을 설정 파일에 작성할 수 있는지 여부입니다:
 
-| 정렬 | 기타 |
-| --- | --- |
-| [manualSortFileNameByPriority](#manualsortfilenamebypriority) | [debugPrint](#debugprint) |
-| [sortFolderTo](#sortfolderto) |  |
-| [sortMenusByName](#sortmenusbyname) |  |
-| [sortMenusByFileDatePrefix](#sortmenusbyfiledateprefix) |  |
-| [sortMenusByFrontmatterOrder](#sortmenusbyfrontmatterorder) |  |
-| [frontmatterOrderDefaultValue](#frontmatterorderdefaultvalue) |  |
-| [sortMenusByFileCreateDate](#sortmenusbyfilecreatedate) |  |
-| [sortMenusByFileModifyDate](#sortmenusbyfilemodifydate) |  |
-| [sortMenusByFrontmatterDate](#sortmenusbyfrontmatterdate) |  |
-| [sortMenusOrderByDescending](#sortmenusorderbydescending) |  |
-| [sortMenusOrderNumericallyFromTitle](#sortmenusordernumericallyfromtitle) |  |
-| [sortMenusOrderNumericallyFromLink](#sortmenusordernumericallyfromlink) |  |
-| [sortMenusByCustomFunction](#sortmenusbycustomfunction) |  |
+- ✅ 모든 폴더의 설정 파일에서 사용할 수 있습니다.
+- ⚠️ 문서 루트 또는 그보다 상위에 있는 설정 파일에서만 사용할 수 있습니다. 그보다 하위에 있는 파일에서는 경고와 함께 무시됩니다.
+- ❌ 설정 파일에서는 사용할 수 없으며, 인자로 직접 전달해야 합니다.
+
+<sup>1</sup> 설정 파일은 JSON이므로, `prefixSeparator`에 정규 표현식을 지정하려면 인자로 전달해야 합니다.
 
 ## `documentRootPath`
 
@@ -110,7 +134,7 @@ e.g. `/`, `/path/sub-path`, `/guide/`...
 
 이 옵션은 VitePress의 `rewrites` 옵션으로 인해 경로가 변경된 경우에 사용할 수 있습니다. VitePress의 기본 경로를 대체합니다. 이 값이 존재하지 않으면 `resolvePath`의 값을 대신 사용합니다.
 
-## `followSymLinks`
+## `followSymlinks`
 
 - Type: `boolean`
 - Default: `false`
@@ -347,8 +371,8 @@ export default defineConfig(
 
 ## `collapsed`
 
-- Type: `boolean`
-- Default: `false`
+- Type: `boolean|null|undefined`
+- Default: `undefined`
 
 `collapsed` 옵션을 지정하지 않으면(`null` 또는 `정의되지 않음`) 그룹 접기/확장이 사용되지 않고 모든 메뉴가 한꺼번에 표시됩니다. `false`이면 모든 그룹이 확장된 상태로 메뉴가 생성됩니다. `true`이면 모든 그룹이 접힌 상태로 메뉴가 생성됩니다.
 

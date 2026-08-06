@@ -1,4 +1,56 @@
 /* .vitepress/theme/custom.css */
 :root {
   --vp-sidebar-width: 350px;
+  /* Default: 1440px. The default theme starts centering the layout at 1440px
+     with `(100vw - var(--vp-layout-max-width)) / 2`, which turns negative
+     between that breakpoint and a wider value, and takes the navigation bar
+     padding and the sidebar width down with it. `min()` keeps the value at the
+     viewport width until the viewport is actually wide enough. */
+  --vp-layout-max-width: min(1680px, 100vw);
+}
+
+/* Widen the text column, which the default theme caps at 688px when the right
+   outline is shown. The `#VPContent` prefix is only there to outweigh the
+   scoped rule of the theme. */
+@media (min-width: 1280px) {
+  #VPContent .VPDoc.has-aside .content-container {
+    max-width: 1000px;
+  }
+}
+
+/* Overview table of `/guide/options`. Its five columns are wider than the text
+   column, so the group and the type are allowed to wrap and the cell padding is
+   tightened. The option name, which is what the table is scanned for, keeps a
+   line of its own. The table still scrolls when even that is not enough. */
+.options-overview {
+  overflow-x: auto;
+}
+
+.vp-doc .options-overview table {
+  display: table;
+  width: 100%;
+}
+
+.vp-doc .options-overview :is(th, td) {
+  padding: 8px 10px;
+}
+
+/* Counted from the end of the row, because the group cell is only present on
+   the first row of each group. */
+.vp-doc .options-overview td:nth-last-child(5),
+.vp-doc .options-overview td:nth-last-child(3) {
+  overflow-wrap: anywhere;
+}
+
+.vp-doc .options-overview td:nth-last-child(4) {
+  white-space: nowrap;
+}
+
+/* Draw the nested outline items (`h3`) as a tree under their `h2`, following
+   the guide line the outline already uses on its left edge. */
+ul.VPDocOutlineItem.nested {
+  margin-left: 4px;
+  border-left: 1px solid var(--vp-c-divider);
+  padding-right: 0;
+  padding-left: 12px;
 }

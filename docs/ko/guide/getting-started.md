@@ -144,6 +144,31 @@ export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOption
 
 VitePress Sidebar의 설정에 대한 자세한 내용은 아래 **[옵션](/ko/guide/options)** 섹션을 참조하세요.
 
+## 설정 파일
+
+옵션을 반드시 인자로 전달해야 하는 것은 아닙니다. 문서 옆에 `sidebar.config.json` 파일을 두면 자동으로 인식되며, 파일이 위치한 폴더와 **그 하위의 모든 폴더**에 적용됩니다. 따라서 문서의 영역별로 서로 다른 규칙을 정의할 수 있습니다.
+
+```json
+// docs/sidebar.config.json
+{
+  "collapsed": true,
+  "capitalizeFirst": true,
+  "useTitleFromFileHeading": true
+}
+```
+
+위와 같이 파일을 두면 VitePress 설정은 다음으로 충분합니다:
+
+```javascript
+// docs/.vitepress/config.mjs
+import { defineConfig } from 'vitepress';
+import { withSidebar } from 'vitepress-sidebar';
+
+export default defineConfig(withSidebar({ title: 'My Docs' }));
+```
+
+자세한 내용은 **[설정 파일](/ko/advanced-usage/configuration-file)** 페이지를 참고하세요.
+
 ## 코드 예시
 
 ```javascript
@@ -181,7 +206,6 @@ export default defineConfig(
     // ============ [ GETTING MENU TITLE ] ============
     // useTitleFromFileHeading: false,
     // useTitleFromFrontmatter: false,
-    // useFolderLinkFromIndexFile: false,
     // useFolderTitleFromIndexFile: false,
     // frontmatterTitleFieldName: 'title',
     // dynamicRouteTitleParam: 'title',

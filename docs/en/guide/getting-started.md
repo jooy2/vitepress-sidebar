@@ -144,6 +144,31 @@ To test how the sidebar results are printed, try building VitePress with the `de
 
 For more information about the configuration of VitePress Sidebar, see **[Options](/guide/options)** section below.
 
+## Configuration file
+
+Options do not have to be passed as an argument. A `sidebar.config.json` file placed next to your documents is picked up automatically, and applies to the folder it lives in **and to every subfolder below it**, so each part of your documentation can define its own rules.
+
+```json
+// docs/sidebar.config.json
+{
+  "collapsed": true,
+  "capitalizeFirst": true,
+  "useTitleFromFileHeading": true
+}
+```
+
+With the file above in place, this is all your VitePress config needs:
+
+```javascript
+// docs/.vitepress/config.mjs
+import { defineConfig } from 'vitepress';
+import { withSidebar } from 'vitepress-sidebar';
+
+export default defineConfig(withSidebar({ title: 'My Docs' }));
+```
+
+See the **[Configuration file](/advanced-usage/configuration-file)** page for details.
+
 ## Code Example
 
 ```javascript
@@ -181,7 +206,6 @@ export default defineConfig(
     // ============ [ GETTING MENU TITLE ] ============
     // useTitleFromFileHeading: false,
     // useTitleFromFrontmatter: false,
-    // useFolderLinkFromIndexFile: false,
     // useFolderTitleFromIndexFile: false,
     // frontmatterTitleFieldName: 'title',
     // dynamicRouteTitleParam: 'title',
