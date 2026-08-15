@@ -398,7 +398,18 @@ export function sortByObjectKey(options: SortByObjectKeyOptions): object[] {
       item[options.key] ?? (options.fallbackKey ? item[options.fallbackKey] : undefined);
 
     result = options.arr.sort((a: SidebarListItem, b: SidebarListItem) => {
-      const compareResult = basicCollator.compare(valueOf(a), valueOf(b));
+      const aValue = valueOf(a);
+      const bValue = valueOf(b);
+      // `Intl.Collator`'s `numeric` option is a natural sort for digit runs
+      // embedded in strings (e.g. filenames): it has no concept of a leading
+      // `-` as a sign or `.` as a decimal point, so it mis-sorts genuinely
+      // numeric values such as frontmatter `order` (-0.5 ends up before -1).
+      // Values that are already numbers (as `order` is, via `parseFloat`)
+      // get real numeric comparison instead.
+      const compareResult =
+        typeof aValue === 'number' && typeof bValue === 'number'
+          ? aValue - bValue
+          : basicCollator.compare(aValue, bValue);
 
       return options.desc ? -compareResult : compareResult;
     });

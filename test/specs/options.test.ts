@@ -942,6 +942,37 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('API: sortMenusByFrontmatterOrder (C: negative and decimal orders)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-order-with-negative`,
+        sortMenusByFrontmatterOrder: true
+      }),
+      [
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'c',
+          link: '/c'
+        },
+        {
+          text: 'd',
+          link: '/d'
+        },
+        {
+          text: 'e',
+          link: '/e'
+        }
+      ]
+    );
+  });
+
   it('API: sortMenusByFileCreateDate', async () => {
     const targetDir = `${TEST_DIR_BASE}/modify-date`;
 
