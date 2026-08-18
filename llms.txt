@@ -1,0 +1,73 @@
+# VitePress Sidebar
+
+> VitePress Sidebar is a VitePress plugin that automatically generates the sidebar menu of a documentation site from the folder and Markdown file structure, with a single configuration. It scans a document root path hierarchically, then filters, sorts, and formats the entries into the `themeConfig.sidebar` structure that VitePress expects.
+
+Key facts:
+
+- Package: `vitepress-sidebar` (npm), MIT licensed, authored by CDGet (jooy2).
+- Written in ESM with TypeScript type definitions. Node.js 20 or higher is required (Node.js 22+ recommended). CommonJS projects need the ESM workaround described in the troubleshooting page.
+- Install as a dev dependency: `npm i -D vitepress-sidebar` (also available via yarn/pnpm).
+- Two entry points: `withSidebar(vitePressOptions, sidebarOptions)` used at the `defineConfig` level (recommended, supports hot reload), and `generateSidebar(sidebarOptions)` used at the `themeConfig.sidebar` level.
+- `withSidebar` honors the `srcExclude` of the VitePress configuration automatically, resolving its patterns from `documentRootPath` and applying them on top of the exclusion options. `generateSidebar` is not given that configuration, so it cannot read it.
+- Supports multiple sidebars (pass an array of option objects), frontmatter-driven titles/order/exclusion, internationalization, and fine-grained menu formatting.
+- Options can also be declared in a `sidebar.config.json` file placed in any folder. Such a file configures the folder it lives in and every subfolder below it, and takes priority over the options passed as an argument.
+- The `$folder` key of a `sidebar.config.json` describes the folder itself (`order`, `text`, `link`) instead of its contents, and is not inherited by subfolders. It lets a folder be ordered, named and linked without an `index.md`, and keeps the position of a folder independent of the position of its `index.md` inside it.
+
+Minimal usage in `.vitepress/config.js`:
+
+```javascript
+import { defineConfig } from 'vitepress';
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  title: 'My Docs',
+  themeConfig: {}
+};
+
+const vitePressSidebarOptions = {
+  documentRootPath: '/docs',
+  collapsed: false,
+  capitalizeFirst: true,
+  useTitleFromFileHeading: true
+};
+
+export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOptions));
+```
+
+Option categories (see the Options page for every option and example):
+
+- Resolving paths: `documentRootPath`, `scanStartPath`, `resolvePath`, `basePath`, `followSymlinks`
+- Grouping: `collapsed`, `collapseDepth`, `collapseFromLevel`, `rootGroupText`, `rootGroupLink`, `rootGroupCollapsed`
+- Getting menu title: `useTitleFromFileHeading`, `useTitleFromFrontmatter`, `useFolderTitleFromIndexFile`, `frontmatterTitleFieldName`, `dynamicRouteTitleParam`
+- Getting menu link: `useFolderLinkFromSameNameSubFile`, `useFolderLinkFromIndexFile`, `folderLinkNotIncludesFileName`
+- Include / exclude: `excludeByGlobPattern`, `excludeFilesByFrontmatterFieldName`, `excludeByFolderDepth`, `includeDotFiles`, `includeEmptyFolder`, `includeRootIndexFile`, `includeFolderIndexFile`, `includeDynamicRoutes`
+- Styling menu title: `hyphenToSpace`, `underscoreToSpace`, `capitalizeFirst`, `capitalizeEachWords`, `keepMarkdownSyntaxFromTitle`, `removePrefixAfterOrdering`, `prefixSeparator`
+- Sorting: `manualSortFileNameByPriority`, `sortFolderTo`, `sortMenusByName`, `sortMenusByFileDatePrefix`, `sortMenusByFrontmatterOrder`, `frontmatterOrderDefaultValue`, `sortMenusByFileCreateDate`, `sortMenusByFileModifyDate`, `sortMenusByFrontmatterDate`, `sortMenusOrderByDescending`, `sortMenusOrderNumericallyFromTitle`, `sortMenusOrderNumericallyFromLink`, `sortMenusByCustomFunction`
+- Misc: `debugPrint`
+
+## Docs
+
+- [Introduction](https://vitepress-sidebar.cdget.com/introduction): What VitePress Sidebar is, its features, and real-world usage.
+- [Getting Started](https://vitepress-sidebar.cdget.com/guide/getting-started): Installation, how the scanner works, `withSidebar` vs `generateSidebar`, `documentRootPath` setup, and a full commented option template.
+- [Sidebar Options](https://vitepress-sidebar.cdget.com/guide/options): Reference for every option with defaults, types, and before/after examples.
+
+## Advanced usage
+
+- [Configuration file](https://vitepress-sidebar.cdget.com/advanced-usage/configuration-file): Put a `sidebar.config.json` in any folder to configure that folder and everything below it, describe the folder itself with `$folder`, override the options passed as an argument, and omit `documentRootPath`.
+- [Multiple Sidebars How-to](https://vitepress-sidebar.cdget.com/advanced-usage/multiple-sidebars-how-to): Show a different sidebar per URI path by passing an array of option objects with `documentRootPath`, `scanStartPath`, `resolvePath`, and `basePath`.
+- [Internationalization](https://vitepress-sidebar.cdget.com/advanced-usage/internationalization): Generate a sidebar per language directory, with VitePress `locales` and the `vitepress-i18n` plugin.
+- [Multi-level sidebar with indents](https://vitepress-sidebar.cdget.com/advanced-usage/multi-level-sidebar-with-indents): Custom CSS to indent nested sidebar levels correctly in the default theme.
+
+## Troubleshooting
+
+- [CommonJS: ERR_REQUIRE_ESM](https://vitepress-sidebar.cdget.com/troubleshooting/err-require-esm): Fixes for CJS projects — rename the config to `.mjs`, or add `"type": "module"` to `package.json`.
+
+## Optional
+
+- [GitHub repository](https://github.com/jooy2/vitepress-sidebar): Source code, issue tracker, and discussions.
+- [npm package](https://www.npmjs.com/package/vitepress-sidebar): Release versions and install instructions.
+- [Changelog](https://github.com/jooy2/vitepress-sidebar/blob/main/CHANGELOG.md): Version history.
+- [Contributing guide](https://github.com/jooy2/vitepress-sidebar/blob/main/CONTRIBUTING.md): How to contribute to the project.
+- [VitePress documentation](https://vitepress.dev/reference/default-theme-sidebar): Upstream sidebar specification this plugin generates output for.
+- [Korean documentation](https://vitepress-sidebar.cdget.com/ko/introduction): Same documentation in Korean.
+- [Simplified Chinese documentation](https://vitepress-sidebar.cdget.com/zhHans/introduction): Same documentation in Simplified Chinese.
