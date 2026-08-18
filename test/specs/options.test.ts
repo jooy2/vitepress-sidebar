@@ -942,7 +942,7 @@ describe('Test: APIs', () => {
     );
   });
 
-  it('API: sortMenusByFrontmatterOrder (C: negative and decimal orders)', () => {
+  it('API: sortMenusByFrontmatterOrder (C)', () => {
     assert.deepEqual(
       generateSidebar({
         documentRootPath: `${TEST_DIR_BASE}/frontmatter-order-with-negative`,
@@ -950,16 +950,44 @@ describe('Test: APIs', () => {
       }),
       [
         {
-          text: 'a',
-          link: '/a'
+          text: 'd',
+          link: '/d'
+        },
+        {
+          text: 'e',
+          link: '/e'
         },
         {
           text: 'b',
           link: '/b'
         },
         {
+          text: 'f',
+          link: '/f'
+        },
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
           text: 'c',
           link: '/c'
+        }
+      ]
+    );
+  });
+
+  it('API: sortMenusByFrontmatterOrder (D)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-order-with-negative`,
+        sortMenusByFrontmatterOrder: true,
+        frontmatterOrderDefaultValue: -3
+      }),
+      [
+        {
+          text: 'f',
+          link: '/f'
         },
         {
           text: 'd',
@@ -968,6 +996,18 @@ describe('Test: APIs', () => {
         {
           text: 'e',
           link: '/e'
+        },
+        {
+          text: 'b',
+          link: '/b'
+        },
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'c',
+          link: '/c'
         }
       ]
     );

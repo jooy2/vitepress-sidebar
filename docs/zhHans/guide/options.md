@@ -237,7 +237,7 @@ name: This is frontmatter title value.
 - Type: `boolean`
 - Default: `false`
 
-按 frontmatter 的 `order` 属性对菜单项排序。对于每个文件夹，按 `order` 属性的值（数字）升序排序，如果 `sortMenusOrderByDescending` 选项为 `true`，则按降序排序。如果 `order` 属性的值不是数字或不存在，则 `order` 会被判定为 `0`。
+按 frontmatter 的 `order` 属性对菜单项排序。对于每个文件夹，按 `order` 属性的值（数字）升序排序，如果 `sortMenusOrderByDescending` 选项为 `true`，则按降序排序。该值按数字比较，因此使用负数或小数的 `order` 也会被放在其数值对应的位置：`-2` 在 `-1` 之前，`2.25` 在 `2.5` 之前。如果 `order` 属性的值不是数字或不存在，则 `order` 会被判定为 `0`，或 `frontmatterOrderDefaultValue` 选项的值。
 
 ## `sortMenusByFileCreateDate`
 

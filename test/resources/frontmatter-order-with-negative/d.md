@@ -1,8 +1,5 @@
 ---
-title: D Frontmatter
-order: 0
-date: 2023-01-04
-author: cdget.com
+order: -2
 ---
 
 # D File

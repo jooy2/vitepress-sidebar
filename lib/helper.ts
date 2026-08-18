@@ -57,7 +57,14 @@ export function getValueFromFrontmatter<T>(filePath: string, key: string, defaul
 }
 
 export function getOrderFromFrontmatter(filePath: string, defaultOrder: number): number {
-  return parseFloat(getValueFromFrontmatter<string>(filePath, 'order', defaultOrder.toString()));
+  const order = parseFloat(
+    getValueFromFrontmatter<string>(filePath, 'order', defaultOrder.toString())
+  );
+
+  // An `order` that does not read as a number falls back to the default, the
+  // same way a file that carries no `order` at all does, so that a value such
+  // as `order: "first"` never reaches the sorting as `NaN`.
+  return Number.isFinite(order) ? order : defaultOrder;
 }
 
 export function getDateFromFrontmatter(filePath: string): string {
@@ -403,11 +410,11 @@ export function sortByObjectKey(options: SortByObjectKeyOptions): object[] {
       // `Intl.Collator`'s `numeric` option is a natural sort for digit runs
       // embedded in strings (e.g. filenames): it has no concept of a leading
       // `-` as a sign or `.` as a decimal point, so it mis-sorts genuinely
-      // numeric values such as frontmatter `order` (-0.5 ends up before -1).
-      // Values that are already numbers (as `order` is, via `parseFloat`)
-      // get real numeric comparison instead.
+      // numeric values such as frontmatter `order` (`-0.5` ends up before `-1`,
+      // and `2.5` before `2.25`). Values that are already numbers (as `order`
+      // is, via `parseFloat`) get real numeric comparison instead.
       const compareResult =
-        typeof aValue === 'number' && typeof bValue === 'number'
+        Number.isFinite(aValue) && Number.isFinite(bValue)
           ? aValue - bValue
           : basicCollator.compare(aValue, bValue);
 

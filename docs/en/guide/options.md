@@ -237,7 +237,7 @@ The default menu items are sorted in folder tree order, so set the `sortMenusByN
 - Type: `boolean`
 - Default: `false`
 
-Sorts the menu items by the `order` property of the frontmatter. For each folder, sorts the value (number) of the `order` property in ascending order, or descending order if the `sortMenusOrderByDescending` option is `true`. If the value of `order` is non-numeric or does not exist, `order` is judged to be `0`.
+Sorts the menu items by the `order` property of the frontmatter. For each folder, sorts the value (number) of the `order` property in ascending order, or descending order if the `sortMenusOrderByDescending` option is `true`. The value is compared as a number, so a negative or a decimal `order` is placed where its value belongs: `-2` comes before `-1`, and `2.25` before `2.5`. If the value of `order` is non-numeric or does not exist, `order` is judged to be `0`, or the value of the `frontmatterOrderDefaultValue` option.
 
 ## `sortMenusByFileCreateDate`
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.38.1 (2026-08-)
+
+- `sortMenusByFrontmatterOrder` now compares the `order` of the frontmatter as a number instead of as text, so a negative or a decimal value is placed where its value belongs. `-2` no longer comes after `-1`, and `2.25` no longer comes after `2.5`. The sorting relied on the `numeric` option of `Intl.Collator`, which is a natural sort of the digit runs inside a string and reads neither a leading `-` as a sign nor a `.` as a decimal point, so it only agreed with numeric order for small positive integers. Sorting by a file name or a title is unaffected, as it is still the natural sort that is wanted there. An `order` that does not read as a number now falls back to `frontmatterOrderDefaultValue`, as the documentation describes, instead of being sorted as `NaN`. (#233)
+
 ## 1.38.0 (2026-08-06)
 
 - Add `sortMenusByCustomFunction` option, which sorts the items of every folder with a function of your own, written in the form `Array.prototype.sort` expects. Each item being compared carries `text`, `link`, `fileName`, `filePath`, `isDirectory`, `createDate`, `modifyDate` and `frontmatter`, so an order can be decided from something the other options never read, such as a date kept in version control. The file times and the frontmatter are only read when the function accesses them. It decides the order of a whole folder by itself, so it cannot be used together with another sorting option, and a function cannot be written in JSON, so it is not available in a `sidebar.config.json`. (#188)
