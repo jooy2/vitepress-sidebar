@@ -2,6 +2,7 @@
 
 ## 1.38.1 (2026-08-)
 
+- `useTitleFromFileHeading` no longer reads a comment written inside the frontmatter as the heading of a page. A comment starts with `#`, exactly like an `h1` does, so a line such as `# https://vitepress.dev/reference/default-theme-home-page` left at the top of a frontmatter became the title of the item. The frontmatter block is now removed before the content is read for a heading, and a file that holds no heading below it falls back to its file name, as it already did. The block is located by its delimiters, the way VitePress locates it, so it is removed even when what it holds is not valid YAML. (#223)
 - `sortMenusByFrontmatterOrder` now compares the `order` of the frontmatter as a number instead of as text, so a negative or a decimal value is placed where its value belongs. `-2` no longer comes after `-1`, and `2.25` no longer comes after `2.5`. The sorting relied on the `numeric` option of `Intl.Collator`, which is a natural sort of the digit runs inside a string and reads neither a leading `-` as a sign nor a `.` as a decimal point, so it only agreed with numeric order for small positive integers. Sorting by a file name or a title is unaffected, as it is still the natural sort that is wanted there. An `order` that does not read as a number now falls back to `frontmatterOrderDefaultValue`, as the documentation describes, instead of being sorted as `NaN`. (#233)
 
 ## 1.38.0 (2026-08-06)

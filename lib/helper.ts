@@ -100,6 +100,42 @@ export function getFrontmatterData(filePath: string): AnyValueObject {
   }
 }
 
+/** The line a frontmatter block opens and closes with. */
+const FRONTMATTER_DELIMITER = '---';
+
+/**
+ * Returns the content of a Markdown file with its frontmatter block removed.
+ *
+ * A comment inside a frontmatter block starts with `#`, exactly like an `h1`
+ * does, so the block has to be removed before the content is read for a
+ * heading. It is located by its delimiters alone, the way `gray-matter` and
+ * therefore VitePress locate it, instead of by parsing what it holds, so that
+ * a block is removed even when its YAML is invalid.
+ */
+function removeFrontmatter(fileData: string): string {
+  // A byte order mark sits before the opening delimiter and would hide it.
+  const data = fileData.charCodeAt(0) === 0xfeff ? fileData.slice(1) : fileData;
+
+  // There is no block unless the file opens with the delimiter, and a fourth
+  // dash makes that line a horizontal rule instead.
+  if (
+    !data.startsWith(FRONTMATTER_DELIMITER) ||
+    data.charAt(FRONTMATTER_DELIMITER.length) === '-'
+  ) {
+    return data;
+  }
+
+  const closeIndex = data.indexOf(`\n${FRONTMATTER_DELIMITER}`, FRONTMATTER_DELIMITER.length);
+
+  // A block that is never closed runs to the end of the file, which leaves no
+  // content to read a heading from.
+  if (closeIndex === -1) {
+    return '';
+  }
+
+  return data.slice(closeIndex + FRONTMATTER_DELIMITER.length + 1).replace(/^\r?\n/, '');
+}
+
 export function getExcludeFromFrontmatter(
   filePath: string,
   excludeFrontmatterFieldName?: string
@@ -253,7 +289,7 @@ export function getTitleFromMd(
   if (options.useTitleFromFileHeading) {
     // Use content 'h1' string instead of file name
     try {
-      const data = readFileSync(filePath, 'utf-8');
+      const data = removeFrontmatter(readFileSync(filePath, 'utf-8'));
       const lines = data.split('\n');
 
       for (let i = 0, len = lines.length; i < len; i += 1) {

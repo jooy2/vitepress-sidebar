@@ -5,5 +5,9 @@ docs-dist/
 docs/.vitepress/cache
 node_modules/
 
+# Documents the tests read. Formatting one rewrites the very thing it checks,
+# such as turning a `----` horizontal rule into a frontmatter delimiter.
+test/resources/
+
 *-lock.json
 *-lock.yaml

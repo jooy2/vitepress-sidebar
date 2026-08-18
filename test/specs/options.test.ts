@@ -80,6 +80,36 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('API: useTitleFromFileHeading (ignores a comment in the frontmatter)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-with-comment`,
+        useTitleFromFileHeading: true
+      }),
+      [
+        // Only holds a comment that looks like a heading, so the file name is used
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'B File',
+          link: '/b'
+        },
+        // The frontmatter is not valid YAML, and is still not read as a heading
+        {
+          text: 'C File',
+          link: '/c'
+        },
+        // Opens with a horizontal rule instead of a frontmatter
+        {
+          text: 'D File',
+          link: '/d'
+        }
+      ]
+    );
+  });
+
   it('API: useTitleFromFrontmatter', () => {
     assert.deepEqual(
       generateSidebar({
