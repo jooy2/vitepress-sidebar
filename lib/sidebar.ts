@@ -20,6 +20,7 @@ import {
   sortByCustomFunction,
   sortByFileTypes,
   sortByObjectKey,
+  DIRECTORY_ITEM_KEY,
   SORT_ITEM_KEY
 } from './helper.js';
 import { createSidebarHmrPlugin } from './external.js';
@@ -38,6 +39,9 @@ import {
   isDynamicRoutePath,
   resolveDynamicRoutes
 } from './dynamic-route.js';
+
+/** Name a root group is given when `rootGroupText` does not name one. */
+const ROOT_GROUP_DEFAULT_TEXT = 'Table of Contents';
 
 // Every option that decides the order of the items of a level, other than the
 // custom sort function itself.
@@ -392,6 +396,10 @@ function generateDirectoryItem(
             sortPath: directoryPathDisplay
           }
         : {}),
+      // Said rather than guessed from the items it holds, because a folder
+      // kept by `includeEmptyFolder` or linked through an `index.md` holds
+      // none and would otherwise be ordered as a file.
+      ...(options.sortFolderTo ? { [DIRECTORY_ITEM_KEY]: true } : {}),
       // Built from the options of the parent, because this item is sorted
       // among the items of the folder that holds it.
       ...(options.sortMenusByCustomFunction
@@ -685,6 +693,8 @@ function generateSidebarItem(
 
   if (options.sortFolderTo) {
     sidebarItems = sortByFileTypes(sidebarItems, options.sortFolderTo);
+
+    deepDeleteKey(sidebarItems, DIRECTORY_ITEM_KEY);
   }
 
   return sidebarItems;
@@ -917,27 +927,41 @@ function buildSidebar(
       sidebarResult = removePrefixFromTitleAndLink(sidebarResult, resolvedOptionItem);
     }
 
-    sidebar[resolvedOptionItem.resolvePath || '/'] = {
+    const resolvePathKey = resolvedOptionItem.resolvePath || '/';
+
+    // Two sidebars resolving to the same path are one sidebar, and the work
+    // done for the earlier one is thrown away without anything to show for it.
+    if (Object.hasOwn(sidebar, resolvePathKey)) {
+      process.stderr.write(
+        `[vitepress-sidebar] More than one sidebar resolves to '${resolvePathKey}', so only the last of them is used.\n`
+      );
+    }
+
+    const withRootGroup =
+      resolvedOptionItem.rootGroupText ||
+      resolvedOptionItem.rootGroupLink ||
+      resolvedOptionItem.rootGroupCollapsed === true ||
+      resolvedOptionItem.rootGroupCollapsed === false;
+
+    sidebar[resolvePathKey] = {
       base: resolvedOptionItem.basePath || resolvedOptionItem.resolvePath || '/',
-      items:
-        sidebarResult?.items ||
-        (resolvedOptionItem.rootGroupText ||
-        resolvedOptionItem.rootGroupLink ||
-        resolvedOptionItem.rootGroupCollapsed === true ||
-        resolvedOptionItem.rootGroupCollapsed === false
-          ? [
-              {
-                text: resolvedOptionItem.rootGroupText,
-                ...(resolvedOptionItem.rootGroupLink
-                  ? { link: resolvedOptionItem.rootGroupLink }
-                  : {}),
-                items: sidebarResult as SidebarItem[],
-                ...(resolvedOptionItem.rootGroupCollapsed === null
-                  ? {}
-                  : { collapsed: resolvedOptionItem.rootGroupCollapsed })
-              }
-            ]
-          : (sidebarResult as SidebarItem[]))
+      items: withRootGroup
+        ? [
+            {
+              // The default belongs here rather than to the other defaults: a
+              // root group is only made when one of its options asks for one,
+              // and a name given to every option set would ask for one always.
+              text: resolvedOptionItem.rootGroupText ?? ROOT_GROUP_DEFAULT_TEXT,
+              ...(resolvedOptionItem.rootGroupLink
+                ? { link: resolvedOptionItem.rootGroupLink }
+                : {}),
+              items: sidebarResult as SidebarItem[],
+              ...(resolvedOptionItem.rootGroupCollapsed === null
+                ? {}
+                : { collapsed: resolvedOptionItem.rootGroupCollapsed })
+            }
+          ]
+        : (sidebarResult as SidebarItem[])
     };
   }
 

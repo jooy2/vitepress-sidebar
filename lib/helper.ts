@@ -21,6 +21,15 @@ import type {
  */
 export const SORT_ITEM_KEY = 'sortItem';
 
+/**
+ * Key a folder item is marked with while its level is ordered by `sortFolderTo`.
+ *
+ * A folder is told apart by the items it holds, which a folder kept by
+ * `includeEmptyFolder` or linked through `useFolderLinkFromIndexFile` has none
+ * of, so it is said here instead of being guessed.
+ */
+export const DIRECTORY_ITEM_KEY = 'isDirectoryItem';
+
 export function generateNotTogetherMessage(options: string[]): string {
   return `These options cannot be used together: ${options.join(', ')}`;
 }
@@ -448,8 +457,9 @@ export function sortByFileTypes(
   arrItems: SidebarListItem,
   sortFolderTo: 'top' | 'bottom'
 ): object[] {
-  const itemFolders = arrItems.filter((item: SidebarItem) => Object.hasOwn(item, 'items'));
-  const itemFiles = arrItems.filter((item: SidebarItem) => !Object.hasOwn(item, 'items'));
+  const isFolder = (item: SidebarItem): boolean => Object.hasOwn(item, DIRECTORY_ITEM_KEY);
+  const itemFolders = arrItems.filter(isFolder);
+  const itemFiles = arrItems.filter((item: SidebarItem) => !isFolder(item));
 
   if (sortFolderTo === 'top') {
     return [...itemFolders, ...itemFiles];

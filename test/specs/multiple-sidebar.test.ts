@@ -216,4 +216,51 @@ describe('Test: multiple sidebars', () => {
       }
     );
   });
+
+  it('Two sidebars resolving to the same path are reported', () => {
+    const warnings: string[] = [];
+    const write = process.stderr.write;
+
+    process.stderr.write = ((chunk: string) => {
+      warnings.push(String(chunk));
+      return true;
+    }) as typeof process.stderr.write;
+
+    let result;
+
+    try {
+      result = generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'folder/subFolder',
+          resolvePath: '/shared/'
+        },
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'folder-2',
+          resolvePath: '/shared/'
+        }
+      ]);
+    } finally {
+      process.stderr.write = write;
+    }
+
+    assert.ok(
+      warnings.some((message) => message.includes(`More than one sidebar resolves to '/shared/'`)),
+      'expected a warning about the duplicated resolve path'
+    );
+
+    // The last one is what is left, which is what the warning says
+    assert.deepEqual(result, {
+      '/shared/': {
+        base: '/shared/',
+        items: [
+          {
+            text: 'folder2',
+            link: 'folder2'
+          }
+        ]
+      }
+    });
+  });
 });

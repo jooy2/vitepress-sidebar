@@ -654,6 +654,8 @@ export default {
 
 rootGroup 指定整个菜单组,而与目录结构无关。这将使用一个菜单步骤,因此您在使用时应格外小心。如果您不需要 rootGroup 选项,可以将其禁用。如果指定此值,则指定顶级菜单的名称。
 
+仅当设置了某个 `rootGroup` 选项时才会创建根分组；若 `rootGroupText` 未指定名称，则使用 `Table of Contents`。
+
 ## `rootGroupLink`
 
 - Type: `string`

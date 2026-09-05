@@ -1906,6 +1906,94 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('API: sortFolderTo (a folder holding no item is still a folder)', () => {
+    const options = {
+      documentRootPath: `${TEST_DIR_BASE}/sort-folder-to-empty`,
+      includeEmptyFolder: true,
+      useFolderLinkFromIndexFile: true
+    };
+
+    assert.deepEqual(generateSidebar({ ...options, sortFolderTo: 'top' }), [
+      // Kept by `includeEmptyFolder`, so it holds no `items` of its own
+      {
+        text: 'aaa-empty'
+      },
+      {
+        text: 'ccc-full',
+        items: [
+          {
+            text: 'one',
+            link: '/ccc-full/one'
+          }
+        ]
+      },
+      // Holds only an `index.md`, which became its link rather than an item
+      {
+        text: 'eee-with-index',
+        link: '/eee-with-index/index.md'
+      },
+      {
+        text: 'bbb',
+        link: '/bbb'
+      },
+      {
+        text: 'ddd',
+        link: '/ddd'
+      }
+    ]);
+
+    assert.deepEqual(
+      generateSidebar({ ...options, sortFolderTo: 'bottom' }).map(
+        (item: { text: string }) => item.text
+      ),
+      ['bbb', 'ddd', 'aaa-empty', 'ccc-full', 'eee-with-index']
+    );
+  });
+
+  it('API: rootGroupText (takes a default when a root group is asked for)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/sort-folder-to-empty`,
+        excludeByGlobPattern: ['*-empty', '*-full', '*-with-index'],
+        rootGroupCollapsed: true
+      }),
+      [
+        {
+          text: 'Table of Contents',
+          collapsed: true,
+          items: [
+            {
+              text: 'bbb',
+              link: '/bbb'
+            },
+            {
+              text: 'ddd',
+              link: '/ddd'
+            }
+          ]
+        }
+      ]
+    );
+
+    // No root group is made unless one of its options asks for one
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/sort-folder-to-empty`,
+        excludeByGlobPattern: ['*-empty', '*-full', '*-with-index']
+      }),
+      [
+        {
+          text: 'bbb',
+          link: '/bbb'
+        },
+        {
+          text: 'ddd',
+          link: '/ddd'
+        }
+      ]
+    );
+  });
+
   it('API: hyphenToSpace', () => {
     assert.deepEqual(
       generateSidebar({

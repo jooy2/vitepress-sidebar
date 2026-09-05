@@ -654,6 +654,8 @@ This is the way to remove a prefix that holds the separator itself, which the te
 
 rootGroup specifies the entire group for the menu, regardless of directory structure. This uses one menu step, so you should be careful about using it, and you can disable the rootGroup option if you don't need it. If you specify this value, you specify a name for the top-level menu.
 
+A root group is only created when one of the `rootGroup` options is set, and `Table of Contents` is the name it takes when `rootGroupText` does not give it one.
+
 ## `rootGroupLink`
 
 - Type: `string`
