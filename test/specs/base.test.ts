@@ -288,6 +288,66 @@ describe('Test: base test', () => {
     });
   });
 
+  it('withSidebar: leaves the configuration and the options it is given alone', () => {
+    const vitePressOptions = {
+      title: 'VitePress Sidebar',
+      vite: { plugins: [{ name: 'user-plugin' }] },
+      themeConfig: {
+        sidebar: [{ text: 'Not used', link: '/' }],
+        footer: { message: 'Footer' }
+      }
+    };
+    const sidebarOptions = {
+      documentRootPath: `${TEST_DIR_BASE}/general`,
+      debugPrint: false
+    };
+    const vitePressOptionsBefore = structuredClone(vitePressOptions);
+    const sidebarOptionsBefore = structuredClone(sidebarOptions);
+
+    const first = withSidebar(vitePressOptions, sidebarOptions);
+    const second = withSidebar(vitePressOptions, sidebarOptions);
+
+    assert.deepStrictEqual(
+      vitePressOptions,
+      vitePressOptionsBefore,
+      'the VitePress configuration must not be changed'
+    );
+    assert.deepStrictEqual(
+      sidebarOptions,
+      sidebarOptionsBefore,
+      'the sidebar options must not be changed'
+    );
+
+    // VitePress evaluates its configuration again on every restart of the dev
+    // server, so a plugin appended to the list the caller passed in would be
+    // added once more each time.
+    const pluginNames = (result: Partial<typeof vitePressOptions>): (string | undefined)[] =>
+      ((result.vite as { plugins?: { name?: string }[] } | undefined)?.plugins ?? []).map(
+        (plugin) => plugin?.name
+      );
+
+    assert.deepStrictEqual(pluginNames(first), ['user-plugin', 'vitepress-sidebar:hmr']);
+    assert.deepStrictEqual(pluginNames(second), ['user-plugin', 'vitepress-sidebar:hmr']);
+
+    // The generated sidebar still replaces the one already in the configuration
+    assert.deepStrictEqual(
+      (first.themeConfig as { sidebar: { text: string }[] }).sidebar.map((item) => item.text),
+      ['a', 'b', 'c', 'folder', 'folder-2', 'test']
+    );
+  });
+
+  it('withSidebar: accepts a frozen configuration and frozen options', () => {
+    const vitePressOptions = Object.freeze({
+      title: 'VitePress Sidebar',
+      themeConfig: Object.freeze({ sidebar: Object.freeze([{ text: 'Not used' }]) })
+    });
+    const sidebarOptions = Object.freeze({
+      documentRootPath: `${TEST_DIR_BASE}/general`
+    });
+
+    assert.doesNotThrow(() => withSidebar(vitePressOptions, sidebarOptions));
+  });
+
   it('withSidebar: inherits `srcExclude` from the VitePress configuration', () => {
     const result = withSidebar(
       {

@@ -968,46 +968,65 @@ export function withSidebar(
   vitePressOptions: UserConfig,
   sidebarOptions?: VitePressSidebarOptions | VitePressSidebarOptions[]
 ): Partial<UserConfig> {
-  let optionItems: (VitePressSidebarOptions | undefined)[];
+  // Neither the VitePress configuration nor the options belong to this
+  // function, so nothing below writes to either of them. VitePress evaluates
+  // its configuration again on every restart of the dev server, and a change
+  // made here would be carried into the next evaluation.
+  const optionItems: VitePressSidebarOptions[] =
+    sidebarOptions === undefined
+      ? [{}]
+      : Array.isArray(sidebarOptions)
+        ? sidebarOptions
+        : [sidebarOptions];
 
-  if (sidebarOptions === undefined) {
-    optionItems = [{}];
-  } else {
-    optionItems = Array.isArray(sidebarOptions) ? sidebarOptions : [sidebarOptions];
-  }
-
-  let enableDebugPrint = false;
-
-  optionItems.forEach((optionItem) => {
-    if (optionItem?.debugPrint && !enableDebugPrint) {
-      enableDebugPrint = true;
-      optionItem.debugPrint = false;
-    }
+  // The sidebar is printed here, together with the configuration it was merged
+  // into, so the build is asked not to print it a second time on its own.
+  const enableDebugPrint = optionItems.some((optionItem) => optionItem?.debugPrint);
+  const withoutDebugPrint = (optionItem: VitePressSidebarOptions): VitePressSidebarOptions => ({
+    ...optionItem,
+    debugPrint: false
   });
+  let buildOptions = sidebarOptions;
+
+  if (enableDebugPrint) {
+    buildOptions = Array.isArray(sidebarOptions)
+      ? sidebarOptions.map(withoutDebugPrint)
+      : withoutDebugPrint(sidebarOptions ?? {});
+  }
 
   // A page excluded by `srcExclude` is never built, so an item generated for it
   // would link nowhere. The patterns are inherited instead of having to be
   // repeated in the options of the sidebar, and apply on top of them.
   const sidebarResult: Partial<UserConfig> = {
     themeConfig: {
-      sidebar: buildSidebar(sidebarOptions, vitePressOptions?.srcExclude)
+      sidebar: buildSidebar(buildOptions, vitePressOptions?.srcExclude)
     }
   };
 
-  if (vitePressOptions?.themeConfig?.sidebar) {
-    vitePressOptions.themeConfig.sidebar = {};
-  }
+  // A sidebar already in the configuration is replaced by the generated one,
+  // which merging alone would not do.
+  const baseOptions: UserConfig = vitePressOptions?.themeConfig?.sidebar
+    ? {
+        ...vitePressOptions,
+        themeConfig: { ...vitePressOptions.themeConfig, sidebar: {} }
+      }
+    : vitePressOptions;
 
-  const result: Partial<UserConfig> = objMergeNewKey(vitePressOptions, sidebarResult) as UserConfig;
+  const result: Partial<UserConfig> = objMergeNewKey(baseOptions, sidebarResult) as UserConfig;
 
   // Inject a Vite plugin that restarts the dev server when Markdown files
   // are added or removed inside any `documentRootPath`. This allows the
   // sidebar to refresh in dev mode without manually restarting the server.
+  // The plugin list is rebuilt rather than appended to, because merging leaves
+  // it as the very array the caller passed in, and appending to that would add
+  // one more plugin on every evaluation of the configuration.
   const hmrPlugin = createSidebarHmrPlugin(sidebarOptions);
   const viteConfig = (result.vite ?? {}) as { plugins?: unknown[] };
 
-  viteConfig.plugins = [...(viteConfig.plugins ?? []), hmrPlugin];
-  result.vite = viteConfig as UserConfig['vite'];
+  result.vite = {
+    ...viteConfig,
+    plugins: [...(viteConfig.plugins ?? []), hmrPlugin]
+  } as UserConfig['vite'];
 
   if (enableDebugPrint) {
     debugPrint(sidebarOptions, result);
