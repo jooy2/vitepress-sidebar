@@ -1033,6 +1033,76 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('API: sortMenusByFileDatePrefix (does not depend on the order of the directory)', () => {
+    // The file names are in a different order than the date prefixes of the
+    // titles, so an order that is only the one the directory was read in
+    // cannot pass.
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/date-prefix-unordered`,
+        useTitleFromFrontmatter: true,
+        sortMenusByFileDatePrefix: true
+      }),
+      [
+        // Opens with no date, so it is kept apart from the dated items
+        {
+          text: 'No Date Prefix',
+          link: '/e'
+        },
+        {
+          text: '2023-12-01 December',
+          link: '/c'
+        },
+        {
+          text: '2024-01-01 January',
+          link: '/b'
+        },
+        // Any separator between the date and the rest of the name is read
+        {
+          text: '2024-02-01.February',
+          link: '/d'
+        },
+        {
+          text: '2024-03-01 March',
+          link: '/a'
+        }
+      ]
+    );
+  });
+
+  it('API: sortMenusByFileDatePrefix with sortMenusOrderByDescending', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/date-prefix-unordered`,
+        useTitleFromFrontmatter: true,
+        sortMenusByFileDatePrefix: true,
+        sortMenusOrderByDescending: true
+      }),
+      [
+        {
+          text: '2024-03-01 March',
+          link: '/a'
+        },
+        {
+          text: '2024-02-01.February',
+          link: '/d'
+        },
+        {
+          text: '2024-01-01 January',
+          link: '/b'
+        },
+        {
+          text: '2023-12-01 December',
+          link: '/c'
+        },
+        {
+          text: 'No Date Prefix',
+          link: '/e'
+        }
+      ]
+    );
+  });
+
   it('API: sortMenusByFrontmatterOrder (A)', () => {
     assert.deepEqual(
       generateSidebar({

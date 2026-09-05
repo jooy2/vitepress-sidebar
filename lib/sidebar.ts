@@ -619,8 +619,7 @@ function generateSidebarItem(
       arr: sidebarItems,
       key: 'text',
       desc: options.sortMenusOrderByDescending,
-      dateSortFromTextWithPrefix: true,
-      datePrefixSeparator: options.prefixSeparator
+      dateSortFromTextWithPrefix: true
     });
   }
 

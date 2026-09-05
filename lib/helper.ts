@@ -488,13 +488,32 @@ export function sortByObjectKey(options: SortByObjectKeyOptions): object[] {
       result = result.reverse();
     }
   } else if (options.dateSortFromTextWithPrefix) {
-    const dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}/g;
+    // The date the text opens with, whatever separates it from the rest of the
+    // name. `split` was used here instead of `match`, which returns the part
+    // *before* the date and is therefore always the empty string, so every
+    // comparison was `NaN` and the items were left in the order they were read
+    // from the directory.
+    const dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}/;
+    const dateOf = (item: SidebarListItem): number => {
+      const matched = String(item[options.key] ?? '').match(dateRegex)?.[0];
+
+      return matched ? new Date(matched).valueOf() : Number.NaN;
+    };
 
     result = options.arr.sort((a: SidebarListItem, b: SidebarListItem) => {
-      const aDate = a[options.key].split(dateRegex)?.[0];
-      const bDate = b[options.key].split(dateRegex)?.[0];
+      const aDate = dateOf(a);
+      const bDate = dateOf(b);
+      const aHasDate = !Number.isNaN(aDate);
+      const bHasDate = !Number.isNaN(bDate);
 
-      return new Date(aDate).valueOf() - new Date(bDate).valueOf();
+      // An item that opens with no date carries nothing to sort by, so it is
+      // kept together with the other such items instead of being compared as
+      // an invalid date, which would leave the whole level unordered.
+      if (!aHasDate || !bHasDate) {
+        return aHasDate === bHasDate ? 0 : aHasDate ? 1 : -1;
+      }
+
+      return aDate - bDate;
     });
 
     if (options.desc) {

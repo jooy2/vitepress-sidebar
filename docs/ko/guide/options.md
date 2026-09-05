@@ -228,9 +228,9 @@ name: 이 것은 Frontmatter의 제목값입니다.
 
 값이 `true`이면 메뉴 항목 이름의 날짜 접두사를 기준으로 정렬합니다. 날짜 형식은 `YYYY-MM-DD` 형식이어야 합니다(예: `2024-01-01-menu-name`, `2024-01-02.menu-name`...).
 
-이후 메뉴 텍스트에 남아있는 날짜 접두사를 제거하려면 `prefixSeparator` 및 `removePrefixAfterOrdering` 옵션을 활용하면 됩니다.
+날짜는 메뉴 텍스트의 맨 앞에서 읽으며, 날짜와 나머지 이름을 구분하는 문자는 무엇이든 상관없습니다. 날짜로 시작하지 않는 메뉴 항목은 정렬 기준이 없으므로, 읽은 순서를 유지한 채 날짜가 있는 항목보다 앞에 함께 배치됩니다.
 
-기본 메뉴 항목은 폴더 트리 순서로 정렬되므로 변경된 메뉴 이름으로 다시 정렬하려면 `sortMenusByName` 옵션을 `true`로 설정합니다.
+이후 메뉴 텍스트에 남아있는 날짜 접두사를 제거하려면 `prefixSeparator` 및 `removePrefixAfterOrdering` 옵션을 활용하면 됩니다.
 
 ## `sortMenusByFrontmatterOrder`
 

@@ -117,7 +117,6 @@ export declare interface SortByObjectKeyOptions {
   fallbackKey?: string;
   desc?: boolean;
   numerically?: boolean;
-  datePrefixSeparator?: string | RegExp;
   dateSortFromFrontmatter?: boolean;
   dateSortFromTextWithPrefix?: boolean;
 }

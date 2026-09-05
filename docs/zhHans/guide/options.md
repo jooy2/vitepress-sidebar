@@ -228,9 +228,9 @@ name: This is frontmatter title value.
 
 如果值为 `true`，则按菜单项名称中的日期前缀排序。日期格式必须是 `YYYY-MM-DD` 格式（例如 `2024-01-01-menu-name`, `2024-01-02.menu-name`...）
 
-要删除菜单文本中残留的日期前缀，可以使用 `prefixSeparator` 和 `removePrefixAfterOrdering` 选项。
+日期从菜单文本的开头读取，日期与名称其余部分之间的分隔符可以是任意字符。不以日期开头的菜单项没有可用于排序的依据，因此这些项会按读取顺序聚在一起，排在带日期的项之前。
 
-默认菜单项是按文件夹树顺序排序的，因此如果想按更改后的菜单名称重新排序，请将 `sortMenusByName` 选项设置为 `true`。
+要删除菜单文本中残留的日期前缀，可以使用 `prefixSeparator` 和 `removePrefixAfterOrdering` 选项。
 
 ## `sortMenusByFrontmatterOrder`
 

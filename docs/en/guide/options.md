@@ -228,9 +228,9 @@ Sort the items in the menu item by name. Normally, folder scans are done with an
 
 If the value is `true`, sorts by date prefix in the name of the menu item. The date format must be in the form `YYYY-MM-DD` (e.g. `2024-01-01-menu-name`, `2024-01-02.menu-name`...)
 
-To remove date prefixes that remain in the menu text afterward, you can utilize the `prefixSeparator` and `removePrefixAfterOrdering` options.
+The date is read from the beginning of the menu text, whatever separates it from the rest of the name. A menu item that does not begin with a date carries nothing to sort by, so those items are kept together, before the dated ones, in the order they were read.
 
-The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
+To remove date prefixes that remain in the menu text afterward, you can utilize the `prefixSeparator` and `removePrefixAfterOrdering` options.
 
 ## `sortMenusByFrontmatterOrder`
 
