@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.40.0
+## 1.40.0 (2026-09-05)
 
 - A frontmatter field is now only read from the frontmatter block of a page. The reader fell back to scanning the whole file line by line whenever `gray-matter` returned nothing for a field, and never stopped at the closing delimiter, so a `key: value` line written anywhere in the content was read as if it were frontmatter. A page that documents a frontmatter — an `order: 1` inside a fenced code block, or an `exclude: true` in an example — was mis-sorted, given the wrong title, or dropped from the sidebar entirely. The block is now the only thing scanned, and the fallback still applies when the frontmatter is not valid YAML. A field that is present is also used when its value is falsy, so `order: 0` and `exclude: false` mean what they say instead of being treated as absent.
 - `sortMenusByFileDatePrefix` now sorts. It read the date prefix with `split` instead of `match`, which returns the part _before_ the date and is therefore always the empty string, so every comparison was `NaN` and the items were left in the order the directory happened to be read in. That order is the one the file system returns, so it only looked like a date order on a file system that returns its entries sorted, and was arbitrary elsewhere. A menu item that does not begin with a date carries nothing to sort by, and is now kept together with the other such items before the dated ones, instead of leaving the whole level unordered.
