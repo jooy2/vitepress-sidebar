@@ -475,7 +475,7 @@ export default defineConfig(
 
 옵션이 지정되지 않았거나 옵션 값이 정의되지 않은 경우 무시됩니다.
 
-예를 들어 옵션 값이 `exclude`인 경우 콘텐츠에 `exclude: true`가 포함된 문서는 메뉴에 표시되지 않습니다.
+예를 들어 옵션 값이 `exclude`인 경우 Frontmatter에 `exclude: true`가 있는 문서는 메뉴에 표시되지 않습니다. 이 필드는 Frontmatter 블록에서만 읽으므로, 코드 블록 안 등 페이지 본문에 작성된 `exclude: true`는 아무런 영향을 주지 않으며 해당 페이지는 메뉴에 그대로 표시됩니다.
 
 ```markdown
 ---

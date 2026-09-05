@@ -110,6 +110,125 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('A frontmatter field is only read from the frontmatter block (order)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-in-content`,
+        useTitleFromFrontmatter: true,
+        sortMenusByFrontmatterOrder: true,
+        frontmatterOrderDefaultValue: 5
+      }),
+      [
+        // The frontmatter is not valid YAML, so the block itself is read
+        {
+          text: 'e',
+          link: '/e'
+        },
+        // `order: 0` is a value, not a missing field
+        {
+          text: 'Title D',
+          link: '/d'
+        },
+        {
+          text: 'Title C',
+          link: '/c'
+        },
+        // Holds `order: 999` below a horizontal rule, which is content
+        {
+          text: 'Title B',
+          link: '/b'
+        },
+        // Holds `order: 1` inside a fenced code block, which is content
+        {
+          text: 'Title A',
+          link: '/a'
+        },
+        // Carries no `order` at all, so `frontmatterOrderDefaultValue` is used
+        {
+          text: 'f',
+          link: '/f'
+        }
+      ]
+    );
+  });
+
+  it('A frontmatter field is only read from the frontmatter block (exclude)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-in-content`,
+        useTitleFromFrontmatter: true,
+        excludeFilesByFrontmatterFieldName: 'exclude',
+        sortMenusByName: true
+      }),
+      [
+        {
+          text: 'e',
+          link: '/e'
+        },
+        {
+          text: 'f',
+          link: '/f'
+        },
+        {
+          text: 'Title A',
+          link: '/a'
+        },
+        {
+          text: 'Title B',
+          link: '/b'
+        },
+        // Holds `exclude: true` inside a fenced code block, so it stays
+        {
+          text: 'Title C',
+          link: '/c'
+        },
+        // `exclude: false` is a value, not a missing field
+        {
+          text: 'Title D',
+          link: '/d'
+        }
+      ]
+    );
+  });
+
+  it('A frontmatter field is only read from the frontmatter block (title)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-in-content`,
+        useTitleFromFrontmatter: true,
+        useTitleFromFileHeading: true,
+        sortMenusByName: true
+      }),
+      [
+        {
+          text: 'Heading E',
+          link: '/e'
+        },
+        // Holds a `title` inside a fenced code block, so the heading is used
+        {
+          text: 'Heading F',
+          link: '/f'
+        },
+        {
+          text: 'Title A',
+          link: '/a'
+        },
+        {
+          text: 'Title B',
+          link: '/b'
+        },
+        {
+          text: 'Title C',
+          link: '/c'
+        },
+        {
+          text: 'Title D',
+          link: '/d'
+        }
+      ]
+    );
+  });
+
   it('API: useTitleFromFrontmatter', () => {
     assert.deepEqual(
       generateSidebar({

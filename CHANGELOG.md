@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.40.0
+
+- A frontmatter field is now only read from the frontmatter block of a page. The reader fell back to scanning the whole file line by line whenever `gray-matter` returned nothing for a field, and never stopped at the closing delimiter, so a `key: value` line written anywhere in the content was read as if it were frontmatter. A page that documents a frontmatter — an `order: 1` inside a fenced code block, or an `exclude: true` in an example — was mis-sorted, given the wrong title, or dropped from the sidebar entirely. The block is now the only thing scanned, and the fallback still applies when the frontmatter is not valid YAML. A field that is present is also used when its value is falsy, so `order: 0` and `exclude: false` mean what they say instead of being treated as absent.
+- Each Markdown file is now read and parsed once per build instead of once per option that reads something from it. `useTitleFromFileHeading`, `useTitleFromFrontmatter`, `frontmatterTitleFieldName`, `excludeFilesByFrontmatterFieldName`, `sortMenusByFrontmatterOrder` and `sortMenusByFrontmatterDate` used to read and parse the same file again each, up to four times over. On a 2,000 page project the combination of those options went from 297 ms to 99 ms, and `frontmatterTitleFieldName` no longer reads every file twice when the field it names is absent.
+
 ## 1.39.0 (2026-08-18)
 
 - `useTitleFromFileHeading` no longer reads a comment written inside the frontmatter as the heading of a page. A comment starts with `#`, exactly like an `h1` does, so a line such as `# https://vitepress.dev/reference/default-theme-home-page` left at the top of a frontmatter became the title of the item. The frontmatter block is now removed before the content is read for a heading, and a file that holds no heading below it falls back to its file name, as it already did. The block is located by its delimiters, the way VitePress locates it, so it is removed even when what it holds is not valid YAML. (#223)

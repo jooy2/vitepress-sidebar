@@ -5,6 +5,7 @@ import { existsSync, readdirSync, statSync } from 'fs';
 import { isTrueMinimumNumberOfTimes, objMergeNewKey } from 'qsu';
 import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
 import {
+  clearMarkdownFileCache,
   createSortItem,
   debugPrint,
   deepDeleteKey,
@@ -695,6 +696,11 @@ function buildSidebar(
   options?: VitePressSidebarOptions | VitePressSidebarOptions[],
   srcExcludePatterns?: string[]
 ): Sidebar {
+  // Several options read something from the same file, and the files of the
+  // previous build may have changed since, so every build starts and ends
+  // without anything left over from another one.
+  clearMarkdownFileCache();
+
   const sidebar: Sidebar = {};
   const isMultipleSidebars = Array.isArray(options);
   let enableDebugPrint = false;
@@ -935,6 +941,8 @@ function buildSidebar(
   if (enableDebugPrint) {
     debugPrint(resolvedOptionItems, sidebarResult);
   }
+
+  clearMarkdownFileCache();
 
   return sidebarResult;
 }

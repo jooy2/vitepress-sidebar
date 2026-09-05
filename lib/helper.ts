@@ -1,5 +1,3 @@
-// Get a single value of type T from Frontmatter
-// Defaults to defaultValue
 import { readFileSync, statSync } from 'fs';
 import { join } from 'path';
 import matter from 'gray-matter';
@@ -26,33 +24,146 @@ export function generateNotTogetherMessage(options: string[]): string {
   return `These options cannot be used together: ${options.join(', ')}`;
 }
 
-export function getValueFromFrontmatter<T>(filePath: string, key: string, defaultValue: T): T {
+/** Escapes every character that would otherwise be read as a regular expression. */
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/** The line a frontmatter block opens and closes with. */
+const FRONTMATTER_DELIMITER = '---';
+
+/**
+ * A Markdown file split into the frontmatter block and the content below it.
+ *
+ * The two parts are kept apart because only the block describes the page: a
+ * `key: value` line further down belongs to the content, and a `#` there is a
+ * heading rather than a comment.
+ */
+interface MarkdownFile {
+  /** Text between the delimiters, without them */
+  frontmatter: string;
+  /** Everything below the closing delimiter */
+  content: string;
+  /** Frontmatter as `gray-matter` parsed it, empty when it is not valid YAML */
+  data: AnyValueObject;
+}
+
+/**
+ * Splits the content of a Markdown file into its frontmatter block and the
+ * content below it.
+ *
+ * The block is located by its delimiters alone, the way `gray-matter` and
+ * therefore VitePress locate it, instead of by parsing what it holds, so that
+ * it is found even when its YAML is invalid.
+ */
+function splitFrontmatter(fileData: string): { frontmatter: string; content: string } {
+  // A byte order mark sits before the opening delimiter and would hide it.
+  const data = fileData.charCodeAt(0) === 0xfeff ? fileData.slice(1) : fileData;
+
+  // There is no block unless the file opens with the delimiter, and a fourth
+  // dash makes that line a horizontal rule instead.
+  if (
+    !data.startsWith(FRONTMATTER_DELIMITER) ||
+    data.charAt(FRONTMATTER_DELIMITER.length) === '-'
+  ) {
+    return { frontmatter: '', content: data };
+  }
+
+  const closeIndex = data.indexOf(`\n${FRONTMATTER_DELIMITER}`, FRONTMATTER_DELIMITER.length);
+
+  // A block that is never closed runs to the end of the file, which leaves no
+  // content to read a heading from.
+  if (closeIndex === -1) {
+    return { frontmatter: data.slice(FRONTMATTER_DELIMITER.length), content: '' };
+  }
+
+  return {
+    frontmatter: data.slice(FRONTMATTER_DELIMITER.length, closeIndex),
+    content: data.slice(closeIndex + FRONTMATTER_DELIMITER.length + 1).replace(/^\r?\n/, '')
+  };
+}
+
+/**
+ * Files read while the sidebar is being built.
+ *
+ * Several options read something from the same file, and each of them used to
+ * read and parse it again. The cache lives for one build only, so a later build
+ * always sees the current content of the file.
+ */
+const markdownFileCache = new Map<string, MarkdownFile | null>();
+
+/** Drops every file read by the previous build. */
+export function clearMarkdownFileCache(): void {
+  markdownFileCache.clear();
+}
+
+/** Reads a Markdown file, or returns `null` when it cannot be read. */
+function readMarkdownFile(filePath: string): MarkdownFile | null {
+  const cached = markdownFileCache.get(filePath);
+
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  let result: MarkdownFile | null = null;
+
   try {
     const fileData = readFileSync(filePath, 'utf-8');
-    const { data } = matter(fileData);
+    const { frontmatter, content } = splitFrontmatter(fileData);
+    let data: AnyValueObject = {};
 
-    // Try for using gray-matter
-    if (data?.[key]) {
-      return data[key];
+    try {
+      data = matter(fileData).data ?? {};
+    } catch {
+      // The frontmatter is not valid YAML. The block itself is still read line
+      // by line, which is what `getValueFromFrontmatter` falls back to.
     }
 
-    // Try manual parsing
-    const lines = fileData.split('\n');
-    let frontmatterStart = false;
-
-    for (let i = 0, len = lines.length; i < len; i += 1) {
-      const str = lines[i].toString().replace('\r', '');
-
-      if (/^---$/.test(str)) {
-        frontmatterStart = true;
-      }
-      if (new RegExp(`^${key}: (.*)`).test(str) && frontmatterStart) {
-        return JSON.parse(str.replace(`${key}: `, '')) as T;
-      }
-    }
+    result = { frontmatter, content, data };
   } catch {
+    // Nothing to read
+  }
+
+  markdownFileCache.set(filePath, result);
+
+  return result;
+}
+
+/**
+ * Reads a single value of type `T` from the frontmatter of a file, and falls
+ * back to `defaultValue` when the frontmatter does not carry it.
+ */
+export function getValueFromFrontmatter<T>(filePath: string, key: string, defaultValue: T): T {
+  const fileData = readMarkdownFile(filePath);
+
+  if (!fileData) {
     return defaultValue;
   }
+
+  // A key that is present is used even when its value is falsy, so that an
+  // `order: 0` or an `exclude: false` means what it says.
+  if (Object.hasOwn(fileData.data, key)) {
+    return fileData.data[key] as T;
+  }
+
+  // The frontmatter did not parse as YAML. Only the block itself is scanned:
+  // a `key: value` line below it is content of the page, such as an example of
+  // a frontmatter written inside a fenced code block, and describes nothing.
+  const lines = fileData.frontmatter.split('\n');
+  const keyPattern = new RegExp(`^${escapeRegExp(key)}: (.*)`);
+
+  for (let i = 0, len = lines.length; i < len; i += 1) {
+    const str = lines[i].replace('\r', '');
+
+    if (keyPattern.test(str)) {
+      try {
+        return JSON.parse(str.replace(`${key}: `, '')) as T;
+      } catch {
+        return defaultValue;
+      }
+    }
+  }
+
   return defaultValue;
 }
 
@@ -93,47 +204,7 @@ export function getDateFromFile(filePath: string, modifyDate = false): number {
  * it sorts by is one the generator knows nothing about.
  */
 export function getFrontmatterData(filePath: string): AnyValueObject {
-  try {
-    return matter(readFileSync(filePath, 'utf-8')).data ?? {};
-  } catch {
-    return {};
-  }
-}
-
-/** The line a frontmatter block opens and closes with. */
-const FRONTMATTER_DELIMITER = '---';
-
-/**
- * Returns the content of a Markdown file with its frontmatter block removed.
- *
- * A comment inside a frontmatter block starts with `#`, exactly like an `h1`
- * does, so the block has to be removed before the content is read for a
- * heading. It is located by its delimiters alone, the way `gray-matter` and
- * therefore VitePress locate it, instead of by parsing what it holds, so that
- * a block is removed even when its YAML is invalid.
- */
-function removeFrontmatter(fileData: string): string {
-  // A byte order mark sits before the opening delimiter and would hide it.
-  const data = fileData.charCodeAt(0) === 0xfeff ? fileData.slice(1) : fileData;
-
-  // There is no block unless the file opens with the delimiter, and a fourth
-  // dash makes that line a horizontal rule instead.
-  if (
-    !data.startsWith(FRONTMATTER_DELIMITER) ||
-    data.charAt(FRONTMATTER_DELIMITER.length) === '-'
-  ) {
-    return data;
-  }
-
-  const closeIndex = data.indexOf(`\n${FRONTMATTER_DELIMITER}`, FRONTMATTER_DELIMITER.length);
-
-  // A block that is never closed runs to the end of the file, which leaves no
-  // content to read a heading from.
-  if (closeIndex === -1) {
-    return '';
-  }
-
-  return data.slice(closeIndex + FRONTMATTER_DELIMITER.length + 1).replace(/^\r?\n/, '');
+  return readMarkdownFile(filePath)?.data ?? {};
 }
 
 export function getExcludeFromFrontmatter(
@@ -271,13 +342,11 @@ export function getTitleFromMd(
 
   if (options.useTitleFromFrontmatter) {
     // Use content frontmatter title value instead of file name
-    let value = getValueFromFrontmatter<string | undefined>(
-      filePath,
-      options.frontmatterTitleFieldName || 'title',
-      undefined
-    );
+    const fieldName = options.frontmatterTitleFieldName || 'title';
+    let value = getValueFromFrontmatter<string | undefined>(filePath, fieldName, undefined);
+
     // Try to use title front-matter as fallback
-    if (!value) {
+    if (!value && fieldName !== 'title') {
       value = getValueFromFrontmatter<string | undefined>(filePath, 'title', undefined);
     }
     if (value) {
@@ -288,32 +357,27 @@ export function getTitleFromMd(
 
   if (options.useTitleFromFileHeading) {
     // Use content 'h1' string instead of file name
-    try {
-      const data = removeFrontmatter(readFileSync(filePath, 'utf-8'));
-      const lines = data.split('\n');
+    const lines = readMarkdownFile(filePath)?.content.split('\n') ?? [];
 
-      for (let i = 0, len = lines.length; i < len; i += 1) {
-        let str = lines[i].toString().replace('\r', '');
+    for (let i = 0, len = lines.length; i < len; i += 1) {
+      let str = lines[i].replace('\r', '');
 
-        if (/^# /.test(str)) {
-          str = str.replace(/^# /, '');
+      if (/^# /.test(str)) {
+        str = str.replace(/^# /, '');
 
-          if (/\[(.*)]\(.*\)/.test(str)) {
-            // Remove hyperlink from h1 if exists
-            const execValue = /(.*)?\[(.*)]\((.*)\)(.*)?/.exec(str) || '';
+        if (/\[(.*)]\(.*\)/.test(str)) {
+          // Remove hyperlink from h1 if exists
+          const execValue = /(.*)?\[(.*)]\((.*)\)(.*)?/.exec(str) || '';
 
-            str =
-              execValue.length > 0
-                ? `${execValue[1] || ''}${execValue[2] || ''}${execValue[4] || ''}`
-                : '';
-          }
-
-          callbackTitleReceived?.();
-          return formatTitle(options, applyRouteParams(str), true);
+          str =
+            execValue.length > 0
+              ? `${execValue[1] || ''}${execValue[2] || ''}${execValue[4] || ''}`
+              : '';
         }
+
+        callbackTitleReceived?.();
+        return formatTitle(options, applyRouteParams(str), true);
       }
-    } catch {
-      // Do nothing
     }
   }
 

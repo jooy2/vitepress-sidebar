@@ -475,7 +475,7 @@ export default defineConfig(
 
 如果未指定选项或选项值未定义,则忽略该选项。
 
-例如,如果选项值为`exclude`,则菜单中不会显示内容包含`exclude: true`的文档。
+例如,如果选项值为`exclude`,则菜单中不会显示 frontmatter 中含有 `exclude: true` 的文档。该字段仅从 frontmatter 块中读取,因此写在页面正文中的 `exclude: true`(例如围栏代码块内)不会产生任何影响,该页面仍会显示在菜单中。
 
 ```markdown
 ---

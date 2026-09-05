@@ -475,7 +475,7 @@ Documents with the value of the specified frontmatter field name set to `true` a
 
 If no option is specified or the option value is undefined, it is ignored.
 
-For example, if the option value is `exclude`, documents whose content contains `exclude: true` are not displayed in the menu.
+For example, if the option value is `exclude`, documents whose frontmatter holds `exclude: true` are not displayed in the menu. The field is only read from the frontmatter block, so an `exclude: true` written in the content of a page, such as inside a fenced code block, describes nothing and keeps the page in the menu.
 
 ```markdown
 ---
