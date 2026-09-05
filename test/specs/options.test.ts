@@ -2,7 +2,7 @@ import assert from 'assert';
 import { describe, it } from 'node:test';
 import { generateSidebar } from '../../dist';
 import { stat, utimes } from 'node:fs/promises';
-import { chmodSync, mkdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, rmSync, statSync, symlinkSync, writeFileSync } from 'node:fs';
 import { setTimeout } from 'node:timers/promises';
 import { joinFilePath } from 'qsu/node';
 import { platform } from 'node:os';
@@ -2382,6 +2382,72 @@ describe('Test: APIs', () => {
           link: '/b'
         }
       ]
+    );
+  });
+
+  it('API: followSymlinks (a link that leads back into the scan)', () => {
+    // A directory symbolic link needs a privilege of its own on Windows, so
+    // this is only run where one can be made without asking for it.
+    if (platform() === 'win32') {
+      return;
+    }
+
+    const targetDir = `${TEST_DIR_BASE}/symlink-loop`;
+
+    rmSync(targetDir, { recursive: true, force: true });
+    mkdirSync(`${targetDir}/sub`, { recursive: true });
+    writeFileSync(`${targetDir}/a.md`, '# A\n');
+    writeFileSync(`${targetDir}/sub/b.md`, '# B\n');
+
+    try {
+      // Points at the directory that holds the directory it sits in, so
+      // following it walks into the scan that is already running.
+      symlinkSync('..', `${targetDir}/sub/loop`, 'dir');
+
+      assert.deepEqual(
+        generateSidebar({
+          documentRootPath: targetDir,
+          followSymlinks: true
+        }),
+        [
+          {
+            text: 'a',
+            link: '/a'
+          },
+          {
+            text: 'sub',
+            items: [
+              {
+                text: 'b',
+                link: '/sub/b'
+              }
+            ]
+          }
+        ]
+      );
+    } finally {
+      rmSync(targetDir, { recursive: true, force: true });
+    }
+  });
+
+  it('A path to scan that does not exist is reported by name', () => {
+    assert.throws(
+      () => generateSidebar({ documentRootPath: `${TEST_DIR_BASE}/no-such-folder` }),
+      (error: Error) =>
+        error.message.includes('The path to scan does not exist') &&
+        error.message.includes(`'documentRootPath'`) &&
+        !error.message.includes(`'scanStartPath'`)
+    );
+
+    assert.throws(
+      () =>
+        generateSidebar({
+          documentRootPath: `${TEST_DIR_BASE}/general`,
+          scanStartPath: 'no-such-folder'
+        }),
+      (error: Error) =>
+        error.message.includes('The path to scan does not exist') &&
+        error.message.includes(`'scanStartPath'`)
     );
   });
 

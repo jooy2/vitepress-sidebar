@@ -1,7 +1,7 @@
 import type { UserConfig } from 'vitepress';
 import { join, relative, resolve } from 'path';
 import { globSync } from 'glob';
-import { existsSync, readdirSync, statSync } from 'fs';
+import { existsSync, readdirSync, realpathSync, statSync } from 'fs';
 import { isTrueMinimumNumberOfTimes, objMergeNewKey } from 'qsu';
 import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
 import {
@@ -105,6 +105,18 @@ function isExcludedBySrcExclude(srcExclude: SrcExcludePaths | null, itemPath: st
   }
 
   return srcExclude.paths.has(toPosixPath(relative(srcExclude.rootDir, itemPath)));
+}
+
+/**
+ * The path a directory really is, with every symbolic link resolved, or `null`
+ * when it cannot be resolved at all.
+ */
+function toRealPath(dirPath: string): string | null {
+  try {
+    return realpathSync(dirPath);
+  } catch {
+    return null;
+  }
 }
 
 function applyManualSort(fileNames: string[], priority: string[]): string[] {
@@ -261,7 +273,8 @@ function generateDirectoryItem(
   options: VitePressSidebarOptions,
   rawOptions: VitePressSidebarOptions,
   routeNode: DynamicRouteNode | null,
-  srcExclude: SrcExcludePaths | null
+  srcExclude: SrcExcludePaths | null,
+  ancestorRealPaths: Set<string> | null
 ): SidebarListItem | null {
   // A `sidebar.config.json` inside the folder takes priority over the
   // inherited options, both for the folder itself and everything below it.
@@ -281,7 +294,8 @@ function generateDirectoryItem(
       childOptions,
       childRawOptions,
       routeNode,
-      srcExclude
+      srcExclude,
+      ancestorRealPaths
     ) || [];
 
   let isTitleReceivedFromFileContent = false;
@@ -435,7 +449,8 @@ function generateDynamicRouteItems(
   rawOptions: VitePressSidebarOptions,
   routeNode: DynamicRouteNode,
   filesByGlobPattern: string[],
-  srcExclude: SrcExcludePaths | null
+  srcExclude: SrcExcludePaths | null,
+  ancestorRealPaths: Set<string> | null
 ): SidebarListItem {
   // A child whose template segment holds no parameter stands for a real
   // directory, which the scan of this directory already covers.
@@ -500,7 +515,8 @@ function generateDynamicRouteItems(
         options,
         rawOptions,
         node,
-        srcExclude
+        srcExclude,
+        ancestorRealPaths
       );
     })
     .filter((x) => x !== null);
@@ -514,10 +530,29 @@ function generateSidebarItem(
   options: VitePressSidebarOptions,
   rawOptions: VitePressSidebarOptions,
   routeNode: DynamicRouteNode | null = null,
-  srcExclude: SrcExcludePaths | null = null
+  srcExclude: SrcExcludePaths | null = null,
+  ancestorRealPaths: Set<string> | null = null
 ): SidebarListItem {
   if (typeof options.excludeByFolderDepth === 'number' && options.excludeByFolderDepth <= depth) {
     return [];
+  }
+
+  // Following a symbolic link can lead back to a directory that is already
+  // being scanned, and a scan that walks into itself never ends. The real path
+  // of every directory on the way here is remembered, so a link that closes
+  // the circle is left out instead of being followed once more.
+  let visitedRealPaths = ancestorRealPaths;
+
+  if (options.followSymlinks) {
+    const realPath = toRealPath(currentDir);
+
+    if (realPath) {
+      if (ancestorRealPaths?.has(realPath)) {
+        return [];
+      }
+
+      visitedRealPaths = new Set(ancestorRealPaths).add(realPath);
+    }
   }
 
   const filesByGlobPattern: string[] = globSync('**', {
@@ -584,7 +619,18 @@ function generateSidebarItem(
         return null;
       }
 
-      if (statSync(childItemPath).isDirectory()) {
+      // A symbolic link pointing at nothing, or a file removed while the scan
+      // was running, has nothing to put in the sidebar and is not a reason to
+      // fail the whole build.
+      let childItemStats;
+
+      try {
+        childItemStats = statSync(childItemPath);
+      } catch {
+        return null;
+      }
+
+      if (childItemStats.isDirectory()) {
         return generateDirectoryItem(
           depth,
           x,
@@ -593,7 +639,8 @@ function generateSidebarItem(
           options,
           rawOptions,
           routeNode?.children.get(x) ?? null,
-          srcExclude
+          srcExclude,
+          visitedRealPaths
         );
       }
 
@@ -616,7 +663,8 @@ function generateSidebarItem(
         rawOptions,
         routeNode,
         filesByGlobPattern,
-        srcExclude
+        srcExclude,
+        visitedRealPaths
       )
     );
   }
@@ -912,9 +960,23 @@ function buildSidebar(
       }
     }
 
+    const scanDir = join(cwd, scanPath);
+
+    // Every path is resolved from the current working directory, which is the
+    // one thing a mistyped `documentRootPath` never mentions. Without this the
+    // build stops at a bare `ENOENT: scandir`, naming neither the option that
+    // is wrong nor what it was resolved against.
+    if (!existsSync(scanDir)) {
+      throw new Error(
+        `The path to scan does not exist: '${scanDir}'. It is built from 'documentRootPath'` +
+          `${resolvedOptionItem.scanStartPath ? ` and 'scanStartPath'` : ''}, resolved from the ` +
+          `current working directory ('${cwd}').`
+      );
+    }
+
     let sidebarResult: SidebarListItem = generateSidebarItem(
       1,
-      join(cwd, scanPath),
+      scanDir,
       scanPath,
       null,
       resolvedOptionItem,

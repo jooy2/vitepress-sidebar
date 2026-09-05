@@ -67,6 +67,7 @@ docs-dist/
 test/resources/create-date/
 test/resources/special-char-path/skip-dirs/
 test/resources/scan-order/
+test/resources/symlink-loop/
 
 # VitePress files
 docs/.vitepress/.temp
