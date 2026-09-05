@@ -352,6 +352,12 @@ export function formatTitle(
   return text;
 }
 
+/**
+ * Matches the line that opens or closes a fenced code block, indented by the
+ * three spaces Markdown still reads as one.
+ */
+const FENCE_REGEX = /^ {0,3}(`{3,}|~{3,})/;
+
 export function getTitleFromMd(
   fileName: string,
   filePath: string,
@@ -387,9 +393,30 @@ export function getTitleFromMd(
   if (options.useTitleFromFileHeading) {
     // Use content 'h1' string instead of file name
     const lines = readMarkdownFile(filePath)?.content.split('\n') ?? [];
+    let openFence: string | null = null;
 
     for (let i = 0, len = lines.length; i < len; i += 1) {
       let str = lines[i].replace('\r', '');
+      const fence = FENCE_REGEX.exec(str)?.[1];
+
+      // A `#` inside a fenced code block belongs to the code, most often as
+      // the comment of a shell snippet, and is not a heading of the page. A
+      // block is only closed by a fence of the same character and at least the
+      // same length, so a block written with one kind of fence, or with a
+      // longer one, may hold another block inside it.
+      if (fence) {
+        if (openFence === null) {
+          openFence = fence;
+        } else if (fence.charAt(0) === openFence.charAt(0) && fence.length >= openFence.length) {
+          openFence = null;
+        }
+
+        continue;
+      }
+
+      if (openFence !== null) {
+        continue;
+      }
 
       if (/^# /.test(str)) {
         str = str.replace(/^# /, '');

@@ -112,6 +112,37 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('API: useTitleFromFileHeading (ignores a heading inside a fenced code block)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/heading-in-code-block`,
+        useTitleFromFileHeading: true
+      }),
+      [
+        // The `#` of a shell comment comes before the heading of the page
+        {
+          text: 'Real Heading A',
+          link: '/a'
+        },
+        // Fenced with tildes
+        {
+          text: 'Real Heading B',
+          link: '/b'
+        },
+        // A block that holds a shorter fence of its own
+        {
+          text: 'Real Heading C',
+          link: '/c'
+        },
+        // Holds nothing but a code block, so the file name is used
+        {
+          text: 'd',
+          link: '/d'
+        }
+      ]
+    );
+  });
+
   it('A frontmatter field is only read from the frontmatter block (order)', () => {
     assert.deepEqual(
       generateSidebar({

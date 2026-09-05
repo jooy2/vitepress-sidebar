@@ -146,7 +146,9 @@ If the value is `true`, when scanning a directories, include any directories or 
 - Type: `boolean`
 - Default: `false`
 
-If the value is `true`, display the title with the `h1` heading content of the `.md` file. If the file does not contain an `h1` heading, it will be replaced with the file name as before. The `Frontmatter` block is not read for a heading, so a comment written inside it is not used as the title.
+If the value is `true`, display the title with the `h1` heading content of the `.md` file. If the file does not contain an `h1` heading, it will be replaced with the file name as before. The `Frontmatter` block is not read for a heading, so a comment written inside it is not used as the title, and neither is a `#` inside a fenced code block, such as the comment of a shell snippet.
+
+The heading has to be written as `# Title`. A heading underlined with `===` is not read, and the file name is used instead.
 
 The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
 
