@@ -1,5 +1,6 @@
 import assert from 'assert';
 import { describe, it } from 'node:test';
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { generateSidebar, withSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
@@ -458,6 +459,118 @@ describe('Test: base test', () => {
         }
       ]
     );
+  });
+
+  it('A path that holds a regular expression character is stripped from the link', () => {
+    assert.deepStrictEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/special-char-path/docs (v2)`
+      }),
+      [
+        {
+          text: 'a',
+          link: '/a'
+        },
+        {
+          text: 'inner',
+          items: [
+            {
+              text: 'b',
+              link: '/inner/b'
+            }
+          ]
+        }
+      ]
+    );
+  });
+
+  it('A `scanStartPath` that holds a regular expression character is stripped from the link', () => {
+    const expected = [
+      {
+        text: 'a',
+        link: 'a'
+      },
+      {
+        text: 'inner',
+        items: [
+          {
+            text: 'b',
+            link: 'inner/b'
+          }
+        ]
+      }
+    ];
+
+    assert.deepStrictEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/special-char-path`,
+        scanStartPath: 'docs (v2)'
+      }),
+      expected
+    );
+
+    // A surrounding slash describes the same path
+    assert.deepStrictEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/special-char-path`,
+        scanStartPath: '/docs (v2)/'
+      }),
+      expected
+    );
+  });
+
+  it('A folder is only skipped when it is named `node_modules` or `.vitepress`', () => {
+    assert.deepStrictEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/special-char-path/node_modules-notes`
+      }),
+      [
+        {
+          text: 'c',
+          link: '/c'
+        }
+      ]
+    );
+
+    assert.deepStrictEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/special-char-path/a.vitepress-notes`
+      }),
+      [
+        {
+          text: 'd',
+          link: '/d'
+        }
+      ]
+    );
+
+    // A folder that really is called `node_modules` or `.vitepress` is still
+    // skipped. Neither can be committed as a fixture, so both are created here.
+    const skipDirBase = `${TEST_DIR_BASE}/special-char-path/skip-dirs`;
+
+    try {
+      for (const name of ['node_modules', '.vitepress']) {
+        mkdirSync(`${skipDirBase}/${name}`, { recursive: true });
+        writeFileSync(`${skipDirBase}/${name}/skipped.md`, '# Skipped\n');
+      }
+
+      writeFileSync(`${skipDirBase}/kept.md`, '# Kept\n');
+
+      assert.deepStrictEqual(
+        generateSidebar({
+          documentRootPath: skipDirBase,
+          includeDotFiles: true
+        }),
+        [
+          {
+            text: 'kept',
+            link: '/kept'
+          }
+        ]
+      );
+    } finally {
+      rmSync(skipDirBase, { recursive: true, force: true });
+    }
   });
 
   it('`index.md` file must be used correctly according to the situation.', () => {

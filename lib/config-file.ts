@@ -453,6 +453,12 @@ export function normalizeOptions(options: VitePressSidebarOptions): VitePressSid
     result.documentRootPath = `/${result.documentRootPath}`;
   }
 
+  // Held without surrounding slashes, because it is both joined below
+  // `documentRootPath` and stripped from the front of a link.
+  if (result.scanStartPath) {
+    result.scanStartPath = result.scanStartPath.replace(/^\/+/, '').replace(/\/+$/, '');
+  }
+
   if (result.collapseDepth) {
     result.collapsed = true;
   }

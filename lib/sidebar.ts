@@ -128,7 +128,7 @@ function resolveDisplayPath(
   depth: number,
   options: VitePressSidebarOptions
 ): string {
-  let itemPathDisplay = `${displayDir}/${itemName}`.replace(/\/{2}/, '/');
+  let itemPathDisplay = `${displayDir}/${itemName}`.replace(/\/{2,}/g, '/');
 
   if (itemPathDisplay.endsWith('/index.md')) {
     itemPathDisplay = itemPathDisplay.replace('index.md', '');
@@ -137,18 +137,18 @@ function resolveDisplayPath(
   }
 
   if (options.documentRootPath && itemPathDisplay.startsWith(options.documentRootPath)) {
+    // A path is stripped as the text it is, and never as a regular expression:
+    // a `.`, a `(` or a `+` in a folder name would otherwise match something
+    // else, or nothing at all, and leave the path in the link.
     if (depth === 1) {
-      itemPathDisplay = itemPathDisplay.replace(
-        new RegExp(`^${options.documentRootPath}`, 'g'),
-        ''
-      );
+      itemPathDisplay = itemPathDisplay.slice(options.documentRootPath.length);
     }
 
     if (options.scanStartPath || options.resolvePath) {
       itemPathDisplay = itemPathDisplay.replace(/^\//g, '');
 
-      if (options.scanStartPath) {
-        itemPathDisplay = itemPathDisplay.replace(new RegExp(`^${options.scanStartPath}`, 'g'), '');
+      if (options.scanStartPath && itemPathDisplay.startsWith(options.scanStartPath)) {
+        itemPathDisplay = itemPathDisplay.slice(options.scanStartPath.length);
       }
 
       itemPathDisplay = itemPathDisplay.replace(/^\/(?!$)/g, '');
@@ -532,11 +532,10 @@ function generateSidebarItem(
       const childItemPath = resolve(currentDir, x);
       const childItemPathDisplay = resolveDisplayPath(displayDir, x, depth, options);
 
-      if (/\.vitepress/.test(childItemPath)) {
-        return null;
-      }
-
-      if (/node_modules/.test(childItemPath)) {
+      // Matched against the name of the entry rather than against the whole
+      // path, so that a project whose own location holds one of these names
+      // ("~/my-node_modules-docs") is scanned like any other.
+      if (x === '.vitepress' || x === 'node_modules') {
         return null;
       }
 
@@ -849,7 +848,7 @@ function buildSidebar(
     if (resolvedOptionItem.scanStartPath) {
       scanPath = `${resolvedOptionItem.documentRootPath}/${resolvedOptionItem.scanStartPath}`
         .replace(/\/{2,}/g, '/')
-        .replace('/$', '');
+        .replace(/\/$/, '');
     }
 
     const documentRootDir = join(cwd, resolvedOptionItem.documentRootPath!);
