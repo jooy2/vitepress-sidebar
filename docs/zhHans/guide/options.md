@@ -273,7 +273,7 @@ name: This is frontmatter title value.
 - Type: `boolean`
 - Default: `false`
 
-如果此值为 `true`，则按降序排列菜单项中的项目。只有当 `sortMenusByName` 或 `sortMenusByFrontmatterOrder` 为 `true`时，才会启用此选项。
+如果此值为 `true`，则按降序排列菜单项。它会反转当前所用的任何排序选项的结果，单独使用时不产生任何效果。`sortMenusByCustomFunction` 是例外：它自行决定顺序，因此请在函数内部按所需方向排序。
 
 ## `sortMenusOrderNumericallyFromTitle`
 
@@ -393,7 +393,9 @@ export default defineConfig(
 - Type: `number`
 - Default: `1`
 
-在指定的深度，菜单组会折叠。指定该选项后，组的折叠/展开将自动启用。顶层文件夹的深度为 `1`。
+在指定的深度，菜单组会折叠。顶层文件夹的深度为 `1`。
+
+指定该选项会自动启用组的折叠/展开，这也意味着它会覆盖设置为 `false` 的 `collapsed`。若希望所有组都保持展开，请不要设置 `collapseDepth`。
 
 ## `collapseFromLevel`
 
@@ -441,7 +443,7 @@ export default defineConfig(
 
 [glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) 根据文件模式字符串数组排除文件或文件夹。
 
-例如，该值可能如下所示`['abc/', 'def.md', 'ghi/file-**']`这将分别排除所有路径中的`abc`目录和子目录、`def.md`文件以及`ghi`路径中以`file-`开头的文件，这些文件和文件夹将被排除在菜单之外。
+例如，该值可能如下所示 `['abc/', 'def.md', 'file-**']`，这将分别排除 `abc` 目录及其子目录、`def.md` 文件，以及名称以 `file-` 开头的所有文件，无论它们位于哪个路径下。
 
 每个模式都会针对扫描的每个文件夹单独匹配，因此像 `abc/def/**` 这样表示从文档根目录开始的路径的模式不会匹配任何内容。对于这类路径，请使用 VitePress 的 [`srcExclude`](#vitepress-srcexclude)。
 

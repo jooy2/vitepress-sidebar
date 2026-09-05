@@ -66,7 +66,7 @@ docs/
 
 The `guide` folder is collapsed and sorted by name, while the `api` folder is expanded, sorted in reverse and hides its `internal` directory. Every option that `docs/api/sidebar.config.json` does not declare is inherited from `docs/sidebar.config.json`.
 
-Note that paths in `excludeByGlobPattern` are relative to the folder that owns the configuration file, not to `documentRootPath`.
+Note that an `excludeByGlobPattern` pattern is matched against every folder the configuration file applies to, and not against a path from `documentRootPath` or from the folder that owns the file. `"internal/"` therefore leaves out an `internal` folder anywhere below `api`, and not only the one directly inside it. See [`excludeByGlobPattern`](/guide/options#excludebyglobpattern) for what a pattern can and cannot describe.
 
 ## Describing the folder itself
 

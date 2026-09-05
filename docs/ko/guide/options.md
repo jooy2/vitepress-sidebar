@@ -273,7 +273,7 @@ Frontmatter의 `date` 속성을 기준으로 메뉴 항목을 정렬합니다. �
 - Type: `boolean`
 - Default: `false`
 
-이 값이 `true`이면 메뉴 항목의 항목을 내림차순으로 정렬합니다. 이 옵션은 `sortMenusByName` 또는 `sortMenusByFrontmatterOrder`가 `true`인 경우에만 활성화됩니다.
+이 값이 `true`이면 메뉴 항목을 내림차순으로 정렬합니다. 사용 중인 정렬 옵션이 무엇이든 그 결과를 뒤집으며, 단독으로는 아무 일도 하지 않습니다. `sortMenusByCustomFunction`만 예외로, 이 옵션은 순서를 스스로 결정하므로 원하는 방향으로 함수 안에서 직접 정렬하세요.
 
 ## `sortMenusOrderNumericallyFromTitle`
 
@@ -393,7 +393,9 @@ export default defineConfig(
 - Type: `number`
 - Default: `1`
 
-지정된 깊이에서 메뉴 그룹이 축소됩니다. 이 옵션을 지정하면 그룹 축소/확장이 자동으로 활성화됩니다. 최상위 폴더의 깊이는 `1`입니다.
+지정된 깊이에서 메뉴 그룹이 축소됩니다. 최상위 폴더의 깊이는 `1`입니다.
+
+이 옵션을 지정하면 그룹 축소/확장이 자동으로 활성화되며, 이는 `collapsed`를 `false`로 지정하더라도 무시된다는 의미이기도 합니다. 모든 그룹을 펼친 상태로 두려면 `collapseDepth`를 지정하지 마세요.
 
 ## `collapseFromLevel`
 
@@ -441,7 +443,7 @@ export default defineConfig(
 
 [glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) 파일 패턴 문자열로 구성된 배열에 따라 파일이나 폴더를 제외합니다.
 
-예를 들어 값은 다음과 같을 수 있습니다: `['abc/', 'def.md', 'ghi/file-**']` 이는 각각 모든 경로에 포함된 `abc` 디렉토리와 하위 항목, `def.md` 파일, `ghi` 경로에 있는 `file-`로 시작하는 파일이 해당되며 이 파일과 폴더들은 메뉴에서 제외됩니다.
+예를 들어 값은 다음과 같을 수 있습니다: `['abc/', 'def.md', 'file-**']` 이는 각각 `abc` 디렉토리와 그 하위 항목, `def.md` 파일, 이름이 `file-`로 시작하는 모든 파일에 해당하며, 어느 경로에 있든 메뉴에서 제외됩니다.
 
 각 패턴은 스캔하는 모든 폴더를 기준으로 개별 비교되므로, `abc/def/**`와 같이 문서 루트로부터의 경로를 나타내는 패턴은 아무것도 제외하지 못합니다. 이러한 경로에는 VitePress의 [`srcExclude`](#vitepress-srcexclude)를 사용하세요.
 

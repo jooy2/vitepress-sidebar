@@ -66,7 +66,7 @@ docs/
 
 `guide` 폴더는 접힌 상태로 이름순 정렬되고, `api` 폴더는 펼쳐진 상태로 역순 정렬되며 `internal` 디렉토리를 숨깁니다. `docs/api/sidebar.config.json`에 선언되지 않은 옵션은 모두 `docs/sidebar.config.json`에서 상속됩니다.
 
-`excludeByGlobPattern`의 경로는 `documentRootPath`가 아니라 해당 설정 파일이 있는 폴더를 기준으로 합니다.
+`excludeByGlobPattern` 패턴은 `documentRootPath`나 설정 파일이 있는 폴더로부터의 경로가 아니라, 해당 설정 파일이 적용되는 모든 폴더를 대상으로 각각 비교됩니다. 따라서 `"internal/"`은 `api` 바로 아래의 `internal` 폴더뿐 아니라 그 하위 어디에 있든 모든 `internal` 폴더를 제외합니다. 패턴으로 표현할 수 있는 것과 없는 것은 [`excludeByGlobPattern`](/ko/guide/options#excludebyglobpattern) 문서를 참고하세요.
 
 ## 폴더 자신을 정의하기
 

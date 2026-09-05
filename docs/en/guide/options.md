@@ -273,7 +273,7 @@ Sorts the menu items by the `date` property of the frontmatter. It also sorts th
 - Type: `boolean`
 - Default: `false`
 
-If this value is `true`, sorts the items in the menu item in descending order. This option is only enabled when `sortMenusByName` or `sortMenusByFrontmatterOrder` is `true`.
+If this value is `true`, sorts the items in the menu item in descending order. It reverses whichever sorting option is in use, and does nothing on its own. `sortMenusByCustomFunction` is the exception: it decides an order by itself, so sort in the direction you want inside the function instead.
 
 ## `sortMenusOrderNumericallyFromTitle`
 
@@ -393,7 +393,9 @@ If the `collapsed` option is not specified(`null` or `undefined`), group collaps
 - Type: `number`
 - Default: `1`
 
-At the specified depth, the menu group is made collapsed. When this option is specified, group collapsing/expanding is automatically enabled. The depth of the top-level folder is `1`.
+At the specified depth, the menu group is made collapsed. The depth of the top-level folder is `1`.
+
+Specifying this option turns group collapsing on by itself, which also means it overrules a `collapsed` of `false`. Leave `collapseDepth` unset if you want every group expanded.
 
 ## `collapseFromLevel`
 
@@ -441,7 +443,7 @@ For example, `abc def ghi` and `abc-def ghi` change to `Abc Def Ghi` and `Abc-De
 
 [glob](<https://en.wikipedia.org/wiki/Glob_(programming)>) Exclude files or folders based on an array of file pattern strings.
 
-For example, the value might look like this: `['abc/', 'def.md', 'ghi/file-**']` This would exclude the `abc` directory and subdirectories in all paths, the `def.md` file, and files starting with `file-` in the `ghi` path, respectively, and these files and folders would be excluded from the menu.
+For example, the value might look like this: `['abc/', 'def.md', 'file-**']` This would exclude the `abc` directory and its subdirectories, the `def.md` file, and every file whose name starts with `file-`, wherever any of them is found.
 
 Each pattern is matched against every folder that is scanned, so a pattern that describes a path from the document root, such as `abc/def/**`, does not match anything. Use the [`srcExclude`](#vitepress-srcexclude) of VitePress for such a path.
 

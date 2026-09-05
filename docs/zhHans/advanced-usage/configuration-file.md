@@ -66,7 +66,7 @@ docs/
 
 `guide` 文件夹处于折叠状态并按名称排序，而 `api` 文件夹处于展开状态、按倒序排序并隐藏其 `internal` 目录。`docs/api/sidebar.config.json` 中未声明的选项都会从 `docs/sidebar.config.json` 继承。
 
-请注意，`excludeByGlobPattern` 中的路径是相对于拥有该配置文件的文件夹，而不是 `documentRootPath`。
+请注意，`excludeByGlobPattern` 模式会针对该配置文件所适用的每个文件夹分别匹配，而不是匹配相对于 `documentRootPath` 或配置文件所在文件夹的路径。因此 `"internal/"` 会排除 `api` 下任意层级中的 `internal` 文件夹，而不仅仅是直接位于其中的那一个。关于模式能够和不能够表达的内容，请参阅 [`excludeByGlobPattern`](/zhHans/guide/options#excludebyglobpattern)。
 
 ## 描述文件夹自身
 
