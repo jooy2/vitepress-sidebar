@@ -256,15 +256,26 @@ export function formatTitle(
 
   // Ignore prefix string before format title
   if (options.removePrefixAfterOrdering && options.prefixSeparator) {
-    const textSplit = title.split(options.prefixSeparator);
+    if (options.prefixSeparator instanceof RegExp) {
+      // A regular expression removes what it matches, so only that is set
+      // aside, and only when it opens the title: where a match found further
+      // in would go back is no longer known once the formatting has changed
+      // the text around it.
+      const matched = title.match(options.prefixSeparator)?.at(0);
 
-    if (textSplit.length > 1) {
-      prefixString =
-        options.prefixSeparator instanceof RegExp
-          ? (title.match(options.prefixSeparator)?.at(0) ?? '')
-          : (textSplit.shift() ?? '');
+      if (matched && title.startsWith(matched)) {
+        prefixString = matched;
+      }
+    } else {
+      const textSplit = title.split(options.prefixSeparator);
 
-      textWithoutPrefix = text.replace(prefixString, '');
+      if (textSplit.length > 1) {
+        prefixString = textSplit.shift() ?? '';
+      }
+    }
+
+    if (prefixString) {
+      textWithoutPrefix = title.slice(prefixString.length);
     }
   }
 
@@ -560,34 +571,53 @@ export function deepDeleteKey(obj: SidebarListItem, key: string): void {
   });
 }
 
+/**
+ * Removes the prefix of every menu title, once the items have been ordered by
+ * it. Only a title is changed, never a link, which keeps pointing at the file
+ * it was read from.
+ *
+ * A separator written as text removes everything up to and including the first
+ * one, while a regular expression removes what it matches, which is what makes
+ * a prefix holding the separator itself, such as a date, expressible.
+ */
 export function removePrefixFromTitleAndLink(
   sidebarList: SidebarListItem,
   options: VitePressSidebarOptions
 ): SidebarListItem {
-  const sidebarListLength = sidebarList.length;
+  const { prefixSeparator } = options;
 
-  for (let i = 0; i < sidebarListLength; i += 1) {
-    const obj = sidebarList[i];
+  if (!prefixSeparator) {
+    return sidebarList;
+  }
 
-    for (let j = 0; j < Object.keys(obj).length; j += 1) {
-      const key = Object.keys(obj)[j];
+  // Matched once, because what is removed is the prefix and not every value
+  // that looks like one further along the title.
+  const prefixPattern =
+    prefixSeparator instanceof RegExp
+      ? new RegExp(prefixSeparator.source, prefixSeparator.flags.replace(/g/g, ''))
+      : null;
 
-      if (key === 'text') {
-        if (!(
-          !(options.prefixSeparator instanceof RegExp) &&
-          obj[key].indexOf(options.prefixSeparator) === -1
-        )) {
-          const splitItem = obj[key].split(options.prefixSeparator);
+  for (let i = 0, len = sidebarList.length; i < len; i += 1) {
+    const item = sidebarList[i];
 
-          if (splitItem.length > 1) {
-            splitItem.shift();
-          }
+    if (typeof item.text === 'string') {
+      if (prefixPattern) {
+        item.text = item.text.replace(prefixPattern, '');
+      } else {
+        const splitItem = item.text.split(prefixSeparator);
 
-          obj[key] = splitItem.join(options.prefixSeparator);
+        if (splitItem.length > 1) {
+          splitItem.shift();
+
+          // Joined with the separator as text. A regular expression would be
+          // turned into its own source here and printed inside the title.
+          item.text = splitItem.join(prefixSeparator);
         }
-      } else if (key === 'items') {
-        obj[key] = removePrefixFromTitleAndLink(obj[key], options);
       }
+    }
+
+    if (item.items) {
+      item.items = removePrefixFromTitleAndLink(item.items, options);
     }
   }
 

@@ -846,6 +846,156 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('API: removePrefixAfterOrdering (takes the default `prefixSeparator`)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
+        removePrefixAfterOrdering: true
+      }),
+      [
+        {
+          text: '1-1-1-one-file',
+          link: '/1-1-1-one-file'
+        },
+        {
+          text: '1-folder',
+          items: [
+            {
+              text: '11-file',
+              link: '/1-folder/11-file'
+            }
+          ]
+        },
+        {
+          text: '1-one-file',
+          link: '/1-one-file'
+        },
+        {
+          text: '1-three-file',
+          link: '/1-three-file'
+        },
+        // The only name holding the default separator, so the only one changed
+        {
+          text: '1.1-four-file',
+          link: '/1.1.1-four-file'
+        },
+        {
+          text: '2-two-file',
+          link: '/2-two-file'
+        }
+      ]
+    );
+  });
+
+  it('API: removePrefixAfterOrdering (an empty `prefixSeparator` is an error)', () => {
+    assert.throws(
+      () =>
+        generateSidebar({
+          documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
+          removePrefixAfterOrdering: true,
+          prefixSeparator: ''
+        }),
+      { message: `'prefixSeparator' should not use empty string` }
+    );
+  });
+
+  it('API: prefixSeparator (as a regular expression)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
+        removePrefixAfterOrdering: true,
+        // Matches the whole prefix, which is what a regular expression is for
+        prefixSeparator: /^[0-9]+[-.]/
+      }),
+      [
+        {
+          text: '1-1-one-file',
+          link: '/1-1-1-one-file'
+        },
+        {
+          text: 'folder',
+          items: [
+            {
+              text: 'file',
+              link: '/1-folder/11-file'
+            }
+          ]
+        },
+        {
+          text: 'one-file',
+          link: '/1-one-file'
+        },
+        {
+          text: 'three-file',
+          link: '/1-three-file'
+        },
+        {
+          text: '1.1-four-file',
+          link: '/1.1.1-four-file'
+        },
+        {
+          text: 'two-file',
+          link: '/2-two-file'
+        }
+      ]
+    );
+  });
+
+  it('API: prefixSeparator (a regular expression is never printed in the title)', () => {
+    // A title holding the separator more than once used to be re-joined with
+    // the regular expression itself, which put its source inside the title.
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
+        removePrefixAfterOrdering: true,
+        prefixSeparator: /\./
+      }).map((item: { text: string }) => item.text),
+      [
+        '1-1-1-one-file',
+        '1-folder',
+        '1-one-file',
+        '1-three-file',
+        // Only the first match is removed
+        '11.1-four-file',
+        '2-two-file'
+      ]
+    );
+  });
+
+  it('API: prefixSeparator (a regular expression that matches a date)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/date-prefix-unordered`,
+        useTitleFromFrontmatter: true,
+        sortMenusByFileDatePrefix: true,
+        removePrefixAfterOrdering: true,
+        prefixSeparator: /[0-9]{4}-[0-9]{2}-[0-9]{2}[-. ]/g
+      }),
+      [
+        {
+          text: 'No Date Prefix',
+          link: '/e'
+        },
+        {
+          text: 'December',
+          link: '/c'
+        },
+        {
+          text: 'January',
+          link: '/b'
+        },
+        {
+          text: 'February',
+          link: '/d'
+        },
+        {
+          text: 'March',
+          link: '/a'
+        }
+      ]
+    );
+  });
+
   it('API: sortMenusByName (A)', () => {
     assert.deepEqual(
       generateSidebar({

@@ -635,7 +635,9 @@ This option can only be used in conjunction with the `removePrefixAfterOrdering`
 
 Removes the first part of a specified number of characters (at least one) from the extracted menu text. For example, if the menu name is `1. Text`, and you set the `prefixSeparator` value to `. `, the result will be just `Text`.
 
-You can also use regular expressions. Values matching the regular expression are removed. For example, to remove the date before the string in `2024-01-01-hello`, specify the `prefixSeparator` value as `/[0-9]{4}-[0-9]{2}-[0-9]{2}-/g`. The result is `hello`.
+You can also use regular expressions. The first value matching the regular expression is removed, so write one that matches the whole prefix, separator included. For example, to remove the date before the string in `2024-01-01-hello`, specify the `prefixSeparator` value as `/[0-9]{4}-[0-9]{2}-[0-9]{2}-/g`. The result is `hello`.
+
+This is the way to remove a prefix that holds the separator itself, which the text form cannot express: `/^[0-9]+\./` turns `1.1.hello` into `1.hello`, while `.` alone would too, but `/^[0-9]+\.[0-9]+\./` turns it into `hello`.
 
 ## `rootGroupText`
 

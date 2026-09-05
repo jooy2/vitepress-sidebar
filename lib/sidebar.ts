@@ -815,7 +815,14 @@ function buildSidebar(
         generateNotTogetherMessage(['sortMenusByFrontmatterOrder', 'sortMenusByFrontmatterDate'])
       );
     }
-    if (optionItem.removePrefixAfterOrdering && !optionItem.prefixSeparator) {
+    // An omitted `prefixSeparator` takes its default, so only a value that was
+    // written down and is empty is an error. The check runs before the defaults
+    // are applied, which is what told the two apart.
+    if (
+      optionItem.removePrefixAfterOrdering &&
+      optionItem.prefixSeparator !== undefined &&
+      !optionItem.prefixSeparator
+    ) {
       throw new Error(`'prefixSeparator' should not use empty string`);
     }
     if (optionItem.sortMenusByCustomFunction) {
