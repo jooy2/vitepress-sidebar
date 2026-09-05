@@ -2,6 +2,8 @@ import assert from 'assert';
 import { describe, it } from 'node:test';
 import { generateSidebar } from '../../dist';
 import { stat, utimes } from 'node:fs/promises';
+import { chmodSync, mkdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { setTimeout } from 'node:timers/promises';
 import { joinFilePath } from 'qsu/node';
 import { platform } from 'node:os';
 
@@ -1383,32 +1385,79 @@ describe('Test: APIs', () => {
   });
 
   it('API: sortMenusByFileCreateDate', async () => {
-    const targetDir = `${TEST_DIR_BASE}/modify-date`;
+    // The creation time of a file cannot be set, so the files are written here
+    // in a known order. Their names run the other way, so an order that is only
+    // the one the directory was read in cannot pass.
+    const targetDir = `${TEST_DIR_BASE}/create-date`;
+    const createOrder = ['ddd.md', 'ccc.md', 'bbb.md', 'aaa.md'];
 
-    assert.deepEqual(
-      generateSidebar({
-        documentRootPath: targetDir,
-        sortMenusByFileCreateDate: true
-      }),
-      [
-        {
-          text: 'aaa',
-          link: '/aaa'
-        },
-        {
-          text: 'bbb',
-          link: '/bbb'
-        },
-        {
-          text: 'ccc',
-          link: '/ccc'
-        },
-        {
-          text: 'ddd',
-          link: '/ddd'
-        }
-      ]
-    );
+    rmSync(targetDir, { recursive: true, force: true });
+    mkdirSync(targetDir, { recursive: true });
+
+    try {
+      for (const fileName of createOrder) {
+        writeFileSync(`${targetDir}/${fileName}`, `# ${fileName}\n`);
+
+        await setTimeout(20);
+      }
+
+      assert.deepEqual(
+        generateSidebar({
+          documentRootPath: targetDir,
+          sortMenusByFileCreateDate: true
+        }),
+        [
+          {
+            text: 'ddd',
+            link: '/ddd'
+          },
+          {
+            text: 'ccc',
+            link: '/ccc'
+          },
+          {
+            text: 'bbb',
+            link: '/bbb'
+          },
+          {
+            text: 'aaa',
+            link: '/aaa'
+          }
+        ]
+      );
+
+      assert.deepEqual(
+        generateSidebar({
+          documentRootPath: targetDir,
+          sortMenusByFileCreateDate: true,
+          sortMenusOrderByDescending: true
+        }).map((item: { text: string }) => item.text),
+        ['aaa', 'bbb', 'ccc', 'ddd']
+      );
+
+      // Changing the metadata of a file moves its `ctime` but not the time it
+      // was created, so the order must stay the same.
+      chmodSync(`${targetDir}/ddd.md`, 0o600);
+
+      const fileStats = statSync(`${targetDir}/ddd.md`);
+
+      // Only meaningful on a file system that records a creation time, and
+      // only `chmod` actually changes anything
+      if (
+        fileStats.birthtime.getTime() > 0 &&
+        fileStats.birthtime.getTime() !== fileStats.ctime.getTime()
+      ) {
+        assert.deepEqual(
+          generateSidebar({
+            documentRootPath: targetDir,
+            sortMenusByFileCreateDate: true
+          }).map((item: { text: string }) => item.text),
+          ['ddd', 'ccc', 'bbb', 'aaa']
+        );
+      }
+    } finally {
+      rmSync(targetDir, { recursive: true, force: true });
+    }
   });
 
   it('API: sortMenusByFileModifyDate', async () => {

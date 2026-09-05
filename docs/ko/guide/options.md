@@ -246,6 +246,8 @@ Frontmatter의 `order` 속성을 기준으로 메뉴 항목을 정렬합니다. 
 
 파일의 생성 날짜 속성을 기준으로 메뉴 항목을 정렬합니다. (`sortMenusOrderByDescending` 옵션이 `true`인 경우 내림차순).
 
+생성 날짜는 문서가 아니라 파일 시스템이 기록하므로, **사이트를 빌드하는 머신에서** 해당 파일이 만들어진 시각입니다. 클론이나 체크아웃은 모든 파일을 새로 기록하므로 모든 날짜가 그 체크아웃 시각이 됩니다. 따라서 이 옵션은 파일을 실제로 작성한 작업 사본에서 빌드할 때에만 문서의 순서를 나타냅니다. 문서와 함께 이동하는 날짜가 필요하다면 [`sortMenusByFrontmatterDate`](#sortmenusbyfrontmatterdate)나 [`sortMenusByCustomFunction`](#sortmenusbycustomfunction)을 사용하세요.
+
 ## `sortMenusByFileModifyDate`
 
 - Type: `boolean`

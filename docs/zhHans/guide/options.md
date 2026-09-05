@@ -246,6 +246,8 @@ name: This is frontmatter title value.
 
 根据文件的创建日期属性对菜单项进行排序。 (如果`sortMenusOrderByDescending`为`true`,则按日期降序).
 
+创建日期由文件系统记录，而不是由文档本身记录，因此它是该文件在**构建站点的机器上**产生的时间。克隆或检出会重新写入所有文件，使所有日期都变成那次检出的时间，所以只有在实际编写这些文件的工作副本中构建时，此选项才能反映文档的顺序。如果需要随文档一起移动的日期，请使用 [`sortMenusByFrontmatterDate`](#sortmenusbyfrontmatterdate) 或 [`sortMenusByCustomFunction`](#sortmenusbycustomfunction)。
+
 ## `sortMenusByFileModifyDate`
 
 - Type: `boolean`

@@ -1,4 +1,5 @@
 import { readFileSync, statSync } from 'fs';
+import type { Stats } from 'fs';
 import { join } from 'path';
 import matter from 'gray-matter';
 import { capitalizeEachWords, capitalizeFirst } from 'qsu';
@@ -182,16 +183,33 @@ export function getDateFromFrontmatter(filePath: string): string {
   return getValueFromFrontmatter<string>(filePath, 'date', '0001-01-01');
 }
 
+/**
+ * The time a file was created.
+ *
+ * `ctime` is the last time the metadata of a file changed, which a `chmod` or
+ * the checkout of a repository moves, so it says nothing about when the file
+ * came to be. A file system that records no creation time reports it as the
+ * epoch, and `ctime` is then the closest thing it has.
+ */
+function getCreateTime(fileStats: Stats): Date {
+  return fileStats.birthtime && fileStats.birthtime.getTime() > 0
+    ? fileStats.birthtime
+    : fileStats.ctime;
+}
+
+/** Creation or modification time of a file in milliseconds, `0` when unknown. */
 export function getDateFromFile(filePath: string, modifyDate = false): number {
   try {
     const fileStats = statSync(filePath);
-    const currentTime = modifyDate ? fileStats.mtime : fileStats.ctime;
+    const currentTime = modifyDate ? fileStats.mtime : getCreateTime(fileStats);
 
     if (!currentTime) {
       return 0;
     }
 
-    return Math.floor(new Date(currentTime).getTime() / 1000);
+    // Kept in milliseconds, so that two files written in the same second are
+    // still ordered by which of them came first.
+    return new Date(currentTime).getTime();
   } catch {
     return 0;
   }
@@ -436,7 +454,7 @@ export function createSortItem(params: {
         const fileStats = statSync(params.filePath);
 
         fileTimes = {
-          createDate: fileStats.ctime?.getTime() ?? 0,
+          createDate: getCreateTime(fileStats)?.getTime() ?? 0,
           modifyDate: fileStats.mtime?.getTime() ?? 0
         };
       } catch {

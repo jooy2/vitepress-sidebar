@@ -246,6 +246,8 @@ Sorts the menu items by the `order` property of the frontmatter. For each folder
 
 Sort the menu items by the file's creation date. (or descending order if the `sortMenusOrderByDescending` option is `true`).
 
+A creation date is recorded by the file system rather than by the file, so it is the date the file came to exist **on the machine that builds the site**. A clone or a checkout writes every file anew, which makes every date the date of that checkout, so this option describes the order of your documents only when they are built from a working copy the files were actually written in. Use [`sortMenusByFrontmatterDate`](#sortmenusbyfrontmatterdate) or [`sortMenusByCustomFunction`](#sortmenusbycustomfunction) for a date that travels with the document.
+
 ## `sortMenusByFileModifyDate`
 
 - Type: `boolean`
