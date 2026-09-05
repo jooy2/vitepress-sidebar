@@ -2,13 +2,14 @@ import type { UserConfig } from 'vitepress';
 import { join, relative, resolve } from 'path';
 import { globSync } from 'glob';
 import { existsSync, readdirSync, realpathSync, statSync } from 'fs';
+import type { Dirent } from 'fs';
 import { isTrueMinimumNumberOfTimes, objMergeNewKey } from 'qsu';
 import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
 import {
   clearMarkdownFileCache,
   createSortItem,
   debugPrint,
-  deepDeleteKey,
+  deleteKeyFromLevel,
   formatTitle,
   generateNotTogetherMessage,
   getDateFromFile,
@@ -124,10 +125,17 @@ function applyManualSort(fileNames: string[], priority: string[]): string[] {
     return fileNames;
   }
 
-  const needSortItem = fileNames.filter((x) => priority.indexOf(x) !== -1);
-  const remainItem = fileNames.filter((x) => priority.indexOf(x) === -1);
+  // Looked up by name rather than searched for, so that a long list of
+  // priorities does not turn every folder into a scan of it per entry.
+  const priorityByName = new Map(priority.map((name, index) => [name, index]));
+  const needSortItem: string[] = [];
+  const remainItem: string[] = [];
 
-  needSortItem.sort((a, b) => priority.indexOf(a) - priority.indexOf(b));
+  fileNames.forEach((fileName) => {
+    (priorityByName.has(fileName) ? needSortItem : remainItem).push(fileName);
+  });
+
+  needSortItem.sort((a, b) => priorityByName.get(a)! - priorityByName.get(b)!);
 
   return [...needSortItem, ...remainItem];
 }
@@ -566,17 +574,21 @@ function generateSidebarItem(
   // route. Reading the directory there would produce items for paths that
   // VitePress does not serve, so the files on disk are left alone.
   const isBelowDynamicRouteTemplate = !!routeNode && isDynamicRoutePath(routeNode.templatePath);
-  const directoryFiles: string[] = isBelowDynamicRouteTemplate
+  // Read with the type of every entry, which the directory already knows, so
+  // that telling a folder from a file costs nothing beyond the read itself.
+  const directoryEntries: Dirent[] = isBelowDynamicRouteTemplate
     ? []
-    : applyManualSort(
-        // `readdirSync` returns the entries in whatever order the file system
-        // holds them, which is sorted on some and a hash order on others, so
-        // the same project produced a different sidebar depending on where it
-        // was built. Sorted by code unit rather than by locale, so that the
-        // order does not depend on the machine either.
-        readdirSync(currentDir).sort(),
-        options.manualSortFileNameByPriority!
-      );
+    : readdirSync(currentDir, { withFileTypes: true });
+  const entryByName = new Map(directoryEntries.map((entry) => [entry.name, entry]));
+  const directoryFiles: string[] = applyManualSort(
+    // `readdirSync` returns the entries in whatever order the file system holds
+    // them, which is sorted on some and a hash order on others, so the same
+    // project produced a different sidebar depending on where it was built.
+    // Sorted by code unit rather than by locale, so that the order does not
+    // depend on the machine either.
+    directoryEntries.map((entry) => entry.name).sort(),
+    options.manualSortFileNameByPriority!
+  );
 
   let sidebarItems: SidebarListItem = directoryFiles
     .map((x: string) => {
@@ -619,18 +631,22 @@ function generateSidebarItem(
         return null;
       }
 
-      // A symbolic link pointing at nothing, or a file removed while the scan
-      // was running, has nothing to put in the sidebar and is not a reason to
-      // fail the whole build.
-      let childItemStats;
+      const childItemEntry = entryByName.get(x)!;
+      let isChildDirectory = childItemEntry.isDirectory();
 
-      try {
-        childItemStats = statSync(childItemPath);
-      } catch {
-        return null;
+      // A directory entry says a symbolic link is a symbolic link, and not what
+      // it points at, so that one still has to be looked up. One pointing at
+      // nothing, or at a file removed while the scan was running, has nothing
+      // to put in the sidebar and is not a reason to fail the whole build.
+      if (!isChildDirectory && childItemEntry.isSymbolicLink()) {
+        try {
+          isChildDirectory = statSync(childItemPath).isDirectory();
+        } catch {
+          return null;
+        }
       }
 
-      if (childItemStats.isDirectory()) {
+      if (isChildDirectory) {
         return generateDirectoryItem(
           depth,
           x,
@@ -694,7 +710,7 @@ function generateSidebarItem(
       numerically: true
     });
 
-    deepDeleteKey(sidebarItems, 'order');
+    deleteKeyFromLevel(sidebarItems, 'order');
   }
 
   if (
@@ -709,7 +725,7 @@ function generateSidebarItem(
       dateSortFromFrontmatter: true
     });
 
-    deepDeleteKey(sidebarItems, 'date');
+    deleteKeyFromLevel(sidebarItems, 'date');
   }
 
   if (options.sortMenusOrderNumericallyFromTitle) {
@@ -730,19 +746,19 @@ function generateSidebarItem(
       numerically: true
     });
 
-    deepDeleteKey(sidebarItems, 'sortPath');
+    deleteKeyFromLevel(sidebarItems, 'sortPath');
   }
 
   if (options.sortMenusByCustomFunction) {
     sidebarItems = sortByCustomFunction(sidebarItems, options.sortMenusByCustomFunction);
 
-    deepDeleteKey(sidebarItems, SORT_ITEM_KEY);
+    deleteKeyFromLevel(sidebarItems, SORT_ITEM_KEY);
   }
 
   if (options.sortFolderTo) {
     sidebarItems = sortByFileTypes(sidebarItems, options.sortFolderTo);
 
-    deepDeleteKey(sidebarItems, DIRECTORY_ITEM_KEY);
+    deleteKeyFromLevel(sidebarItems, DIRECTORY_ITEM_KEY);
   }
 
   return sidebarItems;

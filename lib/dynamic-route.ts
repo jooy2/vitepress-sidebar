@@ -1,6 +1,6 @@
 import { execFileSync } from 'child_process';
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'fs';
-import { globSync } from 'glob';
+import { globIterateSync } from 'glob';
 import { tmpdir } from 'os';
 import { join } from 'path';
 
@@ -50,6 +50,9 @@ try {
 
 writeFileSync(outFile, JSON.stringify(result));
 `;
+
+/** How long the `paths` loaders of a project are given to resolve their routes. */
+const ROUTE_LOADER_TIMEOUT_MS = 120000;
 
 /** A single page generated from a dynamic route template. */
 export interface DynamicRoute {
@@ -105,12 +108,20 @@ export function hasDynamicRouteTemplate(srcDir: string): boolean {
     return false;
   }
 
-  return globSync('**/*.md', {
+  // Iterated rather than collected, so a project that has a template stops at
+  // the first one instead of listing every Markdown file it holds.
+  for (const filePath of globIterateSync('**/*.md', {
     cwd: srcDir,
     ignore: TEMPLATE_SCAN_IGNORE,
     dot: false,
     follow: false
-  }).some((filePath) => isDynamicRoutePath(filePath));
+  })) {
+    if (isDynamicRoutePath(filePath)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /**
@@ -134,7 +145,12 @@ export function resolveDynamicRoutes(srcDir: string): DynamicRoute[] {
         cwd: process.cwd(),
         // The result is passed through a file, which leaves both streams free
         // for whatever the `paths` loader prints.
-        stdio: ['ignore', 'inherit', 'inherit']
+        stdio: ['ignore', 'inherit', 'inherit'],
+        // A `paths` loader is project code, and one that never returns would
+        // otherwise hold the build open with nothing to show for it. The
+        // sidebar is then built without the generated pages, as it is for any
+        // other loader that does not produce them.
+        timeout: ROUTE_LOADER_TIMEOUT_MS
       }
     );
 

@@ -537,11 +537,13 @@ export function sortByCustomFunction(
   );
 }
 
+// Built once instead of once per sorted folder, which is what a `Collator` is
+// for: the work of reading the locale is done when it is created.
+const COLLATOR = new Intl.Collator([], { numeric: false, sensitivity: 'base' });
+const NUMERIC_COLLATOR = new Intl.Collator([], { numeric: true, sensitivity: 'base' });
+
 export function sortByObjectKey(options: SortByObjectKeyOptions): object[] {
-  const basicCollator = new Intl.Collator([], {
-    numeric: options.numerically,
-    sensitivity: 'base'
-  });
+  const basicCollator = options.numerically ? NUMERIC_COLLATOR : COLLATOR;
   let result;
 
   if (options.dateSortFromFrontmatter) {
@@ -610,20 +612,17 @@ export function sortByObjectKey(options: SortByObjectKeyOptions): object[] {
   return result;
 }
 
-export function deepDeleteKey(obj: SidebarListItem, key: string): void {
-  if (typeof obj !== 'object' || obj === null) {
-    return;
+/**
+ * Removes a key the sorting needed from the items of one level.
+ *
+ * Only this level, because every level cleans up after itself as soon as it is
+ * sorted: walking into the items of a folder from here would go over the whole
+ * subtree again once for every level above it.
+ */
+export function deleteKeyFromLevel(items: SidebarListItem, key: string): void {
+  for (let i = 0, len = items.length; i < len; i += 1) {
+    delete items[i][key];
   }
-
-  if (Object.hasOwn(obj, key)) {
-    delete obj[key];
-  }
-
-  Object.keys(obj).forEach((item) => {
-    if (typeof obj[item] === 'object') {
-      deepDeleteKey(obj[item], key);
-    }
-  });
 }
 
 /**
