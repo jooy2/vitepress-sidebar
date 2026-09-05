@@ -11,7 +11,7 @@ import type {
   SidebarSortItem,
   SortByObjectKeyOptions,
   VitePressSidebarOptions
-} from './types.ts';
+} from './types.js';
 
 /**
  * Key the sort item of a menu item is carried under while its level is sorted.

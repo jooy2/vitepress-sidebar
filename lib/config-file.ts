@@ -5,7 +5,7 @@ import type {
   AnyValueObject,
   VitePressSidebarFolderMeta,
   VitePressSidebarOptions
-} from './types.ts';
+} from './types.js';
 
 /**
  * Name of the per-folder configuration file.
