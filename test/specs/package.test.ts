@@ -1,8 +1,8 @@
 import assert from 'assert';
 import { describe, it } from 'node:test';
 import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { globSync } from 'glob';
-import { createRequire } from 'node:module';
 
 const DIST_DIR = 'dist';
 
@@ -15,7 +15,7 @@ describe('Test: published package', () => {
     assert.ok(declarationFiles.length > 0, 'expected the build to produce declaration files');
 
     const offenders = declarationFiles.filter((fileName) =>
-      /from\s+'\.[^']*\.ts'/.test(readFileSync(`${DIST_DIR}/${fileName}`, 'utf-8'))
+      /from\s+'\.[^']*\.ts'/.test(readFileSync(join(DIST_DIR, fileName), 'utf-8'))
     );
 
     assert.deepStrictEqual(
@@ -28,7 +28,6 @@ describe('Test: published package', () => {
   });
 
   it('Every entry point named by `package.json` exists', () => {
-    const require = createRequire(import.meta.url);
     const packageJson = JSON.parse(readFileSync('package.json', 'utf-8')) as {
       main: string;
       types: string;
@@ -40,16 +39,13 @@ describe('Test: published package', () => {
       Object.values(conditions).forEach((target) => entryPoints.add(target));
     });
 
+    assert.ok(entryPoints.size > 0, 'expected package.json to name an entry point');
+
     entryPoints.forEach((entryPoint) => {
       assert.doesNotThrow(
-        () => readFileSync(entryPoint.replace(/^\.\//, ''), 'utf-8'),
+        () => readFileSync(join(...entryPoint.replace(/^\.\//, '').split('/')), 'utf-8'),
         `'${entryPoint}' is named by package.json but was not built`
       );
     });
-
-    // The entry point of the package actually loads and exports what it says
-    const distIndex = require.resolve(`${process.cwd()}/${packageJson.main}`);
-
-    assert.ok(distIndex.endsWith('.js'));
   });
 });

@@ -16,6 +16,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Neither the formatting nor the lint rules depend on the platform or on the
+  # version of Node.js, so they are checked once instead of once per entry of
+  # the matrix below.
+  check-format-and-lint:
+    runs-on: ubuntu-latest
+    name: Check formatting and lint rules
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+      # Reported rather than repaired: `npm run build` used to reformat the
+      # sources it was about to build, so a formatting problem never failed.
+      - run: npm run format:check
+      - run: npm run lint
+
   build-and-run-test:
     runs-on: ${{ matrix.os }}
     name: Test module from Node.js ${{ matrix.node_version }} on ${{ matrix.os }}
@@ -37,8 +57,4 @@ jobs:
           cache: npm
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
-      # Reported rather than repaired: `npm run build` used to reformat the
-      # sources it was about to build, so a formatting problem never failed.
-      - run: npm run format:check
-      - run: npm run lint
       - run: npm run test

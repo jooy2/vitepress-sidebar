@@ -1,0 +1,4 @@
+# The repository is written with LF, which `.editorconfig` and `.prettierrc`
+# both declare. Without this, Git hands a Windows working tree CRLF on
+# checkout, and `format:check` then reports every file in the project.
+* text=auto eol=lf
