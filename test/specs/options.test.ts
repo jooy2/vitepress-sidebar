@@ -2667,6 +2667,154 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('API: debugPrint', () => {
+    const output: string[] = [];
+    const write = process.stdout.write;
+
+    process.stdout.write = ((chunk: string) => {
+      output.push(String(chunk));
+      return true;
+    }) as typeof process.stdout.write;
+
+    let result;
+
+    try {
+      result = generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general/folder/subFolder`,
+        debugPrint: true
+      });
+    } finally {
+      process.stdout.write = write;
+    }
+
+    const printed = output.join('');
+
+    // Both what was asked for and what came out of it
+    assert.ok(printed.includes('documentRootPath'), 'expected the options to be printed');
+    assert.ok(printed.includes('sub-folder-test'), 'expected the sidebar to be printed');
+
+    // Printing does not change what is returned
+    assert.deepEqual(result, [
+      {
+        text: 'sub-folder-test',
+        link: '/sub-folder-test'
+      }
+    ]);
+  });
+
+  it('API: excludePattern (the former name of `excludeByGlobPattern`)', () => {
+    const expected = [
+      {
+        text: 'a',
+        link: '/a'
+      },
+      {
+        text: 'b',
+        link: '/b'
+      },
+      {
+        text: 'c',
+        link: '/c'
+      },
+      {
+        text: 'test',
+        link: '/test'
+      }
+    ];
+
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        excludePattern: ['folder', 'folder-2']
+      }),
+      expected
+    );
+
+    // The new name wins where both are given
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/general`,
+        excludeByGlobPattern: ['folder', 'folder-2'],
+        excludePattern: ['a.md']
+      }),
+      expected
+    );
+  });
+
+  it('API: frontmatterOrderDefaultValue', () => {
+    // `f.md` has no `order` that reads as a number, so it takes the default and
+    // can be placed anywhere among the files that do have one.
+    const textsWithDefault = (frontmatterOrderDefaultValue: number): string[] =>
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/frontmatter-order-with-negative`,
+        sortMenusByFrontmatterOrder: true,
+        frontmatterOrderDefaultValue
+      }).map((item: { text: string }) => item.text);
+
+    assert.deepEqual(textsWithDefault(-100), ['f', 'd', 'e', 'b', 'a', 'c']);
+    assert.deepEqual(textsWithDefault(100), ['d', 'e', 'b', 'a', 'c', 'f']);
+
+    // A default that lands between two of them places it there
+    assert.deepEqual(textsWithDefault(-1.5), ['d', 'f', 'e', 'b', 'a', 'c']);
+  });
+
+  it('API: folderLinkNotIncludesFileName', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
+        useFolderLinkFromSameNameSubFile: true,
+        folderLinkNotIncludesFileName: true
+      }),
+      [
+        {
+          text: 'folder-name',
+          // The folder itself, without the name of the file behind it
+          link: '/folder-name/'
+        }
+      ]
+    );
+
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/folder-with-same-name-file`,
+        useFolderLinkFromSameNameSubFile: true,
+        folderLinkNotIncludesFileName: false
+      }),
+      [
+        {
+          text: 'folder-name',
+          link: '/folder-name/folder-name'
+        }
+      ]
+    );
+  });
+
+  it('API: sortMenusByCustomFunction (from file create date)', async () => {
+    const targetDir = `${TEST_DIR_BASE}/create-date-custom`;
+    const createOrder = ['ddd.md', 'ccc.md', 'bbb.md', 'aaa.md'];
+
+    rmSync(targetDir, { recursive: true, force: true });
+    mkdirSync(targetDir, { recursive: true });
+
+    try {
+      for (const fileName of createOrder) {
+        writeFileSync(`${targetDir}/${fileName}`, `# ${fileName}\n`);
+
+        await setTimeout(20);
+      }
+
+      assert.deepEqual(
+        generateSidebar({
+          documentRootPath: targetDir,
+          sortMenusByCustomFunction: (a, b) => a.createDate - b.createDate
+        }).map((item: { text: string }) => item.text),
+        ['ddd', 'ccc', 'bbb', 'aaa']
+      );
+    } finally {
+      rmSync(targetDir, { recursive: true, force: true });
+    }
+  });
+
   it('API: sortMenusByCustomFunction (must be a function)', () => {
     assert.throws(
       () =>

@@ -68,6 +68,8 @@ test/resources/create-date/
 test/resources/special-char-path/skip-dirs/
 test/resources/scan-order/
 test/resources/symlink-loop/
+test/resources/create-date-custom/
+test/resources/hmr/
 
 # VitePress files
 docs/.vitepress/.temp

@@ -217,6 +217,61 @@ describe('Test: multiple sidebars', () => {
     );
   });
 
+  it('`basePath` and the `rootGroup` options describe one sidebar of many', () => {
+    assert.deepEqual(
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general/folder/subFolder`,
+          resolvePath: '/guide/',
+          basePath: '/base/',
+          rootGroupText: 'Guide',
+          rootGroupLink: '/guide/start',
+          rootGroupCollapsed: false
+        }
+      ]),
+      {
+        '/guide/': {
+          // `basePath` is what the links are resolved against, and is the
+          // `resolvePath` only when it does not name one of its own
+          base: '/base/',
+          items: [
+            {
+              text: 'Guide',
+              link: '/guide/start',
+              items: [
+                {
+                  text: 'sub-folder-test',
+                  link: 'sub-folder-test'
+                }
+              ],
+              collapsed: false
+            }
+          ]
+        }
+      }
+    );
+
+    assert.deepEqual(
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general/folder/subFolder`,
+          resolvePath: '/guide/'
+        }
+      ]),
+      {
+        '/guide/': {
+          base: '/guide/',
+          items: [
+            {
+              text: 'sub-folder-test',
+              link: 'sub-folder-test'
+            }
+          ]
+        }
+      }
+    );
+  });
+
   it('Two sidebars resolving to the same path are reported', () => {
     const warnings: string[] = [];
     const write = process.stderr.write;
