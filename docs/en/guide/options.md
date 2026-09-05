@@ -150,7 +150,7 @@ If the value is `true`, display the title with the `h1` heading content of the `
 
 The heading has to be written as `# Title`. A heading underlined with `===` is not read, and the file name is used instead.
 
-The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
+Menu items are ordered by file name when no sorting option is used, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
 
 ## `useTitleFromFrontmatter`
 
@@ -182,7 +182,7 @@ name: This is frontmatter title value.
 
 For more information, see the following articles: https://vitepress.dev/guide/frontmatter
 
-The default menu items are sorted in folder tree order, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
+Menu items are ordered by file name when no sorting option is used, so set the `sortMenusByName` option to `true` if you want to re-sort by the changed menu name.
 
 ## `useFolderTitleFromIndexFile`
 
@@ -221,7 +221,11 @@ After all the sorting is done, folders and files are placed in batches. If the v
 - Type: `boolean`
 - Default: `false`
 
-Sort the items in the menu item by name. Normally, folder scans are done with an ascending name sort, so the default sort is applied without this option applied, but if you use the `useTitleFromFileHeading` or `useTitleFromFrontmatter` options, you may need to re-sort by name because the menu name changes. This option forces sorting by name even for changed menu names.
+Sort the items in the menu item by name.
+
+When no sorting option is used, items are already ordered by the name of the file or folder they come from, which is not the same thing as soon as the menu name comes from somewhere else. This option sorts by the menu name as it is displayed, which is what you want with the `useTitleFromFileHeading` or `useTitleFromFrontmatter` options.
+
+The two also differ in how they compare: the order of the scan is by code unit, so that a project builds the same everywhere, while this option compares the way the reader of a language would.
 
 ## `sortMenusByFileDatePrefix`
 

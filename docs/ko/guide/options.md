@@ -150,7 +150,7 @@ e.g. `/`, `/path/sub-path`, `/guide/`...
 
 제목은 `# Title` 형태로 작성해야 합니다. `===`로 밑줄을 그은 제목은 읽지 않으며, 이 경우 파일 이름이 사용됩니다.
 
-기본 메뉴 항목은 폴더 트리 순서로 정렬되므로 변경된 메뉴 이름으로 다시 정렬하려면 `sortMenusByName` 옵션을 `true`로 설정합니다.
+정렬 옵션을 사용하지 않으면 메뉴 항목은 파일 이름순으로 정렬되므로, 변경된 메뉴 이름으로 다시 정렬하려면 `sortMenusByName` 옵션을 `true`로 설정합니다.
 
 ## `useTitleFromFrontmatter`
 
@@ -182,7 +182,7 @@ name: 이 것은 Frontmatter의 제목값입니다.
 
 자세한 내용은 다음 문서를 참조하세요: https://vitepress.dev/guide/frontmatter
 
-기본 메뉴 항목은 폴더 트리 순서로 정렬되므로 변경된 메뉴 이름으로 다시 정렬하려면 `sortMenusByName` 옵션을 `true`로 설정합니다.
+정렬 옵션을 사용하지 않으면 메뉴 항목은 파일 이름순으로 정렬되므로, 변경된 메뉴 이름으로 다시 정렬하려면 `sortMenusByName` 옵션을 `true`로 설정합니다.
 
 ## `useFolderTitleFromIndexFile`
 
@@ -221,7 +221,11 @@ name: 이 것은 Frontmatter의 제목값입니다.
 - Type: `boolean`
 - Default: `false`
 
-메뉴 항목의 항목을 이름별로 정렬합니다. 일반적으로 폴더 스캔은 오름차순 이름 정렬로 이루어지므로 이 옵션을 적용하지 않고 기본 정렬이 적용되지만, `useTitleFromFileHeading` 또는 `useTitleFromFrontmatter` 옵션을 사용하는 경우 메뉴 이름이 변경되어 이름별로 다시 정렬해야 할 수 있습니다. 이 옵션은 변경된 메뉴 이름에 대해서도 이름별로 강제로 정렬합니다.
+메뉴 항목을 이름별로 정렬합니다.
+
+정렬 옵션을 사용하지 않아도 항목은 파일 또는 폴더 이름순으로 정렬되지만, 메뉴 이름을 다른 곳에서 가져오는 순간 두 가지는 서로 다른 것이 됩니다. 이 옵션은 실제로 표시되는 메뉴 이름을 기준으로 정렬하므로, `useTitleFromFileHeading`이나 `useTitleFromFrontmatter` 옵션과 함께 사용할 때 필요합니다.
+
+비교 방식도 다릅니다. 스캔 순서는 코드 단위(code unit) 기준이라 어떤 환경에서 빌드해도 결과가 같지만, 이 옵션은 해당 언어의 독자가 기대하는 방식으로 비교합니다.
 
 ## `sortMenusByFileDatePrefix`
 

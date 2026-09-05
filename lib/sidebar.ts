@@ -525,7 +525,15 @@ function generateSidebarItem(
   const isBelowDynamicRouteTemplate = !!routeNode && isDynamicRoutePath(routeNode.templatePath);
   const directoryFiles: string[] = isBelowDynamicRouteTemplate
     ? []
-    : applyManualSort(readdirSync(currentDir), options.manualSortFileNameByPriority!);
+    : applyManualSort(
+        // `readdirSync` returns the entries in whatever order the file system
+        // holds them, which is sorted on some and a hash order on others, so
+        // the same project produced a different sidebar depending on where it
+        // was built. Sorted by code unit rather than by locale, so that the
+        // order does not depend on the machine either.
+        readdirSync(currentDir).sort(),
+        options.manualSortFileNameByPriority!
+      );
 
   let sidebarItems: SidebarListItem = directoryFiles
     .map((x: string) => {

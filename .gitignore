@@ -66,6 +66,7 @@ docs-dist/
 # Fixtures a test writes and removes again
 test/resources/create-date/
 test/resources/special-char-path/skip-dirs/
+test/resources/scan-order/
 
 # VitePress files
 docs/.vitepress/.temp

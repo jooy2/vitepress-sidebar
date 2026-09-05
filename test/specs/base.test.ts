@@ -521,6 +521,44 @@ describe('Test: base test', () => {
     );
   });
 
+  it('Menu items are ordered by name when no sorting option is used', () => {
+    // The entries are written in the order opposite to their names. A file
+    // system that hands them back in the order they were created, or in a hash
+    // order of its own, must not decide the order of the menu.
+    const targetDir = `${TEST_DIR_BASE}/scan-order`;
+    const createOrder = ['zulu.md', 'mike', 'delta.md', 'charlie.md', 'bravo', 'alpha.md'];
+
+    rmSync(targetDir, { recursive: true, force: true });
+    mkdirSync(targetDir, { recursive: true });
+
+    try {
+      for (const name of createOrder) {
+        if (name.endsWith('.md')) {
+          writeFileSync(`${targetDir}/${name}`, `# ${name}\n`);
+        } else {
+          mkdirSync(`${targetDir}/${name}`);
+          writeFileSync(`${targetDir}/${name}/one.md`, '# One\n');
+        }
+      }
+
+      assert.deepStrictEqual(
+        generateSidebar({ documentRootPath: targetDir }).map((item: { text: string }) => item.text),
+        ['alpha', 'bravo', 'charlie', 'delta', 'mike', 'zulu']
+      );
+
+      // `manualSortFileNameByPriority` still comes first
+      assert.deepStrictEqual(
+        generateSidebar({
+          documentRootPath: targetDir,
+          manualSortFileNameByPriority: ['zulu.md', 'mike']
+        }).map((item: { text: string }) => item.text),
+        ['zulu', 'mike', 'alpha', 'bravo', 'charlie', 'delta']
+      );
+    } finally {
+      rmSync(targetDir, { recursive: true, force: true });
+    }
+  });
+
   it('A path that holds a regular expression character is stripped from the link', () => {
     assert.deepStrictEqual(
       generateSidebar({

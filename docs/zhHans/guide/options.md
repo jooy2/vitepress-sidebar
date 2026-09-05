@@ -150,7 +150,7 @@ order: 2
 
 标题必须写成 `# Title` 的形式。用 `===` 下划线标记的标题不会被读取，此时将使用文件名。
 
-默认菜单项按文件夹树顺序排序,因此如果您想按更改后的菜单名称重新排序,请将`sortMenusByName`选项设置为`true`。
+未使用任何排序选项时，菜单项按文件名排序，因此如果您想按更改后的菜单名称重新排序，请将 `sortMenusByName` 选项设置为 `true`。
 
 ## `useTitleFromFrontmatter`
 
@@ -182,7 +182,7 @@ name: This is frontmatter title value.
 
 欲了解更多信息，请参阅以下文章： https://vitepress.dev/guide/frontmatter
 
-默认菜单项是按文件夹树顺序排序的，因此如果想按更改后的菜单名称重新排序，请将 `sortMenusByName` 选项设置为 `true`。
+未使用任何排序选项时，菜单项按文件名排序，因此如果想按更改后的菜单名称重新排序，请将 `sortMenusByName` 选项设置为 `true`。
 
 ## `useFolderTitleFromIndexFile`
 
@@ -221,7 +221,11 @@ name: This is frontmatter title value.
 - Type: `boolean`
 - Default: `false`
 
-按名称对菜单项中的项目进行排序。通常情况下,文件夹扫描是按名称升序排序的,因此,如果不应用此选项,则应用默认排序,但如果使用`useTitleFromFileHeading`或`useTitleFromFrontmatter`选项,则可能需要按名称重新排序,因为菜单名称已更改。此选项强制按名称排序,即使菜单名称已更改也是如此。
+按名称对菜单项进行排序。
+
+未使用任何排序选项时，菜单项已经按其来源文件或文件夹的名称排序，但一旦菜单名称来自别处，两者就不再是一回事。此选项按实际显示的菜单名称排序，这正是使用 `useTitleFromFileHeading` 或 `useTitleFromFrontmatter` 选项时所需要的。
+
+两者的比较方式也不同：扫描顺序按代码单元（code unit）比较，因此项目在任何环境下构建结果都一致；而此选项则按对应语言读者所期望的方式比较。
 
 ## `sortMenusByFileDatePrefix`
 
