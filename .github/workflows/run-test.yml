@@ -36,4 +36,9 @@ jobs:
           node-version: ${{ matrix.node_version }}
           cache: npm
           cache-dependency-path: '**/package-lock.json'
-      - run: npm ci && npm run test
+      - run: npm ci
+      # Reported rather than repaired: `npm run build` used to reformat the
+      # sources it was about to build, so a formatting problem never failed.
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run test
