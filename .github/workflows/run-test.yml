@@ -58,3 +58,29 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
       - run: npm run test
+
+  # VitePress 2 is still a pre-release, so it is checked once rather than across
+  # the matrix above: what differs between the two majors is the module this
+  # package calls, not the platform it runs on. The pre-release also changes
+  # without any change here, so a break in it is reported without turning the
+  # whole run red.
+  build-and-run-test-vitepress-next:
+    runs-on: ubuntu-latest
+    name: Test module against the VitePress pre-release
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # fetch all commits to get last updated time or other git log info
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+      # Installed over the version the lockfile pins, without writing it down,
+      # so the checked-in dependency stays the released VitePress.
+      - run: npm install --no-save vitepress@next
+      - run: npm run test
