@@ -30,6 +30,8 @@ const TEMPLATE_SCAN_IGNORE = ['**/node_modules/**', '**/dist/**', '**/.vitepress
  */
 const ROUTE_LOADER_SCRIPT = `
 import { writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { join } from 'node:path';
 
 const [srcDir, outFile] = process.argv.slice(1);
 const result = { routes: [] };
@@ -37,9 +39,29 @@ const result = { routes: [] };
 try {
   const { resolvePages } = await import('vitepress');
   const { createLogger } = await import('vite');
-  const { dynamicRoutes } = await resolvePages(srcDir, {}, createLogger('warn'));
+  const logger = createLogger('warn');
 
-  result.routes = dynamicRoutes.routes.map((item) => ({
+  // Resolved from the project rather than from this package, so the number read
+  // here belongs to the VitePress that is about to be called. The file named
+  // here is never opened; only the directory it sits in decides the resolution.
+  const require = createRequire(join(process.cwd(), 'package.json'));
+  const { version } = require('vitepress/package.json');
+
+  let routes;
+
+  if (Number.parseInt(version, 10) >= 2) {
+    // VitePress 2 takes a site configuration and fills the resolved pages into
+    // it, instead of taking the source directory and returning them.
+    const siteConfig = { srcDir, userConfig: {}, logger };
+
+    await resolvePages(siteConfig, true);
+
+    routes = siteConfig.dynamicRoutes;
+  } else {
+    routes = (await resolvePages(srcDir, {}, logger)).dynamicRoutes.routes;
+  }
+
+  result.routes = routes.map((item) => ({
     path: item.path,
     route: item.route,
     params: item.params ?? {}

@@ -587,6 +587,8 @@ export default {
 
 路由的解析方式与 VitePress 完全相同,即运行`paths`文件,因此`.paths.ts`文件和异步`paths()`函数都可以使用。该过程在单独的进程中进行,约需 0.2 秒,并且只在至少有一个模板的项目中执行。请注意,`paths`文件所做的任何操作(例如调用 API)会在每次生成侧边栏时再执行一次。
 
+生成的页面按 VitePress 交付的顺序显示,在 VitePress 1 中是`paths`文件返回的顺序,在 VitePress 2 中是路径顺序。如果需要特定顺序,请使用排序选项,例如配合 [`sortMenusByFrontmatterOrder`](#sortmenusbyfrontmatterorder) 的`order`参数。
+
 ::: tip一个模板生成的页面共享同一个文件,因此从该文件读取的内容(例如`useTitleFromFrontmatter`或`sortMenusByFrontmatterOrder`)对所有页面都相同。要为生成的页面指定各自的值,请将其放入参数中:
 
 - 标题:使用 [`dynamicRouteTitleParam`](#dynamicroutetitleparam) 指定的名称

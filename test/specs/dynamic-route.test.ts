@@ -1,9 +1,49 @@
 import assert from 'assert';
 import { describe, it } from 'node:test';
+import { createRequire } from 'node:module';
 import { generateSidebar, withSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
 const TEST_DIR = `${TEST_DIR_BASE}/dynamic-routes`;
+
+const NEWS_FOLDER = {
+  text: 'news',
+  items: [
+    {
+      text: 'hello',
+      link: '/news/hello'
+    },
+    {
+      text: 'world',
+      link: '/news/world'
+    }
+  ]
+};
+const BLOG_FOLDER = {
+  text: 'blog',
+  items: [
+    {
+      text: 'first',
+      link: '/blog/first'
+    }
+  ]
+};
+
+const vitePressMajor = Number.parseInt(
+  (createRequire(import.meta.url)('vitepress/package.json') as { version: string }).version,
+  10
+);
+
+/**
+ * The folders a `[cat]/[slug]` template generates, in the order the sidebar
+ * receives them.
+ *
+ * VitePress 1 hands the routes over in the order the `paths` loader returned
+ * them, while VitePress 2 orders them by path. Neither order is imposed here,
+ * so the expectation follows the version that is installed.
+ */
+const CATEGORY_FOLDERS =
+  vitePressMajor >= 2 ? [BLOG_FOLDER, NEWS_FOLDER] : [NEWS_FOLDER, BLOG_FOLDER];
 
 describe('Test: dynamic routes', () => {
   it('Dynamic routes are not expanded unless asked for', () => {
@@ -69,28 +109,7 @@ describe('Test: dynamic routes', () => {
           ]
         },
         // A folder whose name is a parameter becomes one folder per value.
-        {
-          text: 'news',
-          items: [
-            {
-              text: 'hello',
-              link: '/news/hello'
-            },
-            {
-              text: 'world',
-              link: '/news/world'
-            }
-          ]
-        },
-        {
-          text: 'blog',
-          items: [
-            {
-              text: 'first',
-              link: '/blog/first'
-            }
-          ]
-        }
+        ...CATEGORY_FOLDERS
       ]
     );
   });
@@ -274,28 +293,7 @@ describe('Test: dynamic routes', () => {
           text: 'a',
           link: '/a'
         },
-        {
-          text: 'news',
-          items: [
-            {
-              text: 'hello',
-              link: '/news/hello'
-            },
-            {
-              text: 'world',
-              link: '/news/world'
-            }
-          ]
-        },
-        {
-          text: 'blog',
-          items: [
-            {
-              text: 'first',
-              link: '/blog/first'
-            }
-          ]
-        }
+        ...CATEGORY_FOLDERS
       ]
     );
   });
@@ -318,28 +316,7 @@ describe('Test: dynamic routes', () => {
         text: 'a',
         link: '/a'
       },
-      {
-        text: 'news',
-        items: [
-          {
-            text: 'hello',
-            link: '/news/hello'
-          },
-          {
-            text: 'world',
-            link: '/news/world'
-          }
-        ]
-      },
-      {
-        text: 'blog',
-        items: [
-          {
-            text: 'first',
-            link: '/blog/first'
-          }
-        ]
-      }
+      ...CATEGORY_FOLDERS
     ]);
   });
 });

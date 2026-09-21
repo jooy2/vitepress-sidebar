@@ -587,6 +587,8 @@ A directory name may hold a parameter as well. A `[category]/[slug].md` template
 
 The routes are resolved by running the `paths` file, exactly as VitePress does, so a `.paths.ts` file and an asynchronous `paths()` function both work. This happens in a separate process, which takes about 0.2 seconds, and only for a project that has at least one template. Note that anything the `paths` file does, such as calling an API, happens once more per sidebar generation.
 
+The generated pages appear in the order VitePress hands them over, which is the order the `paths` file returned on VitePress 1 and the order of their paths on VitePress 2. Use a sorting option when a particular order matters, such as an `order` parameter together with [`sortMenusByFrontmatterOrder`](#sortmenusbyfrontmatterorder).
+
 ::: tip The pages a template generates share one file, so anything read from that file, such as `useTitleFromFrontmatter` or `sortMenusByFrontmatterOrder`, is the same for all of them. To give a generated page a value of its own, put it in its parameters:
 
 - a title, under the name [`dynamicRouteTitleParam`](#dynamicroutetitleparam) sets

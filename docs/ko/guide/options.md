@@ -587,6 +587,8 @@ export default {
 
 라우트는 VitePress와 동일한 방식으로 `paths` 파일을 실행하여 해석하므로 `.paths.ts` 파일과 비동기 `paths()` 함수를 모두 사용할 수 있습니다. 이 작업은 별도의 프로세스에서 약 0.2초 정도 소요되며, 템플릿이 하나 이상 있는 프로젝트에서만 실행됩니다. API 호출과 같이 `paths` 파일이 수행하는 작업은 사이드바를 생성할 때마다 한 번씩 더 실행된다는 점에 유의하세요.
 
+생성된 페이지는 VitePress가 넘겨주는 순서를 따르며, VitePress 1은 `paths` 파일이 반환한 순서, VitePress 2는 경로 순서입니다. 특정 순서가 필요하다면 `order` 매개변수와 [`sortMenusByFrontmatterOrder`](#sortmenusbyfrontmatterorder)처럼 정렬 옵션을 사용하세요.
+
 ::: tip 템플릿이 생성하는 페이지들은 하나의 파일을 공유하므로, `useTitleFromFrontmatter`나 `sortMenusByFrontmatterOrder`처럼 그 파일에서 읽는 값은 모든 페이지에서 동일합니다. 생성된 페이지마다 다른 값을 주려면 매개변수에 지정합니다.
 
 - 제목: [`dynamicRouteTitleParam`](#dynamicroutetitleparam)이 지정한 이름
