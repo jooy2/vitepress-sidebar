@@ -4,10 +4,27 @@ layout: home
 title: VitePress Sidebar
 titleTemplate: 功能强大的自动侧边栏生成器
 
+head:
+  - - script
+    - type: application/ld+json
+    - |
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "VitePress Sidebar",
+        "description": "一款根据文档站点的文件夹和 Markdown 文件生成侧边栏菜单的 VitePress 插件。",
+        "url": "https://vitepress-sidebar.cdget.com/zhHans/",
+        "codeRepository": "https://github.com/jooy2/vitepress-sidebar",
+        "programmingLanguage": "TypeScript",
+        "runtimePlatform": "Node.js",
+        "license": "https://opensource.org/licenses/MIT",
+        "inLanguage": "zh-CN"
+      }
+
 hero:
   name: VitePress Sidebar
-  text: 功能强大的自动侧边栏生成器
-  tagline: VitePress自动侧边栏插件,可自动创建一个简单的配置
+  text: 功能强大的<span class="hero-highlight">自动侧边栏</span>生成器
+  tagline: 一款根据文件夹和 Markdown 文件生成侧边栏的 VitePress 插件。只需设置一次，之后新增的页面会自动出现在菜单中，无需再修改配置。
   actions:
     - theme: brand
       text: 入门
@@ -20,7 +37,9 @@ hero:
       link: https://github.com/jooy2/vitepress-sidebar
   image:
     src: /sidebar.png
-    alt: Sidebar
+    alt: VitePress Sidebar 标志：页面旁边的侧边栏菜单
+    width: 512
+    height: 512
 
 features:
   - icon: <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.03628 7.87818C4.75336 5.83955 6.15592 3.95466 8.16899 3.66815L33.6838 0.0367403C35.6969 -0.24977 37.5581 1.1706 37.841 3.20923L42.9637 40.1218C43.2466 42.1604 41.8441 44.0453 39.831 44.3319L14.3162 47.9633C12.3031 48.2498 10.4419 46.8294 10.159 44.7908L5.03628 7.87818Z" fill="url(#paint0_linear_1287_1214)"/><path d="M6.85877 7.6188C6.71731 6.59948 7.41859 5.65703 8.42512 5.51378L33.9399 1.88237C34.9465 1.73911 35.8771 2.4493 36.0186 3.46861L41.1412 40.3812C41.2827 41.4005 40.5814 42.343 39.5749 42.4862L14.0601 46.1176C13.0535 46.2609 12.1229 45.5507 11.9814 44.5314L6.85877 7.6188Z" fill="white"/><path d="M33.1857 14.9195L25.8505 34.1576C25.6991 34.5547 25.1763 34.63 24.9177 34.2919L12.3343 17.8339C12.0526 17.4655 12.3217 16.9339 12.7806 16.9524L22.9053 17.3607C22.9698 17.3633 23.0344 17.3541 23.0956 17.3337L32.5088 14.1992C32.9431 14.0546 33.3503 14.4878 33.1857 14.9195Z" fill="url(#paint1_linear_1287_1214)"/><path d="M27.0251 12.5756L19.9352 15.0427C19.8187 15.0832 19.7444 15.1986 19.7546 15.3231L20.3916 23.063C20.4066 23.2453 20.5904 23.3628 20.7588 23.2977L22.7226 22.5392C22.9064 22.4682 23.1021 22.6138 23.0905 22.8128L22.9102 25.8903C22.8982 26.0974 23.1093 26.2436 23.295 26.1567L24.4948 25.5953C24.6808 25.5084 24.892 25.6549 24.8795 25.8624L24.5855 30.6979C24.5671 31.0004 24.9759 31.1067 25.1013 30.8321L25.185 30.6487L29.4298 17.8014C29.5008 17.5863 29.2968 17.3809 29.0847 17.454L27.0519 18.1547C26.8609 18.2205 26.6675 18.0586 26.6954 17.8561L27.3823 12.8739C27.4103 12.6712 27.2163 12.5091 27.0251 12.5756Z" fill="url(#paint2_linear_1287_1214)"/><defs><linearGradient id="paint0_linear_1287_1214" x1="6.48163" y1="1.9759" x2="39.05" y2="48.2064" gradientUnits="userSpaceOnUse"><stop stop-color="#49C7FF"/><stop offset="1" stop-color="#BD36FF"/></linearGradient><linearGradient id="paint1_linear_1287_1214" x1="11.8848" y1="16.4266" x2="26.7246" y2="31.4177" gradientUnits="userSpaceOnUse"><stop stop-color="#41D1FF"/><stop offset="1" stop-color="#BD34FE"/></linearGradient><linearGradient id="paint2_linear_1287_1214" x1="21.8138" y1="13.7046" x2="26.2464" y2="28.8069" gradientUnits="userSpaceOnUse"><stop stop-color="#FFEA83"/><stop offset="0.0833333" stop-color="#FFDD35"/><stop offset="1" stop-color="#FFA800"/></linearGradient></defs></svg>
@@ -31,30 +50,374 @@ features:
     details: 简单易用，大量选项可按你的喜好自定义。自定义菜单可用于排序、特殊字符转换、文件和文件夹过滤器等！
   - icon: <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 48 48" width="96px" height="96px"><linearGradient id="SVGID_1_" x1="37.081" x2="10.918" y1="10.918" y2="37.081" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#60affe"/><stop offset=".033" stop-color="#6ab4fe"/><stop offset=".197" stop-color="#97cbfe"/><stop offset=".362" stop-color="#bddeff"/><stop offset=".525" stop-color="#daecff"/><stop offset=".687" stop-color="#eef7ff"/><stop offset=".846" stop-color="#fbfdff"/><stop offset="1" stop-color="#fff"/></linearGradient><circle cx="24" cy="24" r="18.5" fill="url(#SVGID_1_)"/><path fill="none" stroke="#2e9bfe" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M42.225,27.194C40.712,35.889,33.128,42.5,24,42.5C13.783,42.5,5.5,34.217,5.5,24S13.783,5.5,24,5.5	c6.982,0,13.061,3.868,16.21,9.578"/><path fill="none" stroke="#2e9bfe" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M16.792,14.19C18.295,8.971,20.961,5.5,24,5.5c4.694,0,8.5,8.283,8.5,18.5S28.694,42.5,24,42.5	s-8.5-8.283-8.5-18.5c0-0.525,0.01-1.044,0.03-1.558"/><line x1="13.234" x2="35.383" y1="17.5" y2="17.5" fill="none" stroke="#2e9bfe" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/><line x1="11.128" x2="36.532" y1="30.5" y2="30.5" fill="none" stroke="#2e9bfe" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/></svg>
     title: 可广泛扩展的用例
-    details: 支持多个侧边栏、Frontmatter 和 TypeScript，以处理各种使用情况。
+    details: 支持多个侧边栏、国际化、Frontmatter、按文件夹的配置文件和 TypeScript 类型，适用于各种结构的站点。
   - icon: <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 32 32" width="64px" height="64px"><circle cx="16" cy="17" r="5" fill="#ed0049"/><path fill="#ed0049" d="M23,31H9v0c0-3.866,3.134-7,7-7h0C19.866,24,23,27.134,23,31L23,31z"/><path fill="#0f518c" d="M19,4c0-1.657-1.343-3-3-3s-3,1.343-3,3c0,0.885,0.391,1.672,1,2.222V10h4V6.222 C18.609,5.672,19,4.885,19,4z"/><path fill="#0f518c" d="M7.061,8.318c-1.171-1.171-3.071-1.171-4.243,0s-1.171,3.071,0,4.243 c0.626,0.626,1.459,0.906,2.278,0.864l2.672,2.672l2.828-2.828l-2.672-2.672C7.967,9.777,7.686,8.944,7.061,8.318z"/><path fill="#0f518c" d="M24.879,8.318c1.171-1.171,3.071-1.171,4.243,0s1.171,3.071,0,4.243 c-0.626,0.626-1.459,0.906-2.278,0.864l-2.672,2.672l-2.828-2.828l2.672-2.672C23.972,9.777,24.253,8.944,24.879,8.318z"/><path fill="#0f518c" d="M24.879,27.218c1.171,1.171,3.071,1.171,4.243,0c1.171-1.171,1.171-3.071,0-4.243 c-0.626-0.626-1.459-0.906-2.278-0.864l-2.672-2.672l-2.828,2.828l2.672,2.672C23.972,25.759,24.253,26.592,24.879,27.218z"/><g><path fill="#0f518c" d="M7.061,27.218c-1.171,1.171-3.071,1.171-4.243,0c-1.171-1.171-1.171-3.071,0-4.243 c0.626-0.626,1.459-0.906,2.278-0.864l2.672-2.672l2.828,2.828L7.925,24.94C7.967,25.759,7.686,26.592,7.061,27.218z"/></g></svg>
     title: 可靠的维护支持
-    details: 我们的下载量超过 2K+，在现实世界中有许多使用案例，而且我们拥有快速的技术支持。
+    details: 在 npm 上每月下载量达数万次，已被许多实际项目采用，并提供快速的技术支持。
 ---
 
-<style>
-:root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #34e8b8 30%, #006cd9);
+<div class="home-sections">
 
-  --vp-home-hero-image-background-image: linear-gradient(-45deg, #34b8e8 60%, #006cd9 60%);
-  --vp-home-hero-image-filter: blur(20px);
-}
+<section class="home-section" aria-labelledby="home-why">
+<p class="home-eyebrow">为什么选择 VitePress Sidebar</p>
+<h2 id="home-why">根据文件自动生成侧边栏</h2>
+<p class="home-lead">VitePress 侧边栏只显示 <code>themeConfig.sidebar</code> 中列出的内容，而这份列表需要手动编写。每次新增、重命名或移动页面，都要同步修改配置；一旦遗漏，菜单项就会缺失或链接失效。</p>
+<p class="home-lead">VitePress Sidebar 则直接读取文档文件夹。它遍历指定路径下的文件夹和 Markdown 文件，从每个页面中读取菜单标题，按你设定的规则过滤和排序，再以 VitePress 所需的格式输出侧边栏。导航结构由文件夹决定，配置文件也能保持简短。</p>
+</section>
 
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(35px);
+<section class="home-section" aria-labelledby="home-features">
+<p class="home-eyebrow">功能</p>
+<h2 id="home-features">文档侧边栏所需的功能一应俱全</h2>
+<p class="home-lead">近 50 个选项涵盖标题、链接、排序、过滤和分组。组合使用这些选项，可以实现以下功能。</p>
+<ul class="home-feature-list">
+<li><h3>基于文件夹生成</h3><p>每个文件夹成为一个分组，每个 Markdown 文件成为一个链接，与磁盘上的目录结构保持一致。</p></li>
+<li><h3>从页面读取标题</h3><p>从第一个 <code>h1</code>、frontmatter 字段或文件夹的 <code>index.md</code> 中读取菜单标题。</p></li>
+<li><h3>灵活排序</h3><p>可按名称、frontmatter 的 <code>order</code>、日期或标题中的数字排序，也可以使用自定义比较函数。</p></li>
+<li><h3>包含与排除</h3><p>通过 glob 模式、frontmatter 标记或文件夹深度隐藏页面，同时也会应用 VitePress 的 <code>srcExclude</code>。</p></li>
+<li><h3>可折叠分组</h3><p>决定分组是否可以折叠，以及从哪个深度或层级开始默认折叠。</p></li>
+<li><h3>多个侧边栏</h3><p>在不同路径下显示不同的侧边栏，例如 <code>/guide/</code> 和 <code>/api/</code>。</p></li>
+<li><h3>国际化</h3><p>为每个语言目录生成独立的侧边栏，与 VitePress 的 <code>locales</code> 配合使用。</p></li>
+<li><h3>按文件夹配置</h3><p>在任意文件夹中放置 <code>sidebar.config.json</code>，即可为该部分目录单独设置选项。</p></li>
+<li><h3>动态路由</h3><p>列出 <code>[param].md</code> 模板生成的页面，而不是模板本身。</p></li>
+<li><h3>标题格式化</h3><p>将连字符和下划线转换为空格，将单词首字母大写，并去掉 <code>1.</code> 这类序号前缀。</p></li>
+<li><h3>开发时自动刷新</h3><p>使用 <code>withSidebar</code> 时，新增或删除页面后侧边栏会自动刷新，无需重启开发服务器。</p></li>
+<li><h3>TypeScript 类型</h3><p>所有选项都有类型定义，可以从 <code>vitepress-sidebar/types</code> 导入。</p></li>
+</ul>
+</section>
+
+<section class="home-section" aria-labelledby="home-example">
+<p class="home-eyebrow">示例</p>
+<h2 id="home-example">从文件夹到侧边栏</h2>
+<p class="home-lead">下面是一个小型文档站点、它所需的全部侧边栏配置，以及 VitePress Sidebar 据此生成的侧边栏。结果来自实际运行这份配置的输出。</p>
+<div class="home-demo">
+<div class="home-demo-panel home-demo-files">
+<p class="home-demo-label"><span class="home-demo-step">1</span>文件结构</p>
+
+```text
+docs/
+├─ .vitepress/
+│  └─ config.js
+├─ index.md
+├─ introduction.md
+├─ guide/
+│  ├─ index.md
+│  ├─ 1.installation.md
+│  ├─ 2.configuration.md
+│  └─ 3.deployment.md
+└─ api/
+   ├─ index.md
+   ├─ client-methods.md
+   └─ server-hooks.md
+```
+
+</div>
+<div class="home-demo-panel home-demo-config">
+<p class="home-demo-label"><span class="home-demo-step">2</span>配置</p>
+
+```js
+// docs/.vitepress/config.js
+import { defineConfig } from 'vitepress';
+import { withSidebar } from 'vitepress-sidebar';
+
+export default defineConfig(
+  withSidebar(
+    { title: 'My Docs' },
+    {
+      documentRootPath: '/docs',
+      useTitleFromFileHeading: true,
+      useFolderTitleFromIndexFile: true,
+      removePrefixAfterOrdering: true,
+      manualSortFileNameByPriority: ['introduction.md', 'guide']
+    }
+  )
+);
+```
+
+</div>
+<div class="home-demo-panel home-demo-result">
+<p class="home-demo-label"><span class="home-demo-step">3</span>生成的侧边栏</p>
+<figure class="home-sidebar-preview">
+<ul aria-label="生成的侧边栏">
+<li><span class="is-heading">Introduction</span></li>
+<li><span class="is-heading">Guide</span>
+<ul>
+<li class="is-active">Installation</li>
+<li>Configuration</li>
+<li>Deployment</li>
+</ul>
+</li>
+<li><span class="is-heading">API Reference</span>
+<ul>
+<li>Client Methods</li>
+<li>Server Hooks</li>
+</ul>
+</li>
+</ul>
+<figcaption>按 VitePress 默认主题的渲染效果绘制。</figcaption>
+</figure>
+</div>
+</div>
+<details class="home-demo-output">
+<summary>查看生成的 <code>themeConfig.sidebar</code> 值</summary>
+
+```json
+[
+  { "text": "Introduction", "link": "/introduction" },
+  {
+    "text": "Guide",
+    "items": [
+      { "text": "Installation", "link": "/guide/1.installation" },
+      { "text": "Configuration", "link": "/guide/2.configuration" },
+      { "text": "Deployment", "link": "/guide/3.deployment" }
+    ]
+  },
+  {
+    "text": "API Reference",
+    "items": [
+      { "text": "Client Methods", "link": "/api/client-methods" },
+      { "text": "Server Hooks", "link": "/api/server-hooks" }
+    ]
+  }
+]
+```
+
+</details>
+
+<ul class="home-demo-notes">
+<li>菜单标题取自每个页面的第一个标题（<a href="/zhHans/guide/options#usetitlefromfileheading"><code>useTitleFromFileHeading</code></a>），分组标题取自各文件夹的 <code>index.md</code>（<a href="/zhHans/guide/options#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a>）。</li>
+<li><code>1.</code>、<code>2.</code>、<code>3.</code> 前缀决定了 <code>guide</code> 中的顺序，排序后会从标题中去掉（<a href="/zhHans/guide/options#removeprefixafterordering"><code>removePrefixAfterOrdering</code></a>）。</li>
+<li><code>introduction.md</code> 和 <code>guide</code> 排在最前面，其余按名称排序（<a href="/zhHans/guide/options#manualsortfilenamebypriority"><code>manualSortFileNameByPriority</code></a>）。</li>
+<li>首页 <code>index.md</code> 默认不会出现在菜单中（<a href="/zhHans/guide/options#includerootindexfile"><code>includeRootIndexFile</code></a>）。</li>
+</ul>
+</section>
+
+<section class="home-section" aria-labelledby="home-use-cases">
+<p class="home-eyebrow">使用场景</p>
+<h2 id="home-use-cases">为真实的文档站点而设计</h2>
+<p class="home-lead">产品手册、多语言站点、博客以及自动生成的参考页面，都可以用同一个插件搭配少量选项来实现。</p>
+<div class="home-usecases">
+<article class="home-usecase">
+<h3>为每个板块提供独立的侧边栏</h3>
+<p>为 <code>/guide/</code> 和 <code>/api/</code> 分别设置侧边栏，读者只会看到当前板块的菜单。</p>
+
+```js
+withSidebar(vitePressOptions, [
+  {
+    documentRootPath: '/docs',
+    scanStartPath: 'guide',
+    resolvePath: '/guide/'
+  },
+  {
+    documentRootPath: '/docs',
+    scanStartPath: 'api',
+    resolvePath: '/api/'
+  }
+]);
+```
+
+[阅读多侧边栏指南](/zhHans/advanced-usage/multiple-sidebars-how-to)
+
+</article>
+<article class="home-usecase">
+<h3>多语言文档</h3>
+<p>为每个语言目录生成一个侧边栏，每种译文的菜单都由它自己的文件和标题构成。</p>
+
+```js
+withSidebar(
+  vitePressOptions,
+  ['en', 'ko'].map((lang) => ({
+    documentRootPath: `/docs/${lang}`,
+    resolvePath: `/${lang}/`,
+    useTitleFromFileHeading: true
+  }))
+);
+```
+
+[阅读国际化指南](/zhHans/advanced-usage/internationalization)
+
+</article>
+<article class="home-usecase">
+<h3>最新文章置顶的博客和发布说明</h3>
+<p>在每篇文章的 frontmatter 中写上 <code>date</code>。发布新文章时，最新的一篇会自动排在菜单顶部，无需手动维护列表。</p>
+
+```js
+const sidebarOptions = {
+  sortMenusByFrontmatterDate: true,
+  sortMenusOrderByDescending: true
+};
+```
+
+[查看所有排序选项](/zhHans/guide/options#sortmenusbyfrontmatterdate)
+
+</article>
+<article class="home-usecase">
+<h3>为目录的不同部分设置不同规则</h3>
+<p><code>sidebar.config.json</code> 作用于所在的文件夹及其所有子文件夹。通过 <code>$folder</code> 键，即使没有 <code>index.md</code>，也能为文件夹本身设置名称和链接。</p>
+
+```json
+// docs/api/sidebar.config.json
+{
+  "collapsed": true,
+  "$folder": {
+    "text": "API Reference",
+    "link": "/api/overview"
   }
 }
+```
 
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(40px);
-  }
-}
-</style>
+[阅读配置文件指南](/zhHans/advanced-usage/configuration-file)
+
+</article>
+<article class="home-usecase">
+<h3>不出现在菜单中的草稿</h3>
+<p>在未完成页面的 frontmatter 中写上 <code>draft: true</code>，该页面就不会出现在侧边栏中。被 <code>srcExclude</code> 排除的页面同样不会出现。</p>
+
+```js
+const sidebarOptions = {
+  excludeFilesByFrontmatterFieldName: 'draft'
+};
+```
+
+[查看所有排除选项](/zhHans/guide/options#excludefilesbyfrontmatterfieldname)
+
+</article>
+<article class="home-usecase">
+<h3>由动态路由生成的页面</h3>
+<p><code>[pkg].md</code> 模板及其 <code>paths</code> 加载器生成的页面会出现在菜单中，每个包对应一个菜单项，而不会显示一个无法访问的模板。</p>
+
+```js
+const sidebarOptions = {
+  includeDynamicRoutes: true,
+  useTitleFromFileHeading: true
+};
+```
+
+[了解动态路由](/zhHans/guide/options#includedynamicroutes)
+
+</article>
+</div>
+</section>
+
+<section class="home-section" aria-labelledby="home-get-started">
+<p class="home-eyebrow">快速开始</p>
+<h2 id="home-get-started">三步完成设置</h2>
+<p class="home-lead">VitePress Sidebar 可在 Node.js 20 及以上版本中运行，并能直接用于现有的 VitePress 项目。</p>
+<ol class="home-steps">
+<li>
+<div class="home-step-text">
+<h3>安装软件包</h3>
+<p>将其添加为开发依赖。它只在构建站点或运行开发服务器时执行。</p>
+</div>
+<div class="home-step-code">
+
+::: code-group
+
+```sh [npm]
+npm i -D vitepress-sidebar
+```
+
+```sh [yarn]
+yarn add -D vitepress-sidebar
+```
+
+```sh [pnpm]
+pnpm i -D vitepress-sidebar
+```
+
+:::
+
+</div>
+</li>
+<li>
+<div class="home-step-text">
+<h3>包装 VitePress 配置</h3>
+<p>将现有配置和文档所在的文件夹一起传给 <code>withSidebar</code>。</p>
+</div>
+<div class="home-step-code">
+
+```js
+// docs/.vitepress/config.js
+import { defineConfig } from 'vitepress';
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  title: 'My Docs'
+};
+
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs'
+  })
+);
+```
+
+</div>
+</li>
+<li>
+<div class="home-step-text">
+<h3>编写 Markdown</h3>
+<p>像平常一样新增、删除或重命名页面。下面的页面会以 Upgrading 的名称出现在 Guide 下。每次构建时都会重新生成侧边栏，在开发服务器中新增或删除页面时也会立即刷新。</p>
+</div>
+<div class="home-step-code">
+
+```md
+<!-- docs/guide/4.upgrading.md -->
+
+# Upgrading
+
+Steps for moving to the next major version.
+```
+
+</div>
+</li>
+</ol>
+<div class="home-actions">
+<a class="home-button brand" href="/zhHans/guide/getting-started">阅读入门指南</a>
+<a class="home-button alt" href="/zhHans/guide/options">浏览所有选项</a>
+</div>
+</section>
+
+<section class="home-section" aria-labelledby="home-faq">
+<p class="home-eyebrow">FAQ</p>
+<h2 id="home-faq">常见问题</h2>
+<div class="home-faq">
+<div class="home-faq-item">
+<h3>它会替换我已经写好的侧边栏吗？</h3>
+
+会。`withSidebar` 会用生成的侧边栏替换 `themeConfig.sidebar`。如果某些页面需要固定顺序，可以把它们写入 [`manualSortFileNameByPriority`](/zhHans/guide/options#manualsortfilenamebypriority)，或在 frontmatter 中设置 `order`，无需再维护手写的列表。
+
+</div>
+<div class="home-faq-item">
+<h3>如何控制菜单的顺序？</h3>
+
+默认按文件和文件夹的名称排序。你可以把指定的名称排在最前面，按 frontmatter 的 `order` 或 `date` 排序，按标题或链接中的数字排序，也可以用 [`sortMenusByCustomFunction`](/zhHans/guide/options#sortmenusbycustomfunction) 自行决定每一次比较。
+
+</div>
+<div class="home-faq-item">
+<h3>开发服务器运行时，侧边栏会更新吗？</h3>
+
+使用 `withSidebar` 时，新增或删除 Markdown 文件、修改 `sidebar.config.json` 后，侧边栏都会自动刷新，无需手动重启。使用 `generateSidebar` 时则需要重启开发服务器。
+
+</div>
+<div class="home-faq-item">
+<h3>可以在 CommonJS 项目中使用吗？</h3>
+
+该软件包以 ES 模块形式发布。可以把 VitePress 配置文件的扩展名改为 `.mjs`，或在 `package.json` 中添加 `"type": "module"`。[故障排除页面](/zhHans/troubleshooting/err-require-esm)介绍了这两种方法。
+
+</div>
+<div class="home-faq-item">
+<h3>使用它需要什么环境？</h3>
+
+需要 Node.js 20 或更高版本（推荐 22）以及一个 VitePress 项目。安装方法请参阅[入门指南](/zhHans/guide/getting-started)。
+
+</div>
+<div class="home-faq-item">
+<h3>可以免费使用吗？</h3>
+
+可以。VitePress Sidebar 基于 MIT 许可证开源，也可以用于商业项目。源代码和问题跟踪器位于 [GitHub](https://github.com/jooy2/vitepress-sidebar)。
+
+</div>
+</div>
+</section>
+
+</div>

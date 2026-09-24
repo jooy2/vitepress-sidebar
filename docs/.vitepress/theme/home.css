@@ -1,0 +1,707 @@
+/* Styles of the home page (`layout: home`), shared by every locale. Every
+   rule is scoped under `.VPHome`, so nothing here reaches the other pages. */
+
+.VPHome {
+  --home-accent-start: #34e8b8;
+  --home-accent-end: #006cd9;
+  --home-accent-gradient: linear-gradient(135deg, var(--home-accent-start), var(--home-accent-end));
+  /* Text drawn in the accent color, dark enough for small text on the page
+     background (5.2:1 in light mode, 9:1 in dark mode). */
+  --home-accent-text: #0b6bcb;
+  --home-card-border-hover: rgb(0 108 217 / 0.45);
+  --home-card-shadow-hover: 0 12px 32px -12px rgb(0 108 217 / 0.28);
+
+  /* The gradient repeats its first color at the end, so that moving it along
+     the text never shows a seam. */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    120deg,
+    #34e8b8 0%,
+    #1aa7e0 30%,
+    #006cd9 50%,
+    #1aa7e0 70%,
+    #34e8b8 100%
+  );
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, #34b8e8 60%, #006cd9 60%);
+  --vp-home-hero-image-filter: blur(20px);
+}
+
+.dark .VPHome {
+  --home-accent-text: #5cc8f0;
+  --home-card-border-hover: rgb(52 184 232 / 0.5);
+  --home-card-shadow-hover: 0 12px 32px -12px rgb(0 0 0 / 0.6);
+}
+
+/* Korean is broken between words, like English, instead of between any two
+   syllables, which splits a word such as 자동화 across two lines. Chinese has
+   no spaces to break at, so it keeps the default. */
+.VPHome:lang(ko) {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 640px) {
+  .VPHome {
+    --vp-home-hero-image-filter: blur(35px);
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHome {
+    --vp-home-hero-image-filter: blur(40px);
+  }
+}
+
+/* Hero */
+
+.VPHome .VPHero .name {
+  background-size: 200% auto;
+  animation: home-name-flow 10s ease-in-out infinite alternate;
+}
+
+/* Marks a few words of the hero text, as `<span class="hero-highlight">`. The
+   mark is drawn under the words once, and the words themselves never move. */
+.VPHome .VPHero .hero-highlight {
+  background-image: linear-gradient(90deg, rgb(52 232 184 / 0.4), rgb(0 108 217 / 0.32));
+  background-repeat: no-repeat;
+  background-position: 0 90%;
+  background-size: 100% 0.28em;
+  animation: home-highlight-draw 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.4s both;
+}
+
+.VPHome .VPHero .image-bg {
+  animation: home-glow 8s ease-in-out infinite;
+}
+
+/* The image is positioned with `transform`, so it floats with `translate`,
+   which applies on top of it instead of replacing it. */
+.VPHome .VPHero .image-src {
+  animation: home-float 6s ease-in-out infinite;
+}
+
+@keyframes home-name-flow {
+  from {
+    background-position: 0% 50%;
+  }
+
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes home-highlight-draw {
+  from {
+    background-size: 0% 0.28em;
+  }
+}
+
+@keyframes home-glow {
+  0%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+
+  50% {
+    opacity: 0.8;
+    scale: 1.08;
+  }
+}
+
+@keyframes home-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+/* Feature cards */
+
+.VPHome .VPFeature {
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s,
+    transform 0.25s;
+}
+
+.VPHome .VPFeature:hover {
+  border-color: var(--home-card-border-hover);
+  box-shadow: var(--home-card-shadow-hover);
+  transform: translateY(-4px);
+}
+
+.VPHome .VPFeature .icon {
+  transition:
+    background-color 0.25s,
+    transform 0.3s;
+}
+
+.VPHome .VPFeature:hover .icon {
+  transform: scale(1.06) rotate(-4deg);
+}
+
+/* Sections below the feature cards */
+
+.VPHome .home-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 88px;
+  margin: 72px auto 0;
+  max-width: 1152px;
+}
+
+@media (min-width: 960px) {
+  .VPHome .home-sections {
+    gap: 112px;
+    margin-top: 96px;
+  }
+}
+
+.VPHome .home-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  color: var(--home-accent-text);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+/* Upper case only exists in the Latin part of these labels, where it would
+   turn a product name such as VitePress into VITEPRESS. */
+.VPHome:is(:lang(ko), :lang(zh)) .home-eyebrow {
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.VPHome .home-eyebrow::before {
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--home-accent-gradient);
+  width: 24px;
+  height: 3px;
+  content: '';
+}
+
+.vp-doc .home-section h2 {
+  margin: 0;
+  border-top: 0;
+  padding-top: 0;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+@media (min-width: 768px) {
+  .vp-doc .home-section h2 {
+    font-size: 32px;
+  }
+}
+
+.vp-doc .home-section .home-lead {
+  margin: 16px 0 0;
+  max-width: 760px;
+  color: var(--vp-c-text-2);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+/* Features at a glance */
+
+.vp-doc .home-feature-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 256px), 1fr));
+  gap: 12px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vp-doc .home-feature-list > li {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 14px;
+  align-content: start;
+  margin: 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background-color: var(--vp-c-bg-soft);
+  padding: 16px;
+  transition:
+    border-color 0.25s,
+    transform 0.25s;
+}
+
+.vp-doc .home-feature-list > li:hover {
+  border-color: var(--home-card-border-hover);
+  transform: translateY(-2px);
+}
+
+/* A check mark on a gradient tile. Four gradients of the same cool family are
+   rotated through the list, so neighbors differ without the grid turning into
+   a rainbow. */
+.vp-doc .home-feature-list > li::before {
+  grid-row: 1 / span 2;
+  border-radius: 9px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E")
+      center / 16px no-repeat,
+    var(--home-tile, linear-gradient(135deg, #2fd4a8, #0a7bd6));
+  width: 32px;
+  height: 32px;
+  content: '';
+}
+
+.vp-doc .home-feature-list > li:nth-child(4n + 2) {
+  --home-tile: linear-gradient(135deg, #38bdf8, #2563eb);
+}
+
+.vp-doc .home-feature-list > li:nth-child(4n + 3) {
+  --home-tile: linear-gradient(135deg, #22c7c7, #1d6fe0);
+}
+
+.vp-doc .home-feature-list > li:nth-child(4n + 4) {
+  --home-tile: linear-gradient(135deg, #5b9df9, #4f46e5);
+}
+
+.vp-doc .home-feature-list h3 {
+  margin: 0;
+  font-size: 15px;
+  letter-spacing: normal;
+  line-height: 22px;
+}
+
+.vp-doc .home-feature-list p {
+  margin: 4px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Code and result */
+
+.VPHome .home-demo {
+  display: grid;
+  grid-template-areas:
+    'files'
+    'config'
+    'result';
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+/* The configuration needs about 60 characters per line, so it keeps the wider
+   column, and the panels still read 1, 2, 3 from left to right and top to
+   bottom. */
+@media (min-width: 960px) {
+  .VPHome .home-demo {
+    grid-template-areas:
+      'files config'
+      'result config';
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2.1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .VPHome .home-demo {
+    grid-template-areas: 'files config result';
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.5fr) minmax(0, 0.75fr);
+  }
+}
+
+.VPHome .home-demo-files {
+  grid-area: files;
+}
+
+.VPHome .home-demo-config {
+  grid-area: config;
+}
+
+.VPHome .home-demo-result {
+  grid-area: result;
+}
+
+.VPHome .home-demo-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.vp-doc .home-demo-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  color: var(--vp-c-text-1);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.vp-doc .home-demo-step {
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: var(--home-accent-gradient);
+  width: 22px;
+  height: 22px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.vp-doc .home-demo-panel > div[class*='language-'] {
+  flex-grow: 1;
+  margin: 0;
+  border-radius: 12px;
+}
+
+/* A static drawing of the sidebar the default theme renders for the example,
+   with the same type scale and spacing, so the result reads at a glance. */
+.vp-doc .home-sidebar-preview {
+  flex-grow: 1;
+  margin: 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background-color: var(--vp-sidebar-bg-color);
+  padding: 20px 24px;
+}
+
+.vp-doc .home-sidebar-preview ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vp-doc .home-sidebar-preview li {
+  margin: 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.vp-doc .home-sidebar-preview li + li {
+  margin: 0;
+}
+
+.vp-doc .home-sidebar-preview > ul > li {
+  padding: 6px 0;
+}
+
+.vp-doc .home-sidebar-preview > ul > li + li {
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc .home-sidebar-preview .is-heading {
+  display: block;
+  color: var(--vp-c-text-1);
+  font-weight: 700;
+}
+
+.vp-doc .home-sidebar-preview li li {
+  padding: 4px 0;
+}
+
+.vp-doc .home-sidebar-preview .is-active {
+  color: var(--vp-c-brand-1);
+}
+
+.vp-doc .home-sidebar-preview figcaption {
+  margin-top: 12px;
+  border-top: 1px dashed var(--vp-c-divider);
+  padding-top: 12px;
+  color: var(--vp-c-text-3);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.vp-doc .home-demo-notes {
+  margin: 24px 0 0;
+  padding-left: 1.25rem;
+  max-width: 900px;
+  color: var(--vp-c-text-2);
+  font-size: 15px;
+}
+
+.vp-doc .home-demo-output {
+  margin-top: 16px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  padding: 0 16px;
+}
+
+.vp-doc .home-demo-output summary {
+  cursor: pointer;
+  padding: 12px 0;
+  color: var(--vp-c-text-1);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vp-doc .home-demo-output[open] summary {
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc .home-demo-output div[class*='language-'] {
+  margin: 16px 0;
+  border-radius: 8px;
+}
+
+/* Use cases */
+
+.VPHome .home-usecases {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.vp-doc .home-usecase {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background-color: var(--vp-c-bg);
+  padding: 24px;
+  min-width: 0;
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
+.vp-doc .home-usecase:hover {
+  border-color: var(--home-card-border-hover);
+  box-shadow: var(--home-card-shadow-hover);
+}
+
+.vp-doc .home-usecase h3 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.vp-doc .home-usecase p {
+  margin: 8px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.vp-doc .home-usecase div[class*='language-'] {
+  flex-grow: 1;
+  margin: 16px 0 0;
+  border-radius: 8px;
+}
+
+.vp-doc .home-usecase p:last-child {
+  margin-top: 16px;
+  font-weight: 600;
+}
+
+.vp-doc .home-usecase p:last-child a {
+  text-decoration: none;
+}
+
+.vp-doc .home-usecase p:last-child a::after {
+  display: inline-block;
+  margin-left: 6px;
+  content: '\2192';
+  transition: transform 0.25s;
+}
+
+.vp-doc .home-usecase p:last-child a:hover::after {
+  transform: translateX(3px);
+}
+
+/* Getting started */
+
+.vp-doc .home-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 32px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: home-step;
+}
+
+.vp-doc .home-steps > li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px 40px;
+  align-items: start;
+  margin: 0;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  padding: 24px;
+  counter-increment: home-step;
+}
+
+@media (min-width: 960px) {
+  .vp-doc .home-steps > li {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    padding: 28px 32px;
+  }
+}
+
+.vp-doc .home-step-text::before {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  background: var(--home-accent-gradient);
+  width: 36px;
+  height: 36px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  content: counter(home-step);
+}
+
+.vp-doc .home-steps h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.vp-doc .home-steps p {
+  margin: 8px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.vp-doc .home-step-code {
+  min-width: 0;
+}
+
+.vp-doc .home-step-code div[class*='language-'] {
+  margin: 0;
+  border-radius: 8px;
+}
+
+.vp-doc .home-step-code .vp-code-group {
+  margin: 0;
+}
+
+.vp-doc .home-step-code .vp-code-group .tabs {
+  margin: 0;
+  border-radius: 8px 8px 0 0;
+}
+
+.vp-doc .home-step-code .vp-code-group div[class*='language-'] {
+  border-radius: 0 0 8px 8px;
+}
+
+.VPHome .home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+/* Same shape as the hero buttons of the default theme, whose styles are scoped
+   to their own component and cannot be reused here. */
+.vp-doc .home-button {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 38px;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    color 0.25s,
+    border-color 0.25s,
+    background-color 0.25s;
+}
+
+.vp-doc .home-button.brand {
+  border-color: var(--vp-button-brand-border);
+  background-color: var(--vp-button-brand-bg);
+  color: var(--vp-button-brand-text);
+}
+
+.vp-doc .home-button.brand:hover {
+  border-color: var(--vp-button-brand-hover-border);
+  background-color: var(--vp-button-brand-hover-bg);
+  color: var(--vp-button-brand-hover-text);
+}
+
+.vp-doc .home-button.alt {
+  border-color: var(--vp-button-alt-border);
+  background-color: var(--vp-button-alt-bg);
+  color: var(--vp-button-alt-text);
+}
+
+.vp-doc .home-button.alt:hover {
+  border-color: var(--vp-button-alt-hover-border);
+  background-color: var(--vp-button-alt-hover-bg);
+  color: var(--vp-button-alt-hover-text);
+}
+
+/* Questions */
+
+.VPHome .home-faq {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 8px 48px;
+  margin-top: 24px;
+}
+
+.vp-doc .home-faq-item {
+  border-top: 1px solid var(--vp-c-divider);
+  padding: 20px 0 4px;
+}
+
+.vp-doc .home-faq-item h3 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.vp-doc .home-faq-item p {
+  margin: 8px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .VPHome .VPHero .name,
+  .VPHome .VPHero .hero-highlight,
+  .VPHome .VPHero .image-bg,
+  .VPHome .VPHero .image-src {
+    animation: none;
+  }
+
+  .VPHome .VPFeature,
+  .VPHome .VPFeature .icon,
+  .vp-doc .home-feature-list > li,
+  .vp-doc .home-usecase,
+  .vp-doc .home-usecase p:last-child a::after {
+    transition: none;
+  }
+
+  .VPHome .VPFeature:hover,
+  .VPHome .VPFeature:hover .icon,
+  .vp-doc .home-feature-list > li:hover {
+    transform: none;
+  }
+}
