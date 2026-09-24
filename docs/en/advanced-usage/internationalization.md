@@ -42,7 +42,7 @@ Various interface (layout) texts on a VitePress page can provide language-specif
   "ko": {
     "lang": "ko-KR",
     "label": "한국어",
-    "description": "VitePress Sidebar는 번거로운 작업 없이 한번의 설정만으로 사이드바 메뉴를 자니다. 수많은 문서에 대한 분류를 손쉽게 만들어 시간을 절약하세요.",
+    "description": "VitePress Sidebar는 번거로운 작업 없이 한번의 설정만으로 사이드바 메뉴를 자동으로 생성하는 VitePress 플러그인입니다. 수많은 문서에 대한 분류를 손쉽게 만들어 시간을 절약하세요.",
     "themeConfig": {
       "docFooter": {
         "prev": "이전",
