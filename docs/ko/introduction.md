@@ -11,6 +11,9 @@ description: '폴더와 마크다운 파일로 VitePress 사이드바를 만들�
 - ⚡️ 가벼운 번들 파일 크기
 - ⚡️ [다중 사이드바](https://vitepress.dev/ko/reference/default-theme-sidebar#multiple-sidebars) 지원
 - ⚡️ [Frontmatter](https://vitepress.dev/ko/guide/frontmatter) 지원
+- ⚡️ 폴더별 [설정 파일](/ko/advanced-usage/configuration-file)(`sidebar.config.json`) 지원
+- ⚡️ [동적 라우트](https://vitepress.dev/ko/guide/routing#dynamic-routes) 지원
+- ⚡️ 개발 서버에서 페이지를 추가하거나 지우면 사이드바가 자동으로 갱신됩니다.
 - ⚡️ [TypeScript](https://www.typescriptlang.org) 지원
 - ⚡️ 정렬, 특수 문자 변환, 파일 및 폴더 필터 등을 위한 메뉴를 사용자 지정하세요!
 

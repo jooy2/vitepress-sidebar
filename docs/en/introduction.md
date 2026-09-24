@@ -8,9 +8,12 @@ description: 'What VitePress Sidebar is: a VitePress plugin that builds the side
 
 - ⚡️ Optimized for the latest version of **VitePress**
 - ⚡️ Easy to use, lots of options to customize to your liking
-- ⚡️ Lightweight bundle file size, zero dependencies
+- ⚡️ Lightweight bundle file size
 - ⚡️ [Multiple Sidebars](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) support
 - ⚡️ [Frontmatter](https://vitepress.dev/guide/frontmatter) support
+- ⚡️ Per-folder [configuration file](/advanced-usage/configuration-file) (`sidebar.config.json`) support
+- ⚡️ [Dynamic routes](https://vitepress.dev/guide/routing#dynamic-routes) support
+- ⚡️ The sidebar refreshes in the dev server when a page is added or removed
 - ⚡️ [TypeScript](https://www.typescriptlang.org) support
 - ⚡️ Customize menus for sorting, special character conversion, file and folder filters, and more!
 

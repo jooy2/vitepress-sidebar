@@ -11,6 +11,9 @@ description: 'VitePress Sidebar 是一款根据文件夹和 Markdown 文件生�
 - ⚡️ 轻量级捆绑文件大小
 - ⚡️ 支持 [多个侧边栏](https://vitepress.dev/zh/reference/default-theme-sidebar#multiple-sidebars)
 - ⚡️ 支持[Frontmatter](https://vitepress.dev/zh/guide/frontmatter)
+- ⚡️ 支持按文件夹放置的[配置文件](/zhHans/advanced-usage/configuration-file)（`sidebar.config.json`）
+- ⚡️ 支持[动态路由](https://vitepress.dev/zh/guide/routing#dynamic-routes)
+- ⚡️ 在开发服务器中新增或删除页面时，侧边栏会自动刷新
 - ⚡️ 支持[TypeScript](https://www.typescriptlang.org/zh/)
 - ⚡️ 自定义分类、特殊字符转换、文件和文件夹过滤器等菜单！
 
