@@ -1,3 +1,7 @@
+---
+description: 'VitePress Sidebar 是一款根据文件夹和 Markdown 文件生成 VitePress 侧边栏的插件。本页介绍它的主要功能和实际应用。'
+---
+
 # 导言
 
 **VitePress Sidebar**是 **[VitePress](https://vitepress.dev/zh/)** 的一个插件,可通过简单的设置自动配置和管理页面的侧边栏。

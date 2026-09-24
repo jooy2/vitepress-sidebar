@@ -1,3 +1,7 @@
+---
+description: '使用 sidebar.config.json 按文件夹配置 VitePress Sidebar，通过 $folder 设置文件夹的名称和顺序，并覆盖代码中传入的选项。'
+---
+
 # 配置文件
 
 您无需将所有选项都传递给 `withSidebar` 或 `generateSidebar`，只需在项目中放置一个 `sidebar.config.json` 文件，VitePress Sidebar 就会自动识别它。

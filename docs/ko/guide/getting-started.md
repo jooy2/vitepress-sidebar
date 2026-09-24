@@ -1,5 +1,6 @@
 ---
 order: 1
+description: 'VitePress Sidebar를 설치하고, 문서를 읽어 사이드바를 만드는 방식과 withSidebar, generateSidebar 중 무엇을 쓸지 알아봅니다.'
 ---
 
 # 시작하기

@@ -1,5 +1,6 @@
 ---
 order: 2
+description: 'VitePress Sidebar 所有选项的参考，包括默认值、类型和示例，涵盖路径、标题、链接、排序、过滤和分组。'
 ---
 
 # 侧边栏选项

@@ -1,3 +1,7 @@
+---
+description: 'Generate one sidebar per language directory with VitePress Sidebar, together with the locales of VitePress and the vitepress-i18n plugin.'
+---
+
 # Internationalization
 
 This page describes how to achieve internationalization (i18n) using VitePress Sidebar.

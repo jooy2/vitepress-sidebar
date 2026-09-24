@@ -1,5 +1,6 @@
 ---
 order: 2
+description: 'Reference for every VitePress Sidebar option, with defaults, types, and examples for paths, titles, links, sorting, filtering, and grouping.'
 ---
 
 # Sidebar Options

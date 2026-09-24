@@ -1,3 +1,7 @@
+---
+description: 'VitePress Sidebar로 언어 디렉터리마다 사이드바를 만들고, VitePress의 locales, vitepress-i18n 플러그인과 함께 쓰는 방법입니다.'
+---
+
 # 국제화
 
 이 페이지에서는 VitePress Sidebar를 사용하여 i18n (internationalization)을 달성하는 방법을 기술합니다.

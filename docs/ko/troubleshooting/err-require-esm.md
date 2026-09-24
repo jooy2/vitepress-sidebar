@@ -1,5 +1,6 @@
 ---
 title: 'CommonJS: ERR_REQUIRE_ESM'
+description: 'CommonJS 프로젝트에서 VitePress Sidebar를 쓸 때 나는 ERR_REQUIRE_ESM 오류를 설정 파일 확장자나 package.json의 type으로 해결합니다.'
 ---
 
 # `CommonJS: ERR_REQUIRE_ESM`

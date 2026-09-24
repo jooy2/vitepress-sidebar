@@ -1,5 +1,6 @@
 ---
 order: 1
+description: 'Install VitePress Sidebar, learn how it scans your documents, and choose between withSidebar and generateSidebar to generate the VitePress sidebar.'
 ---
 
 # Getting Started

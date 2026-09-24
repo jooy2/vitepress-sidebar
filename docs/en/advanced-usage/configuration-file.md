@@ -1,3 +1,7 @@
+---
+description: 'Configure VitePress Sidebar per folder with a sidebar.config.json file, name and order folders with $folder, and override the options passed in code.'
+---
+
 # Configuration File
 
 Instead of passing every option to `withSidebar` or `generateSidebar`, you can place a `sidebar.config.json` file in your project and let VitePress Sidebar pick it up automatically.

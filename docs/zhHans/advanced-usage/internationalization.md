@@ -1,3 +1,7 @@
+---
+description: '使用 VitePress Sidebar 为每个语言目录生成侧边栏，并与 VitePress 的 locales 和 vitepress-i18n 插件配合使用。'
+---
+
 # 国际化
 
 本页介绍如何使用 VitePress Sidebar 实现国际化（i18n）。

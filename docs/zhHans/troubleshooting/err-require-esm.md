@@ -1,5 +1,6 @@
 ---
 title: 'CommonJS: ERR_REQUIRE_ESM'
+description: '在 CommonJS 项目中使用 VitePress Sidebar 时出现 ERR_REQUIRE_ESM 错误，可以将配置文件改为 .mjs 或在 package.json 中设置 type 来解决。'
 ---
 
 # `CommonJS: ERR_REQUIRE_ESM`

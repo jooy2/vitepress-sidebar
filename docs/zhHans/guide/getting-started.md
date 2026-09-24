@@ -1,5 +1,6 @@
 ---
 order: 1
+description: '安装 VitePress Sidebar，了解它如何扫描文档，以及如何在 withSidebar 和 generateSidebar 之间做出选择。'
 ---
 
 # 入门

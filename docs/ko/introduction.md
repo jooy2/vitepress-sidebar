@@ -1,3 +1,7 @@
+---
+description: '폴더와 마크다운 파일로 VitePress 사이드바를 만들어 주는 플러그인 VitePress Sidebar를 소개하고, 주요 기능과 실제 사용 사례를 정리했습니다.'
+---
+
 # 소개
 
 **VitePress Sidebar**는 번거로운 작업 없이 한번의 설정만으로 사이드바 메뉴를 자동으로 생성하는 **[VitePress](https://vitepress.dev/ko/)** 플러그인입니다. 수많은 문서에 대한 분류를 손쉽게 만들어 시간을 절약하세요.

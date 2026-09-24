@@ -1,3 +1,7 @@
+---
+description: 'What VitePress Sidebar is: a VitePress plugin that builds the sidebar from your folders and Markdown files, with its main features and real-world use.'
+---
+
 # Introduction
 
 **VitePress Sidebar** is a plugin for **[VitePress](https://vitepress.dev)** that automatically configures and manages the sidebar of your page with simple settings.

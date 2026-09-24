@@ -1,3 +1,7 @@
+---
+description: 'sidebar.config.json 파일로 폴더마다 VitePress Sidebar 옵션을 정하고, $folder로 폴더의 이름과 순서를 지정하는 방법입니다.'
+---
+
 # 설정 파일
 
 모든 옵션을 `withSidebar`나 `generateSidebar`에 전달하는 대신, 프로젝트에 `sidebar.config.json` 파일을 두면 VitePress Sidebar가 이를 자동으로 인식합니다.

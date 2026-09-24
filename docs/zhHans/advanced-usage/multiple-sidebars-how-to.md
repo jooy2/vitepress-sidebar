@@ -1,3 +1,7 @@
+---
+description: '向 VitePress Sidebar 传入多个选项对象，为 /guide/、/api/ 等不同的 URL 路径显示不同的侧边栏。'
+---
+
 # 多侧边栏操作方法
 
 多侧边栏是一项允许根据特定 URI 路径显示不同侧边栏菜单的功能。

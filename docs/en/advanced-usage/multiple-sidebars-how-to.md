@@ -1,3 +1,7 @@
+---
+description: 'Show a different sidebar for each URL path, such as /guide/ and /api/, by passing several option objects to VitePress Sidebar.'
+---
+
 # Multiple Sidebars How-to
 
 Multiple sidebars is a feature that allows you to display different sidebar menus based on a specific URI path.
