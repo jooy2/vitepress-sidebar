@@ -10,6 +10,8 @@
 - ⚡️ [Multiple Sidebars](https://vitepress.dev/reference/default-theme-sidebar#multiple-sidebars) support
 - ⚡️ [Frontmatter](https://vitepress.dev/guide/frontmatter) support
 - ⚡️ Per-folder [configuration file](https://vitepress-sidebar.cdget.com/advanced-usage/configuration-file) (`sidebar.config.json`) support
+- ⚡️ [Dynamic routes](https://vitepress.dev/guide/routing#dynamic-routes) support
+- ⚡️ The sidebar refreshes in the dev server when a page is added or removed
 - ⚡️ [TypeScript](https://www.typescriptlang.org) support
 - ⚡️ Customize menus for sorting, special character conversion, file and folder filters, and more!
 
