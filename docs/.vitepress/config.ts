@@ -1,3 +1,7 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import matter from 'gray-matter';
 import { withSidebar } from '../../dist/index.js';
 import packageJson from '../../package.json' with { type: 'json' };
 import { defineConfig, UserConfig } from 'vitepress';
@@ -11,6 +15,7 @@ const supportLocales: string[] = [defaultLocale, 'ko', 'zhHans'];
 const editLinkPattern = `${packageJson.repository.url}/edit/main/docs/:path`;
 const siteUrl: string = packageJson.homepage;
 const siteName: string = 'VitePress Sidebar';
+const docsDir: string = fileURLToPath(new URL('..', import.meta.url));
 
 // Open Graph writes a locale with an underscore, unlike the `lang` of a page.
 const openGraphLocales: Record<string, string> = {
@@ -48,6 +53,25 @@ const toPageUrl = (relativePath: string): string => {
   const route = relativePath.replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '');
 
   return `${siteUrl}/${route}`;
+};
+
+/** Whether the `head` of a frontmatter asks search engines not to index the page. */
+const isNoIndex = (head: unknown): boolean =>
+  Array.isArray(head) &&
+  head.some(
+    ([tag, attrs]) =>
+      tag === 'meta' && attrs?.name === 'robots' && /\bnoindex\b/.test(attrs.content ?? '')
+  );
+
+/**
+ * Whether the page a sitemap entry points to asks not to be indexed. The entry
+ * only carries the address, so the page is read back from its source file.
+ */
+const isNoIndexUrl = (url: string): boolean => {
+  const { locale, path } = splitLocale(`${url.replace(/(^|\/)$/, '$1index')}.md`);
+  const filePath = join(docsDir, locale, path);
+
+  return existsSync(filePath) && isNoIndex(matter.read(filePath).data.head);
 };
 
 const commonSidebarConfig: VitePressSidebarOptions = {
@@ -153,7 +177,10 @@ const vitePressConfig: UserConfig = {
     ['link', { rel: 'shortcut icon', href: '/favicon.ico' }]
   ],
   sitemap: {
-    hostname: packageJson.homepage
+    hostname: packageJson.homepage,
+    // A page kept out of search results is kept out of the sitemap as well, so
+    // the two never ask search engines for opposite things.
+    transformItems: (items) => items.filter((item) => !isNoIndexUrl(item.url))
   },
   transformPageData(pageData) {
     const { locale, path } = splitLocale(pageData.relativePath);
@@ -172,7 +199,6 @@ const vitePressConfig: UserConfig = {
     const { locale } = splitLocale(pageData.relativePath);
     const pageUrl = toPageUrl(pageData.relativePath);
     const head: HeadConfig[] = [
-      ['link', { rel: 'canonical', href: pageUrl }],
       ['meta', { property: 'og:type', content: 'website' }],
       ['meta', { property: 'og:site_name', content: siteName }],
       ['meta', { property: 'og:title', content: title }],
@@ -185,6 +211,12 @@ const vitePressConfig: UserConfig = {
       ['meta', { property: 'og:image:alt', content: `${siteName} logo` }],
       ['meta', { name: 'twitter:card', content: 'summary' }]
     ];
+
+    // A canonical link names the address a page should be indexed under, which
+    // means nothing for a page that asks not to be indexed at all.
+    if (!isNoIndex(pageData.frontmatter.head)) {
+      head.unshift(['link', { rel: 'canonical', href: pageUrl }]);
+    }
 
     return head;
   },
