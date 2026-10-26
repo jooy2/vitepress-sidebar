@@ -372,6 +372,16 @@ export function readConfigFile(
       return;
     }
 
+    // The document root decides which configuration files are read, so a file
+    // below it cannot move it, not even the file of the folder a sidebar
+    // starts its scan from.
+    if (key === 'documentRootPath' && isBelowDocumentRoot) {
+      printWarning(
+        `'documentRootPath' is only read from a configuration file in the current working directory, so it was ignored in '${filePath}'.`
+      );
+      return;
+    }
+
     if (!allowRootOnlyOptions && optionSpec.rootOnly) {
       printWarning(
         `'${key}' can only be used in a configuration file at or above the document root, so it was ignored in '${filePath}'.`

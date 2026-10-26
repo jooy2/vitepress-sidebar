@@ -325,4 +325,40 @@ describe('Test: `sidebar.config.json`', () => {
       'expected no warning about `$folder`'
     );
   });
+
+  it('`documentRootPath` below the document root is ignored, also where a scan starts', () => {
+    const documentRootPath = `${TEST_DIR_BASE}/config-file-document-root`;
+    const isDocumentRootWarning = (message: string): boolean =>
+      message.includes(`'documentRootPath' is only read from a configuration file`);
+    let result;
+
+    // `guide/sidebar.config.json` names another document root, which used to
+    // replace the one the scan of `guide` is built from
+    const warnings = captureWarnings(() => {
+      result = generateSidebar({
+        documentRootPath,
+        scanStartPath: 'guide',
+        resolvePath: '/guide/'
+      });
+    });
+
+    assert.deepEqual(result, [
+      {
+        text: 'a',
+        link: 'a'
+      }
+    ]);
+    assert.equal(warnings.filter(isDocumentRootWarning).length, 1);
+
+    // Read as a folder of the first sidebar and as the scan root of the
+    // second one, and reported once
+    const splitWarnings = captureWarnings(() =>
+      generateSidebar({
+        documentRootPath,
+        splitSidebarByFolder: true
+      })
+    );
+
+    assert.equal(splitWarnings.filter(isDocumentRootWarning).length, 1);
+  });
 });
