@@ -116,6 +116,7 @@ const OPTION_SPECS = {
   resolvePath: { type: 'string', rootOnly: true },
   basePath: { type: 'string', rootOnly: true },
   splitSidebarByFolder: { type: 'boolean', rootOnly: true },
+  splitSidebarRootGroupText: { type: 'string', rootOnly: true },
   rootGroupText: { type: 'string', rootOnly: true },
   rootGroupLink: { type: 'string', rootOnly: true },
   rootGroupCollapsed: { type: 'boolean', rootOnly: true },

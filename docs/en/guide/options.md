@@ -23,12 +23,13 @@ Every option at a glance. Click a name to jump to its full description.
 <tr><td><a href="#basepath"><code>basePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#splitsidebarbyfolder"><code>splitSidebarByFolder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
 <tr><td><a href="#followsymlinks"><code>followSymlinks</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
-<tr><td rowspan="6">Grouping</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td rowspan="7">Grouping</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
 <tr><td><a href="#collapsedepth"><code>collapseDepth</code></a></td><td><code>number</code></td><td><code>1</code></td><td>✅</td></tr>
 <tr><td><a href="#collapsefromlevel"><code>collapseFromLevel</code></a></td><td><code>number</code></td><td><code>undefined</code></td><td>✅</td></tr>
 <tr><td><a href="#rootgrouptext"><code>rootGroupText</code></a></td><td><code>string</code></td><td><code>'Table of Contents'</code></td><td>⚠️</td></tr>
 <tr><td><a href="#rootgrouplink"><code>rootGroupLink</code></a></td><td><code>string</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#rootgroupcollapsed"><code>rootGroupCollapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#splitsidebarrootgrouptext"><code>splitSidebarRootGroupText</code></a></td><td><code>string</code></td><td><code>'◀ :title'</code></td><td>⚠️</td></tr>
 <tr><td rowspan="5">Getting Menu Title</td><td><a href="#usetitlefromfileheading"><code>useTitleFromFileHeading</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usetitlefromfrontmatter"><code>useTitleFromFrontmatter</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
@@ -144,7 +145,7 @@ This option can be utilized if the path has changed due to VitePress's rewrite o
 
 This option is used to configure multiple sidebars. You can learn more on the **[Multiple sidebars](/advanced-usage/multiple-sidebars-how-to)** page.
 
-If the value is `true`, every folder gets a sidebar of its own instead of a collapsible group. The sidebar of the scanned folder lists its files and folders, and opening one of those folders replaces the sidebar with the sidebar of that folder. The root group of a folder sidebar is titled after the folder and links back to the sidebar above it, so a deep folder structure can be walked down one level at a time and back up again.
+If the value is `true`, every folder gets a sidebar of its own instead of a collapsible group. The sidebar of the scanned folder lists its files and folders, and opening one of those folders replaces the sidebar with the sidebar of that folder. The root group of a folder sidebar is titled after the folder, with `◀` in front, and links back to the sidebar above it, so a deep folder structure can be walked down one level at a time and back up again.
 
 ```javascript
 // `.vitepress/config.js`
@@ -163,7 +164,7 @@ Note the following:
 - [`excludeByFolderDepth`](#excludebyfolderdepth) decides where a sidebar ends, and is `2` unless you set it: each sidebar then holds one level, the files and folders of its own folder. With `3`, a sidebar also lists what its folders hold, and the folders below them get a sidebar of their own.
 - A folder is opened through the link it has in the sidebar above, so [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile) is `true` unless you set it, and a folder links to its `index.md`. A folder that has no link of its own, such as one without an `index.md`, links to the first page of its sidebar, and a folder that holds no page at all is left out. When that first page is in a folder below it, the sidebar of the folder is never shown, so the sidebars below it link back one level further up.
 - The `index.md` of a folder is listed in the sidebar of that folder, because it is the page the folder opens on. In the first sidebar, `includeRootIndexFile` still decides.
-- The root group of a folder sidebar takes the title the folder has in the sidebar above. Change it with `$folder.text` in a [configuration file](/advanced-usage/configuration-file).
+- The root group of a folder sidebar takes the title the folder has in the sidebar above, which `$folder.text` in a [configuration file](/advanced-usage/configuration-file) changes. [`splitSidebarRootGroupText`](#splitsidebarrootgrouptext) decides what is written around it.
 - The path of each sidebar is [`resolvePath`](#resolvepath) followed by the path of its folder, and `resolvePath` is the path of `scanStartPath` unless you set it. [`basePath`](#basepath) is extended the same way when you set it. With [`removePrefixFromLink`](#removeprefixfromlink), the paths lose their prefix as the links do.
 - A sidebar you pass yourself for the path of a folder is used instead of the one the split would make there.
 - The result always holds one sidebar for each path, even when a single set of options is passed.
@@ -770,6 +771,24 @@ A link that starts with `/`, or a full URL, is used as written. In [multiple sid
 For more information about rootGroup, see the `rootGroupText` option description. The `rootGroupCollapsed` option sets whether child items of the root group are expanded or not. If specified with the default value of `null` or `undefined`, the expand/collapse button is not displayed. If the value is `true`, the child items are displayed collapsed, and if `false`, they are expanded.
 
 This option only applies to top-level item. For general item collapsibility, see the `collapsed` option.
+
+## `splitSidebarRootGroupText`
+
+- Type: `string`
+- Default: `'◀ :title'`
+
+The name of the root group of every sidebar that [`splitSidebarByFolder`](#splitsidebarbyfolder) makes for a folder. `:title` is replaced with the title of the folder, the way `:title` works in the [`titleTemplate`](https://vitepress.dev/reference/site-config#titletemplate) of VitePress. The group links back to the sidebar above, which the `◀` of the default tells.
+
+```javascript
+withSidebar(vitePressOptions, {
+  documentRootPath: '/docs',
+  splitSidebarByFolder: true,
+  // `Back from Guide` in the sidebar of `guide`
+  splitSidebarRootGroupText: 'Back from :title'
+});
+```
+
+A value without `:title` is used as it is, so every folder sidebar gets the same name.
 
 ## `useFolderLinkFromSameNameSubFile`
 

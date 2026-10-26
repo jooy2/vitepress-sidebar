@@ -280,7 +280,7 @@ export default defineConfig(
 이렇게 설정하면 사이드바가 세 개 생깁니다.
 
 - `/`와 `/intro`에서는 `intro`와 `backend`가 나옵니다.
-- `/backend/` 아래 페이지에서는 `backend`의 `index.md`, `api`, `php`가 나옵니다. 이 항목들은 `backend` 제목을 쓴 그룹 안에 있고, 그룹은 `/`로 돌아가는 링크를 가집니다.
-- `/backend/php/` 아래 페이지에서는 `php`의 파일이 나옵니다. 그룹은 `php` 제목을 쓰고 `backend`로 돌아가는 링크를 가집니다.
+- `/backend/` 아래 페이지에서는 `backend`의 `index.md`, `api`, `php`가 나옵니다. 이 항목들은 `◀` 뒤에 `backend`의 제목을 붙인 그룹 안에 있고, 그룹은 `/`로 돌아가는 링크를 가집니다.
+- `/backend/php/` 아래 페이지에서는 `php`의 파일이 나옵니다. 그룹 이름은 `◀` 뒤에 `php`의 제목을 붙인 것이고, 그룹은 `backend`로 돌아가는 링크를 가집니다.
 
-`manualSortFileNameByPriority`는 각 폴더의 `index.md`를 사이드바 맨 위에 둡니다. 사이드바마다 어느 깊이까지 나오는지, `index.md`가 없는 폴더는 어떻게 열리는지는 [`splitSidebarByFolder`](/ko/guide/options#splitsidebarbyfolder) 옵션 설명을 참고하세요.
+`manualSortFileNameByPriority`는 각 폴더의 `index.md`를 사이드바 맨 위에 둡니다. 그룹 이름은 [`splitSidebarRootGroupText`](/ko/guide/options#splitsidebarrootgrouptext)로 바꿀 수 있습니다. 사이드바마다 어느 깊이까지 나오는지, `index.md`가 없는 폴더는 어떻게 열리는지는 [`splitSidebarByFolder`](/ko/guide/options#splitsidebarbyfolder) 옵션 설명을 참고하세요.

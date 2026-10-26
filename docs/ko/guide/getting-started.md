@@ -204,6 +204,7 @@ export default defineConfig(
     // rootGroupText: 'Contents',
     // rootGroupLink: 'https://github.com/jooy2',
     // rootGroupCollapsed: false,
+    // splitSidebarRootGroupText: '◀ :title',
     //
     // ============ [ GETTING MENU TITLE ] ============
     // useTitleFromFileHeading: false,

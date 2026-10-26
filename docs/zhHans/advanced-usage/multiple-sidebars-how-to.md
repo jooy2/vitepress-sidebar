@@ -280,7 +280,7 @@ export default defineConfig(
 这样会生成三个侧边栏：
 
 - 在 `/` 和 `/intro` 上，侧边栏列出 `intro` 和 `backend`。
-- 在 `/backend/` 下的页面上，侧边栏列出 `backend` 的 `index.md`、`api` 和 `php`，它们位于以 `backend` 为标题、链接回 `/` 的分组中。
-- 在 `/backend/php/` 下的页面上，侧边栏列出 `php` 中的文件，它们位于以 `php` 为标题、链接回 `backend` 的分组中。
+- 在 `/backend/` 下的页面上，侧边栏列出 `backend` 的 `index.md`、`api` 和 `php`，它们位于标题为 `◀` 加上 `backend` 的标题、并链接回 `/` 的分组中。
+- 在 `/backend/php/` 下的页面上，侧边栏列出 `php` 中的文件，它们位于标题为 `◀` 加上 `php` 的标题、并链接回 `backend` 的分组中。
 
-`manualSortFileNameByPriority` 会让每个文件夹的 `index.md` 显示在其侧边栏的最上方。关于每个侧边栏显示到多深、没有 `index.md` 的文件夹如何打开，请参阅 [`splitSidebarByFolder`](/zhHans/guide/options#splitsidebarbyfolder) 选项。
+`manualSortFileNameByPriority` 会让每个文件夹的 `index.md` 显示在其侧边栏的最上方，[`splitSidebarRootGroupText`](/zhHans/guide/options#splitsidebarrootgrouptext) 则可以修改这些分组的名称。关于每个侧边栏显示到多深、没有 `index.md` 的文件夹如何打开，请参阅 [`splitSidebarByFolder`](/zhHans/guide/options#splitsidebarbyfolder) 选项。

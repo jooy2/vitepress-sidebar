@@ -55,6 +55,13 @@ import {
 const ROOT_GROUP_DEFAULT_TEXT = 'Table of Contents';
 
 /**
+ * Name the root group of a folder sidebar is given when
+ * `splitSidebarRootGroupText` does not name one. The arrow tells that the group
+ * links back to the sidebar above, rather than to the folder it is named after.
+ */
+const SPLIT_ROOT_GROUP_DEFAULT_TEXT = '◀ :title';
+
+/**
  * Key a folder item is marked with when `splitSidebarByFolder` moves its
  * contents into a sidebar of its own. It holds a `SplitFolderMark`.
  *
@@ -939,6 +946,15 @@ function resolveLinksAgainstBase(items: SidebarItem[], base: string): SidebarIte
   }));
 }
 
+/**
+ * Puts the title of a folder in place of every `:title` of `template`, the way
+ * the `titleTemplate` of VitePress puts the title of a page in its own.
+ */
+function formatSplitRootGroupText(template: string, title: string): string {
+  // A function, so that a `$` in the title is never read as a pattern
+  return template.replace(/:title/g, () => title);
+}
+
 /** A path with a single `/` at either end, the way a sidebar names a folder. */
 function toDirectoryPath(path: string): string {
   return `/${path}/`.replace(/\/{2,}/g, '/');
@@ -1484,7 +1500,10 @@ function buildSidebar(
               // root group is only made when one of its options asks for one,
               // and a name given to every option set would ask for one always.
               text: split
-                ? split.item.text
+                ? formatSplitRootGroupText(
+                    resolvedOptionItem.splitSidebarRootGroupText ?? SPLIT_ROOT_GROUP_DEFAULT_TEXT,
+                    split.item.text
+                  )
                 : (resolvedOptionItem.rootGroupText ?? ROOT_GROUP_DEFAULT_TEXT),
               ...(resolvedOptionItem.rootGroupLink
                 ? { link: resolvedOptionItem.rootGroupLink }

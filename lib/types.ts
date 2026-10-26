@@ -7,6 +7,7 @@ export declare interface VitePressSidebarOptions {
   resolvePath?: string;
   basePath?: string;
   splitSidebarByFolder?: boolean;
+  splitSidebarRootGroupText?: string;
   collapsed?: boolean | null | undefined;
   collapseDepth?: number;
   collapseFromLevel?: number;

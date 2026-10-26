@@ -23,12 +23,13 @@ description: 'VitePress Sidebar 所有选项的参考，包括默认值、类型
 <tr><td><a href="#basepath"><code>basePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#splitsidebarbyfolder"><code>splitSidebarByFolder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
 <tr><td><a href="#followsymlinks"><code>followSymlinks</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
-<tr><td rowspan="6">分组</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td rowspan="7">分组</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
 <tr><td><a href="#collapsedepth"><code>collapseDepth</code></a></td><td><code>number</code></td><td><code>1</code></td><td>✅</td></tr>
 <tr><td><a href="#collapsefromlevel"><code>collapseFromLevel</code></a></td><td><code>number</code></td><td><code>undefined</code></td><td>✅</td></tr>
 <tr><td><a href="#rootgrouptext"><code>rootGroupText</code></a></td><td><code>string</code></td><td><code>'Table of Contents'</code></td><td>⚠️</td></tr>
 <tr><td><a href="#rootgrouplink"><code>rootGroupLink</code></a></td><td><code>string</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#rootgroupcollapsed"><code>rootGroupCollapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#splitsidebarrootgrouptext"><code>splitSidebarRootGroupText</code></a></td><td><code>string</code></td><td><code>'◀ :title'</code></td><td>⚠️</td></tr>
 <tr><td rowspan="5">获取菜单标题</td><td><a href="#usetitlefromfileheading"><code>useTitleFromFileHeading</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usetitlefromfrontmatter"><code>useTitleFromFrontmatter</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
@@ -144,7 +145,7 @@ description: 'VitePress Sidebar 所有选项的参考，包括默认值、类型
 
 此选项用于配置多个侧边栏。您可以在 **[多个侧边栏](/zhHans/advanced-usage/multiple-sidebars-how-to)** 页面上了解更多信息。
 
-如果值为 `true`，则不再把文件夹显示为可折叠的分组，而是为每个文件夹单独生成一个侧边栏。被扫描文件夹的侧边栏列出其中的文件和子文件夹，打开其中某个子文件夹后，侧边栏会切换为该文件夹的侧边栏。文件夹侧边栏的根分组使用文件夹的标题，并链接回上一级侧边栏，因此可以在很深的文件夹结构中逐级向下浏览，再逐级返回。
+如果值为 `true`，则不再把文件夹显示为可折叠的分组，而是为每个文件夹单独生成一个侧边栏。被扫描文件夹的侧边栏列出其中的文件和子文件夹，打开其中某个子文件夹后，侧边栏会切换为该文件夹的侧边栏。文件夹侧边栏的根分组使用前面带有 `◀` 的文件夹标题，并链接回上一级侧边栏，因此可以在很深的文件夹结构中逐级向下浏览，再逐级返回。
 
 ```javascript
 // `.vitepress/config.js`
@@ -163,7 +164,7 @@ export default defineConfig(
 - [`excludeByFolderDepth`](#excludebyfolderdepth) 决定侧边栏在哪里结束，未设置时为 `2`：每个侧边栏只包含一层，即其所属文件夹中的文件和子文件夹。设置为 `3` 时，侧边栏还会列出子文件夹中的内容，再往下的文件夹才会拥有自己的侧边栏。
 - 文件夹通过它在上一级侧边栏中的链接打开，因此未设置时 [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile) 为 `true`，文件夹会链接到其 `index.md`。没有自己链接的文件夹（例如没有 `index.md` 的文件夹）会链接到其侧边栏中的第一个页面，不包含任何页面的文件夹则会被移除。如果这个第一个页面位于更深的子文件夹中，该文件夹的侧边栏永远不会显示，因此其下方的侧边栏会链接回再上一级的侧边栏。
 - 文件夹的 `index.md` 会列在该文件夹的侧边栏中，因为它是打开文件夹时显示的页面。第一个侧边栏仍由 `includeRootIndexFile` 决定。
-- 文件夹侧边栏的根分组标题与该文件夹在上一级侧边栏中的标题相同。可以通过[配置文件](/zhHans/advanced-usage/configuration-file)中的 `$folder.text` 修改。
+- 文件夹侧边栏的根分组使用该文件夹在上一级侧边栏中的标题，该标题可以通过[配置文件](/zhHans/advanced-usage/configuration-file)中的 `$folder.text` 修改，标题前后的文字则由 [`splitSidebarRootGroupText`](#splitsidebarrootgrouptext) 决定。
 - 每个侧边栏的路径是 [`resolvePath`](#resolvepath) 加上其文件夹的路径，未设置 `resolvePath` 时使用 `scanStartPath` 的路径。设置了 [`basePath`](#basepath) 时，它也会以同样的方式扩展。使用 [`removePrefixFromLink`](#removeprefixfromlink) 时，路径会像链接一样去掉前缀。
 - 如果您为某个文件夹的路径自行传入了侧边栏，则使用该侧边栏，而不是拆分生成的侧边栏。
 - 即使只传入一组选项，结果也始终是每个路径对应一个侧边栏。
@@ -770,6 +771,24 @@ rootGroup 指定整个菜单组,而与目录结构无关。这将使用一个菜
 有关 rootGroup 的更多信息，请参阅 `rootGroupText` 选项说明。`rootGroupCollapsed`选项设置是否展开根组的子项。如果指定的默认值为 `null` 或 `undefined`，则不显示展开/折叠按钮。如果该值为 `true`，子项将以折叠方式显示；如果为 `false`，子项将以展开方式显示。
 
 此选项仅适用于顶层项目。有关一般项目的折叠性，请参阅 `collapsed` 选项。
+
+## `splitSidebarRootGroupText`
+
+- Type: `string`
+- Default: `'◀ :title'`
+
+[`splitSidebarByFolder`](#splitsidebarbyfolder) 为每个文件夹生成的侧边栏中根分组的名称。与 VitePress [`titleTemplate`](https://vitepress.dev/reference/site-config#titletemplate) 中的 `:title` 一样，`:title` 会被替换为文件夹的标题。该分组链接回上一级侧边栏，默认值中的 `◀` 正是为了表明这一点。
+
+```javascript
+withSidebar(vitePressOptions, {
+  documentRootPath: '/docs',
+  splitSidebarByFolder: true,
+  // 在 `guide` 的侧边栏中为 `Back from Guide`
+  splitSidebarRootGroupText: 'Back from :title'
+});
+```
+
+不包含 `:title` 的值会按原样使用，因此所有文件夹侧边栏都会使用相同的名称。
 
 ## `useFolderLinkFromSameNameSubFile`
 

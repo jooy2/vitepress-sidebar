@@ -311,7 +311,7 @@ describe('Test: dynamic routes', () => {
     assert.deepStrictEqual(Object.keys(result).sort(), ['/', '/packages/']);
     assert.deepStrictEqual(result['/packages/'].items, [
       {
-        text: 'packages',
+        text: '◀ packages',
         link: '/',
         items: [
           { text: 'alpha', link: '/packages/alpha' },

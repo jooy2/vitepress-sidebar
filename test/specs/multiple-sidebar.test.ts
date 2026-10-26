@@ -432,7 +432,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'API',
+              text: '◀ API',
               link: '/',
               items: [
                 { text: 'Client', link: '/api/client' },
@@ -446,7 +446,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'Guide',
+              text: '◀ Guide',
               link: '/',
               items: [
                 { text: 'Advanced', link: '/guide/advanced/index.md' },
@@ -461,7 +461,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'notes',
+              text: '◀ notes',
               link: '/',
               items: [{ text: 'Draft', link: '/notes/draft' }],
               collapsed: undefined
@@ -473,7 +473,7 @@ describe('Test: multiple sidebars', () => {
           items: [
             {
               // Links back to the folder the sidebar above opens on
-              text: 'Advanced',
+              text: '◀ Advanced',
               link: '/guide/index.md',
               items: [
                 { text: 'Advanced', link: '/guide/advanced/index.md' },
@@ -523,7 +523,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'Advanced',
+              text: '◀ Advanced',
               link: '/',
               items: [
                 { text: 'Advanced', link: '/guide/advanced/index.md' },
@@ -558,7 +558,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'Advanced',
+              text: '◀ Advanced',
               link: '/guide/',
               items: [
                 { text: 'Advanced', link: '/guide/advanced/index.md' },
@@ -570,6 +570,29 @@ describe('Test: multiple sidebars', () => {
         }
       }
     );
+  });
+
+  it('API: splitSidebarRootGroupText', () => {
+    const result = generateSidebar({
+      documentRootPath: SPLIT_DIR,
+      scanStartPath: 'guide',
+      splitSidebarByFolder: true,
+      splitSidebarRootGroupText: 'Back from :title',
+      ...TITLE_OPTIONS
+    }) as { [path: string]: { items: { text: string }[] } };
+
+    assert.equal(result['/guide/advanced/'].items[0].text, 'Back from Advanced');
+
+    // A template without `:title` is used as it is
+    const fixedResult = generateSidebar({
+      documentRootPath: SPLIT_DIR,
+      scanStartPath: 'guide',
+      splitSidebarByFolder: true,
+      splitSidebarRootGroupText: 'Back',
+      ...TITLE_OPTIONS
+    }) as { [path: string]: { items: { text: string }[] } };
+
+    assert.equal(fixedResult['/guide/advanced/'].items[0].text, 'Back');
   });
 
   it('API: splitSidebarByFolder (a sidebar passed for the same path is kept)', () => {
@@ -646,7 +669,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'archive',
+              text: '◀ archive',
               link: '/',
               items: [{ text: '2024', link: '/archive/2024/report' }],
               collapsed: undefined
@@ -657,7 +680,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'notes',
+              text: '◀ notes',
               link: '/',
               items: [
                 { text: 'Draft', link: '/notes/draft' },
@@ -673,7 +696,7 @@ describe('Test: multiple sidebars', () => {
             {
               // No page shows the sidebar of `archive`, so the link goes on to
               // the sidebar above it
-              text: '2024',
+              text: '◀ 2024',
               link: '/',
               items: [{ text: 'Report', link: '/archive/2024/report' }],
               collapsed: undefined
@@ -708,7 +731,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'guide',
+              text: '◀ guide',
               link: '/',
               items: [
                 { text: 'Setup', link: '/guide/setup' },
@@ -723,7 +746,7 @@ describe('Test: multiple sidebars', () => {
           base: '',
           items: [
             {
-              text: 'reference',
+              text: '◀ reference',
               link: '/',
               items: [{ text: 'Overview', link: '/reference/overview' }],
               collapsed: undefined

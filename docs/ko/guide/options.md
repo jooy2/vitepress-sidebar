@@ -23,12 +23,13 @@ description: 'VitePress Sidebar의 모든 옵션을 기본값, 타입, 예시와
 <tr><td><a href="#basepath"><code>basePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#splitsidebarbyfolder"><code>splitSidebarByFolder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
 <tr><td><a href="#followsymlinks"><code>followSymlinks</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
-<tr><td rowspan="6">그룹핑</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
+<tr><td rowspan="7">그룹핑</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
 <tr><td><a href="#collapsedepth"><code>collapseDepth</code></a></td><td><code>number</code></td><td><code>1</code></td><td>✅</td></tr>
 <tr><td><a href="#collapsefromlevel"><code>collapseFromLevel</code></a></td><td><code>number</code></td><td><code>undefined</code></td><td>✅</td></tr>
 <tr><td><a href="#rootgrouptext"><code>rootGroupText</code></a></td><td><code>string</code></td><td><code>'Table of Contents'</code></td><td>⚠️</td></tr>
 <tr><td><a href="#rootgrouplink"><code>rootGroupLink</code></a></td><td><code>string</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#rootgroupcollapsed"><code>rootGroupCollapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#splitsidebarrootgrouptext"><code>splitSidebarRootGroupText</code></a></td><td><code>string</code></td><td><code>'◀ :title'</code></td><td>⚠️</td></tr>
 <tr><td rowspan="5">메뉴 제목</td><td><a href="#usetitlefromfileheading"><code>useTitleFromFileHeading</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usetitlefromfrontmatter"><code>useTitleFromFrontmatter</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
@@ -144,7 +145,7 @@ e.g. `/`, `/path/sub-path`, `/guide/`...
 
 이 옵션은 다중 사이드바를 구성하는 데 사용됩니다. **[다중 사이드바](/ko/advanced-usage/multiple-sidebars-how-to)** 페이지에서 자세히 알아볼 수 있습니다.
 
-값이 `true`이면 폴더를 접고 펴는 그룹으로 보여 주지 않고, 폴더마다 사이드바를 따로 만듭니다. 스캔한 폴더의 사이드바에는 그 폴더의 파일과 하위 폴더가 나오고, 하위 폴더를 열면 사이드바가 그 폴더의 사이드바로 바뀝니다. 폴더 사이드바의 루트 그룹은 폴더 제목을 쓰고 바로 위 사이드바로 돌아가는 링크를 가집니다. 그래서 깊은 폴더 구조를 한 단계씩 내려갔다가 다시 올라올 수 있습니다.
+값이 `true`이면 폴더를 접고 펴는 그룹으로 보여 주지 않고, 폴더마다 사이드바를 따로 만듭니다. 스캔한 폴더의 사이드바에는 그 폴더의 파일과 하위 폴더가 나오고, 하위 폴더를 열면 사이드바가 그 폴더의 사이드바로 바뀝니다. 폴더 사이드바의 루트 그룹은 폴더 제목 앞에 `◀`을 붙인 이름을 쓰고, 바로 위 사이드바로 돌아가는 링크를 가집니다. 그래서 깊은 폴더 구조를 한 단계씩 내려갔다가 다시 올라올 수 있습니다.
 
 ```javascript
 // `.vitepress/config.js`
@@ -163,7 +164,7 @@ export default defineConfig(
 - 사이드바가 어디서 끝나는지는 [`excludeByFolderDepth`](#excludebyfolderdepth)가 정합니다. 직접 지정하지 않으면 `2`이고, 이때 각 사이드바에는 자기 폴더의 파일과 하위 폴더, 한 단계만 나옵니다. `3`으로 지정하면 하위 폴더의 내용까지 함께 나오고, 그 아래 폴더부터 사이드바를 따로 만듭니다.
 - 폴더는 위 사이드바에 있는 자기 링크로 엽니다. 그래서 직접 지정하지 않으면 [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile)이 `true`가 되고, 폴더는 자기 `index.md`로 연결됩니다. `index.md`가 없는 폴더처럼 자기 링크가 없는 폴더는 자기 사이드바의 첫 페이지로 연결되고, 페이지가 하나도 없는 폴더는 빠집니다. 첫 페이지가 하위 폴더 안에 있으면 그 폴더의 사이드바는 화면에 나오지 않으므로, 그 아래 사이드바는 한 단계 더 위의 사이드바로 돌아갑니다.
 - 폴더의 `index.md`는 그 폴더의 사이드바에 나옵니다. 폴더를 열면 처음 보이는 페이지이기 때문입니다. 첫 사이드바에서는 지금처럼 `includeRootIndexFile`이 정합니다.
-- 폴더 사이드바의 루트 그룹 제목은 위 사이드바에서 그 폴더가 쓰는 제목과 같습니다. [설정 파일](/ko/advanced-usage/configuration-file)의 `$folder.text`로 바꿀 수 있습니다.
+- 폴더 사이드바의 루트 그룹에는 위 사이드바에서 그 폴더가 쓰는 제목이 들어갑니다. 이 제목은 [설정 파일](/ko/advanced-usage/configuration-file)의 `$folder.text`로 바꿀 수 있고, 제목 앞뒤에 붙는 문구는 [`splitSidebarRootGroupText`](#splitsidebarrootgrouptext)가 정합니다.
 - 각 사이드바의 경로는 [`resolvePath`](#resolvepath) 뒤에 자기 폴더 경로를 붙인 값입니다. `resolvePath`를 지정하지 않으면 `scanStartPath`의 경로를 씁니다. [`basePath`](#basepath)를 지정했다면 같은 방식으로 이어 붙입니다. [`removePrefixFromLink`](#removeprefixfromlink)를 쓰면 링크와 마찬가지로 경로에서도 접두사가 빠집니다.
 - 어떤 폴더의 경로에 쓸 사이드바를 직접 넘기면, 분할로 만들 사이드바 대신 넘긴 사이드바를 씁니다.
 - 옵션을 하나만 넘겨도 결과는 언제나 경로마다 사이드바가 하나씩 있는 형태입니다.
@@ -770,6 +771,24 @@ export default defineConfig({
 루트 그룹에 대한 자세한 내용은 `rootGroupText` 옵션 설명을 참조하세요. `rootGroupCollapsed` 옵션은 루트 그룹의 하위 항목을 펼칠지 여부를 설정합니다. 기본값인 `null` 또는 `정의되지 않음`으로 지정하면 확장/축소 버튼이 표시되지 않습니다. 값이 `true`이면 하위 항목이 접힌 상태로 표시되고, `false`이면 확장됩니다.
 
 이 옵션은 최상위 항목에만 적용됩니다. 일반적인 항목 축소 여부는 `collapsed` 옵션을 참조하세요.
+
+## `splitSidebarRootGroupText`
+
+- Type: `string`
+- Default: `'◀ :title'`
+
+[`splitSidebarByFolder`](#splitsidebarbyfolder)가 폴더마다 만드는 사이드바의 루트 그룹 이름입니다. VitePress [`titleTemplate`](https://vitepress.dev/reference/site-config#titletemplate)의 `:title`처럼, `:title` 자리에 폴더 제목이 들어갑니다. 이 그룹은 바로 위 사이드바로 돌아가는 링크이고, 기본값의 `◀`이 그 점을 알려 줍니다.
+
+```javascript
+withSidebar(vitePressOptions, {
+  documentRootPath: '/docs',
+  splitSidebarByFolder: true,
+  // `guide` 사이드바에서는 `Back from Guide`
+  splitSidebarRootGroupText: 'Back from :title'
+});
+```
+
+`:title`이 없는 값은 그대로 쓰므로, 모든 폴더 사이드바가 같은 이름을 갖습니다.
 
 ## `useFolderLinkFromSameNameSubFile`
 

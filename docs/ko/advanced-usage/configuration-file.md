@@ -165,6 +165,7 @@ docs/
 - [rootGroupText](/ko/guide/options#rootgrouptext)
 - [rootGroupLink](/ko/guide/options#rootgrouplink)
 - [rootGroupCollapsed](/ko/guide/options#rootgroupcollapsed)
+- [splitSidebarRootGroupText](/ko/guide/options#splitsidebarrootgrouptext)
 - [includeRootIndexFile](/ko/guide/options#includerootindexfile)
 - [includeDynamicRoutes](/ko/guide/options#includedynamicroutes)
 - [removePrefixAfterOrdering](/ko/guide/options#removeprefixafterordering)
