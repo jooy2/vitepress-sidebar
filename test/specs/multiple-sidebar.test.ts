@@ -1,8 +1,14 @@
 import assert from 'assert';
 import { describe, it } from 'node:test';
+import { mkdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { platform } from 'node:os';
 import { generateSidebar } from '../../dist';
 
 const TEST_DIR_BASE = 'test/resources';
+const SPLIT_DIR = `${TEST_DIR_BASE}/split-by-folder`;
+// Titles from the headings, so that a folder and the `index.md` it opens on
+// are told apart from the file names in the expectations below
+const TITLE_OPTIONS = { useTitleFromFileHeading: true, useFolderTitleFromIndexFile: true };
 
 describe('Test: multiple sidebars', () => {
   it('Multiple Sidebars (A)', () => {
@@ -401,5 +407,285 @@ describe('Test: multiple sidebars', () => {
         ]
       }
     });
+  });
+
+  it('API: splitSidebarByFolder', () => {
+    // A single set of options still returns a sidebar for each path, and
+    // `notes` has no `index.md` to link to, so it is left out like any folder
+    // whose contents are not scanned
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: SPLIT_DIR,
+        splitSidebarByFolder: true,
+        ...TITLE_OPTIONS
+      }),
+      {
+        '/': {
+          base: '/',
+          items: [
+            { text: 'API', link: 'api/index.md' },
+            { text: 'Guide', link: 'guide/index.md' },
+            { text: 'Intro', link: 'intro' }
+          ]
+        },
+        '/api/': {
+          base: '',
+          items: [
+            {
+              text: 'API',
+              link: '/',
+              items: [
+                { text: 'Client', link: '/api/client' },
+                { text: 'API', link: '/api/index.md' }
+              ],
+              collapsed: undefined
+            }
+          ]
+        },
+        '/guide/': {
+          base: '',
+          items: [
+            {
+              text: 'Guide',
+              link: '/',
+              items: [
+                { text: 'Advanced', link: '/guide/advanced/index.md' },
+                { text: 'Guide', link: '/guide/index.md' },
+                { text: 'Setup', link: '/guide/setup' }
+              ],
+              collapsed: undefined
+            }
+          ]
+        },
+        '/guide/advanced/': {
+          base: '',
+          items: [
+            {
+              // Links back to the folder the sidebar above opens on
+              text: 'Advanced',
+              link: '/guide/index.md',
+              items: [
+                { text: 'Advanced', link: '/guide/advanced/index.md' },
+                { text: 'Tuning', link: '/guide/advanced/tuning' }
+              ],
+              collapsed: undefined
+            }
+          ]
+        }
+      }
+    );
+  });
+
+  it('API: splitSidebarByFolder (`excludeByFolderDepth` decides where a sidebar ends)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: SPLIT_DIR,
+        splitSidebarByFolder: true,
+        excludeByFolderDepth: 3,
+        ...TITLE_OPTIONS
+      }),
+      {
+        '/': {
+          base: '/',
+          items: [
+            {
+              text: 'API',
+              link: 'api/index.md',
+              items: [{ text: 'Client', link: 'api/client' }]
+            },
+            {
+              text: 'Guide',
+              link: 'guide/index.md',
+              items: [
+                { text: 'Advanced', link: 'guide/advanced/index.md' },
+                { text: 'Setup', link: 'guide/setup' }
+              ]
+            },
+            { text: 'Intro', link: 'intro' },
+            {
+              text: 'notes',
+              items: [{ text: 'Draft', link: 'notes/draft' }]
+            }
+          ]
+        },
+        '/guide/advanced/': {
+          base: '',
+          items: [
+            {
+              text: 'Advanced',
+              link: '/',
+              items: [
+                { text: 'Advanced', link: '/guide/advanced/index.md' },
+                { text: 'Tuning', link: '/guide/advanced/tuning' }
+              ],
+              collapsed: undefined
+            }
+          ]
+        }
+      }
+    );
+  });
+
+  it('API: splitSidebarByFolder (below `scanStartPath`)', () => {
+    // Resolved to the folder it scans when `resolvePath` is not given
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: SPLIT_DIR,
+        scanStartPath: 'guide',
+        splitSidebarByFolder: true,
+        ...TITLE_OPTIONS
+      }),
+      {
+        '/guide/': {
+          base: '/guide/',
+          items: [
+            { text: 'Advanced', link: 'advanced/index.md' },
+            { text: 'Setup', link: 'setup' }
+          ]
+        },
+        '/guide/advanced/': {
+          base: '',
+          items: [
+            {
+              text: 'Advanced',
+              link: '/guide/',
+              items: [
+                { text: 'Advanced', link: '/guide/advanced/index.md' },
+                { text: 'Tuning', link: '/guide/advanced/tuning' }
+              ],
+              collapsed: undefined
+            }
+          ]
+        }
+      }
+    );
+  });
+
+  it('API: splitSidebarByFolder (a sidebar passed for the same path is kept)', () => {
+    const warnings: string[] = [];
+    const write = process.stderr.write;
+
+    process.stderr.write = ((chunk: string) => {
+      warnings.push(String(chunk));
+      return true;
+    }) as typeof process.stderr.write;
+
+    let result;
+
+    try {
+      result = generateSidebar([
+        {
+          documentRootPath: SPLIT_DIR,
+          splitSidebarByFolder: true,
+          ...TITLE_OPTIONS
+        },
+        {
+          documentRootPath: SPLIT_DIR,
+          scanStartPath: 'api',
+          // Written without the closing `/`, and still the path of `api`
+          resolvePath: '/api',
+          rootGroupText: 'Reference'
+        }
+      ]) as { [path: string]: unknown };
+    } finally {
+      process.stderr.write = write;
+    }
+
+    assert.deepEqual(result['/api'], {
+      base: '/api',
+      items: [
+        {
+          text: 'Reference',
+          items: [{ text: 'client', link: 'client' }],
+          collapsed: undefined
+        }
+      ]
+    });
+    assert.deepEqual(Object.keys(result).sort(), ['/', '/api', '/guide/', '/guide/advanced/']);
+    assert.ok(
+      !warnings.some((message) => message.includes('More than one sidebar resolves')),
+      'expected the split to leave the passed sidebar alone without a warning'
+    );
+  });
+
+  it('API: splitSidebarByFolder (with `removePrefixFromLink`)', () => {
+    // A folder sidebar is resolved to the path its pages are rewritten to, and
+    // the `$folder.link` of `3.reference` is kept as it was written
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+        splitSidebarByFolder: true,
+        removePrefixAfterOrdering: true,
+        removePrefixFromLink: true,
+        useTitleFromFileHeading: true
+      }),
+      {
+        '/': {
+          base: '',
+          items: [
+            { text: 'Intro', link: '/intro' },
+            { text: 'guide', link: '/guide/index.md' },
+            { text: 'reference', link: '/api/' }
+          ]
+        },
+        '/guide/': {
+          base: '',
+          items: [
+            {
+              text: 'guide',
+              link: '/',
+              items: [
+                { text: 'Setup', link: '/guide/setup' },
+                { text: 'Usage', link: '/guide/usage' },
+                { text: 'Guide', link: '/guide/index.md' }
+              ],
+              collapsed: undefined
+            }
+          ]
+        },
+        '/reference/': {
+          base: '',
+          items: [
+            {
+              text: 'reference',
+              link: '/',
+              items: [{ text: 'Overview', link: '/reference/overview' }],
+              collapsed: undefined
+            }
+          ]
+        }
+      }
+    );
+  });
+
+  it('API: splitSidebarByFolder (a link that leads back into the scan)', () => {
+    // A directory symbolic link needs a privilege of its own on Windows, so
+    // this is only run where one can be made without asking for it.
+    if (platform() === 'win32') {
+      return;
+    }
+
+    const targetDir = `${TEST_DIR_BASE}/split-symlink-loop`;
+
+    rmSync(targetDir, { recursive: true, force: true });
+    mkdirSync(`${targetDir}/sub`, { recursive: true });
+    writeFileSync(`${targetDir}/index.md`, '# Home\n');
+    writeFileSync(`${targetDir}/sub/index.md`, '# Sub\n');
+
+    try {
+      // Points at the folder that already has the first sidebar, so giving
+      // it a sidebar of its own would start the split over without end.
+      symlinkSync('..', `${targetDir}/sub/loop`, 'dir');
+
+      const result = generateSidebar({
+        documentRootPath: targetDir,
+        splitSidebarByFolder: true,
+        followSymlinks: true
+      });
+
+      assert.deepEqual(Object.keys(result).sort(), ['/', '/sub/']);
+    } finally {
+      rmSync(targetDir, { recursive: true, force: true });
+    }
   });
 });

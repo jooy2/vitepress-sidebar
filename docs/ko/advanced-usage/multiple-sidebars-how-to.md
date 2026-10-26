@@ -247,3 +247,40 @@ export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfig
 ```
 
 이제 URI 경로가 `/api`로 시작하면 `docs/guide/api`의 하위 메뉴가 표시됩니다!
+
+## 폴더마다 사이드바 만들기
+
+문서가 여러 단계로 중첩된 폴더에 나뉘어 있으면 폴더마다 옵션을 적기가 번거롭습니다. [`splitSidebarByFolder`](/ko/guide/options#splitsidebarbyfolder)를 쓰면 옵션 하나로 폴더마다 사이드바를 만듭니다. 다음 구조를 예로 들겠습니다.
+
+```text
+docs/
+├─ index.md
+├─ intro.md
+└─ backend/
+   ├─ index.md
+   ├─ api.md
+   └─ php/
+      ├─ index.md
+      ├─ laravel.md
+      └─ typo3.md
+```
+
+```javascript
+export default defineConfig(
+  withSidebar(vitePressConfigs, {
+    documentRootPath: 'docs',
+    splitSidebarByFolder: true,
+    useTitleFromFileHeading: true,
+    useFolderTitleFromIndexFile: true,
+    manualSortFileNameByPriority: ['index.md']
+  })
+);
+```
+
+이렇게 설정하면 사이드바가 세 개 생깁니다.
+
+- `/`와 `/intro`에서는 `intro`와 `backend`가 나옵니다.
+- `/backend/` 아래 페이지에서는 `backend`의 `index.md`, `api`, `php`가 나옵니다. 이 항목들은 `backend` 제목을 쓴 그룹 안에 있고, 그룹은 `/`로 돌아가는 링크를 가집니다.
+- `/backend/php/` 아래 페이지에서는 `php`의 파일이 나옵니다. 그룹은 `php` 제목을 쓰고 `backend`로 돌아가는 링크를 가집니다.
+
+`manualSortFileNameByPriority`는 각 폴더의 `index.md`를 사이드바 맨 위에 둡니다. 사이드바마다 어느 깊이까지 나오는지, 폴더를 열려면 무엇이 필요한지는 [`splitSidebarByFolder`](/ko/guide/options#splitsidebarbyfolder) 옵션 설명을 참고하세요.

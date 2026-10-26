@@ -161,6 +161,7 @@ docs/
 - [scanStartPath](/ko/guide/options#scanstartpath)
 - [resolvePath](/ko/guide/options#resolvepath)
 - [basePath](/ko/guide/options#basepath)
+- [splitSidebarByFolder](/ko/guide/options#splitsidebarbyfolder)
 - [rootGroupText](/ko/guide/options#rootgrouptext)
 - [rootGroupLink](/ko/guide/options#rootgrouplink)
 - [rootGroupCollapsed](/ko/guide/options#rootgroupcollapsed)

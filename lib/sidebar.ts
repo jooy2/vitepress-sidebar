@@ -54,6 +54,37 @@ import {
 /** Name a root group is given when `rootGroupText` does not name one. */
 const ROOT_GROUP_DEFAULT_TEXT = 'Table of Contents';
 
+/**
+ * Key a folder item is marked with when `splitSidebarByFolder` moves its
+ * contents into a sidebar of its own. It holds the path of the folder on disk.
+ *
+ * The sidebar of the folder is made from the item, because the title and the
+ * link of the item are only final once the sidebar holding it is.
+ */
+const SPLIT_FOLDER_KEY = 'splitFolderPath';
+
+/**
+ * Where the options of one sidebar come from.
+ *
+ * A sidebar is either one that the options passed describe, or one that
+ * `splitSidebarByFolder` makes for a folder whose contents the sidebar above it
+ * leaves out. The second kind is built from the options of the sidebar the
+ * split started from, and `split` tells it apart.
+ */
+interface SidebarSource {
+  inlineOptions: VitePressSidebarOptions;
+  split?: {
+    /**
+     * Set over every other source, the configuration files included, because
+     * a file found on the way down to the folder describes the sidebar the
+     * split started from rather than this one.
+     */
+    overrides: VitePressSidebarOptions;
+    /** Link of the folder, which the sidebars of its own folders link back to */
+    folderLink: string;
+  };
+}
+
 // Every option that decides the order of the items of a level, other than the
 // custom sort function itself.
 const SORT_OPTION_NAMES = [
@@ -428,6 +459,15 @@ function generateDirectoryItem(
   newDirectoryText = folderMeta.text ?? newDirectoryText;
   withDirectoryLink = folderMeta.link ?? withDirectoryLink;
 
+  // A split sidebar shows what it leaves out of a folder in a sidebar of the
+  // folder's own. A folder that a dynamic route generates has no directory on
+  // disk to start that sidebar from, so it stays as the scan leaves it.
+  const isSplitFolder =
+    !!childOptions.splitSidebarByFolder &&
+    typeof childOptions.excludeByFolderDepth === 'number' &&
+    childOptions.excludeByFolderDepth <= depth + 1 &&
+    !(routeNode && isDynamicRoutePath(routeNode.templatePath));
+
   if (
     (withDirectoryLink && childOptions.includeEmptyFolder !== false) ||
     childOptions.includeEmptyFolder ||
@@ -497,7 +537,8 @@ function generateDirectoryItem(
               isDirectory: true
             })
           }
-        : {})
+        : {}),
+      ...(isSplitFolder ? { [SPLIT_FOLDER_KEY]: directoryPath } : {})
     };
   }
 
@@ -866,6 +907,111 @@ function resolveLinksAgainstBase(items: SidebarItem[], base: string): SidebarIte
   }));
 }
 
+/** A path with a single `/` at either end, the way a sidebar names a folder. */
+function toDirectoryPath(path: string): string {
+  return `/${path}/`.replace(/\/{2,}/g, '/');
+}
+
+/**
+ * Collects the folder items marked with `SPLIT_FOLDER_KEY`, in the order they
+ * appear in, and removes the mark from them.
+ */
+function takeSplitFolders(items: SidebarListItem): { dirPath: string; item: SidebarListItem }[] {
+  const splitFolders: { dirPath: string; item: SidebarListItem }[] = [];
+
+  const takeFromLevel = (levelItems: SidebarListItem): void => {
+    for (let i = 0, len = levelItems.length; i < len; i += 1) {
+      const item = levelItems[i];
+
+      if (item[SPLIT_FOLDER_KEY]) {
+        splitFolders.push({ dirPath: item[SPLIT_FOLDER_KEY], item });
+
+        delete item[SPLIT_FOLDER_KEY];
+      }
+
+      if (item.items) {
+        takeFromLevel(item.items);
+      }
+    }
+  };
+
+  takeFromLevel(items);
+
+  return splitFolders;
+}
+
+/**
+ * Makes the source of a sidebar for every folder that the sidebar just built
+ * from `options` gave a sidebar of its own, in the order the folders appear in.
+ *
+ * `sidebarLink` is where the new sidebars link back to, and `splitRealPaths`
+ * holds the real path of every folder that already has a sidebar.
+ */
+function createFolderSidebarSources({
+  items,
+  inlineOptions,
+  options,
+  scanDir,
+  documentRootDir,
+  sidebarLink,
+  splitRealPaths
+}: {
+  items: SidebarListItem;
+  inlineOptions: VitePressSidebarOptions;
+  options: VitePressSidebarOptions;
+  scanDir: string;
+  documentRootDir: string;
+  sidebarLink: string;
+  splitRealPaths: Set<string>;
+}): SidebarSource[] {
+  const base = options.basePath || options.resolvePath || '/';
+  const resolvePath = toDirectoryPath(options.resolvePath || '/');
+  const basePath = options.basePath ? toDirectoryPath(options.basePath) : null;
+  // A folder is served without its prefix once `rewrites` move its pages, so
+  // its sidebar has to be resolved there too.
+  const removePrefix = options.removePrefixFromLink
+    ? createPrefixRemover(options.prefixSeparator!)
+    : null;
+  const sources: SidebarSource[] = [];
+
+  takeSplitFolders(items).forEach(({ dirPath, item }) => {
+    const realPath = toRealPath(dirPath) ?? dirPath;
+
+    // A symbolic link can lead back to a folder that already has a sidebar,
+    // and following it would make sidebars without end.
+    if (splitRealPaths.has(realPath)) {
+      return;
+    }
+
+    splitRealPaths.add(realPath);
+
+    const folderPath = toPosixPath(relative(scanDir, dirPath));
+    const folderUrlPath = removePrefix
+      ? removePrefixFromPath(folderPath, removePrefix)
+      : folderPath;
+    const folderResolvePath = `${resolvePath}${folderUrlPath}/`;
+
+    sources.push({
+      inlineOptions,
+      split: {
+        overrides: {
+          scanStartPath: toPosixPath(relative(documentRootDir, dirPath)),
+          resolvePath: folderResolvePath,
+          ...(basePath ? { basePath: `${basePath}${folderUrlPath}/` } : {}),
+          // The folder opens on its `index.md`, which nothing else in its own
+          // sidebar links to.
+          includeRootIndexFile: true,
+          rootGroupText: item.text,
+          rootGroupLink: sidebarLink
+        },
+        folderLink: item.link ? toAbsoluteLink(item.link, base) : folderResolvePath
+      }
+    });
+  });
+
+  return sources;
+}
+
 /**
  * Builds the sidebar, and returns it together with the options it was built
  * with once the configuration files and the defaults have been applied.
@@ -913,9 +1059,19 @@ function buildSidebar(
   // configuration files are read.
   const projectRootConfig = readConfigFile(cwd, true);
   let detectedDocumentRootPath: string | null | undefined;
+  // The sidebars that `splitSidebarByFolder` makes are added at the end while
+  // the ones before them are built, so every sidebar the options describe is
+  // built before the first one a split makes.
+  const sources: SidebarSource[] = optionItems.map((inlineOptions) => ({
+    inlineOptions: inlineOptions!
+  }));
+  const passedSidebarPaths = new Set<string>();
+  const splitRealPaths = new Set<string>();
+  let hasSplitSidebar = false;
 
-  for (let i = 0; i < optionItems.length; i += 1) {
-    const inlineOptions = optionItems[i]!;
+  for (let i = 0; i < sources.length; i += 1) {
+    const { inlineOptions, split } = sources[i];
+    const splitOverrides = split?.overrides ?? {};
 
     let documentRootPath =
       projectRootConfig?.options.documentRootPath ?? inlineOptions.documentRootPath;
@@ -935,7 +1091,10 @@ function buildSidebar(
     // over the options passed as an argument.
     const rootPathConfig = mergeConfigFilesInPath(cwd, documentRootPath, false);
 
+    // Said once for the options passed, and not again for every sidebar a
+    // split makes from them.
     if (
+      !split &&
       rootPathConfig.documentRootPath !== undefined &&
       projectRootConfig?.options.documentRootPath === undefined
     ) {
@@ -947,13 +1106,15 @@ function buildSidebar(
     let optionItem: VitePressSidebarOptions = {
       ...inlineOptions,
       ...rootPathConfig,
-      documentRootPath
+      documentRootPath,
+      ...splitOverrides
     };
 
     if (optionItem.scanStartPath) {
       optionItem = {
         ...optionItem,
-        ...mergeConfigFilesInPath(join(cwd, documentRootPath), optionItem.scanStartPath, true)
+        ...mergeConfigFilesInPath(join(cwd, documentRootPath), optionItem.scanStartPath, true),
+        ...splitOverrides
       };
     }
 
@@ -1036,6 +1197,19 @@ function buildSidebar(
     }
 
     const resolvedOptionItem = normalizeOptions(optionItem);
+    const resolvePathKey = resolvedOptionItem.resolvePath || '/';
+
+    // A sidebar passed for a path is kept over the one a split makes for the
+    // same path, and nothing is said about it: the split only fills in the
+    // folders that have no sidebar of their own. Compared as folders, because
+    // `/api` is written for the same pages as `/api/`.
+    if (split && passedSidebarPaths.has(toDirectoryPath(resolvePathKey))) {
+      continue;
+    }
+
+    if (!split) {
+      passedSidebarPaths.add(toDirectoryPath(resolvePathKey));
+    }
 
     resolvedOptionItems.push(resolvedOptionItem);
 
@@ -1118,7 +1292,31 @@ function buildSidebar(
       );
     }
 
-    const resolvePathKey = resolvedOptionItem.resolvePath || '/';
+    const base = resolvedOptionItem.basePath || resolvedOptionItem.resolvePath || '/';
+
+    if (resolvedOptionItem.splitSidebarByFolder) {
+      hasSplitSidebar = true;
+
+      splitRealPaths.add(toRealPath(scanDir) ?? scanDir);
+
+      sources.push(
+        ...createFolderSidebarSources({
+          items: sidebarResult,
+          inlineOptions,
+          options: resolvedOptionItem,
+          scanDir,
+          documentRootDir,
+          // A sidebar the options describe links back to where its own root
+          // group does, or to the folder it is resolved to.
+          sidebarLink:
+            split?.folderLink ??
+            (resolvedOptionItem.rootGroupLink
+              ? toAbsoluteLink(resolvedOptionItem.rootGroupLink, base)
+              : toDirectoryPath(resolvePathKey)),
+          splitRealPaths
+        })
+      );
+    }
 
     // Two sidebars resolving to the same path are one sidebar, and the work
     // done for the earlier one is thrown away without anything to show for it.
@@ -1135,7 +1333,7 @@ function buildSidebar(
       resolvedOptionItem.rootGroupCollapsed === false;
 
     sidebar[resolvePathKey] = {
-      base: resolvedOptionItem.basePath || resolvedOptionItem.resolvePath || '/',
+      base,
       items: withRootGroup
         ? [
             {
@@ -1158,7 +1356,9 @@ function buildSidebar(
 
   let sidebarResult;
 
-  if (!isMultipleSidebars && Object.keys(sidebar).length === 1) {
+  // A split sidebar resolves its links to a path even when it is the only one
+  // it makes, so it has to be returned with the base that path gives them.
+  if (!isMultipleSidebars && !hasSplitSidebar && Object.keys(sidebar).length === 1) {
     // Single sidebar
     sidebarResult = Object.values(sidebar)[0].items;
   } else {

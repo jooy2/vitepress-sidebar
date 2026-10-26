@@ -36,7 +36,7 @@ export default defineConfig(withSidebar(vitePressOptions, vitePressSidebarOption
 
 Option categories (see the Options page for every option and example):
 
-- Resolving paths: `documentRootPath`, `scanStartPath`, `resolvePath`, `basePath`, `followSymlinks`
+- Resolving paths: `documentRootPath`, `scanStartPath`, `resolvePath`, `basePath`, `splitSidebarByFolder`, `followSymlinks`
 - Grouping: `collapsed`, `collapseDepth`, `collapseFromLevel`, `rootGroupText`, `rootGroupLink`, `rootGroupCollapsed`
 - Getting menu title: `useTitleFromFileHeading`, `useTitleFromFrontmatter`, `useFolderTitleFromIndexFile`, `frontmatterTitleFieldName`, `dynamicRouteTitleParam`
 - Getting menu link: `useFolderLinkFromSameNameSubFile`, `useFolderLinkFromIndexFile`, `folderLinkNotIncludesFileName`, `removePrefixFromLink`

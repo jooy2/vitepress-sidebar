@@ -17,10 +17,11 @@ Every option at a glance. Click a name to jump to its full description.
 <tr><th>Group</th><th>Option</th><th>Type</th><th>Default</th><th><code>sidebar<wbr>.config<wbr>.json</code></th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="5">Resolving Paths</td><td><a href="#documentrootpath"><code>documentRootPath</code></a></td><td><code>string</code></td><td><code>'/'</code></td><td>⚠️</td></tr>
+<tr><td rowspan="6">Resolving Paths</td><td><a href="#documentrootpath"><code>documentRootPath</code></a></td><td><code>string</code></td><td><code>'/'</code></td><td>⚠️</td></tr>
 <tr><td><a href="#scanstartpath"><code>scanStartPath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#resolvepath"><code>resolvePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#basepath"><code>basePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#splitsidebarbyfolder"><code>splitSidebarByFolder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
 <tr><td><a href="#followsymlinks"><code>followSymlinks</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td rowspan="6">Grouping</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
 <tr><td><a href="#collapsedepth"><code>collapseDepth</code></a></td><td><code>number</code></td><td><code>1</code></td><td>✅</td></tr>
@@ -135,6 +136,37 @@ e.g. `/`, `/path/sub-path`, `/guide/`...
 This option is used to configure multiple sidebars. You can learn more on the **[Multiple sidebars](/advanced-usage/multiple-sidebars-how-to)** page.
 
 This option can be utilized if the path has changed due to VitePress's rewrite option. It replaces the base path in VitePress. If this value does not exist, it will use the value from `resolvePath` instead.
+
+## `splitSidebarByFolder`
+
+- Type: `boolean`
+- Default: `false`
+
+This option is used to configure multiple sidebars. You can learn more on the **[Multiple sidebars](/advanced-usage/multiple-sidebars-how-to)** page.
+
+If the value is `true`, every folder gets a sidebar of its own instead of a collapsible group. The sidebar of the scanned folder lists its files and folders, and opening one of those folders replaces the sidebar with the sidebar of that folder. The root group of a folder sidebar is titled after the folder and links back to the sidebar above it, so a deep folder structure can be walked down one level at a time and back up again.
+
+```javascript
+// `.vitepress/config.js`
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs',
+    splitSidebarByFolder: true,
+    useTitleFromFileHeading: true,
+    useFolderTitleFromIndexFile: true
+  })
+);
+```
+
+Note the following:
+
+- [`excludeByFolderDepth`](#excludebyfolderdepth) decides where a sidebar ends, and is `2` unless you set it: each sidebar then holds one level, the files and folders of its own folder. With `3`, a sidebar also lists what its folders hold, and the folders below them get a sidebar of their own.
+- A folder is opened through the link it has in the sidebar above, so [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile) is `true` unless you set it, and a folder links to its `index.md`. A folder that has no link, such as one without an `index.md`, is left out of the sidebar above, as `excludeByFolderDepth` alone leaves it out, and gets no sidebar of its own.
+- The `index.md` of a folder is listed in the sidebar of that folder, because it is the page the folder opens on. In the first sidebar, `includeRootIndexFile` still decides.
+- The root group of a folder sidebar takes the title the folder has in the sidebar above. Change it with `$folder.text` in a [configuration file](/advanced-usage/configuration-file).
+- The path of each sidebar is [`resolvePath`](#resolvepath) followed by the path of its folder, and `resolvePath` is the path of `scanStartPath` unless you set it. [`basePath`](#basepath) is extended the same way when you set it. With [`removePrefixFromLink`](#removeprefixfromlink), the paths lose their prefix as the links do.
+- A sidebar you pass yourself for the path of a folder is used instead of the one the split would make there.
+- The result always holds one sidebar for each path, even when a single set of options is passed.
 
 ## `followSymlinks`
 
@@ -528,6 +560,8 @@ What stops at the given depth is the scan, not the folder item itself. A folder 
 
 - If `useFolderLinkFromIndexFile` is `true`, a folder that has an `index.md` file remains as a leaf item linked to that file. In the structure above, `bbb/` stays in the menu and links to `bbb/index.md`, while everything inside it stays hidden.
 - If `includeEmptyFolder` is `true`, the folder name remains as a text item with no link, even when there is no `index.md` file.
+
+With [`splitSidebarByFolder`](#splitsidebarbyfolder), a folder whose contents are no longer scanned gets a sidebar of its own that shows them.
 
 ## `includeDotFiles`
 

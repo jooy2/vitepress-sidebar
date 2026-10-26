@@ -298,6 +298,31 @@ describe('Test: dynamic routes', () => {
     );
   });
 
+  it('includeDynamicRoutes with splitSidebarByFolder', () => {
+    // `packages` is a folder on disk and gets a sidebar of its own, while the
+    // folders `[cat]` generates have no directory to start one from
+    const result = generateSidebar({
+      documentRootPath: TEST_DIR,
+      includeDynamicRoutes: true,
+      splitSidebarByFolder: true,
+      includeEmptyFolder: true
+    }) as { [path: string]: { items: unknown[] } };
+
+    assert.deepStrictEqual(Object.keys(result).sort(), ['/', '/packages/']);
+    assert.deepStrictEqual(result['/packages/'].items, [
+      {
+        text: 'packages',
+        link: '/',
+        items: [
+          { text: 'alpha', link: '/packages/alpha' },
+          { text: 'beta', link: '/packages/beta' },
+          { text: 'Gamma Package', link: '/packages/gamma' }
+        ],
+        collapsed: undefined
+      }
+    ]);
+  });
+
   it('includeDynamicRoutes with `srcExclude` of the VitePress configuration', () => {
     const result = withSidebar(
       {

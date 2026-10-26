@@ -194,6 +194,7 @@ export default defineConfig(
     // scanStartPath: null,
     // resolvePath: null,
     // basePath: null,
+    // splitSidebarByFolder: false,
     // followSymlinks: false,
     //
     // ============ [ GROUPING ] ============

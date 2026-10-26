@@ -247,3 +247,40 @@ export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfig
 ```
 
 现在，当 URI 路径以 `/api` 开头时，将显示 `docs/guide/api` 的子菜单！
+
+## 为每个文件夹生成侧边栏
+
+当文档分布在多层嵌套的文件夹中时，为每个文件夹编写选项会很繁琐。[`splitSidebarByFolder`](/zhHans/guide/options#splitsidebarbyfolder) 可以只用一组选项为每个文件夹生成侧边栏。以下面的结构为例：
+
+```text
+docs/
+├─ index.md
+├─ intro.md
+└─ backend/
+   ├─ index.md
+   ├─ api.md
+   └─ php/
+      ├─ index.md
+      ├─ laravel.md
+      └─ typo3.md
+```
+
+```javascript
+export default defineConfig(
+  withSidebar(vitePressConfigs, {
+    documentRootPath: 'docs',
+    splitSidebarByFolder: true,
+    useTitleFromFileHeading: true,
+    useFolderTitleFromIndexFile: true,
+    manualSortFileNameByPriority: ['index.md']
+  })
+);
+```
+
+这样会生成三个侧边栏：
+
+- 在 `/` 和 `/intro` 上，侧边栏列出 `intro` 和 `backend`。
+- 在 `/backend/` 下的页面上，侧边栏列出 `backend` 的 `index.md`、`api` 和 `php`，它们位于以 `backend` 为标题、链接回 `/` 的分组中。
+- 在 `/backend/php/` 下的页面上，侧边栏列出 `php` 中的文件，它们位于以 `php` 为标题、链接回 `backend` 的分组中。
+
+`manualSortFileNameByPriority` 会让每个文件夹的 `index.md` 显示在其侧边栏的最上方。关于每个侧边栏显示到多深、文件夹需要什么才能打开，请参阅 [`splitSidebarByFolder`](/zhHans/guide/options#splitsidebarbyfolder) 选项。

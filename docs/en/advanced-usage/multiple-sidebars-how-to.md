@@ -247,3 +247,40 @@ export default defineConfig(withSidebar(vitePressConfigs, vitePressSidebarConfig
 ```
 
 Now this will show a submenu of `docs/guide/api` when the URI path starts with `/api`!
+
+## One sidebar for each folder
+
+When the documents sit in many folders nested deep inside each other, writing an option for every folder gets long. [`splitSidebarByFolder`](/guide/options#splitsidebarbyfolder) makes a sidebar for every folder from a single set of options. Take the following structure:
+
+```text
+docs/
+├─ index.md
+├─ intro.md
+└─ backend/
+   ├─ index.md
+   ├─ api.md
+   └─ php/
+      ├─ index.md
+      ├─ laravel.md
+      └─ typo3.md
+```
+
+```javascript
+export default defineConfig(
+  withSidebar(vitePressConfigs, {
+    documentRootPath: 'docs',
+    splitSidebarByFolder: true,
+    useTitleFromFileHeading: true,
+    useFolderTitleFromIndexFile: true,
+    manualSortFileNameByPriority: ['index.md']
+  })
+);
+```
+
+This makes three sidebars:
+
+- On `/` and `/intro`, the sidebar lists `intro` and `backend`.
+- On a page below `/backend/`, it lists the `index.md` of `backend`, `api` and `php`, in a group titled after `backend` that links back to `/`.
+- On a page below `/backend/php/`, it lists the files of `php`, in a group titled after `php` that links back to `backend`.
+
+`manualSortFileNameByPriority` keeps the `index.md` of each folder at the top of its sidebar. See the [`splitSidebarByFolder`](/guide/options#splitsidebarbyfolder) option for how deep each sidebar goes and what a folder needs to be opened.

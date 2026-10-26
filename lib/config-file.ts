@@ -115,6 +115,7 @@ const OPTION_SPECS = {
   scanStartPath: { type: 'string', rootOnly: true },
   resolvePath: { type: 'string', rootOnly: true },
   basePath: { type: 'string', rootOnly: true },
+  splitSidebarByFolder: { type: 'boolean', rootOnly: true },
   rootGroupText: { type: 'string', rootOnly: true },
   rootGroupLink: { type: 'string', rootOnly: true },
   rootGroupCollapsed: { type: 'boolean', rootOnly: true },
@@ -494,6 +495,17 @@ export function normalizeOptions(options: VitePressSidebarOptions): VitePressSid
   // `documentRootPath` and stripped from the front of a link.
   if (result.scanStartPath) {
     result.scanStartPath = result.scanStartPath.replace(/^\/+/, '').replace(/\/+$/, '');
+  }
+
+  // A split sidebar gives a folder a sidebar of its own where the scan stops,
+  // so it needs a depth to stop at, and a link to open the folder from the
+  // sidebar above it. The sidebars it makes are resolved below the path of the
+  // first one, which is why that one is resolved to the folder it scans.
+  if (result.splitSidebarByFolder) {
+    result.excludeByFolderDepth = result.excludeByFolderDepth ?? 2;
+    result.useFolderLinkFromIndexFile = result.useFolderLinkFromIndexFile ?? true;
+    result.resolvePath =
+      result.resolvePath || (result.scanStartPath ? `/${result.scanStartPath}/` : '/');
   }
 
   if (result.collapseDepth) {

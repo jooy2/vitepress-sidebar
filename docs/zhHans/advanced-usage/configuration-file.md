@@ -161,6 +161,7 @@ docs/
 - [scanStartPath](/zhHans/guide/options#scanstartpath)
 - [resolvePath](/zhHans/guide/options#resolvepath)
 - [basePath](/zhHans/guide/options#basepath)
+- [splitSidebarByFolder](/zhHans/guide/options#splitsidebarbyfolder)
 - [rootGroupText](/zhHans/guide/options#rootgrouptext)
 - [rootGroupLink](/zhHans/guide/options#rootgrouplink)
 - [rootGroupCollapsed](/zhHans/guide/options#rootgroupcollapsed)

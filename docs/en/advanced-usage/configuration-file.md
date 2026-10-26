@@ -161,6 +161,7 @@ Some options describe the sidebar as a whole rather than a single folder. They a
 - [scanStartPath](/guide/options#scanstartpath)
 - [resolvePath](/guide/options#resolvepath)
 - [basePath](/guide/options#basepath)
+- [splitSidebarByFolder](/guide/options#splitsidebarbyfolder)
 - [rootGroupText](/guide/options#rootgrouptext)
 - [rootGroupLink](/guide/options#rootgrouplink)
 - [rootGroupCollapsed](/guide/options#rootgroupcollapsed)

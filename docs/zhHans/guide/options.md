@@ -17,10 +17,11 @@ description: 'VitePress Sidebar 所有选项的参考，包括默认值、类型
 <tr><th>分组</th><th>选项</th><th>类型</th><th>默认值</th><th><code>sidebar<wbr>.config<wbr>.json</code></th></tr>
 </thead>
 <tbody>
-<tr><td rowspan="5">解决路径问题</td><td><a href="#documentrootpath"><code>documentRootPath</code></a></td><td><code>string</code></td><td><code>'/'</code></td><td>⚠️</td></tr>
+<tr><td rowspan="6">解决路径问题</td><td><a href="#documentrootpath"><code>documentRootPath</code></a></td><td><code>string</code></td><td><code>'/'</code></td><td>⚠️</td></tr>
 <tr><td><a href="#scanstartpath"><code>scanStartPath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#resolvepath"><code>resolvePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
 <tr><td><a href="#basepath"><code>basePath</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>⚠️</td></tr>
+<tr><td><a href="#splitsidebarbyfolder"><code>splitSidebarByFolder</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
 <tr><td><a href="#followsymlinks"><code>followSymlinks</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td rowspan="6">分组</td><td><a href="#collapsed"><code>collapsed</code></a></td><td><code>boolean|null|undefined</code></td><td><code>undefined</code></td><td>✅</td></tr>
 <tr><td><a href="#collapsedepth"><code>collapseDepth</code></a></td><td><code>number</code></td><td><code>1</code></td><td>✅</td></tr>
@@ -135,6 +136,37 @@ description: 'VitePress Sidebar 所有选项的参考，包括默认值、类型
 此选项用于配置多个侧边栏。您可以在 **[多个侧边栏](/zhHans/advanced-usage/multiple-sidebars-how-to)** 页面上了解更多信息。
 
 如果路径因VitePress的重写选项而改变,则可以使用此选项。它替换VitePress中的基本路径。如果此值不存在,则将使用来自`resolvePath`的值。
+
+## `splitSidebarByFolder`
+
+- Type: `boolean`
+- Default: `false`
+
+此选项用于配置多个侧边栏。您可以在 **[多个侧边栏](/zhHans/advanced-usage/multiple-sidebars-how-to)** 页面上了解更多信息。
+
+如果值为 `true`，则不再把文件夹显示为可折叠的分组，而是为每个文件夹单独生成一个侧边栏。被扫描文件夹的侧边栏列出其中的文件和子文件夹，打开其中某个子文件夹后，侧边栏会切换为该文件夹的侧边栏。文件夹侧边栏的根分组使用文件夹的标题，并链接回上一级侧边栏，因此可以在很深的文件夹结构中逐级向下浏览，再逐级返回。
+
+```javascript
+// `.vitepress/config.js`
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs',
+    splitSidebarByFolder: true,
+    useTitleFromFileHeading: true,
+    useFolderTitleFromIndexFile: true
+  })
+);
+```
+
+请注意以下几点：
+
+- [`excludeByFolderDepth`](#excludebyfolderdepth) 决定侧边栏在哪里结束，未设置时为 `2`：每个侧边栏只包含一层，即其所属文件夹中的文件和子文件夹。设置为 `3` 时，侧边栏还会列出子文件夹中的内容，再往下的文件夹才会拥有自己的侧边栏。
+- 文件夹通过它在上一级侧边栏中的链接打开，因此未设置时 [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile) 为 `true`，文件夹会链接到其 `index.md`。没有链接的文件夹（例如没有 `index.md` 的文件夹）会像只使用 `excludeByFolderDepth` 时一样从上一级侧边栏中移除，也不会拥有自己的侧边栏。
+- 文件夹的 `index.md` 会列在该文件夹的侧边栏中，因为它是打开文件夹时显示的页面。第一个侧边栏仍由 `includeRootIndexFile` 决定。
+- 文件夹侧边栏的根分组标题与该文件夹在上一级侧边栏中的标题相同。可以通过[配置文件](/zhHans/advanced-usage/configuration-file)中的 `$folder.text` 修改。
+- 每个侧边栏的路径是 [`resolvePath`](#resolvepath) 加上其文件夹的路径，未设置 `resolvePath` 时使用 `scanStartPath` 的路径。设置了 [`basePath`](#basepath) 时，它也会以同样的方式扩展。使用 [`removePrefixFromLink`](#removeprefixfromlink) 时，路径会像链接一样去掉前缀。
+- 如果您为某个文件夹的路径自行传入了侧边栏，则使用该侧边栏，而不是拆分生成的侧边栏。
+- 即使只传入一组选项，结果也始终是每个路径对应一个侧边栏。
 
 ## `followSymlinks`
 
@@ -528,6 +560,8 @@ root/  <---------- depth: 1 / scan: yes
 
 - 如果 `useFolderLinkFromIndexFile` 为 `true`，含有 `index.md` 文件的文件夹会作为链接到该文件的叶子项保留。在上面的结构中，`bbb/` 会保留在菜单中并链接到 `bbb/index.md`，而其内部的内容仍不会显示。
 - 如果 `includeEmptyFolder` 为 `true`，即使没有 `index.md` 文件，文件夹名称也会作为不带链接的文本项保留。
+
+使用 [`splitSidebarByFolder`](#splitsidebarbyfolder) 时，不再扫描其内容的文件夹会各自拥有一个显示这些内容的侧边栏。
 
 ## `includeDotFiles`
 
