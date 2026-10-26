@@ -68,3 +68,24 @@ When creating a pull request, keep the following in mind:
 - Please use English in all content.
 
 Typically, a project maintainer will review and test your code before merging it into the project. This process can take some time, and they may ask you for further edits or clarifications in the comments.
+
+## Releasing
+
+This section is for the maintainers. A release is published by the [`release`](.github/workflows/release.yml) workflow, never from a local machine, so that every version on npm carries a provenance statement that ties it to its commit.
+
+1. Write the version in `package.json` and `package-lock.json` with `npm version <version> --no-git-tag-version`.
+1. Rename the `vNext (2026--)` section of `CHANGELOG.md` to the version and the release date, such as `1.41.0 (2026-10-26)`.
+1. Commit both as `package: bump version to <version>` and push it to `main`.
+1. Run the `release` workflow on `main` with the version, from the Actions tab or with `gh workflow run release.yml -f version=<version>`.
+
+The workflow checks that `package.json` and `CHANGELOG.md` agree on the version and runs the tests. It then publishes the package to npm, and creates the tag and the GitHub release. The release notes are the section of `CHANGELOG.md` for that version, and the package npm serves is attached to the release. A run that fails after a step has finished can be run again, because a version that is already on npm or already released is skipped.
+
+npm trusts the workflow through OIDC, so no npm token is stored in the repository. This needs a trusted publisher that is set once on npmjs.com, in the settings of the `vitepress-sidebar` package:
+
+- Publisher: GitHub Actions
+- Organization or user: `jooy2`
+- Repository: `vitepress-sidebar`
+- Workflow filename: `release.yml`
+- Environment name: `npm`
+
+The `npm` environment is created in the GitHub repository the first time the workflow runs. Add required reviewers to it in the repository settings to approve each publish by hand. Once the workflow has published a version, the publishing access of the package can be set to require two-factor authentication and disallow tokens, so that nothing but the workflow can publish.

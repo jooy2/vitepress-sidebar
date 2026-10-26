@@ -1,0 +1,139 @@
+name: release
+
+# Publishes the version written in `package.json` to npm, then creates its tag
+# and its GitHub release with the notes of its `CHANGELOG.md` section. Run it on
+# `main` once the version is bumped and its section is named and dated. See
+# "Releasing" in `CONTRIBUTING.md`.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release, the one written in `package.json` (e.g. 1.41.0)'
+        required: true
+        type: string
+
+# A release is never run twice at once, and never cancelled halfway through.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  VERSION: ${{ inputs.version }}
+
+jobs:
+  verify:
+    name: Verify the version and run the tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: '**/package-lock.json'
+      # The version is read from the environment, never written into the
+      # script, so that the input cannot run as a command.
+      - name: Check the branch, the version and the changelog
+        run: |
+          if [ "$GITHUB_REF" != 'refs/heads/main' ]; then
+            echo "::error::A release is made from main, not from $GITHUB_REF."
+            exit 1
+          fi
+
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+          if [ "$VERSION" != "$PACKAGE_VERSION" ]; then
+            echo "::error::package.json is at $PACKAGE_VERSION, not at $VERSION."
+            exit 1
+          fi
+
+          if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" > /dev/null; then
+            echo "::error::The tag $VERSION already exists."
+            exit 1
+          fi
+
+          node .github/scripts/release-notes.mjs "$VERSION" > /dev/null
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm test
+
+  # npm trusts this workflow through OIDC, so no token is stored anywhere. The
+  # trusted publisher configured for the package on npmjs.com names this file
+  # and the `npm` environment, and npm attaches a provenance statement to every
+  # version published this way.
+  publish-npm:
+    name: Publish to npm
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+      # Trusted publishing needs npm 11.5.1 or later.
+      - run: npm install -g npm@latest
+      - run: npm ci
+      # Skipped when the version is already on npm, so that a run that failed
+      # after publishing can be run again.
+      - name: Publish the package
+        run: |
+          if [ "$(npm view "vitepress-sidebar@$VERSION" version 2> /dev/null)" = "$VERSION" ]; then
+            echo "vitepress-sidebar@$VERSION is already on npm."
+            exit 0
+          fi
+
+          npm publish --access public
+
+  github-release:
+    name: Create the tag and the GitHub release
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Write the release notes
+        run: node .github/scripts/release-notes.mjs "$VERSION" > release-notes.md
+      # The package npm serves is attached as it is, rather than built a second
+      # time. A version that was just published can take a moment to appear.
+      - name: Download the published package
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if npm pack "vitepress-sidebar@$VERSION"; then
+              exit 0
+            fi
+
+            sleep 10
+          done
+
+          echo "::error::vitepress-sidebar@$VERSION could not be downloaded from npm."
+          exit 1
+      - name: Create the tag and the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$VERSION" > /dev/null 2>&1; then
+            echo "The release $VERSION already exists."
+            exit 0
+          fi
+
+          gh release create "$VERSION" "vitepress-sidebar-$VERSION.tgz" \
+            --target "$GITHUB_SHA" \
+            --title "$VERSION" \
+            --notes-file release-notes.md \
+            --latest
