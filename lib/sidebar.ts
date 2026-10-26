@@ -3,7 +3,7 @@ import { join, relative, resolve } from 'path';
 import { globSync } from 'glob';
 import { existsSync, readdirSync, realpathSync, statSync } from 'fs';
 import type { Dirent } from 'fs';
-import { isTrueMinimumNumberOfTimes, objMergeNewKey } from 'qsu';
+import { isTrueAtLeast, objMergeWithArrays } from 'qsu';
 import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
 import {
   clearMarkdownFileCache,
@@ -852,7 +852,7 @@ function buildSidebar(
 
     // Exceptions for changed option names
     if (
-      isTrueMinimumNumberOfTimes(
+      isTrueAtLeast(
         [
           optionItem.sortMenusByFrontmatterOrder,
           optionItem.sortMenusByName,
@@ -870,7 +870,7 @@ function buildSidebar(
       );
     }
     if (
-      isTrueMinimumNumberOfTimes(
+      isTrueAtLeast(
         [
           optionItem.sortMenusByFrontmatterOrder,
           optionItem.sortMenusOrderNumericallyFromTitle,
@@ -888,7 +888,7 @@ function buildSidebar(
       );
     }
     if (
-      isTrueMinimumNumberOfTimes(
+      isTrueAtLeast(
         [optionItem.sortMenusByFrontmatterOrder, optionItem.sortMenusByFrontmatterDate],
         2
       )
@@ -1122,7 +1122,7 @@ export function withSidebar(
       }
     : vitePressOptions;
 
-  const result: Partial<UserConfig> = objMergeNewKey(baseOptions, sidebarResult) as UserConfig;
+  const result: Partial<UserConfig> = objMergeWithArrays(baseOptions, sidebarResult) as UserConfig;
 
   // Inject a Vite plugin that restarts the dev server when Markdown files
   // are added or removed inside any `documentRootPath`. This allows the

@@ -2,7 +2,7 @@ import { readFileSync, statSync } from 'fs';
 import type { Stats } from 'fs';
 import { join } from 'path';
 import matter from 'gray-matter';
-import { capitalizeEachWords, capitalizeFirst } from 'qsu';
+import { capitalizeEachWord, capitalizeFirst } from 'qsu';
 import type {
   AnyValueObject,
   SidebarItem,
@@ -334,7 +334,7 @@ export function formatTitle(
     text = text.replace(/_/g, ' ');
   }
   if (options.capitalizeEachWords) {
-    text = capitalizeEachWords(text);
+    text = capitalizeEachWord(text);
   } else if (options.capitalizeFirst) {
     text = capitalizeFirst(text);
   }
