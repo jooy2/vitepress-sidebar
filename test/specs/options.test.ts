@@ -978,11 +978,13 @@ describe('Test: APIs', () => {
     // A title holding the separator more than once used to be re-joined with
     // the regular expression itself, which put its source inside the title.
     assert.deepEqual(
-      generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
-        removePrefixAfterOrdering: true,
-        prefixSeparator: /\./
-      }).map((item: { text: string }) => item.text),
+      (
+        generateSidebar({
+          documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
+          removePrefixAfterOrdering: true,
+          prefixSeparator: /\./
+        }) as { text: string }[]
+      ).map((item) => item.text),
       [
         '1-1-1-one-file',
         '1-folder',
@@ -1458,11 +1460,13 @@ describe('Test: APIs', () => {
       );
 
       assert.deepEqual(
-        generateSidebar({
-          documentRootPath: targetDir,
-          sortMenusByFileCreateDate: true,
-          sortMenusOrderByDescending: true
-        }).map((item: { text: string }) => item.text),
+        (
+          generateSidebar({
+            documentRootPath: targetDir,
+            sortMenusByFileCreateDate: true,
+            sortMenusOrderByDescending: true
+          }) as { text: string }[]
+        ).map((item) => item.text),
         ['aaa', 'bbb', 'ccc', 'ddd']
       );
 
@@ -1479,10 +1483,12 @@ describe('Test: APIs', () => {
         fileStats.birthtime.getTime() !== fileStats.ctime.getTime()
       ) {
         assert.deepEqual(
-          generateSidebar({
-            documentRootPath: targetDir,
-            sortMenusByFileCreateDate: true
-          }).map((item: { text: string }) => item.text),
+          (
+            generateSidebar({
+              documentRootPath: targetDir,
+              sortMenusByFileCreateDate: true
+            }) as { text: string }[]
+          ).map((item) => item.text),
           ['ddd', 'ccc', 'bbb', 'aaa']
         );
       }
@@ -1943,8 +1949,8 @@ describe('Test: APIs', () => {
     ]);
 
     assert.deepEqual(
-      generateSidebar({ ...options, sortFolderTo: 'bottom' }).map(
-        (item: { text: string }) => item.text
+      (generateSidebar({ ...options, sortFolderTo: 'bottom' }) as { text: string }[]).map(
+        (item) => item.text
       ),
       ['bbb', 'ddd', 'aaa-empty', 'ccc-full', 'eee-with-index']
     );
@@ -2745,11 +2751,13 @@ describe('Test: APIs', () => {
     // `f.md` has no `order` that reads as a number, so it takes the default and
     // can be placed anywhere among the files that do have one.
     const textsWithDefault = (frontmatterOrderDefaultValue: number): string[] =>
-      generateSidebar({
-        documentRootPath: `${TEST_DIR_BASE}/frontmatter-order-with-negative`,
-        sortMenusByFrontmatterOrder: true,
-        frontmatterOrderDefaultValue
-      }).map((item: { text: string }) => item.text);
+      (
+        generateSidebar({
+          documentRootPath: `${TEST_DIR_BASE}/frontmatter-order-with-negative`,
+          sortMenusByFrontmatterOrder: true,
+          frontmatterOrderDefaultValue
+        }) as { text: string }[]
+      ).map((item) => item.text);
 
     assert.deepEqual(textsWithDefault(-100), ['f', 'd', 'e', 'b', 'a', 'c']);
     assert.deepEqual(textsWithDefault(100), ['d', 'e', 'b', 'a', 'c', 'f']);
@@ -2804,10 +2812,12 @@ describe('Test: APIs', () => {
       }
 
       assert.deepEqual(
-        generateSidebar({
-          documentRootPath: targetDir,
-          sortMenusByCustomFunction: (a, b) => a.createDate - b.createDate
-        }).map((item: { text: string }) => item.text),
+        (
+          generateSidebar({
+            documentRootPath: targetDir,
+            sortMenusByCustomFunction: (a, b) => a.createDate - b.createDate
+          }) as { text: string }[]
+        ).map((item) => item.text),
         ['ddd', 'ccc', 'bbb', 'aaa']
       );
     } finally {
@@ -2818,9 +2828,9 @@ describe('Test: APIs', () => {
   it('API: sortMenusByCustomFunction (must be a function)', () => {
     assert.throws(
       () =>
+        // @ts-expect-error Passing a value that is not a function is the case under test
         generateSidebar({
           documentRootPath: `${TEST_DIR_BASE}/general`,
-          // @ts-expect-error Passing a value that is not a function is the case under test
           sortMenusByCustomFunction: 'sortByName'
         }),
       /must be a function/

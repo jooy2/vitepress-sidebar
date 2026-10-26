@@ -321,7 +321,7 @@ describe('Test: base test', () => {
     // VitePress evaluates its configuration again on every restart of the dev
     // server, so a plugin appended to the list the caller passed in would be
     // added once more each time.
-    const pluginNames = (result: Partial<typeof vitePressOptions>): (string | undefined)[] =>
+    const pluginNames = (result: ReturnType<typeof withSidebar>): (string | undefined)[] =>
       ((result.vite as { plugins?: { name?: string }[] } | undefined)?.plugins ?? []).map(
         (plugin) => plugin?.name
       );
@@ -542,16 +542,20 @@ describe('Test: base test', () => {
       }
 
       assert.deepStrictEqual(
-        generateSidebar({ documentRootPath: targetDir }).map((item: { text: string }) => item.text),
+        (generateSidebar({ documentRootPath: targetDir }) as { text: string }[]).map(
+          (item) => item.text
+        ),
         ['alpha', 'bravo', 'charlie', 'delta', 'mike', 'zulu']
       );
 
       // `manualSortFileNameByPriority` still comes first
       assert.deepStrictEqual(
-        generateSidebar({
-          documentRootPath: targetDir,
-          manualSortFileNameByPriority: ['zulu.md', 'mike']
-        }).map((item: { text: string }) => item.text),
+        (
+          generateSidebar({
+            documentRootPath: targetDir,
+            manualSortFileNameByPriority: ['zulu.md', 'mike']
+          }) as { text: string }[]
+        ).map((item) => item.text),
         ['zulu', 'mike', 'alpha', 'bravo', 'charlie', 'delta']
       );
     } finally {
