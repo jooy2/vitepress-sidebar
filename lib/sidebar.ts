@@ -56,12 +56,48 @@ const ROOT_GROUP_DEFAULT_TEXT = 'Table of Contents';
 
 /**
  * Key a folder item is marked with when `splitSidebarByFolder` moves its
- * contents into a sidebar of its own. It holds the path of the folder on disk.
+ * contents into a sidebar of its own. It holds a `SplitFolderMark`.
  *
  * The sidebar of the folder is made from the item, because the title and the
  * link of the item are only final once the sidebar holding it is.
  */
-const SPLIT_FOLDER_KEY = 'splitFolderPath';
+const SPLIT_FOLDER_KEY = 'splitFolder';
+
+interface SplitFolderMark {
+  /** Path of the folder on disk */
+  dirPath: string;
+  /**
+   * Whether the sidebar above would show the folder without the split, which
+   * decides what becomes of a folder whose sidebar holds no page to link to.
+   */
+  isShown: boolean;
+}
+
+/**
+ * A folder that `splitSidebarByFolder` gives a sidebar of its own, together
+ * with the item the sidebar above shows it as.
+ */
+interface SplitFolder {
+  /**
+   * Set over every other source, the configuration files included, because
+   * a file found on the way down to the folder describes the sidebar the
+   * split started from rather than this one.
+   */
+  overrides: VitePressSidebarOptions;
+  /** Item of the folder in the sidebar above, and the level that holds it */
+  item: SidebarListItem;
+  level: SidebarListItem;
+  /** Base of the sidebar above, which the link of `item` is relative to */
+  parentBase: string;
+  /** Read from the `SplitFolderMark` of the folder */
+  isShown: boolean;
+  /** Link of the sidebar above, which the root group of this one links back to */
+  parentLink: () => string;
+  /** Path of the sidebar shown for the folder, once there is one */
+  sidebarPath?: string;
+  /** Root group of the sidebar made for the folder, once it is made */
+  rootGroup?: SidebarItem;
+}
 
 /**
  * Where the options of one sidebar come from.
@@ -73,16 +109,7 @@ const SPLIT_FOLDER_KEY = 'splitFolderPath';
  */
 interface SidebarSource {
   inlineOptions: VitePressSidebarOptions;
-  split?: {
-    /**
-     * Set over every other source, the configuration files included, because
-     * a file found on the way down to the folder describes the sidebar the
-     * split started from rather than this one.
-     */
-    overrides: VitePressSidebarOptions;
-    /** Link of the folder, which the sidebars of its own folders link back to */
-    folderLink: string;
-  };
+  split?: SplitFolder;
 }
 
 // Every option that decides the order of the items of a level, other than the
@@ -467,13 +494,16 @@ function generateDirectoryItem(
     typeof childOptions.excludeByFolderDepth === 'number' &&
     childOptions.excludeByFolderDepth <= depth + 1 &&
     !(routeNode && isDynamicRoutePath(routeNode.templatePath));
-
-  if (
-    (withDirectoryLink && childOptions.includeEmptyFolder !== false) ||
-    childOptions.includeEmptyFolder ||
+  const isShown =
+    (!!withDirectoryLink && childOptions.includeEmptyFolder !== false) ||
+    !!childOptions.includeEmptyFolder ||
     directorySidebarItems.length > 0 ||
-    isNotEmptyDirectory
-  ) {
+    isNotEmptyDirectory;
+
+  // A split folder is kept even when nothing else keeps it, because its own
+  // sidebar decides that: a folder without a link opens on the first page of
+  // that sidebar once it is built.
+  if (isShown || isSplitFolder) {
     return {
       text: newDirectoryText,
       ...(withDirectoryLink ? { link: withDirectoryLink } : {}),
@@ -538,7 +568,9 @@ function generateDirectoryItem(
             })
           }
         : {}),
-      ...(isSplitFolder ? { [SPLIT_FOLDER_KEY]: directoryPath } : {})
+      ...(isSplitFolder
+        ? { [SPLIT_FOLDER_KEY]: { dirPath: directoryPath, isShown } satisfies SplitFolderMark }
+        : {})
     };
   }
 
@@ -914,17 +946,20 @@ function toDirectoryPath(path: string): string {
 
 /**
  * Collects the folder items marked with `SPLIT_FOLDER_KEY`, in the order they
- * appear in, and removes the mark from them.
+ * appear in, together with the level that holds each, and removes the mark.
  */
-function takeSplitFolders(items: SidebarListItem): { dirPath: string; item: SidebarListItem }[] {
-  const splitFolders: { dirPath: string; item: SidebarListItem }[] = [];
+function takeSplitFolders(
+  items: SidebarListItem
+): { mark: SplitFolderMark; item: SidebarListItem; level: SidebarListItem }[] {
+  const splitFolders: { mark: SplitFolderMark; item: SidebarListItem; level: SidebarListItem }[] =
+    [];
 
   const takeFromLevel = (levelItems: SidebarListItem): void => {
     for (let i = 0, len = levelItems.length; i < len; i += 1) {
       const item = levelItems[i];
 
       if (item[SPLIT_FOLDER_KEY]) {
-        splitFolders.push({ dirPath: item[SPLIT_FOLDER_KEY], item });
+        splitFolders.push({ mark: item[SPLIT_FOLDER_KEY], item, level: levelItems });
 
         delete item[SPLIT_FOLDER_KEY];
       }
@@ -944,7 +979,7 @@ function takeSplitFolders(items: SidebarListItem): { dirPath: string; item: Side
  * Makes the source of a sidebar for every folder that the sidebar just built
  * from `options` gave a sidebar of its own, in the order the folders appear in.
  *
- * `sidebarLink` is where the new sidebars link back to, and `splitRealPaths`
+ * `sidebarLink` tells where the new sidebars link back to, and `splitRealPaths`
  * holds the real path of every folder that already has a sidebar.
  */
 function createFolderSidebarSources({
@@ -961,7 +996,7 @@ function createFolderSidebarSources({
   options: VitePressSidebarOptions;
   scanDir: string;
   documentRootDir: string;
-  sidebarLink: string;
+  sidebarLink: () => string;
   splitRealPaths: Set<string>;
 }): SidebarSource[] {
   const base = options.basePath || options.resolvePath || '/';
@@ -974,42 +1009,128 @@ function createFolderSidebarSources({
     : null;
   const sources: SidebarSource[] = [];
 
-  takeSplitFolders(items).forEach(({ dirPath, item }) => {
-    const realPath = toRealPath(dirPath) ?? dirPath;
+  takeSplitFolders(items).forEach(({ mark, item, level }) => {
+    const realPath = toRealPath(mark.dirPath) ?? mark.dirPath;
 
     // A symbolic link can lead back to a folder that already has a sidebar,
-    // and following it would make sidebars without end.
+    // and following it would make sidebars without end. Such a folder is left
+    // as the sidebar would show it without the split.
     if (splitRealPaths.has(realPath)) {
+      if (!item.link && !mark.isShown) {
+        level.splice(level.indexOf(item), 1);
+      }
+
       return;
     }
 
     splitRealPaths.add(realPath);
 
-    const folderPath = toPosixPath(relative(scanDir, dirPath));
+    const folderPath = toPosixPath(relative(scanDir, mark.dirPath));
     const folderUrlPath = removePrefix
       ? removePrefixFromPath(folderPath, removePrefix)
       : folderPath;
-    const folderResolvePath = `${resolvePath}${folderUrlPath}/`;
 
     sources.push({
       inlineOptions,
       split: {
         overrides: {
-          scanStartPath: toPosixPath(relative(documentRootDir, dirPath)),
-          resolvePath: folderResolvePath,
+          scanStartPath: toPosixPath(relative(documentRootDir, mark.dirPath)),
+          resolvePath: `${resolvePath}${folderUrlPath}/`,
           ...(basePath ? { basePath: `${basePath}${folderUrlPath}/` } : {}),
           // The folder opens on its `index.md`, which nothing else in its own
           // sidebar links to.
           includeRootIndexFile: true,
-          rootGroupText: item.text,
-          rootGroupLink: sidebarLink
+          // The root group is named after the folder, and only gets its link
+          // once every link it could point at is final.
+          rootGroupText: undefined,
+          rootGroupLink: undefined
         },
-        folderLink: item.link ? toAbsoluteLink(item.link, base) : folderResolvePath
+        item,
+        level,
+        parentBase: base,
+        isShown: mark.isShown,
+        parentLink: sidebarLink
       }
     });
   });
 
   return sources;
+}
+
+/**
+ * The path of the sidebar that VitePress shows on the page `link` points at:
+ * of the paths the page lies below, the one with the most segments.
+ */
+function findSidebarPath(link: string, sidebar: SidebarMulti): string | undefined {
+  return Object.keys(sidebar)
+    .sort((a, b) => b.split('/').length - a.split('/').length)
+    .find((path) => link.startsWith(path.startsWith('/') ? path : `/${path}`));
+}
+
+/** The first link of `items`, looked for depth first, or `null` when none has one. */
+function findFirstLink(items: SidebarListItem): string | null {
+  for (let i = 0, len = items.length; i < len; i += 1) {
+    if (items[i].link) {
+      return items[i].link;
+    }
+
+    if (items[i].items) {
+      const link = findFirstLink(items[i].items);
+
+      if (link) {
+        return link;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Gives every split folder without a link of its own the link of the first
+ * page in its sidebar, then links the root group of every folder sidebar back
+ * to the sidebar above it.
+ *
+ * Done once every sidebar is built, and from the deepest folder up, because the
+ * first page of a folder can be in a folder below it. A folder whose sidebar
+ * holds no page at all is left out of the sidebar above together with its
+ * sidebar, unless the sidebar above would show it anyway.
+ */
+function linkSplitFolders(sources: SidebarSource[], sidebar: SidebarMulti): void {
+  for (let i = sources.length - 1; i >= 0; i -= 1) {
+    const { split } = sources[i];
+
+    if (!split || split.item.link) {
+      continue;
+    }
+
+    const folderSidebar = split.sidebarPath ? sidebar[split.sidebarPath] : undefined;
+    const pageLink = folderSidebar ? findFirstLink(folderSidebar.items) : null;
+
+    if (folderSidebar && pageLink) {
+      const link = toAbsoluteLink(pageLink, folderSidebar.base);
+
+      // Written relative to the base of the sidebar above, like the links
+      // around it, whenever the page lies below that base.
+      split.item.link = link.startsWith(split.parentBase)
+        ? link.slice(split.parentBase.length)
+        : link;
+    } else if (!split.isShown) {
+      split.level.splice(split.level.indexOf(split.item), 1);
+
+      if (split.rootGroup) {
+        delete sidebar[split.sidebarPath!];
+
+        split.rootGroup = undefined;
+      }
+    }
+  }
+
+  sources.forEach(({ split }) => {
+    if (split?.rootGroup) {
+      split.rootGroup.link = split.parentLink();
+    }
+  });
 }
 
 /**
@@ -1065,7 +1186,8 @@ function buildSidebar(
   const sources: SidebarSource[] = optionItems.map((inlineOptions) => ({
     inlineOptions: inlineOptions!
   }));
-  const passedSidebarPaths = new Set<string>();
+  // Every path a sidebar was passed for, as a folder, and as it was written
+  const passedSidebarPaths = new Map<string, string>();
   const splitRealPaths = new Set<string>();
   let hasSplitSidebar = false;
 
@@ -1202,13 +1324,16 @@ function buildSidebar(
     // A sidebar passed for a path is kept over the one a split makes for the
     // same path, and nothing is said about it: the split only fills in the
     // folders that have no sidebar of their own. Compared as folders, because
-    // `/api` is written for the same pages as `/api/`.
+    // `/api` is written for the same pages as `/api/`. The folder then opens
+    // on the sidebar that was passed.
     if (split && passedSidebarPaths.has(toDirectoryPath(resolvePathKey))) {
+      split.sidebarPath = passedSidebarPaths.get(toDirectoryPath(resolvePathKey));
+
       continue;
     }
 
     if (!split) {
-      passedSidebarPaths.add(toDirectoryPath(resolvePathKey));
+      passedSidebarPaths.set(toDirectoryPath(resolvePathKey), resolvePathKey);
     }
 
     resolvedOptionItems.push(resolvedOptionItem);
@@ -1306,13 +1431,28 @@ function buildSidebar(
           options: resolvedOptionItem,
           scanDir,
           documentRootDir,
-          // A sidebar the options describe links back to where its own root
-          // group does, or to the folder it is resolved to.
-          sidebarLink:
-            split?.folderLink ??
-            (resolvedOptionItem.rootGroupLink
-              ? toAbsoluteLink(resolvedOptionItem.rootGroupLink, base)
-              : toDirectoryPath(resolvePathKey)),
+          // A folder sidebar is linked back to where its folder opens, which is
+          // only final once every sidebar is built, and only when that page
+          // shows this sidebar. A folder whose first page is in a folder below
+          // it opens on the sidebar of that folder, so its own sidebar is never
+          // shown, and the link goes on to the sidebar above. A sidebar the
+          // options describe is linked back to where its own root group
+          // links, or to the folder it is resolved to.
+          sidebarLink: split
+            ? () => {
+                const folderLink = split.item.link
+                  ? toAbsoluteLink(split.item.link, split.parentBase)
+                  : null;
+
+                return folderLink &&
+                  findSidebarPath(folderLink, sidebar as SidebarMulti) === split.sidebarPath
+                  ? folderLink
+                  : split.parentLink();
+              }
+            : () =>
+                resolvedOptionItem.rootGroupLink
+                  ? toAbsoluteLink(resolvedOptionItem.rootGroupLink, base)
+                  : toDirectoryPath(resolvePathKey),
           splitRealPaths
         })
       );
@@ -1326,7 +1466,10 @@ function buildSidebar(
       );
     }
 
+    // A folder sidebar always has a root group, which names the folder and
+    // links back to the sidebar above it.
     const withRootGroup =
+      !!split ||
       resolvedOptionItem.rootGroupText ||
       resolvedOptionItem.rootGroupLink ||
       resolvedOptionItem.rootGroupCollapsed === true ||
@@ -1340,7 +1483,9 @@ function buildSidebar(
               // The default belongs here rather than to the other defaults: a
               // root group is only made when one of its options asks for one,
               // and a name given to every option set would ask for one always.
-              text: resolvedOptionItem.rootGroupText ?? ROOT_GROUP_DEFAULT_TEXT,
+              text: split
+                ? split.item.text
+                : (resolvedOptionItem.rootGroupText ?? ROOT_GROUP_DEFAULT_TEXT),
               ...(resolvedOptionItem.rootGroupLink
                 ? { link: resolvedOptionItem.rootGroupLink }
                 : {}),
@@ -1352,7 +1497,14 @@ function buildSidebar(
           ]
         : (sidebarResult as SidebarItem[])
     };
+
+    if (split) {
+      split.sidebarPath = resolvePathKey;
+      split.rootGroup = (sidebar as SidebarMulti)[resolvePathKey].items[0];
+    }
   }
+
+  linkSplitFolders(sources, sidebar as SidebarMulti);
 
   let sidebarResult;
 

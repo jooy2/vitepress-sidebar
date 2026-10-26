@@ -283,4 +283,4 @@ This makes three sidebars:
 - On a page below `/backend/`, it lists the `index.md` of `backend`, `api` and `php`, in a group titled after `backend` that links back to `/`.
 - On a page below `/backend/php/`, it lists the files of `php`, in a group titled after `php` that links back to `backend`.
 
-`manualSortFileNameByPriority` keeps the `index.md` of each folder at the top of its sidebar. See the [`splitSidebarByFolder`](/guide/options#splitsidebarbyfolder) option for how deep each sidebar goes and what a folder needs to be opened.
+`manualSortFileNameByPriority` keeps the `index.md` of each folder at the top of its sidebar. See the [`splitSidebarByFolder`](/guide/options#splitsidebarbyfolder) option for how deep each sidebar goes and how a folder without an `index.md` is opened.

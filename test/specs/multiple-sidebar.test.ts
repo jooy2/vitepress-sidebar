@@ -410,9 +410,7 @@ describe('Test: multiple sidebars', () => {
   });
 
   it('API: splitSidebarByFolder', () => {
-    // A single set of options still returns a sidebar for each path, and
-    // `notes` has no `index.md` to link to, so it is left out like any folder
-    // whose contents are not scanned
+    // A single set of options still returns a sidebar for each path
     assert.deepEqual(
       generateSidebar({
         documentRootPath: SPLIT_DIR,
@@ -425,7 +423,9 @@ describe('Test: multiple sidebars', () => {
           items: [
             { text: 'API', link: 'api/index.md' },
             { text: 'Guide', link: 'guide/index.md' },
-            { text: 'Intro', link: 'intro' }
+            { text: 'Intro', link: 'intro' },
+            // No `index.md`, so it opens on the first page of its sidebar
+            { text: 'notes', link: 'notes/draft' }
           ]
         },
         '/api/': {
@@ -453,6 +453,17 @@ describe('Test: multiple sidebars', () => {
                 { text: 'Guide', link: '/guide/index.md' },
                 { text: 'Setup', link: '/guide/setup' }
               ],
+              collapsed: undefined
+            }
+          ]
+        },
+        '/notes/': {
+          base: '',
+          items: [
+            {
+              text: 'notes',
+              link: '/',
+              items: [{ text: 'Draft', link: '/notes/draft' }],
               collapsed: undefined
             }
           ]
@@ -601,10 +612,75 @@ describe('Test: multiple sidebars', () => {
         }
       ]
     });
-    assert.deepEqual(Object.keys(result).sort(), ['/', '/api', '/guide/', '/guide/advanced/']);
+    assert.deepEqual(Object.keys(result).sort(), [
+      '/',
+      '/api',
+      '/guide/',
+      '/guide/advanced/',
+      '/notes/'
+    ]);
     assert.ok(
       !warnings.some((message) => message.includes('More than one sidebar resolves')),
       'expected the split to leave the passed sidebar alone without a warning'
+    );
+  });
+
+  it('API: splitSidebarByFolder (a folder without a link opens on its first page)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/split-by-folder-without-index`,
+        splitSidebarByFolder: true,
+        useTitleFromFileHeading: true
+      }),
+      {
+        '/': {
+          base: '/',
+          items: [
+            // The first page of `archive` is in `2024`, which is opened
+            // directly. `assets` holds no page, so it is left out.
+            { text: 'archive', link: 'archive/2024/report' },
+            { text: 'notes', link: 'notes/draft' }
+          ]
+        },
+        '/archive/': {
+          base: '',
+          items: [
+            {
+              text: 'archive',
+              link: '/',
+              items: [{ text: '2024', link: '/archive/2024/report' }],
+              collapsed: undefined
+            }
+          ]
+        },
+        '/notes/': {
+          base: '',
+          items: [
+            {
+              text: 'notes',
+              link: '/',
+              items: [
+                { text: 'Draft', link: '/notes/draft' },
+                { text: 'Review', link: '/notes/review' }
+              ],
+              collapsed: undefined
+            }
+          ]
+        },
+        '/archive/2024/': {
+          base: '',
+          items: [
+            {
+              // No page shows the sidebar of `archive`, so the link goes on to
+              // the sidebar above it
+              text: '2024',
+              link: '/',
+              items: [{ text: 'Report', link: '/archive/2024/report' }],
+              collapsed: undefined
+            }
+          ]
+        }
+      }
     );
   });
 

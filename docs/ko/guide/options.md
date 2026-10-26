@@ -161,7 +161,7 @@ export default defineConfig(
 참고할 점은 다음과 같습니다.
 
 - 사이드바가 어디서 끝나는지는 [`excludeByFolderDepth`](#excludebyfolderdepth)가 정합니다. 직접 지정하지 않으면 `2`이고, 이때 각 사이드바에는 자기 폴더의 파일과 하위 폴더, 한 단계만 나옵니다. `3`으로 지정하면 하위 폴더의 내용까지 함께 나오고, 그 아래 폴더부터 사이드바를 따로 만듭니다.
-- 폴더는 위 사이드바에 있는 자기 링크로 엽니다. 그래서 직접 지정하지 않으면 [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile)이 `true`가 되고, 폴더는 자기 `index.md`로 연결됩니다. `index.md`가 없는 폴더처럼 링크가 없는 폴더는 `excludeByFolderDepth`만 쓸 때와 마찬가지로 위 사이드바에서 빠지고, 자기 사이드바도 생기지 않습니다.
+- 폴더는 위 사이드바에 있는 자기 링크로 엽니다. 그래서 직접 지정하지 않으면 [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile)이 `true`가 되고, 폴더는 자기 `index.md`로 연결됩니다. `index.md`가 없는 폴더처럼 자기 링크가 없는 폴더는 자기 사이드바의 첫 페이지로 연결되고, 페이지가 하나도 없는 폴더는 빠집니다. 첫 페이지가 하위 폴더 안에 있으면 그 폴더의 사이드바는 화면에 나오지 않으므로, 그 아래 사이드바는 한 단계 더 위의 사이드바로 돌아갑니다.
 - 폴더의 `index.md`는 그 폴더의 사이드바에 나옵니다. 폴더를 열면 처음 보이는 페이지이기 때문입니다. 첫 사이드바에서는 지금처럼 `includeRootIndexFile`이 정합니다.
 - 폴더 사이드바의 루트 그룹 제목은 위 사이드바에서 그 폴더가 쓰는 제목과 같습니다. [설정 파일](/ko/advanced-usage/configuration-file)의 `$folder.text`로 바꿀 수 있습니다.
 - 각 사이드바의 경로는 [`resolvePath`](#resolvepath) 뒤에 자기 폴더 경로를 붙인 값입니다. `resolvePath`를 지정하지 않으면 `scanStartPath`의 경로를 씁니다. [`basePath`](#basepath)를 지정했다면 같은 방식으로 이어 붙입니다. [`removePrefixFromLink`](#removeprefixfromlink)를 쓰면 링크와 마찬가지로 경로에서도 접두사가 빠집니다.

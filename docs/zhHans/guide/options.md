@@ -161,7 +161,7 @@ export default defineConfig(
 请注意以下几点：
 
 - [`excludeByFolderDepth`](#excludebyfolderdepth) 决定侧边栏在哪里结束，未设置时为 `2`：每个侧边栏只包含一层，即其所属文件夹中的文件和子文件夹。设置为 `3` 时，侧边栏还会列出子文件夹中的内容，再往下的文件夹才会拥有自己的侧边栏。
-- 文件夹通过它在上一级侧边栏中的链接打开，因此未设置时 [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile) 为 `true`，文件夹会链接到其 `index.md`。没有链接的文件夹（例如没有 `index.md` 的文件夹）会像只使用 `excludeByFolderDepth` 时一样从上一级侧边栏中移除，也不会拥有自己的侧边栏。
+- 文件夹通过它在上一级侧边栏中的链接打开，因此未设置时 [`useFolderLinkFromIndexFile`](#usefolderlinkfromindexfile) 为 `true`，文件夹会链接到其 `index.md`。没有自己链接的文件夹（例如没有 `index.md` 的文件夹）会链接到其侧边栏中的第一个页面，不包含任何页面的文件夹则会被移除。如果这个第一个页面位于更深的子文件夹中，该文件夹的侧边栏永远不会显示，因此其下方的侧边栏会链接回再上一级的侧边栏。
 - 文件夹的 `index.md` 会列在该文件夹的侧边栏中，因为它是打开文件夹时显示的页面。第一个侧边栏仍由 `includeRootIndexFile` 决定。
 - 文件夹侧边栏的根分组标题与该文件夹在上一级侧边栏中的标题相同。可以通过[配置文件](/zhHans/advanced-usage/configuration-file)中的 `$folder.text` 修改。
 - 每个侧边栏的路径是 [`resolvePath`](#resolvepath) 加上其文件夹的路径，未设置 `resolvePath` 时使用 `scanStartPath` 的路径。设置了 [`basePath`](#basepath) 时，它也会以同样的方式扩展。使用 [`removePrefixFromLink`](#removeprefixfromlink) 时，路径会像链接一样去掉前缀。
