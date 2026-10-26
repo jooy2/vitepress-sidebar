@@ -232,8 +232,27 @@ function describeOptionType(spec: ConfigFileOptionSpec): string {
   }
 }
 
+// Every sidebar reads the configuration files above the folder it scans, so
+// with several sidebars the same file is read more than once in a build. A
+// problem found in it is reported the first time only.
+const reportedWarnings = new Set<string>();
+
 function printWarning(message: string): void {
+  if (reportedWarnings.has(message)) {
+    return;
+  }
+
+  reportedWarnings.add(message);
+
   process.stderr.write(`[vitepress-sidebar] ${message}\n`);
+}
+
+/**
+ * Forgets the problems reported so far, so that the next build reports every
+ * problem it finds again.
+ */
+export function clearReportedWarnings(): void {
+  reportedWarnings.clear();
 }
 
 export interface SidebarConfigFile {
@@ -289,10 +308,14 @@ function readFolderMeta(value: unknown, filePath: string): VitePressSidebarFolde
  *
  * Returns `null` when the directory holds no configuration file. Unknown keys
  * are dropped with a warning so a typo never silently changes the output.
+ *
+ * `isBelowDocumentRoot` only matters with `allowRootOnlyOptions`, which a file
+ * between the document root and the scan root is read with as well.
  */
 export function readConfigFile(
   dirPath: string,
-  allowRootOnlyOptions: boolean
+  allowRootOnlyOptions: boolean,
+  isBelowDocumentRoot = !allowRootOnlyOptions
 ): SidebarConfigFile | null {
   const filePath = join(dirPath, SIDEBAR_CONFIG_FILE_NAME);
 
@@ -323,12 +346,17 @@ export function readConfigFile(
     }
 
     if (key === FOLDER_META_KEY) {
-      // A folder at or above the document root is never rendered as a sidebar
-      // item, so there is nothing for its description to apply to.
+      // Read for a sidebar as a whole, which the description of a folder never
+      // applies to. A folder below the document root is still an item of a
+      // sidebar that scans the folder above it, so only a folder at or above
+      // the document root, which no sidebar renders, is reported.
       if (allowRootOnlyOptions) {
-        printWarning(
-          `'${FOLDER_META_KEY}' describes a folder of the sidebar, and '${filePath}' is at or above the document root, so it was ignored.`
-        );
+        if (!isBelowDocumentRoot) {
+          printWarning(
+            `'${FOLDER_META_KEY}' describes a folder of the sidebar, and '${filePath}' is at or above the document root, so it was ignored.`
+          );
+        }
+
         return;
       }
 
@@ -370,23 +398,31 @@ export function readConfigFile(
 /**
  * Merges every configuration file found while walking `relativePath` down from
  * `baseDir`. Files closer to the documents win over the ones above them.
+ *
+ * The walk either goes from the working directory down to the document root,
+ * `baseDir` included, or from the document root down to the scan root, in
+ * which case `isBelowDocumentRoot` is set and the file of `baseDir` is left to
+ * the walk above it.
  */
 export function mergeConfigFilesInPath(
   baseDir: string,
   relativePath: string,
-  includeBaseDir: boolean
+  isBelowDocumentRoot: boolean
 ): VitePressSidebarOptions {
   const segments = relativePath.split(/[\\/]/).filter((x) => x.length > 0 && x !== '.');
   let currentDir = baseDir;
   let merged: VitePressSidebarOptions = {};
 
-  if (includeBaseDir) {
+  if (!isBelowDocumentRoot) {
     merged = { ...merged, ...(readConfigFile(currentDir, true)?.options ?? {}) };
   }
 
   for (let i = 0, len = segments.length; i < len; i += 1) {
     currentDir = join(currentDir, segments[i]);
-    merged = { ...merged, ...(readConfigFile(currentDir, true)?.options ?? {}) };
+    merged = {
+      ...merged,
+      ...(readConfigFile(currentDir, true, isBelowDocumentRoot)?.options ?? {})
+    };
   }
 
   return merged;

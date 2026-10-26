@@ -35,6 +35,7 @@ import {
 } from './helper.js';
 import { createSidebarHmrPlugin } from './external.js';
 import {
+  clearReportedWarnings,
   detectDocumentRootPath,
   mergeConfigFilesInPath,
   normalizeOptions,
@@ -882,6 +883,7 @@ function buildSidebar(
   // previous build may have changed since, so every build starts and ends
   // without anything left over from another one.
   clearMarkdownFileCache();
+  clearReportedWarnings();
 
   const sidebar: Sidebar = {};
   const isMultipleSidebars = Array.isArray(options);
@@ -931,7 +933,7 @@ function buildSidebar(
     // Configuration files placed between the working directory and the scan
     // root are merged from the shallowest to the deepest one, and take priority
     // over the options passed as an argument.
-    const rootPathConfig = mergeConfigFilesInPath(cwd, documentRootPath, true);
+    const rootPathConfig = mergeConfigFilesInPath(cwd, documentRootPath, false);
 
     if (
       rootPathConfig.documentRootPath !== undefined &&
@@ -951,7 +953,7 @@ function buildSidebar(
     if (optionItem.scanStartPath) {
       optionItem = {
         ...optionItem,
-        ...mergeConfigFilesInPath(join(cwd, documentRootPath), optionItem.scanStartPath, false)
+        ...mergeConfigFilesInPath(join(cwd, documentRootPath), optionItem.scanStartPath, true)
       };
     }
 
@@ -1180,6 +1182,7 @@ function buildSidebar(
   }
 
   clearMarkdownFileCache();
+  clearReportedWarnings();
 
   return { sidebar: sidebarResult, optionItems: resolvedOptionItems };
 }

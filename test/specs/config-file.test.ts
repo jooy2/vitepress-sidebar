@@ -20,6 +20,25 @@ function withCwd<T>(dirPath: string, callback: () => T): T {
   }
 }
 
+// Returns every warning written while `callback` runs.
+function captureWarnings(callback: () => unknown): string[] {
+  const warnings: string[] = [];
+  const write = process.stderr.write;
+
+  process.stderr.write = ((chunk: string) => {
+    warnings.push(String(chunk));
+    return true;
+  }) as typeof process.stderr.write;
+
+  try {
+    callback();
+  } finally {
+    process.stderr.write = write;
+  }
+
+  return warnings;
+}
+
 describe('Test: `sidebar.config.json`', () => {
   it('Options of a folder apply to the folder itself and to its subfolders', () => {
     assert.deepEqual(
@@ -250,6 +269,60 @@ describe('Test: `sidebar.config.json`', () => {
           link: '/two'
         }
       ]
+    );
+  });
+
+  it('A problem of a configuration file is reported once, however many sidebars read it', () => {
+    const warnings = captureWarnings(() =>
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/config-file-root-only`,
+          resolvePath: '/'
+        },
+        {
+          documentRootPath: `${TEST_DIR_BASE}/config-file-root-only`,
+          resolvePath: '/other/'
+        }
+      ])
+    );
+
+    assert.deepEqual(
+      warnings.filter((message, index) => warnings.indexOf(message) !== index),
+      [],
+      'expected every warning to be reported once'
+    );
+    assert.ok(
+      warnings.some((message) => message.includes(`Unknown option 'thisOptionDoesNotExist'`)),
+      'expected the unknown option to be reported'
+    );
+    // Nothing renders the document root as a folder, so its `$folder` is
+    // still reported
+    assert.ok(
+      warnings.some((message) => message.includes(`'$folder' describes a folder of the sidebar`)),
+      'expected the `$folder` of the document root to be reported'
+    );
+  });
+
+  it('`$folder` on the way down to `scanStartPath` is not reported', () => {
+    // `c` is the scan root of the second sidebar, and still a folder of the
+    // first one, which is what its `$folder` describes
+    const warnings = captureWarnings(() =>
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/folder-meta`,
+          resolvePath: '/'
+        },
+        {
+          documentRootPath: `${TEST_DIR_BASE}/folder-meta`,
+          scanStartPath: 'c',
+          resolvePath: '/c/'
+        }
+      ])
+    );
+
+    assert.ok(
+      !warnings.some((message) => message.includes(`'$folder' describes a folder of the sidebar`)),
+      'expected no warning about `$folder`'
     );
   });
 });
