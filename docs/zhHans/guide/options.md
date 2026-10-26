@@ -726,6 +726,8 @@ rootGroup 指定整个菜单组,而与目录结构无关。这将使用一个菜
 
 有关 rootGroup 的更多信息，请参阅 `rootGroupText` 选项说明。指定此值可指定指向 rootGroup 的链接。如果值为空，则不添加链接。
 
+以 `/` 开头的链接和完整的 URL 会按原样使用。在[多个侧边栏](/zhHans/advanced-usage/multiple-sidebars-how-to)中，`intro` 这样的相对链接会以 `basePath` 或 `resolvePath` 为基准解析，这与 VitePress 解析侧边栏中所有链接的方式相同。
+
 ## `rootGroupCollapsed`
 
 - Type: `boolean`

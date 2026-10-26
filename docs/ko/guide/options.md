@@ -726,6 +726,8 @@ export default defineConfig({
 
 루트 그룹에 대한 자세한 내용은 `rootGroupText` 옵션 설명을 참조하세요. 이 값을 지정하면 루트 그룹에 대한 링크가 지정됩니다. 값이 비어 있으면 링크가 추가되지 않습니다.
 
+`/`로 시작하는 링크와 전체 URL은 적은 그대로 씁니다. [다중 사이드바](/ko/advanced-usage/multiple-sidebars-how-to)에서 `intro`처럼 상대 경로로 적은 링크는 `basePath`나 `resolvePath`를 기준으로 연결됩니다. VitePress가 사이드바의 링크를 모두 이 방식으로 연결하기 때문입니다.
+
 ## `rootGroupCollapsed`
 
 - Type: `boolean`

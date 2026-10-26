@@ -726,6 +726,8 @@ A root group is only created when one of the `rootGroup` options is set, and `Ta
 
 For more information about rootGroup, see the `rootGroupText` option description. Specifying this value specifies a link to the rootGroup. If the value is empty, no link is added.
 
+A link that starts with `/`, or a full URL, is used as written. In [multiple sidebars](/advanced-usage/multiple-sidebars-how-to), a relative link such as `intro` is resolved against `basePath` or `resolvePath`, the way VitePress resolves every link of a sidebar.
+
 ## `rootGroupCollapsed`
 
 - Type: `boolean`

@@ -225,7 +225,7 @@ describe('Test: multiple sidebars', () => {
           resolvePath: '/guide/',
           basePath: '/base/',
           rootGroupText: 'Guide',
-          rootGroupLink: '/guide/start',
+          rootGroupLink: 'start',
           rootGroupCollapsed: false
         }
       ]),
@@ -237,7 +237,7 @@ describe('Test: multiple sidebars', () => {
           items: [
             {
               text: 'Guide',
-              link: '/guide/start',
+              link: 'start',
               items: [
                 {
                   text: 'sub-folder-test',
@@ -265,6 +265,90 @@ describe('Test: multiple sidebars', () => {
             {
               text: 'sub-folder-test',
               link: 'sub-folder-test'
+            }
+          ]
+        }
+      }
+    );
+  });
+
+  it('A link that is not relative to the base is kept as it is written', () => {
+    // VitePress puts the base in front of every link of a sidebar, so the
+    // sidebar is given none and the links relative to it are resolved instead
+    assert.deepEqual(
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general/folder/subFolder`,
+          resolvePath: '/guide/',
+          basePath: '/base/',
+          rootGroupText: 'Guide',
+          rootGroupLink: '/'
+        },
+        {
+          documentRootPath: `${TEST_DIR_BASE}/general/folder/subFolder`,
+          resolvePath: '/external/',
+          rootGroupText: 'External',
+          rootGroupLink: 'https://example.com/'
+        }
+      ]),
+      {
+        '/guide/': {
+          base: '',
+          items: [
+            {
+              text: 'Guide',
+              link: '/',
+              items: [
+                {
+                  text: 'sub-folder-test',
+                  link: '/base/sub-folder-test'
+                }
+              ],
+              collapsed: undefined
+            }
+          ]
+        },
+        '/external/': {
+          base: '',
+          items: [
+            {
+              text: 'External',
+              link: 'https://example.com/',
+              items: [
+                {
+                  text: 'sub-folder-test',
+                  link: '/external/sub-folder-test'
+                }
+              ],
+              collapsed: undefined
+            }
+          ]
+        }
+      }
+    );
+
+    // A `$folder.link` is used as written as well, however deep it is
+    assert.deepEqual(
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/folder-meta`,
+          resolvePath: '/',
+          excludeByGlobPattern: ['a', 'b', 'd']
+        }
+      ]),
+      {
+        '/': {
+          base: '',
+          items: [
+            {
+              text: 'c',
+              link: '/c/c1',
+              items: [
+                {
+                  text: 'c1',
+                  link: '/c/c1'
+                }
+              ]
             }
           ]
         }

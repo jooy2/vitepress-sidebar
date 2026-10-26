@@ -4,7 +4,13 @@ import { globSync } from 'glob';
 import { existsSync, readdirSync, realpathSync, statSync } from 'fs';
 import type { Dirent } from 'fs';
 import { isTrueAtLeast, objMergeWithArrays } from 'qsu';
-import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
+import type {
+  Sidebar,
+  SidebarItem,
+  SidebarListItem,
+  SidebarMulti,
+  VitePressSidebarOptions
+} from './types.js';
 import {
   clearMarkdownFileCache,
   createPrefixRemover,
@@ -821,6 +827,45 @@ function generateSidebarItem(
 }
 
 /**
+ * Whether VitePress resolves a link against the base of the sidebar it is in.
+ *
+ * VitePress puts the base in front of every link of a sidebar, so that only a
+ * link relative to it comes out right. A link that starts with `/`, or that
+ * names a protocol, already says where it points, and the base in front of it
+ * turns `/guide/` into `/base//guide/`, and `/` into `//`, a link to another
+ * host.
+ */
+function isLinkRelativeToBase(link: string): boolean {
+  return !/^(?:\/|[a-z][a-z\d+.-]*:)/i.test(link);
+}
+
+/** The link VitePress makes of `link` in a sidebar based at `base`. */
+function toAbsoluteLink(link: string, base: string): string {
+  return isLinkRelativeToBase(link) ? `${base}${link}` : link;
+}
+
+function hasLinkNotRelativeToBase(items: SidebarItem[]): boolean {
+  return items.some(
+    (item) =>
+      (!!item.link && !isLinkRelativeToBase(item.link)) ||
+      (!!item.items && hasLinkNotRelativeToBase(item.items))
+  );
+}
+
+/**
+ * Puts the base in front of every link that is relative to it, which is what
+ * VitePress would have done, so that the sidebar needs no base anymore and the
+ * other links are kept as they were written.
+ */
+function resolveLinksAgainstBase(items: SidebarItem[], base: string): SidebarItem[] {
+  return items.map((item) => ({
+    ...item,
+    ...(item.link ? { link: toAbsoluteLink(item.link, base) } : {}),
+    ...(item.items ? { items: resolveLinksAgainstBase(item.items, base) } : {})
+  }));
+}
+
+/**
  * Builds the sidebar, and returns it together with the options it was built
  * with once the configuration files and the defaults have been applied.
  *
@@ -1115,7 +1160,18 @@ function buildSidebar(
     // Single sidebar
     sidebarResult = Object.values(sidebar)[0].items;
   } else {
-    // Multiple sidebars
+    // Multiple sidebars. A sidebar holding a link that is not relative to its
+    // base gets every other link resolved against the base instead, and no base
+    // that VitePress would put in front of that link.
+    Object.entries(sidebar as SidebarMulti).forEach(([path, { base, items }]) => {
+      if (hasLinkNotRelativeToBase(items)) {
+        (sidebar as SidebarMulti)[path] = {
+          base: '',
+          items: resolveLinksAgainstBase(items, base)
+        };
+      }
+    });
+
     sidebarResult = sidebar;
   }
 
