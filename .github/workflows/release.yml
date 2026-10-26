@@ -110,11 +110,17 @@ jobs:
       - name: Write the release notes
         run: node .github/scripts/release-notes.mjs "$VERSION" > release-notes.md
       # The package npm serves is attached as it is, rather than built a second
-      # time. A version that was just published can take a moment to appear.
+      # time. It is fetched from its own address, because the version list a
+      # name such as `vitepress-sidebar@1.41.0` is looked up in can leave out a
+      # version for more than a minute after it was published, and that wait
+      # is allowed for as well.
       - name: Download the published package
         run: |
-          for attempt in 1 2 3 4 5 6; do
-            if npm pack "vitepress-sidebar@$VERSION"; then
+          PACKAGE_FILE="vitepress-sidebar-$VERSION.tgz"
+
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent --show-error --location --output "$PACKAGE_FILE" \
+              "https://registry.npmjs.org/vitepress-sidebar/-/$PACKAGE_FILE"; then
               exit 0
             fi
 
