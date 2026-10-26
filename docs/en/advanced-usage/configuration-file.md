@@ -167,6 +167,7 @@ Some options describe the sidebar as a whole rather than a single folder. They a
 - [includeRootIndexFile](/guide/options#includerootindexfile)
 - [includeDynamicRoutes](/guide/options#includedynamicroutes)
 - [removePrefixAfterOrdering](/guide/options#removeprefixafterordering)
+- [removePrefixFromLink](/guide/options#removeprefixfromlink)
 - [debugPrint](/guide/options#debugprint)
 
 Any key that is not a VitePress Sidebar option is ignored with a warning as well, and so is a value of the wrong type, so a mistake never changes the result silently:

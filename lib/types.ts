@@ -44,6 +44,7 @@ export declare interface VitePressSidebarOptions {
   excludeFilesByFrontmatterFieldName?: string;
   followSymlinks?: boolean;
   removePrefixAfterOrdering?: boolean;
+  removePrefixFromLink?: boolean;
   prefixSeparator?: string | RegExp;
   rootGroupText?: string;
   rootGroupLink?: string;

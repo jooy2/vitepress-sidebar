@@ -33,9 +33,10 @@ Every option at a glance. Click a name to jump to its full description.
 <tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#frontmattertitlefieldname"><code>frontmatterTitleFieldName</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
 <tr><td><a href="#dynamicroutetitleparam"><code>dynamicRouteTitleParam</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
-<tr><td rowspan="3">Getting Menu Link</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="4">Getting Menu Link</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#folderlinknotincludesfilename"><code>folderLinkNotIncludesFileName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usefolderlinkfromindexfile"><code>useFolderLinkFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#removeprefixfromlink"><code>removePrefixFromLink</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
 <tr><td rowspan="9">Include/Exclude</td><td><a href="#excludebyglobpattern"><code>excludeByGlobPattern</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
 <tr><td><a href="#excludefilesbyfrontmatterfieldname"><code>excludeFilesByFrontmatterFieldName</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>✅</td></tr>
 <tr><td><a href="#excludebyfolderdepth"><code>excludeByFolderDepth</code></a></td><td><code>number|null</code></td><td><code>null</code></td><td>✅</td></tr>
@@ -635,7 +636,7 @@ Removes letters only once based on the separator, so a child item like `1.1.` sh
 
 Can be used with the `prefixSeparator` option. See that option's description for more information.
 
-(Note A: prefix only affects the title, the link will use the file link as it is).
+(Note A: This option only affects the title. To remove the prefix from the link as well, use [`removePrefixFromLink`](#removeprefixfromlink).)
 
 (Note B: This option is ignored if you use the `useTitleFromFileHeading` or `useTitleFromFrontmatter` options).
 
@@ -644,13 +645,70 @@ Can be used with the `prefixSeparator` option. See that option's description for
 - Type: `string|RegExp`
 - Default: `'.'`
 
-This option can only be used in conjunction with the `removePrefixAfterOrdering` option to remove the prefix.
+This option tells [`removePrefixAfterOrdering`](#removeprefixafterordering) and [`removePrefixFromLink`](#removeprefixfromlink) where the prefix ends. It does nothing without one of them.
 
 Removes the first part of a specified number of characters (at least one) from the extracted menu text. For example, if the menu name is `1. Text`, and you set the `prefixSeparator` value to `. `, the result will be just `Text`.
 
 You can also use regular expressions. The first value matching the regular expression is removed, so write one that matches the whole prefix, separator included. For example, to remove the date before the string in `2024-01-01-hello`, specify the `prefixSeparator` value as `/[0-9]{4}-[0-9]{2}-[0-9]{2}-/g`. The result is `hello`.
 
 This is the way to remove a prefix that holds the separator itself, which the text form cannot express: `/^[0-9]+\./` turns `1.1.hello` into `1.hello`, while `.` alone would too, but `/^[0-9]+\.[0-9]+\./` turns it into `hello`.
+
+## `removePrefixFromLink`
+
+- Type: `boolean`
+- Default: `false`
+
+Removes the prefix from every link of the sidebar, the same way [`removePrefixAfterOrdering`](#removeprefixafterordering) removes it from a title. Use it when the prefix of a file name only decides the order and should not appear in the URL either.
+
+The prefix is removed from each folder and file the link passes through, once the menu items have been ordered by it, and [`prefixSeparator`](#prefixseparator) decides where it ends. With the default separator (`.`):
+
+- File: `1.guide/2.setup.md` -> Link: `/guide/setup`
+- File: `1.guide/index.md` -> Link: `/guide/` (an `index` page keeps its name)
+
+The titles are left alone. Enable `removePrefixAfterOrdering` as well to remove the prefix from both.
+
+A link only works when VitePress serves the page at that path, so the page has to be moved there with [`rewrites`](https://vitepress.dev/guide/routing#route-rewrites). `withSidebar` adds them to the VitePress configuration for you:
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  title: 'VitePress Sidebar'
+};
+
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs',
+    removePrefixAfterOrdering: true,
+    removePrefixFromLink: true
+  })
+);
+```
+
+Note the following:
+
+- Every page below the scanned folder is rewritten, including the pages the sidebar leaves out, so they all follow the same rule. The scanned folder is [`scanStartPath`](#scanstartpath), or the whole document root without it. A page path is read from `documentRootPath`, exactly like [`srcExclude`](#vitepress-srcexclude).
+- `rewrites` you wrote as a function run first, on the paths as they are on disk, and the prefix is removed from the path they return. `rewrites` written as an object cannot be combined with it and are reported as an error, so write them as a function.
+- Every sidebar that enables this option must use the same `prefixSeparator`, because a single `rewrites` serves all of them.
+- A path you write yourself is used as written. `$folder.link` in a [configuration file](/advanced-usage/configuration-file), `rootGroupLink`, `resolvePath` and `basePath` must already be the path without the prefix, such as `resolvePath: '/guide/'` for `scanStartPath: '1.guide'`.
+- A link written in the Markdown of a page is not changed. VitePress expects such a link to be [based on the rewritten path](https://vitepress.dev/guide/routing#route-rewrites), so write it without the prefix, such as `./guide/setup.md`.
+- Two pages of the sidebar that end up at the same path, such as `1.intro.md` and `2.intro.md`, are reported with a warning, because VitePress serves only one of them there.
+- [`generateSidebar`](/guide/getting-started#_2-using-generatesidebar) is not given the VitePress configuration, so it cannot add the `rewrites`. Write a function that removes the same prefix yourself. For example, with `prefixSeparator: /^[0-9]+\./`:
+
+```javascript
+export default defineConfig({
+  // `(?!md$)` keeps a file named by its number alone, such as `5.md`
+  rewrites: (id) => id.replace(/(^|\/)[0-9]+\.(?!md$)/g, '$1'),
+  themeConfig: {
+    sidebar: generateSidebar({
+      documentRootPath: '/docs',
+      removePrefixFromLink: true,
+      prefixSeparator: /^[0-9]+\./
+    })
+  }
+});
+```
 
 ## `rootGroupText`
 

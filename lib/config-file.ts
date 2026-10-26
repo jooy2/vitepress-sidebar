@@ -121,6 +121,7 @@ const OPTION_SPECS = {
   includeRootIndexFile: { type: 'boolean', rootOnly: true },
   includeDynamicRoutes: { type: 'boolean', rootOnly: true },
   removePrefixAfterOrdering: { type: 'boolean', rootOnly: true },
+  removePrefixFromLink: { type: 'boolean', rootOnly: true },
   debugPrint: { type: 'boolean', rootOnly: true },
   collapsed: { type: 'boolean' },
   collapseDepth: { type: 'number' },

@@ -167,6 +167,7 @@ docs/
 - [includeRootIndexFile](/zhHans/guide/options#includerootindexfile)
 - [includeDynamicRoutes](/zhHans/guide/options#includedynamicroutes)
 - [removePrefixAfterOrdering](/zhHans/guide/options#removeprefixafterordering)
+- [removePrefixFromLink](/zhHans/guide/options#removeprefixfromlink)
 - [debugPrint](/zhHans/guide/options#debugprint)
 
 不属于 VitePress Sidebar 选项的键，以及类型不正确的值，同样会被忽略并给出警告，因此失误不会悄悄改变结果：

@@ -30,6 +30,16 @@ export const SORT_ITEM_KEY = 'sortItem';
  */
 export const DIRECTORY_ITEM_KEY = 'isDirectoryItem';
 
+/**
+ * Key a folder item is marked with while its link is the one written in
+ * `$folder`, until the prefix is removed from the links.
+ *
+ * Such a link points wherever it was written to point, so `removePrefixFromLink`
+ * has to leave it alone, and by then it can no longer be told apart from a
+ * link that was built from a path.
+ */
+export const FOLDER_META_LINK_KEY = 'isFolderMetaLink';
+
 export function generateNotTogetherMessage(options: string[]): string {
   return `These options cannot be used together: ${options.join(', ')}`;
 }
@@ -626,54 +636,108 @@ export function deleteKeyFromLevel(items: SidebarListItem, key: string): void {
 }
 
 /**
- * Removes the prefix of every menu title, once the items have been ordered by
- * it. Only a title is changed, never a link, which keeps pointing at the file
- * it was read from.
+ * Creates the function that removes the prefix from the front of a text.
  *
  * A separator written as text removes everything up to and including the first
  * one, while a regular expression removes what it matches, which is what makes
  * a prefix holding the separator itself, such as a date, expressible.
  */
+export function createPrefixRemover(prefixSeparator: string | RegExp): (text: string) => string {
+  if (prefixSeparator instanceof RegExp) {
+    // Matched once, because what is removed is the prefix and not every value
+    // that looks like one further along the text.
+    const prefixPattern = new RegExp(
+      prefixSeparator.source,
+      prefixSeparator.flags.replace(/g/g, '')
+    );
+
+    return (text) => text.replace(prefixPattern, '');
+  }
+
+  return (text) => {
+    const separatorIndex = text.indexOf(prefixSeparator);
+
+    return separatorIndex === -1 ? text : text.slice(separatorIndex + prefixSeparator.length);
+  };
+}
+
+/**
+ * Removes the prefix from every part of a path, which is how a link loses the
+ * prefix of each folder and file it passes through.
+ *
+ * The same function turns the path of a page into the one VitePress serves it
+ * at, so a link and the page it points at always lose the same prefix. An
+ * `.md` extension is set aside first, or a separator such as `.` would find a
+ * prefix in front of it. An `index` keeps its name, because it is what makes a
+ * page the index of its folder, and a part that would be left empty is kept as
+ * it is.
+ */
+export function removePrefixFromPath(path: string, removePrefix: (text: string) => string): string {
+  return path
+    .split('/')
+    .map((part) => {
+      const extension = part.endsWith('.md') ? '.md' : '';
+      const name = part.slice(0, part.length - extension.length);
+
+      if (!name || name === 'index') {
+        return part;
+      }
+
+      const nameWithoutPrefix = removePrefix(name);
+
+      return nameWithoutPrefix ? `${nameWithoutPrefix}${extension}` : part;
+    })
+    .join('/');
+}
+
+/**
+ * Removes the prefix of every menu title, of every link, or of both, once the
+ * items have been ordered by it.
+ *
+ * `removePrefixAfterOrdering` decides the titles and `removePrefixFromLink` the
+ * links. A link written in `$folder` is never changed, because it points
+ * wherever it was written to point rather than at a file named with a prefix.
+ * `onLink` is told about every other link, including one that has no prefix to
+ * lose, because that one can still end up at the same path as another.
+ */
 export function removePrefixFromTitleAndLink(
   sidebarList: SidebarListItem,
-  options: VitePressSidebarOptions
+  options: VitePressSidebarOptions,
+  onLink?: (link: string, linkWithoutPrefix: string) => void
 ): SidebarListItem {
-  const { prefixSeparator } = options;
+  const { prefixSeparator, removePrefixAfterOrdering, removePrefixFromLink } = options;
 
   if (!prefixSeparator) {
     return sidebarList;
   }
 
-  // Matched once, because what is removed is the prefix and not every value
-  // that looks like one further along the title.
-  const prefixPattern =
-    prefixSeparator instanceof RegExp
-      ? new RegExp(prefixSeparator.source, prefixSeparator.flags.replace(/g/g, ''))
-      : null;
+  const removePrefix = createPrefixRemover(prefixSeparator);
 
-  for (let i = 0, len = sidebarList.length; i < len; i += 1) {
-    const item = sidebarList[i];
+  const removePrefixFromLevel = (items: SidebarListItem): void => {
+    for (let i = 0, len = items.length; i < len; i += 1) {
+      const item = items[i];
 
-    if (typeof item.text === 'string') {
-      if (prefixPattern) {
-        item.text = item.text.replace(prefixPattern, '');
-      } else {
-        const splitItem = item.text.split(prefixSeparator);
+      if (removePrefixAfterOrdering && typeof item.text === 'string') {
+        item.text = removePrefix(item.text);
+      }
 
-        if (splitItem.length > 1) {
-          splitItem.shift();
+      if (removePrefixFromLink && typeof item.link === 'string' && !item[FOLDER_META_LINK_KEY]) {
+        const linkWithoutPrefix = removePrefixFromPath(item.link, removePrefix);
 
-          // Joined with the separator as text. A regular expression would be
-          // turned into its own source here and printed inside the title.
-          item.text = splitItem.join(prefixSeparator);
-        }
+        onLink?.(item.link, linkWithoutPrefix);
+
+        item.link = linkWithoutPrefix;
+      }
+
+      delete item[FOLDER_META_LINK_KEY];
+
+      if (item.items) {
+        removePrefixFromLevel(item.items);
       }
     }
+  };
 
-    if (item.items) {
-      item.items = removePrefixFromTitleAndLink(item.items, options);
-    }
-  }
+  removePrefixFromLevel(sidebarList);
 
   return sidebarList;
 }

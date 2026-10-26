@@ -488,6 +488,124 @@ describe('Test: base test', () => {
     ]);
   });
 
+  it('withSidebar: `removePrefixFromLink` rewrites the pages its links point at', () => {
+    const result = withSidebar(
+      {},
+      {
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+        removePrefixFromLink: true
+      }
+    );
+    const rewrites = result.rewrites as (id: string) => string;
+
+    assert.equal(typeof rewrites, 'function');
+    assert.deepStrictEqual(
+      [
+        '1.intro.md',
+        '2.guide/1.setup.md',
+        // Left out of the sidebar, but rewritten like every other page
+        '2.guide/index.md',
+        '3.reference/1.overview.md',
+        'index.md'
+      ].map(rewrites),
+      ['intro.md', 'guide/setup.md', 'guide/index.md', 'reference/overview.md', 'index.md']
+    );
+
+    // Each link points at the path its page is rewritten to
+    assert.deepStrictEqual(
+      (result.themeConfig?.sidebar as { link?: string; items?: { link: string }[] }[]).map(
+        (item) => item.items?.map((child) => child.link) ?? item.link
+      ),
+      ['/intro', ['/guide/setup', '/guide/usage'], ['/reference/overview']]
+    );
+  });
+
+  it('withSidebar: `removePrefixFromLink` runs the `rewrites` of the configuration first', () => {
+    const result = withSidebar(
+      {
+        // Written for the paths as they are on disk, with their prefix
+        rewrites: (id: string) => (id === '1.intro.md' ? '0.welcome.md' : '')
+      },
+      {
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+        removePrefixFromLink: true
+      }
+    );
+    const rewrites = result.rewrites as (id: string) => string;
+
+    assert.equal(rewrites('1.intro.md'), 'welcome.md');
+    assert.equal(rewrites('2.guide/1.setup.md'), 'guide/setup.md');
+  });
+
+  it('withSidebar: `removePrefixFromLink` only rewrites the pages below `scanStartPath`', () => {
+    const result = withSidebar({}, [
+      {
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+        scanStartPath: '2.guide',
+        resolvePath: '/guide/',
+        removePrefixFromLink: true
+      },
+      {
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+        scanStartPath: '3.reference',
+        resolvePath: '/3.reference/'
+      }
+    ]);
+    const rewrites = result.rewrites as (id: string) => string;
+
+    assert.equal(rewrites('2.guide/1.setup.md'), 'guide/setup.md');
+    assert.equal(rewrites('3.reference/1.overview.md'), '3.reference/1.overview.md');
+    assert.equal(rewrites('1.intro.md'), '1.intro.md');
+  });
+
+  it('withSidebar: `removePrefixFromLink` cannot be combined with `rewrites` written as an object', () => {
+    assert.throws(
+      () =>
+        withSidebar(
+          { rewrites: { 'en/:rest*': ':rest*' } },
+          {
+            documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+            removePrefixFromLink: true
+          }
+        ),
+      /cannot combine it with 'rewrites' written as an object/
+    );
+  });
+
+  it('withSidebar: `removePrefixFromLink` needs one `prefixSeparator` for every sidebar', () => {
+    assert.throws(
+      () =>
+        withSidebar({}, [
+          {
+            documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+            scanStartPath: '2.guide',
+            resolvePath: '/guide/',
+            removePrefixFromLink: true
+          },
+          {
+            documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+            scanStartPath: '3.reference',
+            resolvePath: '/reference/',
+            removePrefixFromLink: true,
+            prefixSeparator: '-'
+          }
+        ]),
+      /must use the same 'prefixSeparator'/
+    );
+  });
+
+  it('withSidebar: without `removePrefixFromLink` the `rewrites` are left as they are', () => {
+    const rewrites = { 'en/:rest*': ':rest*' };
+    const result = withSidebar(
+      { rewrites },
+      {
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link`
+      }
+    );
+
+    assert.deepStrictEqual(result.rewrites, rewrites);
+  });
+
   it('Contains a path with the same name as `documentRootPath`', () => {
     assert.deepStrictEqual(
       generateSidebar({

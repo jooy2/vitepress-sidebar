@@ -33,9 +33,10 @@ description: 'VitePress Sidebar 所有选项的参考，包括默认值、类型
 <tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#frontmattertitlefieldname"><code>frontmatterTitleFieldName</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
 <tr><td><a href="#dynamicroutetitleparam"><code>dynamicRouteTitleParam</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
-<tr><td rowspan="3">获取菜单链接</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="4">获取菜单链接</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#folderlinknotincludesfilename"><code>folderLinkNotIncludesFileName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usefolderlinkfromindexfile"><code>useFolderLinkFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#removeprefixfromlink"><code>removePrefixFromLink</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
 <tr><td rowspan="9">包括/排除</td><td><a href="#excludebyglobpattern"><code>excludeByGlobPattern</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
 <tr><td><a href="#excludefilesbyfrontmatterfieldname"><code>excludeFilesByFrontmatterFieldName</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>✅</td></tr>
 <tr><td><a href="#excludebyfolderdepth"><code>excludeByFolderDepth</code></a></td><td><code>number|null</code></td><td><code>null</code></td><td>✅</td></tr>
@@ -635,7 +636,7 @@ export default {
 
 可与`prefixSeparator`选项一起使用。更多信息请参阅该选项的描述。
 
-(注A:前缀仅影响标题,链接将使用文件链接的原始形式)。
+（注A：此选项仅影响标题。如需同时删除链接中的前缀，请使用 [`removePrefixFromLink`](#removeprefixfromlink)。）
 
 (备注B:如果您使用`useTitleFromFileHeading`或`useTitleFromFrontmatter`选项,则忽略此选项)。
 
@@ -644,13 +645,70 @@ export default {
 - Type: `string|RegExp`
 - Default: `'.'`
 
-此选项只能与 `removePrefixAfterOrdering` 选项结合使用以删除前缀。
+此选项告诉 [`removePrefixAfterOrdering`](#removeprefixafterordering) 和 [`removePrefixFromLink`](#removeprefixfromlink) 前缀在哪里结束。两者都未启用时，它不起任何作用。
 
 从提取的菜单文本中删除指定数量字符（至少一个）的第一部分。例如，如果菜单名称为 `1. Text`，并且您将 `prefixSeparator` 值设置为 `. `，则结果将仅为 `Text`。
 
 您还可以使用正则表达式。与正则表达式匹配的第一个值将被删除，因此请编写一个能匹配整个前缀（包括分隔符）的正则表达式。例如，要删除 `2024-01-01-hello` 中字符串之前的日期，请将 `prefixSeparator` 值指定为 `/[0-9]{4}-[0-9]{2}-[0-9]{2}-/g`。结果为 `hello`。
 
 这也是删除自身含有分隔符的前缀的方法，而文本形式无法表达这一点：`/^[0-9]+\./` 会把 `1.1.hello` 变成 `1.hello`（与只写 `.` 相同），而 `/^[0-9]+\.[0-9]+\./` 则会变成 `hello`。
+
+## `removePrefixFromLink`
+
+- Type: `boolean`
+- Default: `false`
+
+删除侧边栏中每个链接的前缀，方式与 [`removePrefixAfterOrdering`](#removeprefixafterordering) 删除标题前缀相同。当文件名的前缀只用于决定顺序、也不应出现在 URL 中时使用此选项。
+
+菜单项按前缀排序完成后，链接经过的每个文件夹和文件都会删除前缀，前缀在哪里结束由 [`prefixSeparator`](#prefixseparator) 决定。使用默认分隔符（`.`）时：
+
+- 文件：`1.guide/2.setup.md` -> 链接：`/guide/setup`
+- 文件：`1.guide/index.md` -> 链接：`/guide/`（`index` 页面保留其名称）
+
+标题保持不变。如需同时删除标题和链接中的前缀，请一并启用 `removePrefixAfterOrdering`。
+
+只有当 VitePress 在该路径提供页面时，链接才有效，因此需要用 [`rewrites`](https://vitepress.dev/guide/routing#route-rewrites) 把页面移到该路径。使用 `withSidebar` 时，它会替你把这些 `rewrites` 加入 VitePress 配置：
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  title: 'VitePress Sidebar'
+};
+
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs',
+    removePrefixAfterOrdering: true,
+    removePrefixFromLink: true
+  })
+);
+```
+
+请注意以下几点：
+
+- 扫描文件夹下的所有页面都按同一规则移动，侧边栏中未显示的页面也是如此。扫描文件夹是 [`scanStartPath`](#scanstartpath)，未设置时则是整个文档根目录。页面路径与 [`srcExclude`](#vitepress-srcexclude) 一样以 `documentRootPath` 为基准读取。
+- 以函数形式编写的 `rewrites` 会先执行，接收磁盘上原样的路径，前缀则从该函数返回的路径中删除。以对象形式编写的 `rewrites` 无法与之结合，会报错，请改为函数形式。
+- 启用此选项的所有侧边栏必须使用相同的 `prefixSeparator`，因为同一个 `rewrites` 处理所有侧边栏的页面。
+- 您自己编写的路径按原样使用。[配置文件](/zhHans/advanced-usage/configuration-file)中的 `$folder.link` 以及 `rootGroupLink`、`resolvePath`、`basePath` 必须写成不含前缀的路径，例如 `scanStartPath: '1.guide'` 时写作 `resolvePath: '/guide/'`。
+- 页面 Markdown 中编写的链接不会被修改。VitePress 要求这类链接[基于重写后的路径](https://vitepress.dev/guide/routing#route-rewrites)编写，因此请写成不含前缀的形式，例如 `./guide/setup.md`。
+- 如果侧边栏中有两个页面最终落在同一路径，例如 `1.intro.md` 和 `2.intro.md`，会输出警告，因为 VitePress 在该路径只提供其中一个。
+- [`generateSidebar`](/zhHans/guide/getting-started) 不会接收 VitePress 配置，因此无法加入 `rewrites`。请自己编写删除相同前缀的函数。例如，使用 `prefixSeparator: /^[0-9]+\./` 时：
+
+```javascript
+export default defineConfig({
+  // `(?!md$)` 会保留仅以数字命名的文件，例如 `5.md`
+  rewrites: (id) => id.replace(/(^|\/)[0-9]+\.(?!md$)/g, '$1'),
+  themeConfig: {
+    sidebar: generateSidebar({
+      documentRootPath: '/docs',
+      removePrefixFromLink: true,
+      prefixSeparator: /^[0-9]+\./
+    })
+  }
+});
+```
 
 ## `rootGroupText`
 

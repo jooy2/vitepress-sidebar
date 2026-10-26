@@ -215,6 +215,7 @@ export default defineConfig(
     // useFolderLinkFromSameNameSubFile: false,
     // useFolderLinkFromIndexFile: false,
     // folderLinkNotIncludesFileName: false,
+    // removePrefixFromLink: false,
     //
     // ============ [ INCLUDE / EXCLUDE ] ============
     // excludeByGlobPattern: ['README.md', 'folder/'],

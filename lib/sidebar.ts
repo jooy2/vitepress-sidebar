@@ -7,6 +7,7 @@ import { isTrueAtLeast, objMergeWithArrays } from 'qsu';
 import type { Sidebar, SidebarItem, SidebarListItem, VitePressSidebarOptions } from './types.js';
 import {
   clearMarkdownFileCache,
+  createPrefixRemover,
   createSortItem,
   debugPrint,
   deleteKeyFromLevel,
@@ -17,11 +18,13 @@ import {
   getExcludeFromFrontmatter,
   getOrderFromFrontmatter,
   getTitleFromMd,
+  removePrefixFromPath,
   removePrefixFromTitleAndLink,
   sortByCustomFunction,
   sortByFileTypes,
   sortByObjectKey,
   DIRECTORY_ITEM_KEY,
+  FOLDER_META_LINK_KEY,
   SORT_ITEM_KEY
 } from './helper.js';
 import { createSidebarHmrPlugin } from './external.js';
@@ -190,6 +193,56 @@ function resolveDisplayPath(
   }
 
   return itemPathDisplay;
+}
+
+/**
+ * A page path in the one form every link to that page shares: `/guide/`,
+ * `/guide/index` and `/guide/index.md` all point at the index of `guide`.
+ */
+function toComparablePagePath(path: string): string {
+  return path
+    .replace(/\/{2,}/g, '/')
+    .replace(/(^|\/)index(\.md)?$/, '$1')
+    .replace(/\.md$/, '');
+}
+
+/**
+ * Creates the check that reports two pages left at the same path once the
+ * prefix is removed from their links, such as `1.intro.md` and `2.intro.md`.
+ *
+ * VitePress serves a single page at a path, so one of the two can no longer be
+ * reached, and nothing else would say so. `seenPagePaths` maps every path seen
+ * so far, without its prefix, to the page it was seen for.
+ */
+function createLinkCollisionCheck(
+  options: VitePressSidebarOptions,
+  seenPagePaths: Map<string, string>
+): (link: string, linkWithoutPrefix: string) => void {
+  // A link is relative to the scan root when the sidebar is resolved to a path
+  // of its own, and the same link may sit below another document root, so the
+  // page a link points at is told by the three together.
+  const scanStartPath = options.scanStartPath ?? '';
+  const pageDir = `${options.documentRootPath}/${scanStartPath}`;
+  const pageDirWithoutPrefix = `${options.documentRootPath}/${removePrefixFromPath(
+    scanStartPath,
+    createPrefixRemover(options.prefixSeparator!)
+  )}`;
+
+  return (link, linkWithoutPrefix) => {
+    const pagePath = toComparablePagePath(`${pageDir}/${link}`);
+    const pagePathWithoutPrefix = toComparablePagePath(
+      `${pageDirWithoutPrefix}/${linkWithoutPrefix}`
+    );
+    const otherPagePath = seenPagePaths.get(pagePathWithoutPrefix);
+
+    if (otherPagePath === undefined) {
+      seenPagePaths.set(pagePathWithoutPrefix, pagePath);
+    } else if (otherPagePath !== pagePath) {
+      process.stderr.write(
+        `[vitepress-sidebar] '${otherPagePath}' and '${pagePath}' both become '${pagePathWithoutPrefix}' once their prefix is removed, so only one of them can be reached.\n`
+      );
+    }
+  };
 }
 
 /**
@@ -422,6 +475,9 @@ function generateDirectoryItem(
       // kept by `includeEmptyFolder` or linked through an `index.md` holds
       // none and would otherwise be ordered as a file.
       ...(options.sortFolderTo ? { [DIRECTORY_ITEM_KEY]: true } : {}),
+      ...(options.removePrefixFromLink && typeof folderMeta.link === 'string'
+        ? { [FOLDER_META_LINK_KEY]: true }
+        : {}),
       // Built from the options of the parent, because this item is sorted
       // among the items of the folder that holds it.
       ...(options.sortMenusByCustomFunction
@@ -765,7 +821,8 @@ function generateSidebarItem(
 }
 
 /**
- * Builds the sidebar.
+ * Builds the sidebar, and returns it together with the options it was built
+ * with once the configuration files and the defaults have been applied.
  *
  * `srcExcludePatterns` holds the `srcExclude` of the VitePress configuration,
  * which only `withSidebar` is able to read. It is a parameter instead of an
@@ -775,7 +832,7 @@ function generateSidebarItem(
 function buildSidebar(
   options?: VitePressSidebarOptions | VitePressSidebarOptions[],
   srcExcludePatterns?: string[]
-): Sidebar {
+): { sidebar: Sidebar; optionItems: VitePressSidebarOptions[] } {
   // Several options read something from the same file, and the files of the
   // previous build may have changed since, so every build starts and ends
   // without anything left over from another one.
@@ -801,6 +858,9 @@ function buildSidebar(
   // Matching `srcExclude` walks the whole document root, so the result is
   // shared by every sidebar built from the same one.
   const srcExcludeByRootPath = new Map<string, SrcExcludePaths | null>();
+  // Shared by every sidebar, because two pages left at the same path collide
+  // whichever sidebars their menu items are in.
+  const pagePathsWithoutPrefix = new Map<string, string>();
   // Only a configuration file in the current working directory may declare
   // `documentRootPath`, because the document root decides which of the other
   // configuration files are read.
@@ -901,7 +961,7 @@ function buildSidebar(
     // written down and is empty is an error. The check runs before the defaults
     // are applied, which is what told the two apart.
     if (
-      optionItem.removePrefixAfterOrdering &&
+      (optionItem.removePrefixAfterOrdering || optionItem.removePrefixFromLink) &&
       optionItem.prefixSeparator !== undefined &&
       !optionItem.prefixSeparator
     ) {
@@ -1001,8 +1061,14 @@ function buildSidebar(
       srcExclude
     );
 
-    if (resolvedOptionItem.removePrefixAfterOrdering) {
-      sidebarResult = removePrefixFromTitleAndLink(sidebarResult, resolvedOptionItem);
+    if (resolvedOptionItem.removePrefixAfterOrdering || resolvedOptionItem.removePrefixFromLink) {
+      sidebarResult = removePrefixFromTitleAndLink(
+        sidebarResult,
+        resolvedOptionItem,
+        resolvedOptionItem.removePrefixFromLink
+          ? createLinkCollisionCheck(resolvedOptionItem, pagePathsWithoutPrefix)
+          : undefined
+      );
     }
 
     const resolvePathKey = resolvedOptionItem.resolvePath || '/';
@@ -1059,7 +1125,76 @@ function buildSidebar(
 
   clearMarkdownFileCache();
 
-  return sidebarResult;
+  return { sidebar: sidebarResult, optionItems: resolvedOptionItems };
+}
+
+function isSamePrefixSeparator(a: string | RegExp, b: string | RegExp): boolean {
+  if (a instanceof RegExp && b instanceof RegExp) {
+    // Only the first match is ever removed, so the global flag makes no
+    // difference to what two expressions remove.
+    return a.source === b.source && a.flags.replace(/g/g, '') === b.flags.replace(/g/g, '');
+  }
+
+  return a === b;
+}
+
+/**
+ * Creates the `rewrites` that serve every page under a sidebar enabling
+ * `removePrefixFromLink` at the path its link points at, or returns `null`
+ * when no sidebar enables it.
+ *
+ * A page path is read relative to `documentRootPath`, the way `srcExclude` is,
+ * and a page belongs to a sidebar when it sits below its `scanStartPath`. A
+ * page left out of the sidebar is rewritten too, so every page of the folder
+ * follows the same rule. The `rewrites` of the VitePress configuration come
+ * first and see the paths as they are on disk, and the prefix is removed from
+ * the path they return.
+ */
+function createPrefixRewrites(
+  optionItems: VitePressSidebarOptions[],
+  userRewrites: UserConfig['rewrites']
+): ((id: string) => string) | null {
+  const enabledOptionItems = optionItems.filter((optionItem) => optionItem.removePrefixFromLink);
+
+  if (enabledOptionItems.length < 1) {
+    return null;
+  }
+
+  const prefixSeparator = enabledOptionItems[0].prefixSeparator!;
+
+  // VitePress takes a single `rewrites`, so a page under two sidebars would
+  // be rewritten with one separator while the links of the other one were
+  // built with another.
+  if (
+    enabledOptionItems.some(
+      (optionItem) => !isSamePrefixSeparator(optionItem.prefixSeparator!, prefixSeparator)
+    )
+  ) {
+    throw new Error(
+      `Every sidebar that enables 'removePrefixFromLink' must use the same 'prefixSeparator', because one 'rewrites' serves the pages of all of them.`
+    );
+  }
+
+  // An object is matched by VitePress with rules of its own, which cannot be
+  // run here to find out what it would return.
+  if (userRewrites && typeof userRewrites !== 'function') {
+    throw new Error(
+      `'removePrefixFromLink' adds a 'rewrites' function to the VitePress configuration, and cannot combine it with 'rewrites' written as an object. Write your 'rewrites' as a function instead.`
+    );
+  }
+
+  const rewriteFirst = typeof userRewrites === 'function' ? userRewrites : null;
+  const removePrefix = createPrefixRemover(prefixSeparator);
+  const scanStartPaths = enabledOptionItems.map((optionItem) => optionItem.scanStartPath ?? '');
+  const isCovered = (id: string): boolean =>
+    scanStartPaths.some((scanStartPath) => !scanStartPath || id.startsWith(`${scanStartPath}/`));
+
+  return (id) => {
+    // VitePress leaves a page where it is when a function returns nothing.
+    const rewrittenId = rewriteFirst?.(id) || id;
+
+    return isCovered(id) ? removePrefixFromPath(rewrittenId, removePrefix) : rewrittenId;
+  };
 }
 
 export function generateSidebar(
@@ -1071,7 +1206,7 @@ export function generateSidebar(
 
   // Called without the VitePress configuration, so there is no `srcExclude` to
   // honor. Only `withSidebar` is able to read it.
-  return buildSidebar(options);
+  return buildSidebar(options).sidebar;
 }
 
 export function withSidebar(
@@ -1107,9 +1242,13 @@ export function withSidebar(
   // A page excluded by `srcExclude` is never built, so an item generated for it
   // would link nowhere. The patterns are inherited instead of having to be
   // repeated in the options of the sidebar, and apply on top of them.
+  const { sidebar, optionItems: resolvedOptionItems } = buildSidebar(
+    buildOptions,
+    vitePressOptions?.srcExclude
+  );
   const sidebarResult: Partial<UserConfig> = {
     themeConfig: {
-      sidebar: buildSidebar(buildOptions, vitePressOptions?.srcExclude)
+      sidebar
     }
   };
 
@@ -1137,6 +1276,15 @@ export function withSidebar(
     ...viteConfig,
     plugins: [...(viteConfig.plugins ?? []), hmrPlugin]
   } as UserConfig['vite'];
+
+  // A link without its prefix points at a page that VitePress only serves
+  // there once it is rewritten. Read from the options the sidebar was built
+  // with, because a configuration file may be what enables the option.
+  const prefixRewrites = createPrefixRewrites(resolvedOptionItems, vitePressOptions?.rewrites);
+
+  if (prefixRewrites) {
+    result.rewrites = prefixRewrites;
+  }
 
   if (enableDebugPrint) {
     debugPrint(sidebarOptions, result);

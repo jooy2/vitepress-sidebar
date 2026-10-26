@@ -167,6 +167,7 @@ docs/
 - [includeRootIndexFile](/ko/guide/options#includerootindexfile)
 - [includeDynamicRoutes](/ko/guide/options#includedynamicroutes)
 - [removePrefixAfterOrdering](/ko/guide/options#removeprefixafterordering)
+- [removePrefixFromLink](/ko/guide/options#removeprefixfromlink)
 - [debugPrint](/ko/guide/options#debugprint)
 
 VitePress Sidebar의 옵션이 아닌 키, 그리고 타입이 맞지 않는 값 역시 경고와 함께 무시되므로 실수 때문에 결과가 조용히 달라지는 일은 없습니다:

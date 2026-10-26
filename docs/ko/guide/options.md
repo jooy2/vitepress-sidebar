@@ -33,9 +33,10 @@ description: 'VitePress Sidebar의 모든 옵션을 기본값, 타입, 예시와
 <tr><td><a href="#usefoldertitlefromindexfile"><code>useFolderTitleFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#frontmattertitlefieldname"><code>frontmatterTitleFieldName</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
 <tr><td><a href="#dynamicroutetitleparam"><code>dynamicRouteTitleParam</code></a></td><td><code>string</code></td><td><code>'title'</code></td><td>✅</td></tr>
-<tr><td rowspan="3">메뉴 링크</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td rowspan="4">메뉴 링크</td><td><a href="#usefolderlinkfromsamenamesubfile"><code>useFolderLinkFromSameNameSubFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#folderlinknotincludesfilename"><code>folderLinkNotIncludesFileName</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
 <tr><td><a href="#usefolderlinkfromindexfile"><code>useFolderLinkFromIndexFile</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>✅</td></tr>
+<tr><td><a href="#removeprefixfromlink"><code>removePrefixFromLink</code></a></td><td><code>boolean</code></td><td><code>false</code></td><td>⚠️</td></tr>
 <tr><td rowspan="9">포함 및 제외</td><td><a href="#excludebyglobpattern"><code>excludeByGlobPattern</code></a></td><td><code>string[]</code></td><td><code>[]</code></td><td>✅</td></tr>
 <tr><td><a href="#excludefilesbyfrontmatterfieldname"><code>excludeFilesByFrontmatterFieldName</code></a></td><td><code>string|null</code></td><td><code>null</code></td><td>✅</td></tr>
 <tr><td><a href="#excludebyfolderdepth"><code>excludeByFolderDepth</code></a></td><td><code>number|null</code></td><td><code>null</code></td><td>✅</td></tr>
@@ -635,7 +636,7 @@ export default {
 
 `prefixSeparator` 옵션과 함께 사용할 수 있습니다. 자세한 내용은 해당 옵션의 설명을 참조하세요.
 
-(참고: 접두사는 제목에만 영향을 미치며, 링크는 파일 링크를 그대로 사용합니다).
+(참고: 이 옵션은 제목에만 영향을 미칩니다. 링크에서도 접두사를 제거하려면 [`removePrefixFromLink`](#removeprefixfromlink)를 사용하세요.)
 
 (참고 B: 이 옵션은 `useTitleFromFileHeading` 또는 `useTitleFromFrontmatter` 옵션을 사용하는 경우 무시됩니다).
 
@@ -644,13 +645,70 @@ export default {
 - Type: `string|RegExp`
 - Default: `'.'`
 
-이 옵션은 접두사를 제거하기 위해 `removePrefixAfterOrdering` 옵션과 함께 사용할 때만 사용할 수 있습니다.
+이 옵션은 [`removePrefixAfterOrdering`](#removeprefixafterordering)과 [`removePrefixFromLink`](#removeprefixfromlink)에 접두사가 어디서 끝나는지 알려 줍니다. 두 옵션 중 하나를 켜지 않으면 아무 효과가 없습니다.
 
 추출된 메뉴 텍스트에서 지정된 문자 수(하나 이상)의 첫 부분을 제거합니다. 예를 들어 메뉴 이름이 `1. Text`이고 `prefixSeparator` 값을 `. `로 설정하면 결과는 `Text`가 됩니다.
 
 정규식을 사용할 수도 있습니다. 정규식과 일치하는 첫 번째 값이 제거되므로, 구분자를 포함해 접두사 전체와 일치하는 정규식을 작성하세요. 예를 들어 `2024-01-01-hello`에서 문자열 앞의 날짜를 제거하려면 `prefixSeparator` 값을 `/[0-9]{4}-[0-9]{2}-[0-9]{2}-/g`로 지정합니다. 결과는 `hello`입니다.
 
 문자열 형태로는 표현할 수 없는, 구분자를 포함한 접두사를 제거할 때 사용합니다. `/^[0-9]+\./`는 `1.1.hello`를 `1.hello`로 만들며(이는 `.`만 지정한 것과 같습니다), `/^[0-9]+\.[0-9]+\./`는 `hello`로 만듭니다.
+
+## `removePrefixFromLink`
+
+- Type: `boolean`
+- Default: `false`
+
+사이드바의 모든 링크에서 접두사를 제거합니다. [`removePrefixAfterOrdering`](#removeprefixafterordering)이 제목에서 접두사를 제거하는 것과 같은 방식입니다. 파일 이름의 접두사가 순서를 정하는 데만 쓰이고 URL에도 드러나지 않아야 할 때 사용합니다.
+
+접두사는 메뉴 항목을 정렬한 뒤, 링크가 지나는 폴더와 파일마다 제거됩니다. 접두사가 어디서 끝나는지는 [`prefixSeparator`](#prefixseparator)가 정합니다. 기본 구분자(`.`)를 쓰면 다음과 같습니다:
+
+- 파일: `1.guide/2.setup.md` -> 링크: `/guide/setup`
+- 파일: `1.guide/index.md` -> 링크: `/guide/` (`index` 페이지는 이름을 그대로 유지합니다)
+
+제목은 바꾸지 않습니다. 제목과 링크 모두에서 접두사를 제거하려면 `removePrefixAfterOrdering`도 함께 켜세요.
+
+링크는 VitePress가 그 경로에서 페이지를 제공할 때만 동작하므로, [`rewrites`](https://vitepress.dev/guide/routing#route-rewrites)로 페이지를 그 경로로 옮겨야 합니다. `withSidebar`를 쓰면 이 `rewrites`를 VitePress 설정에 대신 넣어 줍니다:
+
+```javascript
+// `.vitepress/config.js`
+import { withSidebar } from 'vitepress-sidebar';
+
+const vitePressOptions = {
+  title: 'VitePress Sidebar'
+};
+
+export default defineConfig(
+  withSidebar(vitePressOptions, {
+    documentRootPath: '/docs',
+    removePrefixAfterOrdering: true,
+    removePrefixFromLink: true
+  })
+);
+```
+
+다음 사항에 유의하세요:
+
+- 스캔하는 폴더 아래의 모든 페이지가 같은 규칙으로 옮겨지며, 사이드바에 나오지 않는 페이지도 마찬가지입니다. 스캔하는 폴더는 [`scanStartPath`](#scanstartpath)이고, 이 옵션이 없으면 문서 루트 전체입니다. 페이지 경로는 [`srcExclude`](#vitepress-srcexclude)와 똑같이 `documentRootPath`를 기준으로 읽습니다.
+- 함수로 작성한 `rewrites`가 먼저 실행되어 디스크에 있는 그대로의 경로를 받고, 접두사는 그 함수가 반환한 경로에서 제거됩니다. 객체로 작성한 `rewrites`와는 함께 쓸 수 없어 오류가 나므로 함수로 작성하세요.
+- 이 옵션을 켠 사이드바는 모두 같은 `prefixSeparator`를 써야 합니다. 하나의 `rewrites`가 모든 사이드바의 페이지를 처리하기 때문입니다.
+- 직접 작성한 경로는 쓴 그대로 사용합니다. [설정 파일](/ko/advanced-usage/configuration-file)의 `$folder.link`와 `rootGroupLink`, `resolvePath`, `basePath`는 접두사를 뺀 경로로 써야 합니다. 예를 들어 `scanStartPath: '1.guide'`라면 `resolvePath: '/guide/'`로 씁니다.
+- 페이지 본문의 Markdown에 쓴 링크는 바꾸지 않습니다. VitePress는 이런 링크를 [옮겨진 경로 기준으로](https://vitepress.dev/guide/routing#route-rewrites) 쓰도록 하므로, `./guide/setup.md`처럼 접두사 없이 쓰세요.
+- 사이드바에 `1.intro.md`와 `2.intro.md`처럼 같은 경로가 되는 두 페이지가 있으면 경고를 출력합니다. VitePress는 그 경로에서 둘 중 하나만 제공합니다.
+- [`generateSidebar`](/ko/guide/getting-started)는 VitePress 설정을 전달받지 않으므로 `rewrites`를 넣을 수 없습니다. 같은 접두사를 제거하는 함수를 직접 작성하세요. 예를 들어 `prefixSeparator: /^[0-9]+\./`라면 다음과 같습니다:
+
+```javascript
+export default defineConfig({
+  // `(?!md$)`는 `5.md`처럼 숫자만으로 된 파일 이름을 그대로 둡니다
+  rewrites: (id) => id.replace(/(^|\/)[0-9]+\.(?!md$)/g, '$1'),
+  themeConfig: {
+    sidebar: generateSidebar({
+      documentRootPath: '/docs',
+      removePrefixFromLink: true,
+      prefixSeparator: /^[0-9]+\./
+    })
+  }
+});
+```
 
 ## `rootGroupText`
 

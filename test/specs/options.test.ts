@@ -1031,6 +1031,226 @@ describe('Test: APIs', () => {
     );
   });
 
+  it('API: removePrefixFromLink', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
+        removePrefixAfterOrdering: true,
+        removePrefixFromLink: true,
+        prefixSeparator: '-'
+      }),
+      [
+        {
+          text: '1-1-one-file',
+          link: '/1-1-one-file'
+        },
+        {
+          text: 'folder',
+          items: [
+            {
+              // The prefix of the folder is removed as well
+              text: 'file',
+              link: '/folder/file'
+            }
+          ]
+        },
+        {
+          text: 'one-file',
+          link: '/one-file'
+        },
+        {
+          text: 'three-file',
+          link: '/three-file'
+        },
+        {
+          text: 'four-file',
+          link: '/four-file'
+        },
+        {
+          text: 'two-file',
+          link: '/two-file'
+        }
+      ]
+    );
+  });
+
+  it('API: removePrefixFromLink (with a regular expression)', () => {
+    assert.deepEqual(
+      (
+        generateSidebar({
+          documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
+          removePrefixFromLink: true,
+          prefixSeparator: /^[0-9]+[-.]/
+        }) as { link?: string; items?: { link: string }[] }[]
+      ).map((item) => item.link ?? item.items?.map((child) => child.link)),
+      [
+        '/1-1-one-file',
+        ['/folder/file'],
+        '/one-file',
+        '/three-file',
+        // Only the first match is removed, exactly like from a title
+        '/1.1-four-file',
+        '/two-file'
+      ]
+    );
+  });
+
+  it('API: removePrefixFromLink (leaves the titles and the `$folder` links alone)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+        removePrefixFromLink: true
+      }),
+      [
+        {
+          // Without `removePrefixAfterOrdering`, only the link loses its prefix
+          text: '1.intro',
+          link: '/intro'
+        },
+        {
+          text: '2.guide',
+          items: [
+            {
+              text: '1.setup',
+              link: '/guide/setup'
+            },
+            {
+              text: '2.usage',
+              link: '/guide/usage'
+            }
+          ]
+        },
+        {
+          text: '3.reference',
+          // Written in `$folder`, so it points where it was written to point
+          link: '/api/',
+          items: [
+            {
+              text: '1.overview',
+              link: '/reference/overview'
+            }
+          ]
+        }
+      ]
+    );
+  });
+
+  it('API: removePrefixFromLink (keeps the name of an `index` page)', () => {
+    assert.deepEqual(
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+        removePrefixAfterOrdering: true,
+        removePrefixFromLink: true,
+        useFolderLinkFromIndexFile: true,
+        includeRootIndexFile: true
+      }),
+      [
+        {
+          text: 'intro',
+          link: '/intro'
+        },
+        {
+          text: 'guide',
+          // The `.` of the extension is not read as a separator either
+          link: '/guide/index.md',
+          items: [
+            {
+              text: 'setup',
+              link: '/guide/setup'
+            },
+            {
+              text: 'usage',
+              link: '/guide/usage'
+            }
+          ]
+        },
+        {
+          text: 'reference',
+          link: '/api/',
+          items: [
+            {
+              text: 'overview',
+              link: '/reference/overview'
+            }
+          ]
+        },
+        {
+          text: 'index',
+          link: '/'
+        }
+      ]
+    );
+  });
+
+  it('API: removePrefixFromLink (a link relative to `scanStartPath`)', () => {
+    assert.deepEqual(
+      generateSidebar([
+        {
+          documentRootPath: `${TEST_DIR_BASE}/prefix-link`,
+          scanStartPath: '2.guide',
+          resolvePath: '/guide/',
+          removePrefixAfterOrdering: true,
+          removePrefixFromLink: true
+        }
+      ]),
+      {
+        '/guide/': {
+          base: '/guide/',
+          items: [
+            {
+              text: 'setup',
+              link: 'setup'
+            },
+            {
+              text: 'usage',
+              link: 'usage'
+            }
+          ]
+        }
+      }
+    );
+  });
+
+  it('API: removePrefixFromLink (two pages left at the same path are reported)', () => {
+    const warnings: string[] = [];
+    const write = process.stderr.write;
+
+    process.stderr.write = ((chunk: string) => {
+      warnings.push(String(chunk));
+      return true;
+    }) as typeof process.stderr.write;
+
+    try {
+      generateSidebar({
+        documentRootPath: `${TEST_DIR_BASE}/prefix-link-collision`,
+        removePrefixFromLink: true
+      });
+    } finally {
+      process.stderr.write = write;
+    }
+
+    const rootPath = `/${TEST_DIR_BASE}/prefix-link-collision`;
+
+    assert.deepEqual(warnings, [
+      // Below two folders that differ by their prefix alone
+      `[vitepress-sidebar] '${rootPath}/1.guide/a' and '${rootPath}/2.guide/a' both become '${rootPath}/guide/a' once their prefix is removed, so only one of them can be reached.\n`,
+      // A page with no prefix to lose collides as well
+      `[vitepress-sidebar] '${rootPath}/1.intro' and '${rootPath}/intro' both become '${rootPath}/intro' once their prefix is removed, so only one of them can be reached.\n`
+    ]);
+  });
+
+  it('API: removePrefixFromLink (an empty `prefixSeparator` is an error)', () => {
+    assert.throws(
+      () =>
+        generateSidebar({
+          documentRootPath: `${TEST_DIR_BASE}/numeric-prefix`,
+          removePrefixFromLink: true,
+          prefixSeparator: ''
+        }),
+      { message: `'prefixSeparator' should not use empty string` }
+    );
+  });
+
   it('API: sortMenusByName (A)', () => {
     assert.deepEqual(
       generateSidebar({
